@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>메인</title>
+<link rel="stylesheet" href="../css/adminMain.css">
+</head>
+<body>
+
+	<div class="admin-wrapper">
+	
+		<!-- 헤더가 로드될 부분 -->
+		<div id="header-container"></div>
+		
+		<div class="wrapper">
+		    <div class="inner">
+				<!-- 메인 콘텐츠 -->
+				<section class="section">
+					<div class="section-title">
+						희망도서목록 <span class="section-add">+</span>
+					</div>
+				</section>
+
+				<section class="section">
+					<div class="section-title">
+						결재관리목록 <span class="section-add">+</span>
+					</div>
+				</section>
+			</div>
+		</div>
+	</div>
+
+	<!-- 푸터 로드할 부분 -->
+	<div id="footer-container"></div>
+
+	<script>
+        // JavaScript로 header.html을 불러와 삽입
+        fetch("../htmlSample/adminHeader.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-container").innerHTML = data;
+            })
+            .catch(error => console.error('헤더 로드 중 오류 발생:', error));
+        
+        fetch("../htmlSample/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-container").innerHTML = data;
+            })
+            .catch(error => console.error('푸터 로드 중 오류 발생:', error));
+    </script>
+</body>
+</html>

@@ -3,34 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <title>메인</title>
-<link rel="stylesheet" href="../css/main.css">
+<link rel="stylesheet" href="../css/userMain.css">
 </head>
-<body>
-	<header>
-		<div class="header-container">
-			<img src="../images/로고.png" alt="로고" class="logo">
-			<nav class="nav">
-				<ul class="nav-menu">
-					<li><a href="#">도서조회</a></li>
-					<li><a href="#">희망도서신청</a></li>
-					<li><a href="#">내 도서</a></li>
-				</ul>
-				<ul class="nav-auth">
-					<li><a href="#">마이페이지</a></li>
-					<li>·</li>
-					<li><a href="#">로그인</a></li>
-				</ul>
-			</nav>
-		</div>
-	</header>
+<body class="custom-page">
+
+    <!-- 헤더가 로드될 부분 -->
+    <div id="header-container"></div>
 
 	<div class="main-image">
 		<img src="../images/image48.png" alt="메인 이미지">
 	</div>
 
 	<div class="wrapper">
-		<div class="inner">
-			<section class="section book-section">
+			<section class="book-section">
 				<h2 class="section-title">이달의 대출 도서 순위</h2>
 				<div class="book-list">
 					<div class="book-row">
@@ -223,7 +208,7 @@
 
 			<hr class="divider">
 
-			<section class="section book-section">
+			<section class="book-section">
 				<h2 class="section-title">이달의 신간</h2>
 				<div class="book-list">
 					<div class="book-row">
@@ -414,15 +399,26 @@
 				</div>
 			</section>
 		</div>
-	</div>
+		
+    <!-- 푸터 로드할 부분 -->
+    <div id="footer-container"></div>
 
-	<footer>
-		<div class="footer-divider"></div>
-		<p>
-			© 2025 SeedStory. All rights reserved. <br>SeedStory github
-			notion <br>biso : velog github | chan : velog github |
-			kakasska1212 : velog github notion | seul : velog | github
-		</p>
-	</footer>
+    <script>
+        // JavaScript로 header.html을 불러와 삽입
+        fetch("../htmlSample/userHeader.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("header-container").innerHTML = data;
+            })
+            .catch(error => console.error('헤더 로드 중 오류 발생:', error));
+        
+        fetch("../htmlSample/footer.html")
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById("footer-container").innerHTML = data;
+            })
+            .catch(error => console.error('푸터 로드 중 오류 발생:', error));
+    </script>	
+	
 </body>
 </html>
