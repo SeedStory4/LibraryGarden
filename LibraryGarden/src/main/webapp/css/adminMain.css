@@ -2,7 +2,7 @@
 
 /* 메인 콘텐츠 (섹션) */
 .section {
-    width: 1000px;
+    width: 1200px;
     height: 395px;
     background: var(--bg-section);
     border-radius: 20px;
