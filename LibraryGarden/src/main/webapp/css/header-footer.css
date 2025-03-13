@@ -41,7 +41,7 @@ header {
     margin-right: 60px;
 }
 
-.nav-menu, .nav-auth {
+.nav-menu, .nav-auth, .admin-nav-auth {
     display: flex;
     list-style: none;
     align-items: center;
@@ -59,20 +59,14 @@ header {
 .nav-menu a {
     font-size: 20px;
     font-weight: bold;
-    color: var(--color-white);
-}
-
-.nav-menu a, .nav-auth a {
-    font-size: 20px;
-    font-weight: bold;
     color: var(--color-primary);
 }
 
-.nav-auth a {
-    font-size: 16px; 
+.nav-auth a, .admin-nav-auth a {
+    font-size: 16px;
     font-weight: normal;
+    color: var(--color-primary);
 }
-
 
 footer {
     height: 120px;
@@ -97,5 +91,10 @@ footer {
 .admin-nav {
     display: flex;
     align-items: center;
+}
+
+.admin-nav-auth {
+    margin-left: 60px; /* 내 도서와 마이페이지 사이 간격 60px */
+    gap: 10px; /* 마이페이지 · 로그아웃 간격 */
 }
 
