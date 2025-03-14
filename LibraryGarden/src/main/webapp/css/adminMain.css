@@ -3,10 +3,9 @@
 /* 메인 콘텐츠 (섹션) */
 .section {
     width: 1200px;
-    height: 395px;
     background: var(--bg-section);
     border-radius: 20px;
-    padding: 20px;
+    padding: 30px;
     margin-bottom: 30px;
 }
 
@@ -37,3 +36,247 @@
     cursor: pointer;
     color: var(--color-primary);
 }
+
+
+
+/* 기안 등록 헤더 */
+.draft-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* 기안 등록 제목 */
+.draft-title {
+    font-size: 35px;
+    font-weight: normal;
+}
+
+.draft-section {
+	margin-top: 50px;
+}
+
+/* 기안 등록 버튼 */
+.draft-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.draft-btn {
+    font-size: 20px;
+    font-weight: bold;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.draft-btn-small {
+    font-size: 18px;
+    font-weight: bold;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+}
+
+.btn-green {
+    background: #2DA679;
+    width: 180px;
+    height: 42px;
+}
+
+.btn-green.small {
+    width: 138px;
+    height: 42px;
+}
+
+/* 구분선 */
+.draft-divider {
+    width: 100%;
+    height: 1px;
+    background: #000;
+    margin: 9px 0 20px;
+    width: calc(100% + 60px);
+    transform: translateX(-30px);
+}
+
+/* 기안 도서 정보 */
+.draft-content {
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: 60px;
+    position: relative; /* 신청대기 버튼 절대 위치 배치*/
+}
+
+/* 도서 이미지 */
+.draft-book-img {
+    width: 141px;
+    height: 213px;
+    border: 1px solid #ccc; 
+}
+
+/* 도서 정보 목록 */
+.draft-info {
+    display: flex;
+    flex-direction: column;
+    line-height: normal; /* 줄 간격 없앰 */
+}
+
+.info-title {
+    font-size: 20px;
+    color: var(--color-primary);
+    font-weight: normal;
+	width: 155px; /* 고정 너비 설정 */
+	text-align: left; /* 왼쪽 정렬 */
+	white-space: nowrap; /* 줄바꿈 방지 */
+}
+
+.draft-info p {
+    display: flex;
+    align-items: center; /* 수직 정렬 */
+    gap: 25px; /* 제목과 내용 사이 간격 */
+}
+
+.info-content {
+    font-size: 16px;
+    color: #333333;
+    font-weight: normal;
+	flex-grow: 1; /* 내용이 자동으로 정렬되도록 */
+	text-align: left;
+}
+
+/* 등록/취소 버튼 */
+.draft-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+	margin-top: 75px;
+}
+
+.mg-top { margin-top: 45px; }
+
+.btn-submit {
+    background: #2DA679;
+    width: 100px;
+    height: 45px;
+}
+
+.btn-list {
+    background: #F29441;
+    width: 100px;
+    height: 45px;
+}
+
+.btn-cancel {
+    background: #D94436;
+    width: 100px;
+    height: 45px;
+}
+
+/* 책 소개 전체 박스 */
+.draft-book-description {
+    width: 1075px;
+    background: var(--bg-section);
+    border-radius: 5px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+	margin: 20px 0px 0px 60px;
+	
+}
+
+/* 책 소개 제목 */
+.description-title {
+    font-size: 20px;
+    color: var(--color-primary);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+	margin: 20px 0px 20px 60px;
+
+}
+
+/* 책 소개 내용 */
+.description-content {
+    font-size: 18px;
+    color: #000000;
+    text-align: left;
+}
+
+/* 희망도서 상세 스타일 시작 */
+/* 신청대기 버튼 */
+.request-status-btn {
+    width: 100px;
+    height: 30px;
+    background: #F29441;
+    color: #FFFFFF;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute; /* 오른쪽 상단 고정 */
+    right: 0;
+    top: 0;
+}
+
+/* 신청 정보 */
+.request-info {
+    display: flex;
+    align-items: center;
+    gap: 120px; /* 신청자, 신청일, 상태 간격 */
+    margin-left: 60px;
+    margin-top: 17px;
+}
+
+/* 신청자, 신청일, 상태 각각의 그룹 */
+.request-info-group {
+    display: flex;
+    align-items: center;
+    gap: 40px; /* 신청자와 작은 글씨 사이 간격 */
+}
+
+
+/* 신청자, 신청일, 상태 제목 */
+.request-info-title {
+    font-size: 18px;
+    color: #1D6093;
+    font-weight: normal;
+}
+
+/* 신청자, 신청일 등 작은 글씨 */
+.request-info-content {
+    font-size: 14px;
+    color: #333333;
+    font-weight: normal;
+}
+
+/* 셀렉트 박스 반려사유 입력칸 감싸는 컨테이너 */
+.request-status-container {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* 셀렉트 박스와 반려사유 입력칸 사이 간격 줄이기 */
+}
+
+/* 상태 셀렉트 박스 */
+.request-status-select {
+    width: 100px;
+    height: 30px;
+}
+
+/* 반려사유 입력 */
+.reject-reason-input {
+    width: 230px;
+    height: 70px;
+	margin-top: 38px; /* 셀렉트 박스와 같은 높이로 정렬 */
+}
+
+
+
+
+
