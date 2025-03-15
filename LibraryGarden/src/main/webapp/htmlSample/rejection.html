@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>반려사유 팝업</title>
+    <link rel="stylesheet" href="rejection.css" />
+  </head>
+  <body>
+    <!-- 반려사유 모달 -->
+    <div id="rejectionModal" class="modal">
+      <div class="modal-content">
+        <div class="title-container">
+          <div class="title">반려사유</div>
+          <div class="title-line"></div>
+        </div>
+
+        <textarea
+          id="rejectionReason"
+          placeholder="반려 사유를 입력하세요..."
+        ></textarea>
+
+        <!-- 버튼 영역 -->
+        <div class="button-group">
+          <button id="confirmRejection">확인</button>
+          <button id="closeRejectionModal">취소</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="rejection.js"></script>
+  </body>
+</html>
