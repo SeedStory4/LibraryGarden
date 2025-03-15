@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <title>희망도서 상세</title>
+<link rel="stylesheet" href="../css/font.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link rel="stylesheet" href="../css/adminMain.css">
 </head>
 <body>
@@ -22,7 +26,7 @@
 
 				<!-- 도서 정보 -->
 				<div class="draft-content">
-					<img src="../images/sample-book.png" alt="도서 이미지"
+					<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지"
 						class="draft-book-img">
 					<div class="draft-info">
 						<p>
@@ -56,7 +60,7 @@
 
 				<p class="description-title">● 책 소개</p>
 
-				<div class="draft-book-description">
+				<div class="draft-book-description shadow">
 					<div class="description-content">
 						<p>
 							인터내셔널 부커상, 산클레멘테 문학상 수상작 <br> 전세계가 주목한 한강의 역작을 다시 만나다. <br>
@@ -94,13 +98,13 @@
 						<span class="request-info-title">상태</span>
 						<div class="request-status-container">
 							<!-- 새 컨테이너 추가 -->
-							<select class="request-status-select">
-								<option>신청중</option>
-								<option>신청완료</option>
-								<option>신청반려</option>
-								<option>신청대기</option>
-							</select> <input type="text" class="reject-reason-input"
-								placeholder="반려사유를 입력하세요.">
+							<select class="js-example-basic-single select" name="state">
+							<option value="normal">신청중</option>
+							<option value="kids">신청완료</option>
+							<option value="normal">신청반려</option>
+							<option value="kids">신청대기</option>
+							</select>
+							<textarea class="reject-reason-input" placeholder="반려사유를 입력하세요."></textarea>
 						</div>
 					</div>
 				</div>
@@ -133,6 +137,11 @@
                 document.getElementById("footer-container").innerHTML = data;
             })
             .catch(error => console.error('푸터 로드 중 오류 발생:', error));
+        
+		// select2
+		$(document).ready(function() {
+			$('.js-example-basic-single').select2();
+		});
     </script>
 
 </body>
