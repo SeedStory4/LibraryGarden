@@ -19,9 +19,9 @@
 				<p class="loan-info">김시연(017147)님의 현재 대출가능여부는 <span class="green bold">"이용가능"</span>입니다.</p>
 				<div class="list">
 					<ul class="tab flex gap-3">
-						<li class="on shadow"><a href="#">대출이력</a></li>
+						<li class="shadow"><a href="#">대출이력</a></li>
 						<li class="shadow"><a href="#">예약관리</a></li>
-						<li class="shadow"><a href="#">도서신청관리</a></li>
+						<li class="on shadow"><a href="#">도서신청관리</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -32,8 +32,6 @@
 								<col width="10%">
 								<col width="12%">
 								<col width="12%">
-								<col width="12%">
-								<col width="9%">
 								<col width="10%">
 							</colgroup>
 							<thead>
@@ -42,11 +40,9 @@
 									<th>제목</th>
 									<th>저자</th>
 									<th>출판사</th>
-									<th>대출일</th>
-									<th>반납예정일</th>
-									<th>반납일</th>
+									<th>신청일</th>
 									<th>상태</th>
-									<th>연장</th>
+									<th>취소</th>
 								</tr>
 							</thead>
 							<tbody>
@@ -56,10 +52,8 @@
 									<td>한강</td>
 									<td>창비</td>
 									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="blue">대출중</td>
-									<td><button class="btn btn-small btn-secondary1">연장</button></td>
+									<td class="orange">신청대기</td>
+									<td><button class="btn btn-small btn-red">취소</button></td>
 								</tr>
 								<tr>
 									<td>1</td>
@@ -67,9 +61,7 @@
 									<td>한강</td>
 									<td>창비</td>
 									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="green">반납완료</td>
+									<td class="blue">신청중</td>
 									<td></td>
 								</tr>
 								<tr>
@@ -78,9 +70,16 @@
 									<td>한강</td>
 									<td>창비</td>
 									<td>2025.03.14</td>
+									<td class="green">신청완료</td>
+									<td></td>
+								</tr>
+								<tr>
+									<td>1</td>
+									<td>채식주의자</td>
+									<td>한강</td>
+									<td>창비</td>
 									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="red">연체반납</td>
+									<td class="red pointer">신청반려</td>
 									<td></td>
 								</tr>
 							</tbody>

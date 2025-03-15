@@ -6,7 +6,8 @@
     --btn-primary: #2DA679;
     --btn-secondary1: #F29441;
     --btn-secondary2: #F2B138;
-    
+    --btn-red: #D94436;
+
     --color-primary: #673D31;
     --color-secondary: #1D6093;
     --color-white: #fff;
@@ -30,18 +31,27 @@ img { display: block; width: 100%; }
 ul, li { list-style: none; }
 
 .shadow { box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); }
+.pointer { cursor: pointer; }
 
+.relative { position: relative; }
+.absolute { position: absolute; }
 .flex { display: flex; }
 .justify-center { justify-content: center; }
 .justify-spacebtween { justify-content: space-between; }
 .gap-20 { gap: 20px; }
 .gap-3 { gap: 3px; }
 
+.border-top-2 { border-top: 2px solid var(--color-primary); }
+
+.w-100p { width: 100%; }
 .w-270 { width: 270px; }
 .w-290 { width: 290px; }
 .w-720 { width: 720px; }
 .m-0 { margin: 0; }
+.mb-5 { margin-bottom: 5px; }
+.mb-20 { margin-bottom: 20px; }
 .p-0 { padding: 0; }
+.pt-0 { padding-top: 0!important; }
 
 .blue { color: var(--color-blue); }
 .green { color: var(--color-green); }
@@ -57,21 +67,23 @@ ul, li { list-style: none; }
 .contents { padding: 20px 90px 0; }
 
 /* btn */
-.btn { border-radius: 20px; font-weight: bold; cursor: pointer; color: var(--color-white); letter-spacing: 0.15rem; }
+.btn { border-radius: 20px; font-weight: bold; cursor: pointer; color: var(--color-white); letter-spacing: 0.15rem; 
+    line-height: 42px; padding: 0 30px; font-size: 20px; height: 42px; }
 .btn-primary { background: var(--btn-primary); }
 .btn-secondary1 { background: var(--btn-secondary1); }
 .btn-secondary2 { background: var(--btn-secondary2); }
-.btn-small { line-height: 30px; padding: 0 20px; }
+.btn-red { background: var(--btn-red); }
+.btn-small { line-height: 30px; padding: 0 20px; font-size: 16px; height: 30px; }
+.section-title .btn { right: 90px ; top: 50%; transform: translateY(-50%); }
 
 /* contents */
 .user-number { padding: 0 5px 20px; }
-.list { padding: 20px 0; }
-.book-list { border-top: 2px solid var(--color-primary); padding: 20px 0; display: block; }
+.list, .book-list { padding: 20px 0; display: block; }
 .search { padding-bottom: 20px; }
 .loan-info { font-size: 28px; }
 
 /* table */
-table { border-collapse: collapse; text-align: center; border-bottom: 2px solid var(--color-primary); }
+table { width: 100%; border-collapse: collapse; text-align: center; border-bottom: 2px solid var(--color-primary); }
 table td, table th { border: 1px solid var(--color-primary); }
 table td:first-of-type, table th:first-of-type { border-left: none; }
 table td:last-of-type, table th:last-of-type { border-right: none; }
@@ -103,7 +115,8 @@ table td { padding: 5px; }
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: var(--color-secondary); }
 .select2-dropdown { border-color: var(--color-secondary); overflow: hidden; }
-.select2-results__option { padding: 3px; text-align: center; }
+.select2-results__option { padding: 3px; text-align: center; border-bottom: 1px solid var(--color-secondary); }
+.select2-results__option:last-of-type { border: none; }
 .select2-container--default .select2-results>.select2-results__options { color: var(--color-secondary); }
 .select2-container--default .select2-results__option--selected { background-color: var(--color-white); }
 
