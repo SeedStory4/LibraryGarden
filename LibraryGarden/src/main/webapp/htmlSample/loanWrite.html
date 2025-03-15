@@ -21,9 +21,9 @@
 						<span>회원번호</span>
 						<input type="text" class="w-290 shadow">
 					</label>
-					<button class="btn btn-primary btn-small">확인</button>
+					<button class="btn btn-primary btn-small number-check" onClick="numberCheck()" type="button">확인</button>
 				</div>
-				<div class="book-list border-top-2">
+				<div class="book-list border-top-2 none">
 					<p class="loan-info mb-20">김시연(017147)님의 현재 대출가능여부는 <span class="red bold">"이용불가(~2025.03.06)"</span>입니다.</p>
 					<div class="search flex gap-20">				
 						<label class="flex gap-20">
@@ -126,6 +126,11 @@
 		$(document).ready(function() {
 			$('.js-example-basic-single').select2();
 		});
+
+		// 회원번호 확인
+		function numberCheck () {
+			document.querySelector(".book-list").classList.remove("none");
+		}
     </script>	
 	
 </body>
