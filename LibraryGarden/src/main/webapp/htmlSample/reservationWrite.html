@@ -24,9 +24,9 @@
 						<span>회원번호</span>
 						<input type="text" class="w-290 shadow">
 					</label>
-					<button class="btn btn-primary btn-small">확인</button>
+					<button class="btn btn-primary btn-small number-check" onClick="numberCheck()" type="button">확인</button>
 				</div>
-				<div class="book-list border-top-2">
+				<div class="book-list border-top-2 none">
 					<div class="search flex gap-20 justify-center">
 						<select class="js-example-basic-single select shadow" name="state">
 							<option value="title">제목</option>
@@ -136,6 +136,12 @@
 		$(document).ready(function() {
 			$('.js-example-basic-single').select2();
 		});
+
+
+		// 회원번호 확인
+		function numberCheck () {
+			document.querySelector(".book-list").classList.remove("none");
+		}
     </script>	
 	
 </body>
