@@ -24,6 +24,10 @@
     margin-bottom: 30px;
 }
 
+.section-bordered {
+    border: 1px solid var(--color-primary); /* 테두리 색상 적용 */
+}
+
 .inner {
     display: flex;
     flex-direction: column;
@@ -117,6 +121,7 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    letter-spacing: 0.15rem;
 }
 
 .draft-btn-small {
@@ -126,17 +131,20 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    letter-spacing: 0.15rem;
 }
 
 .btn-green {
     background: #2DA679;
     width: 180px;
     height: 42px;
+    letter-spacing: 0.15rem;
 }
 
 .btn-green.small {
     width: 138px;
     height: 42px;
+    letter-spacing: 0.15rem;
 }
 
 /* 구분선 */
@@ -206,12 +214,14 @@
     background: #2DA679;
     width: 100px;
     height: 45px;
+    letter-spacing: 0.15rem;
 }
 
 .btn-list {
     background: #F29441;
     width: 100px;
     height: 45px;
+    letter-spacing: 0.15rem;
 }
 
 .btn-cancel {
@@ -267,6 +277,7 @@
     position: absolute; /* 오른쪽 상단 고정 */
     right: 0;
     top: 0;
+    letter-spacing: 0.15rem;
 }
 
 /* 신청 정보 */
@@ -337,6 +348,7 @@
 	height : 30px;
 	background: #1D6093;
 	right: 115px;
+	letter-spacing: 0.15rem;
 }
 
 /* 섹션 박스 넓이 */
@@ -415,12 +427,18 @@
     font-weight: normal;
 }
 
+.status-btn-wating{background: #F29441; right: 115px;}
+.status-btn-no{background: #D94436; right: 115px;}
+
+
+
 
 /* 관리자 도서관리 수정 스타일 시작 */
 /* 도서선택 버튼 위치 조정 */
 .select-book-btn {
     margin-right: 110px;
     margin-bottom: 15px;
+    letter-spacing: 0.15rem;
 }
 
 /* 청구기호 입력 칸 (수정 불가능한 부분 + 입력 필드) */
@@ -507,6 +525,7 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    letter-spacing: 0.15rem;
 }
 
 .divider-dashed {
