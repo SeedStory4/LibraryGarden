@@ -48,12 +48,8 @@
     border-radius: 10px;
     text-decoration: none; /* 링크 기본 밑줄 제거 */
     color: inherit; /* 링크 클릭 시 텍스트 색상 유지 */
-    transition: transform 0.2s ease-in-out;
 }
 
-.book-card:hover {
-    transform: scale(1.02); /* 마우스 호버 시 약간 확대 효과 */
-}
 
 .book-rank {
     font-size: 28px;
