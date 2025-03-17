@@ -25,7 +25,7 @@
 				<!-- 선 추가 -->
 
 				<!-- 도서 정보 -->
-				<div class="draft-content">
+				<div class="draft-content ml-28">
 					<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지"
 						class="draft-book-img">
 					<div class="draft-info">
@@ -56,11 +56,15 @@
 						</p>
 					</div>
 					<button class="request-status-btn">신청대기</button>
+					<!-- <button class="request-status-btn bg-blue">신청중</button> -->
+					<!-- <button class="request-status-btn bg-green">신청완료</button> -->
+					<!-- <button class="request-status-btn bg-red">신청반려</button> -->
+					
 				</div>
 
-				<p class="description-title">● 책 소개</p>
+				<p class="description-title ml-28">● 책 소개</p>
 
-				<div class="draft-book-description shadow">
+				<div class="draft-book-description shadow ml-28">
 					<div class="description-content">
 						<p>
 							인터내셔널 부커상, 산클레멘테 문학상 수상작 <br> 전세계가 주목한 한강의 역작을 다시 만나다. <br>
@@ -99,10 +103,10 @@
 						<div class="request-status-container">
 							<!-- 새 컨테이너 추가 -->
 							<select class="js-example-basic-single select" name="state">
-							<option value="normal">신청중</option>
-							<option value="kids">신청완료</option>
-							<option value="normal">신청반려</option>
-							<option value="kids">신청대기</option>
+							<option value="신청중">신청중</option>
+							<option value="신청완료">신청완료</option>
+							<option value="신청반려">신청반려</option>
+							<option value="신청대기">신청대기</option>
 							</select>
 							<textarea class="reject-reason-input" placeholder="반려사유를 입력하세요."></textarea>
 						</div>
@@ -112,7 +116,7 @@
 				<!-- 등록/취소 버튼 -->
 				<div class="draft-actions mg-top">
 					<button class="draft-btn-small btn-submit">저장</button>
-					<button class="draft-btn-small btn-cancel">취소</button>
+					<button class="draft-btn-small btn-list">목록</button>
 				</div>
 			</section>
 		</div>
@@ -141,6 +145,25 @@
 		// select2
 		$(document).ready(function() {
 			$('.js-example-basic-single').select2();
+		});
+		
+		document.addEventListener("DOMContentLoaded", function () {
+		    const selectBox = document.querySelector(".js-example-basic-single");
+		    const textArea = document.querySelector(".reject-reason-input");
+
+		    // select2 변경 감지 이벤트
+		    $('.js-example-basic-single').on("change", function () {
+		        let selectedValue = $(this).val();
+		        console.log("선택된 값:", selectedValue); // 값 확인 로그
+
+		        if (selectedValue === "신청반려") { 
+		            textArea.style.opacity = "1";
+		            textArea.style.pointerEvents = "auto"; // 클릭 가능
+		        } else {
+		            textArea.style.opacity = "0";
+		            textArea.style.pointerEvents = "none"; // 클릭 방지
+		        }
+		    });
 		});
     </script>
 
