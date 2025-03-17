@@ -199,7 +199,26 @@ margin-right: 107px;
     width: 100px;
     height: 45px;
 }
-
+.btn-cancel-100-30 {
+    background: #D94436;
+    width: 100px;
+    height: 35px;
+}
+.btn-cancel-140 {
+    background: #D94436;
+    width: 140px;
+    height: 45px;
+}
+.btn-cancel-160 {
+    background: #D94436;
+    width: 160px;
+    height: 45px;
+}
+.btn-cancel-600-65 {
+    background: #D94436;
+    width: 600px;
+    height: 65px;
+}
 /* 메인 콘텐츠 (섹션) */
 .section {
     width: 700px;
