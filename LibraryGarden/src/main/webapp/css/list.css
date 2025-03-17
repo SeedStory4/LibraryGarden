@@ -69,7 +69,7 @@ a { text-decoration: none; color: inherit; }
 .contents { padding: 20px 90px 0; }
 
 /* btn */
-.btn { border-radius: 20px; font-weight: bold; cursor: pointer; color: var(--color-white); letter-spacing: 0.15rem; 
+.btn { border-radius: 20px; font-weight: bold; cursor: pointer; color: var(--color-white); letter-spacing: .15rem; 
     line-height: 42px; padding: 0 30px; font-size: 20px; height: 42px; }
 .btn-primary { background: var(--btn-primary); }
 .btn-secondary1 { background: var(--btn-secondary1); }
@@ -102,7 +102,8 @@ table td { padding: 5px; }
 
 
 /* select */
-.select2-container { width: 100px!important; box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); border-radius: 5px; }
+.select.shadow ~ .select2-container { box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); }
+.select2-container { width: 100px!important; border-radius: 5px; }
 .select2-container--default .select2-selection--single .select2-selection__arrow b { margin-left: -8px; margin-top: -3px; 
     border-color: var(--color-secondary) transparent transparent transparent; border-width: 8px 5px 0 5px; }
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
@@ -111,13 +112,13 @@ table td { padding: 5px; }
     background: var(--bg-section); }
 .select2-container .select2-selection--single { height: 30px; }
 .select2-container--default .select2-selection--single .select2-selection__rendered { color: var(--color-secondary); 
-    line-height: 28px; text-align: center; }
+    line-height: 28px; text-align: center; letter-spacing: .15rem; }
 .select2-container--default .select2-selection--single .select2-selection__arrow  { height: 28px; }
 .select2-search--dropdown { display: none; }
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: var(--color-secondary); }
 .select2-dropdown { border-color: var(--color-secondary); overflow: hidden; }
-.select2-results__option { padding: 3px; text-align: center; border-bottom: 1px solid var(--color-secondary); }
+.select2-results__option { padding: 3px; text-align: center; border-bottom: 1px solid var(--color-secondary); letter-spacing: .15rem; }
 .select2-results__option:last-of-type { border: none; }
 .select2-container--default .select2-results>.select2-results__options { color: var(--color-secondary); }
 .select2-container--default .select2-results__option--selected { background-color: var(--color-white); }
