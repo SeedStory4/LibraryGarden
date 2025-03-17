@@ -31,9 +31,9 @@
 					</div>
 					<ul class="tab flex gap-3">
 						<li class="on shadow"><a href="#">전체</a></li>
-						<li class="shadow"><a href="#">대출중</a></li>
-						<li class="shadow"><a href="#">대출가능</a></li>
-						<li class="shadow"><a href="#">예약대기</a></li>
+						<li class="shadow"><a href="#">예약중</a></li>
+						<li class="shadow"><a href="#">수령완료</a></li>
+						<li class="shadow"><a href="#">예약취소</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -46,7 +46,7 @@
 								<col width="15%">
 								<col width="10%">
 								<col width="12%">
-								<col width="8%">
+								<col width="10%">
 							</colgroup>
 							<thead>
 								<tr>
@@ -71,7 +71,9 @@
 									<td>802.123 한 127 v1</td>
 									<td>노지혜<br>(030709)</td>
 									<td>2025.03.14</td>
-									<td class="blue">대출중</td>
+									<td class="blue">예약중
+										<button class="btn btn-small btn-red mt-5">취소</button>
+									</td>
 								</tr>
 								<tr>
 									<td>1</td>
@@ -82,7 +84,7 @@
 									<td>802.123 한 127 v1</td>
 									<td>노지혜<br>(030709)</td>
 									<td>2025.03.14</td>
-									<td class="green">대출가능</td>
+									<td class="green">수령완료</td>
 								</tr>
 								<tr>
 									<td>1</td>
@@ -93,7 +95,7 @@
 									<td>802.123 한 127 v1</td>
 									<td>노지혜<br>(030709)</td>
 									<td>2025.03.14</td>
-									<td class="orange">예약대기</td>
+									<td class="red">예약취소</td>
 								</tr>
 							</tbody>
 						</table>
