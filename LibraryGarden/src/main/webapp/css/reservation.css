@@ -40,6 +40,7 @@ button {
   letter-spacing: 0.15em; /* 현재 폰트 크기의 15% */
   padding: 0;
   margin: 0;
+  font-weight: bold;
 }
 
 #calendar {
@@ -128,7 +129,7 @@ button {
   width: 20px;
   height: 20px;
   border-color: #673d31;
-  margin-bottom: 34px;
+  margin-bottom: 20px;
 }
 
 /* FullCalendar 전체 스타일 수정 */
@@ -254,8 +255,18 @@ button {
 }
 /* 현재 달이 아닌 날짜 스타일 */
 .fc-day-other {
-  background-color: #f2f3f7 !important; /* 바탕색 */
-  color: #a8a8a8 !important; /* 글자색 */
+  opacity: 1 !important; /* 투명도 제거 */
+  background-color: #f2f3f7 !important; /* 배경색 유지 */
+}
+
+/* ✅ 다른 달의 날짜 숫자 강제 표시 */
+.fc-day-other .fc-daygrid-day-number {
+  opacity: 1 !important; /* 투명도 완전 제거 */
+  color: #666 !important; /* 글씨 색상 유지 */
+  font-weight: bold !important; /* 글씨 두껍게 */
+  display: block !important; /* 혹시 숨겨졌으면 강제로 보이게 */
+  visibility: visible !important; /* 숫자가 안 보이는 경우 강제로 보이게 설정 */
+  z-index: 10 !important; /* 다른 요소 뒤로 가지 않도록 설정 */
 }
 
 .fc .fc-toolbar-title {

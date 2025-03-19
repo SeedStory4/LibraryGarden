@@ -10,6 +10,23 @@ document.addEventListener("DOMContentLoaded", function () {
     .addEventListener("click", function () {
       modal.style.display = "flex";
     });
+  // 포커스 시 box-shadow 강제 적용 및 높이 고정
+  rejectionTextarea.addEventListener("focus", function () {
+    this.style.boxShadow = "2px 2px 4px rgba(0, 0, 0, 0.25)";
+    this.style.opacity = "0.5";
+    this.style.background = "#fff";
+    this.style.height = "462px"; // 높이 고정
+    this.style.marginBottom = "20px"; // 버튼 위치 유지
+  });
+
+  // 블러 시에도 동일한 스타일 유지
+  rejectionTextarea.addEventListener("blur", function () {
+    this.style.boxShadow = "2px 2px 4px rgba(0, 0, 0, 0.25)";
+    this.style.opacity = "0.5";
+    this.style.background = "#fff";
+    this.style.height = "462px"; // 높이 유지
+    this.style.marginBottom = "20px"; // 버튼 위치 유지
+  });
 
   // 모달 닫기 (취소 버튼)
   closeBtn.addEventListener("click", function () {
