@@ -60,6 +60,31 @@ document.addEventListener("DOMContentLoaded", function () {
       // 예약 버튼 활성화
       document.getElementById("reserveBtn").disabled = false;
     },
+    // 추가된 부분: 달을 변경한 후에도 선택한 날짜 유지
+    datesSet: function () {
+      if (selectedDate) {
+        let selectedDateEl = document.querySelector(
+          `[data-date="${selectedDate.replace(/\./g, "-")}"]`
+        );
+        if (selectedDateEl) {
+          selectedDateEl.classList.add("fc-day-selected");
+        }
+      }
+
+      // ✅ 다른 달의 날짜 숫자가 안 보이는 문제 해결 (강제 표시)
+      setTimeout(() => {
+        document
+          .querySelectorAll(".fc-day-other .fc-daygrid-day-number")
+          .forEach((el) => {
+            el.style.opacity = "1"; // ✅ 투명도 제거
+            el.style.color = "#666"; // ✅ 글씨 색상 유지
+            el.style.fontWeight = "bold"; // ✅ 글씨를 두껍게
+            el.style.display = "block"; // ✅ 혹시 숨겨졌으면 강제로 보이게
+            el.style.visibility = "visible"; // ✅ 숫자가 안 보이는 경우 강제로 보이게 설정
+            el.style.zIndex = "10"; // ✅ 다른 요소 뒤로 안 가게 설정
+          });
+      }, 200); // 🔹 FullCalendar가 스타일을 덮어씌우기 전에 적용
+    },
   });
 
   calendar.render();
