@@ -15,11 +15,13 @@ body {line-height: 1.5; min-height: 100vh; background: var(--bg-color); display:
 
 header {
     width: 100%;
+    min-width: 1200px; 
     height: 100px;
     display: flex;
     justify-content: center;
     align-items: center;
-	background: rgba(103, 61, 49, 0.13); 
+	background: rgba(103, 61, 49, 0.13);     
+	margin: 0 auto; 
 }
 
 .header-container {
@@ -38,7 +40,6 @@ header {
 .nav {
     display: flex;
     align-items: center;
-    margin-right: 60px;
 }
 
 .nav-menu, .nav-auth, .admin-nav-auth {
@@ -76,11 +77,16 @@ footer {
     align-items: center;
     color: #888888;
     position: relative;
-        width: 100%;
+	width: 100%;
+	max-width: 1905px; 
+    min-width: 1200px; 
+    margin : 0 auto;
 }
 
 .footer-divider {
     width: 100%;
+    min-width: 1200px; 
+    margin : 0 auto;
     height: 1px;
     background: #888888;
     position: absolute;

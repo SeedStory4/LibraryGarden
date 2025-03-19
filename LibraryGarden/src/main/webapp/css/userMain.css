@@ -6,8 +6,10 @@
 
 .main-image img {
     width: 100%;
+    min-width: 1200px; 
     height: 400px;
     object-fit: cover;
+    margin: 0 auto; /* 중앙 정렬 */
 }
 
 .custom-page .book-card {
@@ -98,6 +100,8 @@
 
 .divider {
     width: 100%;
+    min-width: 1200px; 
+    margin : 0 auto;
     height: 2px;
     border: none;
     border-top: 2px dashed #888888; /* 실선 → 점선으로 변경 */

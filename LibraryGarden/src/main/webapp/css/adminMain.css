@@ -17,7 +17,8 @@
 
 /* 메인 콘텐츠 (섹션) */
 .section {
-    width: 1200px;
+    max-width: 1200px;
+    min-width: 1200px;
     background: var(--bg-section);
     border-radius: 20px;
     padding: 40px 35px 35px;
@@ -34,6 +35,9 @@
     align-items: center; /* 가로 방향 중앙 정렬 */
     justify-content: flex-start; /* 위쪽 정렬 유지 */
     width: 100%;
+    max-width: 1200px; 
+    min-width: 1200px; 
+    margin : 0 auto;
     padding: 50px;
 }
 
