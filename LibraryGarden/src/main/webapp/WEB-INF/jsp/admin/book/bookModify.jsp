@@ -1,30 +1,39 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>도서상세</title>
-<link rel="stylesheet" href="../css/font.css">
-<link rel="stylesheet" href="../css/adminMain.css">
+<title>관리자 도서관리 수정</title>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/font.css">
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 </head>
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<div id="header-container"></div>
+	<%-- <jsp:include page="/WEB-INF/jsp/user/header.jsp" /> --%>
 
 	<div class="wrapper">
 		<div class="inner">
 			<!-- 메인 콘텐츠 -->
 			<section class="section">
 				<div class="draft-header">
-					<div class="section-title draft-title">도서상세</div>
+					<div class="section-title draft-title">도서관리 수정</div>
+					<button class="btn-green small select-book-btn draft-btn">도서선택</button>
 				</div>
 				<hr class="draft-divider">
 				<!-- 선 추가 -->
 
 				<!-- 도서 정보 -->
 				<div class="draft-content">
-					<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지"
-						class="draft-book-img">
+					<img
+						src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg"
+						alt="도서 이미지" class="draft-book-img">
 					<div class="draft-info">
 						<p>
 							<span class="info-title">● 제목</span> <span class="info-content">채식주의자</span>
@@ -52,11 +61,8 @@
 							<span class="info-title">● 서적정보</span> <span class="info-content">145×210mm/300g</span>
 						</p>
 					</div>
-					 <button class="request-status-btn status-btn-ing">대출중(~2024.05.31)</button> 
-					<!-- <button class="request-status-btn status-btn-ok">대출가능</button> -->
-					<!-- <button class="request-status-btn status-btn-wating">예약대기</button> -->
-					<!-- <button class="request-status-btn status-btn-no">대출불가</button> -->
 				</div>
+
 				<p class="description-title">● 책 소개</p>
 
 				<div class="draft-book-description shadow ml-28">
@@ -78,31 +84,48 @@
 				<p class="description-title">● 소장정보</p>
 
 				<table class="info-table">
+					<colgroup>
+						<col width="15%">
+						<col width="25%">
+						<col width="25%">
+						<col width="35%">
+					</colgroup>
 					<thead>
 						<tr>
 							<th>구분</th>
 							<th>청구기호</th>
 							<th>자료실</th>
-							<th>반납예정일</th>
-							<th>상태</th>
+							<th>분류</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr>
 							<td>DM000012</td>
-							<td>802.123 한 127 v1</td>
-							<td>일반열람실</td>
-							<td>2025.03.14</td>
-							<td class="status-text">대출중</td>
-							<!-- <td class="status-text-ok">대출가능</td> -->
-							<!-- <td class="status-text text-orange">예약대기</td> -->
-							<!-- <td class="status-text text-red">대출불가</td> -->
+							<td class="call-number-container"><span
+								class="fixed-call-number">802.</span> <input type="text"
+								class="input-call-number" value="123"></td>
+							<td>
+							<select class="js-example-basic-single select" name="state" data-width="wide">
+									<option value="normal">일반열람실</option>
+									<option value="kids">어린이열람실</option>
+							</select>
+							</td>
+							<td><select class="js-example-basic-single select"
+								name="state">
+									<option value="normal">문학</option>
+									<option value="kids">역사</option>
+							</select> <span class="category-separator">&gt;</span> <select
+								class="js-example-basic-single select" name="state">
+									<option value="normal">한국문학</option>
+									<option value="kids">중국문학</option>
+									<option value="kids">일본문학</option>
+							</select></td>
 						</tr>
 					</tbody>
 				</table>
 
 				<div class="draft-actions mg-top">
-					<button class="draft-btn-small btn-submit">예약</button>
+					<button class="draft-btn-small btn-submit">수정</button>
 					<button class="draft-btn-small btn-list">목록</button>
 				</div>
 			</section>
@@ -110,25 +133,19 @@
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
-	<div id="footer-container"></div>
+	<%-- <jsp:include page="/common/footer.jsp" /> --%>
 
+	<script>        
+		// select2
+		$(document).ready(function() {
+		    $('.js-example-basic-single').select2().each(function() {
+		        if ($(this).attr('data-width') === 'wide') {
+		            $(this).next('.select2-container').addClass('select-wide');
+		        }
+		    });
+		});
+    </script>	
 
-	<script>
-        // JavaScript로 header.html을 불러와 삽입
-        fetch("../htmlSample/userHeader.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-container").innerHTML = data;
-            })
-            .catch(error => console.error('헤더 로드 중 오류 발생:', error));
-        
-        fetch("../htmlSample/footer.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-container").innerHTML = data;
-            })
-            .catch(error => console.error('푸터 로드 중 오류 발생:', error));
-    </script>
 
 </body>
 </html>

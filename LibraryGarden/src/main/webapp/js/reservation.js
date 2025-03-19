@@ -16,7 +16,7 @@ document.addEventListener("DOMContentLoaded", function () {
     initialView: "dayGridMonth",
     locale: "ko",
     selectable: true,
-    showNonCurrentDates: false, // 🔹 해당 월에 포함되지 않는 날짜 숨김
+    showNonCurrentDates: true, // 🔹 해당 월에 포함되지 않는 날짜 숨김
     fixedWeekCount: false, // 🔹 달의 실제 주 수만 표시 (6주 강제 X)
     headerToolbar: {
       left: "prev", // "<" 버튼 (왼쪽)

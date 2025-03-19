@@ -121,7 +121,50 @@ button {
   margin-right: auto;
 }
 
-.agreeCheck {
+/*이용동의 박스*/
+.terms-box{
+    background-color:  rgba(249, 249, 249, 0.5);
+    width: 430px;
+    height: 150px;
+    border: 1px solid #673D31; 
+    padding: 11px; 
+    padding-left: 13px;
+    padding-right: 13px; 
+    overflow-y: auto; 
+    color:#767678 ;
+}
+.check  {
+margin-right: 10px;
+    
+}
+/*이용동의 checkbox*/
+.terms-checkbox {
+    display: none;
+ }
+  
+/* 체크박스 스타일 */
+.custom-checkbox {
+display: flex;
+align-items: center;
+cursor: pointer;
+font-size: 20px;
+color : #673D31;
+justify-content: center;
+}
+
+/* 체크박스 디자인 */
+.checkmark {
+width: 15px;
+height: 15px;
+border: 1px solid #673D31;
+margin-right: 8px;
+}
+
+/* 체크되었을 때 스타일 */
+.terms-checkbox:checked + .checkmark {
+background-color: #673D31;
+}
+/* .agreeCheck {
   font-size: 20px;
   color: #673d31;
 }
@@ -130,7 +173,7 @@ button {
   height: 20px;
   border-color: #673d31;
   margin-bottom: 20px;
-}
+} */
 
 /* FullCalendar 전체 스타일 수정 */
 .fc {
@@ -259,7 +302,7 @@ button {
   background-color: #f2f3f7 !important; /* 배경색 유지 */
 }
 
-/* ✅ 다른 달의 날짜 숫자 강제 표시 */
+/* 다른 달의 날짜 숫자 강제 표시 */
 .fc-day-other .fc-daygrid-day-number {
   opacity: 1 !important; /* 투명도 완전 제거 */
   color: #666 !important; /* 글씨 색상 유지 */
