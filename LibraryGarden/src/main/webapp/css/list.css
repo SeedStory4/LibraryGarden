@@ -141,3 +141,6 @@ table td { padding: 5px; }
 .modal .book-list { padding: 25px 50px; }
 .modal .table { overflow: auto; height: 510px; }
 .modal table th { font-size: 18px; }
+.modal button { width: auto; }
+.rejection-detail { width: 600px; height: 462px; margin: 30px auto 40px; padding: 10px; border-radius: 20px; background: var(--bg-section);
+	text-align: left; }
