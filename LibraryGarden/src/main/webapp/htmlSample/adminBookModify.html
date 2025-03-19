@@ -4,9 +4,14 @@
 <meta charset="UTF-8">
 <title>관리자 도서관리 수정</title>
 <link rel="stylesheet" href="../css/font.css">
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link
+	href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+	rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link rel="stylesheet" href="../css/adminMain.css">
 </head>
 <body>
@@ -27,8 +32,9 @@
 
 				<!-- 도서 정보 -->
 				<div class="draft-content">
-					<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지"
-						class="draft-book-img">
+					<img
+						src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg"
+						alt="도서 이미지" class="draft-book-img">
 					<div class="draft-info">
 						<p>
 							<span class="info-title">● 제목</span> <span class="info-content">채식주의자</span>
@@ -79,6 +85,12 @@
 				<p class="description-title">● 소장정보</p>
 
 				<table class="info-table">
+					<colgroup>
+						<col width="15%">
+						<col width="25%">
+						<col width="25%">
+						<col width="35%">
+					</colgroup>
 					<thead>
 						<tr>
 							<th>구분</th>
@@ -90,28 +102,25 @@
 					<tbody>
 						<tr>
 							<td>DM000012</td>
-							<td class="call-number-container">
-							<span class="fixed-call-number">802.</span> 
-							<input type="text" class="input-call-number" value="123">
-							</td>
+							<td class="call-number-container"><span
+								class="fixed-call-number">802.</span> <input type="text"
+								class="input-call-number" value="123"></td>
 							<td>
-						<select class="js-example-basic-single select" name="state">
-							<option value="normal">일반열람실</option>
-							<option value="kids">어린이열람실</option>
-						</select>
+							<select class="js-example-basic-single select" name="state" data-width="wide">
+									<option value="normal">일반열람실</option>
+									<option value="kids">어린이열람실</option>
+							</select>
 							</td>
-							<td>
-						<select class="js-example-basic-single select" name="state">
-							<option value="normal">문학</option>
-							<option value="kids">역사</option>
-						</select> 
-							<span class="category-separator">&gt;</span>
-						<select class="js-example-basic-single select" name="state">
-							<option value="normal">한국문학</option>
-							<option value="kids">중국문학</option>
-							<option value="kids">일본문학</option>
-						</select>
-							</td>
+							<td><select class="js-example-basic-single select"
+								name="state">
+									<option value="normal">문학</option>
+									<option value="kids">역사</option>
+							</select> <span class="category-separator">&gt;</span> <select
+								class="js-example-basic-single select" name="state">
+									<option value="normal">한국문학</option>
+									<option value="kids">중국문학</option>
+									<option value="kids">일본문학</option>
+							</select></td>
 						</tr>
 					</tbody>
 				</table>
@@ -146,7 +155,11 @@
         
 		// select2
 		$(document).ready(function() {
-			$('.js-example-basic-single').select2();
+		    $('.js-example-basic-single').select2().each(function() {
+		        if ($(this).attr('data-width') === 'wide') {
+		            $(this).next('.select2-container').addClass('select-wide');
+		        }
+		    });
 		});
     </script>
 

@@ -144,7 +144,7 @@ margin-right: 107px;
     color: #FFFFFF;
     border: none;
     border-radius: 20px;
-    letter-spacing:  calc(20px * 0.15);
+    letter-spacing: .15rem;
     cursor: pointer;
 }
 
@@ -154,22 +154,21 @@ margin-right: 107px;
     color: #FFFFFF;
     border: none;
     border-radius: 20px;
-    letter-spacing: calc(18px * 0.15);
+    letter-spacing: .15rem;
     cursor: pointer;
 }
-.draft-btn-small-n {
-    font-weight: normal;
-}
+
 
 .draft-btn-small-16 {
     font-size: 16px;
-    font-weight: normal;
+    font-weight: bold;
     color: #FFFFFF;
     border: none;
     border-radius: 20px;
-    letter-spacing: calc(16px * 0.15);
+    letter-spacing: .15rem;
     cursor: pointer;
 }
+
 
 
 .btn-submit {
@@ -222,7 +221,26 @@ margin-right: 107px;
     width: 100px;
     height: 45px;
 }
-
+.btn-cancel-100-30 {
+    background: #D94436;
+    width: 100px;
+    height: 35px;
+}
+.btn-cancel-140 {
+    background: #D94436;
+    width: 140px;
+    height: 45px;
+}
+.btn-cancel-160 {
+    background: #D94436;
+    width: 160px;
+    height: 45px;
+}
+.btn-cancel-600-65 {
+    background: #D94436;
+    width: 600px;
+    height: 65px;
+}
 /* 메인 콘텐츠 (섹션) */
 .section {
     width: 700px;
@@ -292,6 +310,10 @@ margin-right: 107px;
     padding-right: 13px; 
     overflow-y: auto; 
     color:#767678 ;
+}
+.check  {
+margin-right: 10px;
+    
 }
 /*이용동의 checkbox*/
 .terms-checkbox {

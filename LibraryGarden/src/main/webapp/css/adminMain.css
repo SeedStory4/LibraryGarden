@@ -17,11 +17,16 @@
 
 /* 메인 콘텐츠 (섹션) */
 .section {
-    width: 1200px;
+    max-width: 1200px;
+    min-width: 1200px;
     background: var(--bg-section);
     border-radius: 20px;
     padding: 40px 35px 35px;
     margin-bottom: 30px;
+}
+
+.section-bordered {
+    border: 1px solid var(--color-primary); /* 테두리 색상 적용 */
 }
 
 .inner {
@@ -30,6 +35,9 @@
     align-items: center; /* 가로 방향 중앙 정렬 */
     justify-content: flex-start; /* 위쪽 정렬 유지 */
     width: 100%;
+    max-width: 1200px; 
+    min-width: 1200px; 
+    margin : 0 auto;
     padding: 50px;
 }
 
@@ -117,6 +125,7 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    letter-spacing: 0.15rem;
 }
 
 .draft-btn-small {
@@ -126,17 +135,20 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    letter-spacing: 0.15rem;
 }
 
 .btn-green {
     background: #2DA679;
     width: 180px;
     height: 42px;
+    letter-spacing: 0.15rem;
 }
 
 .btn-green.small {
     width: 138px;
     height: 42px;
+    letter-spacing: 0.15rem;
 }
 
 /* 구분선 */
@@ -152,7 +164,7 @@
     display: flex;
     align-items: center;
     gap: 30px;
-    margin-left: 60px;
+    margin-left: 75px;
     position: relative; /* 신청대기 버튼 절대 위치 배치*/
 }
 
@@ -206,12 +218,14 @@
     background: #2DA679;
     width: 100px;
     height: 45px;
+    letter-spacing: 0.15rem;
 }
 
 .btn-list {
     background: #F29441;
     width: 100px;
     height: 45px;
+    letter-spacing: 0.15rem;
 }
 
 .btn-cancel {
@@ -228,9 +242,10 @@
     padding: 25px;
     display: flex;
     flex-direction: column;
-	margin: 20px 0px 0px 60px;
-	
+	margin: 20px 0px 0px 75px;
 }
+
+.ml-28 { margin-left : 28px !important; }
 
 /* 책 소개 제목 */
 .description-title {
@@ -239,7 +254,7 @@
     font-weight: bold;
     display: flex;
     align-items: center;
-	margin: 20px 0px 20px 60px;
+	margin: 20px 0px 20px 75px;
 
 }
 
@@ -265,16 +280,21 @@
     align-items: center;
     justify-content: center;
     position: absolute; /* 오른쪽 상단 고정 */
-    right: 0;
+    right: 28px;
     top: 0;
+    letter-spacing: 0.15rem;
 }
+
+.bg-blue { background: #1D6093; }
+.bg-green { background: #2DA679; }
+.bg-red { background: #D94436; }
 
 /* 신청 정보 */
 .request-info {
     display: flex;
     align-items: center;
     gap: 120px; /* 신청자, 신청일, 상태 간격 */
-    margin-left: 60px;
+    margin-left: 28px;
     margin-top: 17px;
 }
 
@@ -323,6 +343,9 @@
     padding: 10px;
     resize: none; /* 사용자가 크기 조절 못 하도록 */
 	background: var(--bg-section);
+	opacity: 0; 
+    transition: opacity 0.3s ease-in-out;
+    pointer-events: none; /* 클릭 방지 */
 }
 
 .reject-reason-input:focus {
@@ -333,10 +356,11 @@
 /* 도서 상세 스타일 시작 */
 /* 도서 상태 버튼 스타일 */
 .status-btn-ing {
-	width : 195px;
+	width : 210px;
 	height : 30px;
 	background: #1D6093;
-	right: 115px;
+	right: 85px;
+	letter-spacing: 0.15rem;
 }
 
 /* 섹션 박스 넓이 */
@@ -350,13 +374,36 @@
     height: 1px;
     border: none;
     border-top: 1px dashed var(--color-primary); 
-    margin: 20px 0px 0px 35px;
+    margin: 20px 0px 0px 56px;
+}
+
+.select {
+    width: 100%;  /* 부모 요소 크기만큼 확장 */
+    min-width: 150px; /* 너무 작아지는 것 방지 */
+    max-width: 100%;  /* 부모 요소 초과 방지 */
+}
+
+
+/* select-wide가 적용된 select2만 스타일 적용 */
+.select2-container.select-wide {
+    width: auto !important;  /* 부모 크기에 따라 유동적으로 조정 */
+    min-width: 130px;  /* 최소 크기 설정 */
+    max-width: 200px;  /* 최대 크기 설정 */
+}
+
+/* select-wide가 적용된 select2 수정 */
+.select2-container.select-wide .select2-selection--single .select2-selection__rendered {
+    text-overflow: clip !important;  /* ... 제거 */
+    overflow: visible !important;  /* 내용이 잘리지 않도록 */
+    display: flex !important;
+    justify-content: center; /* 텍스트 가운데 정렬 */
+    align-items: center;
 }
 
 /* 소장정보 테이블 스타일 */
 .info-table {
-    width: 965px;
-    margin: 10px 60px;
+    width: 970px;
+    margin: 10px 75px;
     border-collapse: collapse;
     border-top: 2px solid var(--color-primary); /* 위쪽 선 */
     border-bottom: 2px solid var(--color-primary); /* 아래쪽 선 */
@@ -388,6 +435,9 @@
     font-weight: normal;
 }
 
+.text-red { color: #D94436 !important;}
+.text-orange { color: #F29441 !important;}
+
 /* 첫 번째 열과 마지막 열의 왼쪽/오른쪽 테두리 제거 */
 .info-table th:first-child,
 .info-table td:first-child {
@@ -406,7 +456,7 @@
 	width: 100px;
 	height: 30px;
 	background: #2DA679;
-    right: 115px;
+    right: 85px;
 }
 
 /* 대출가능 */
@@ -415,12 +465,18 @@
     font-weight: normal;
 }
 
+.status-btn-wating{background: #F29441; right: 85px;}
+.status-btn-no{background: #D94436; right: 85px;}
+
+
+
 
 /* 관리자 도서관리 수정 스타일 시작 */
 /* 도서선택 버튼 위치 조정 */
 .select-book-btn {
-    margin-right: 110px;
+    margin-right: 85px;
     margin-bottom: 15px;
+    letter-spacing: 0.15rem;
 }
 
 /* 청구기호 입력 칸 (수정 불가능한 부분 + 입력 필드) */
@@ -493,7 +549,8 @@
     height: 2px;
     background: var(--color-primary);
     border: none;
-    margin: 20px 0;
+    margin: 20px 75px;
+    width: 970px;
 }
 
 /* 삭제 버튼 스타일 */
@@ -507,6 +564,7 @@
     border: none;
     border-radius: 20px;
     cursor: pointer;
+    letter-spacing: 0.15rem;
 }
 
 .divider-dashed {
@@ -517,6 +575,10 @@
 }
 
 
+.table-narrow {
+    width: 970px;
+    margin: 10px 75px;
+}
 
 
 
@@ -560,7 +622,8 @@ table td { padding: 5px; }
 
 
 /* select */
-.select2-container { width: 100px!important; box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); border-radius: 5px; }
+.select.shadow ~ .select2-container { box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); }
+.select2-container { width: 100px!important; border-radius: 5px; }
 .select2-container--default .select2-selection--single .select2-selection__arrow b { margin-left: -8px; margin-top: -3px; 
     border-color: var(--color-secondary) transparent transparent transparent; border-width: 8px 5px 0 5px; }
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
@@ -569,13 +632,14 @@ table td { padding: 5px; }
     background: var(--bg-section); }
 .select2-container .select2-selection--single { height: 30px; }
 .select2-container--default .select2-selection--single .select2-selection__rendered { color: var(--color-secondary); 
-    line-height: 28px; text-align: center; }
+    line-height: 28px; text-align: center; letter-spacing: .15rem; }
 .select2-container--default .select2-selection--single .select2-selection__arrow  { height: 28px; }
 .select2-search--dropdown { display: none; }
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: var(--color-secondary); }
 .select2-dropdown { border-color: var(--color-secondary); overflow: hidden; }
-.select2-results__option { padding: 3px; text-align: center; }
+.select2-results__option { padding: 3px; text-align: center; border-bottom: 1px solid var(--color-secondary); letter-spacing: .15rem; }
+.select2-results__option:last-of-type { border: none; }
 .select2-container--default .select2-results>.select2-results__options { color: var(--color-secondary); }
 .select2-container--default .select2-results__option--selected { background-color: var(--color-white); }
 

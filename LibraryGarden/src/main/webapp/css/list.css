@@ -48,8 +48,11 @@ a { text-decoration: none; color: inherit; }
 .w-100p { width: 100%; }
 .w-270 { width: 270px; }
 .w-290 { width: 290px; }
+.w-520 { width: 520px; }
 .w-720 { width: 720px; }
+.w-1000 { width: 1000px; }
 .m-0 { margin: 0; }
+.mt-5 { margin-top: 5px; }
 .mb-5 { margin-bottom: 5px; }
 .mb-20 { margin-bottom: 20px; }
 .p-0 { padding: 0; }
@@ -68,8 +71,9 @@ a { text-decoration: none; color: inherit; }
     border-bottom: 1px solid var(--color-black); }
 .contents { padding: 20px 90px 0; }
 
+
 /* btn */
-.btn { border-radius: 20px; font-weight: bold; cursor: pointer; color: var(--color-white); letter-spacing: 0.15rem; 
+.btn { border-radius: 20px; font-weight: bold; cursor: pointer; color: var(--color-white); letter-spacing: .15rem; 
     line-height: 42px; padding: 0 30px; font-size: 20px; height: 42px; }
 .btn-primary { background: var(--btn-primary); }
 .btn-secondary1 { background: var(--btn-secondary1); }
@@ -78,11 +82,13 @@ a { text-decoration: none; color: inherit; }
 .btn-small { line-height: 30px; padding: 0 20px; font-size: 16px; height: 30px; }
 .section-title .btn { right: 90px ; top: 50%; transform: translateY(-50%); }
 
+
 /* contents */
 .user-number { padding: 0 5px 20px; }
 .list, .book-list { padding: 20px 0; display: block; }
 .search { padding-bottom: 20px; }
 .loan-info { font-size: 28px; }
+
 
 /* table */
 table { width: 100%; border-collapse: collapse; text-align: center; border-bottom: 2px solid var(--color-primary); }
@@ -94,6 +100,7 @@ table th { border-top-width: 2px; border-bottom-width: 2px; padding: 10px; color
 table td { padding: 5px; }
 .list td { padding: 10px; }
 
+
 /* paging */
 .paging { color: var(--color-primary); margin: 10px auto 0; }
 .paging li { width: 38px; line-height: 38px; text-align: center; }
@@ -102,7 +109,8 @@ table td { padding: 5px; }
 
 
 /* select */
-.select2-container { width: 100px!important; box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); border-radius: 5px; }
+.select.shadow ~ .select2-container { box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); }
+.select2-container { width: 100px!important; border-radius: 5px; }
 .select2-container--default .select2-selection--single .select2-selection__arrow b { margin-left: -8px; margin-top: -3px; 
     border-color: var(--color-secondary) transparent transparent transparent; border-width: 8px 5px 0 5px; }
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {
@@ -111,13 +119,13 @@ table td { padding: 5px; }
     background: var(--bg-section); }
 .select2-container .select2-selection--single { height: 30px; }
 .select2-container--default .select2-selection--single .select2-selection__rendered { color: var(--color-secondary); 
-    line-height: 28px; text-align: center; }
+    line-height: 28px; text-align: center; letter-spacing: .15rem; }
 .select2-container--default .select2-selection--single .select2-selection__arrow  { height: 28px; }
 .select2-search--dropdown { display: none; }
 .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {
     background-color: var(--color-secondary); }
 .select2-dropdown { border-color: var(--color-secondary); overflow: hidden; }
-.select2-results__option { padding: 3px; text-align: center; border-bottom: 1px solid var(--color-secondary); }
+.select2-results__option { padding: 3px; text-align: center; border-bottom: 1px solid var(--color-secondary); letter-spacing: .15rem; }
 .select2-results__option:last-of-type { border: none; }
 .select2-container--default .select2-results>.select2-results__options { color: var(--color-secondary); }
 .select2-container--default .select2-results__option--selected { background-color: var(--color-white); }
@@ -127,3 +135,9 @@ table td { padding: 5px; }
 .tab li { color: var(--color-secondary); background: var(--bg-section); border-top-left-radius: 5px; border-top-right-radius: 5px; }
 .tab li a { display: block; padding: 5px 15px; }
 .tab .on { background: var(--color-yellow); }
+
+
+/* modal */
+.modal .book-list { padding: 25px 50px; }
+.modal .table { overflow: auto; height: 510px; }
+.modal table th { font-size: 18px; }

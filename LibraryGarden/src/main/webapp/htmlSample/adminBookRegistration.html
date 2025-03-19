@@ -57,11 +57,17 @@
 					</div>
 				</div>
 
-				<hr class="divider-dashed">
+				<hr class="divider">
 
 				<p class="description-title">● 소장정보</p>
 
 				<table class="info-table">
+					<colgroup>
+						<col width="15%">
+						<col width="25%">
+						<col width="25%">
+						<col width="35%">
+					</colgroup>
 					<thead>
 						<tr>
 							<th>구분</th>
@@ -78,7 +84,7 @@
 							<input type="text" class="input-call-number" value="123">
 							</td>
 							<td>
-						<select class="js-example-basic-single select" name="state">
+						<select class="js-example-basic-single select" name="state" data-width="wide">
 							<option value="normal">일반열람실</option>
 							<option value="kids">어린이열람실</option>
 						</select>
@@ -104,7 +110,7 @@
 				</div>
 
 				<hr class="custom-divider">
-				<div class="table">
+				<div class="table table-narrow">
 					<table>
 						<colgroup>
 							<col width="6%">
@@ -197,7 +203,11 @@
         
 		// select2
 		$(document).ready(function() {
-			$('.js-example-basic-single').select2();
+		    $('.js-example-basic-single').select2().each(function() {
+		        if ($(this).attr('data-width') === 'wide') {
+		            $(this).next('.select2-container').addClass('select-wide');
+		        }
+		    });
 		});
     </script>
 
