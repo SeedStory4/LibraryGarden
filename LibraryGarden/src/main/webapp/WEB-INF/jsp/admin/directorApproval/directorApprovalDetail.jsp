@@ -1,15 +1,17 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
-<title>사서 기안 상세</title>
-<link rel="stylesheet" href="../css/font.css">
-<link rel="stylesheet" href="../css/adminMain.css">
+<title>도서관장 기안 상세</title>
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/font.css">
+<link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 </head>
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<div id="header-container"></div>
+	<%-- <jsp:include page="/WEB-INF/jsp/user/header.jsp" /> --%>
 
 	<div class="wrapper">
 		<div class="inner">
@@ -76,36 +78,19 @@
 					</div>
 				</div>
 
-				<!-- 등록/취소 버튼 -->
-				<div class="draft-actions">
+				<!-- 버튼 -->
+				<div class="draft-actions mg-top">
 					<button class="draft-btn-small btn-submit">수정</button>
 					<button class="draft-btn-small btn-cancel">삭제</button>
 					<button class="draft-btn-small btn-list">목록</button>
+					<button class="draft-btn-small btn-submit">승인</button>
+					<button class="draft-btn-small btn-cancel">반려</button>
 				</div>
 			</section>
 		</div>
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
-	<div id="footer-container"></div>
-
-
-	<script>
-        // JavaScript로 header.html을 불러와 삽입
-        fetch("../htmlSample/adminHeader.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("header-container").innerHTML = data;
-            })
-            .catch(error => console.error('헤더 로드 중 오류 발생:', error));
-        
-        fetch("../htmlSample/footer.html")
-            .then(response => response.text())
-            .then(data => {
-                document.getElementById("footer-container").innerHTML = data;
-            })
-            .catch(error => console.error('푸터 로드 중 오류 발생:', error));
-    </script>
-
+	<%-- <jsp:include page="/common/footer.jsp" /> --%>
 </body>
 </html>
