@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/admin/adminHeader" /> --%>
+	<jsp:include page="/admin/adminHeader.do" />
 
 	<div class="wrapper">
 		<div class="inner">

@@ -5,7 +5,6 @@
 <head>
 <meta charset="UTF-8">
 <title>희망도서 상세</title>
-<link rel="stylesheet" href="<%= request.getContextPath() %>/css/font.css">
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"
 	integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo="
@@ -16,7 +15,7 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/admin/adminHeader" /> --%>
+	<jsp:include page="/admin/adminHeader.do" />
 
 	<div class="wrapper">
 		<div class="inner">

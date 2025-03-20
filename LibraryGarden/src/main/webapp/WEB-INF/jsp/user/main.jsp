@@ -5,13 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>사용자 메인</title>
-<link rel="stylesheet" href="<%= request.getContextPath() %>/css/font.css">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/userMain.css">
 </head>
 <body class="custom-page">
 
     <!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/user/userHeader" /> --%>
+	<jsp:include page="/user/userHeader.do" />
 
 	<div class="main-image">
 		<img src="<%= request.getContextPath() %>/images/image48.png" alt="메인 이미지">
