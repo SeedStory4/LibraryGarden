@@ -113,3 +113,7 @@ button {
   background: #d94436;
   color: white;
 }
+
+#rejectionModal {
+	z-index:1;
+}

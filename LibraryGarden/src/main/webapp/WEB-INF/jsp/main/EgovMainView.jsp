@@ -63,7 +63,7 @@
       <tr>
         <td>도서예약팝업</td>
         <td>김이슬</td>
-        <td><a href="">popBookReservationWrite</a></td>
+        <td><a href="<c:url value='/user/book/popBookReservationWrite'/>">popBookReservationWrite</a></td>
         <td>Book2Controller</td>
       </tr>
   
