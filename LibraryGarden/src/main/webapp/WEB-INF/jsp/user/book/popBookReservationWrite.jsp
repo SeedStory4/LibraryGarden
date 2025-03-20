@@ -8,7 +8,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Reservation PopUp</title>
-    <link rel="stylesheet" href="../css/font.css">
 
     <link
       rel="stylesheet"
@@ -17,9 +16,11 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/main.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/locales/ko.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
-    <link rel="stylesheet" href="../css/reservation.css" />
+    <link rel="stylesheet" href="<%= request.getContextPath() %>/css/reservation.css">
   </head>
   <body>
+  <!-- 헤더가 로드될 부분 -->
+	<jsp:include page="/user/userHeader.do" />
     <!-- 예약 버튼 -->
     <button id="openModal">도서 예약</button>
 
@@ -69,6 +70,8 @@
       </div>
     </div>
 
-    <script src="../js/reservation.js"></script>
+    <script src="<%= request.getContextPath() %>/js/reservation.js"></script>
+    <!-- 푸터 로드할 부분 -->
+	<jsp:include page="/common/footer.jsp" /> 
   </body>
 </html>
