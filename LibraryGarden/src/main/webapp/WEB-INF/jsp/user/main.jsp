@@ -11,7 +11,7 @@
 <body class="custom-page">
 
     <!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/WEB-INF/jsp/user/header.jsp" /> --%>
+	<%-- <jsp:include page="/user/userHeader" /> --%>
 
 	<div class="main-image">
 		<img src="<%= request.getContextPath() %>/images/image48.png" alt="메인 이미지">
@@ -404,6 +404,6 @@
 		</div>
 		
     <!-- 푸터 로드할 부분 -->
-	<%-- <jsp:include page="/WEB-INF/jsp/user/footer.jsp" /> --%>
+	<jsp:include page="/common/footer.jsp" />
 </body>
 </html>

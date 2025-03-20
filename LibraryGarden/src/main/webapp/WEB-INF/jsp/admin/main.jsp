@@ -10,7 +10,7 @@
 </head>
 <body>
 	<!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/WEB-INF/jsp/user/header.jsp" /> --%>
+	<%-- <jsp:include page="/admin/adminHeader" /> --%>
 
 	<div class="wrapper">
 		<div class="inner">
@@ -160,6 +160,6 @@
 
 
 	<!-- 푸터 로드할 부분 -->
-	<%-- <jsp:include page="/common/footer.jsp" /> --%>
+	<jsp:include page="/common/footer.jsp" />
 </body>
 </html>
