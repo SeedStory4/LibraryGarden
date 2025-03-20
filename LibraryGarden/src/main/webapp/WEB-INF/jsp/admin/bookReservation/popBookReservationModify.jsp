@@ -1,13 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reservation PopUp</title>
+    <title>ReservationModify PopUp</title>
 
     <link
       rel="stylesheet"
@@ -22,23 +20,23 @@
   <!-- 헤더가 로드될 부분 -->
 	<jsp:include page="/user/userHeader.do" />
     <!-- 예약 버튼 -->
-    <button id="openModal">도서 예약</button>
+    <button id="openModal">도서예약 수정</button>
 
     <!-- 도서 예약 모달 -->
     <div id="modal" class="modal">
       <div class="modal-content">
         <div class="title-container">
-          <div class="title">도서예약</div>
+          <div class="title">도서예약 수정</div>
           <div class="title-line"></div>
         </div>
         <p class="notice">
           ※ 예약일 전 도서가 미반납 될 경우 대출이 불가할 수 있습니다.
         </p>
 
-       <label class="custom-checkbox flex-end-center font-673D31-13">
-							<input type="checkbox" class="terms-checkbox">
-							<span class="checkmark "></span> 동의합니다.
-						</label>
+        <!-- 동의 체크박스 -->
+        <label class="agreeCheck"
+          ><input type="checkbox" id="agreeCheck" /> 동의합니다.</label
+        >
 
         <!-- 캘린더 -->
         <div class="calendar-container">
@@ -64,7 +62,7 @@
 
         <!-- 버튼 영역 -->
         <div class="button-group">
-          <button id="reserveBtn" disabled>예약</button>
+          <button id="reserveBtn" disabled>수정</button>
           <button id="closeModal">취소</button>
         </div>
       </div>
