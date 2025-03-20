@@ -5,7 +5,7 @@
 
 <header>
 	<div class="header-container">
-		<a href="adminMain.html">
+		<a href="<%= request.getContextPath() %>/admin/main.do">
 		<img src="<%= request.getContextPath() %>/images/로고.png" alt="로고" class="logo">
 		</a>
 		<nav class="admin-nav">

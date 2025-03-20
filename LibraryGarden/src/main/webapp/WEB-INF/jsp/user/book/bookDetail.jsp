@@ -11,7 +11,7 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/user/userHeader" /> --%>
+	<jsp:include page="/user/userHeader.do" />
 
 	<div class="wrapper">
 		<div class="inner">

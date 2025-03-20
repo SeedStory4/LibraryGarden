@@ -5,13 +5,12 @@
 <head>
 <meta charset="UTF-8">
 <title>사서 기안 수정</title>
-<link rel="stylesheet" href="<%= request.getContextPath() %>/css/font.css">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 </head>
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<%-- <jsp:include page="/admin/adminHeader" /> --%>
+	<jsp:include page="/admin/adminHeader.do" />
 
 	<div class="wrapper">
 		<div class="inner">
