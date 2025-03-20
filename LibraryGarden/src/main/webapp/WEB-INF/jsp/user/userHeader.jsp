@@ -5,7 +5,7 @@
 
 <header>
 	<div class="header-container">
-		<a href="userMain.html"> 
+		<a href="<%= request.getContextPath() %>/user/main.do""> 
 		<img src="<%= request.getContextPath() %>/images/로고.png" alt="로고" class="logo">
 		</a>
 		<nav class="nav">
