@@ -222,7 +222,7 @@
         <td rowspan="6">librarianApproval</td>
         <td>기안 목록</td>
         <td rowspan="9">노지혜</td>
-        <td><a href="">librarianApprovalList</a></td>
+        <td><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do">librarianApprovalList</a></td>
         <td rowspan="6">LibrarianApprovalController</td>
       </tr>
       <tr>
