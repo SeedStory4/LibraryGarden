@@ -23,6 +23,7 @@
 * { padding: 0; margin: 0; box-sizing: border-box; color: inherit; }
 html, body { font-size: 16px; color: var(--color-black); }
 button, input { border: none; background: var(--bg-section); }
+button { width: auto; }
 label { color: var(--color-secondary); font-size: 18px; cursor: pointer; }
 input { border-radius: 5px; border: 1px solid var(--color-secondary); line-height: 28px; height: 30px; 
     font-size: 14px; padding: 0 15px; }
@@ -141,6 +142,6 @@ table td { padding: 5px; }
 .modal .book-list { padding: 25px 50px; }
 .modal .table { overflow: auto; height: 510px; }
 .modal table th { font-size: 18px; }
-.modal button { width: auto; }
 .rejection-detail { width: 600px; height: 462px; margin: 30px auto 40px; padding: 10px; border-radius: 20px; background: var(--bg-section);
 	text-align: left; }
+#closeRejectionModal.btn-primary { background: var(--btn-primary); }
