@@ -151,6 +151,7 @@ cursor: pointer;
 font-size: 20px;
 color : #673D31;
 justify-content: center;
+margin-bottom: 10px;
 }
 
 /* 체크박스 디자인 */
@@ -301,6 +302,21 @@ background-color: #673D31;
 .fc-day-other {
   opacity: 1 !important; /* 투명도 제거 */
   background-color: #f2f3f7 !important; /* 배경색 유지 */
+}
+
+/* 🔹 선택되었을 때 글씨를 흰색으로 변경 */
+.fc-day-other.fc-day-selected {
+  background-color: #1d6093 !important; /* 선택된 날짜 배경 */
+  color: white !important; /* 글씨 흰색 */
+  font-weight: bold !important; /* 글씨 두껍게 */
+}
+
+.fc-day-other.fc-day-selected .fc-daygrid-day-number {
+  color: white !important;
+}
+
+.fc-day-other.fc-day-selected .fc-daygrid-day-top {
+	opacity: 1;
 }
 
 /* 다른 달의 날짜 숫자 강제 표시 */
