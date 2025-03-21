@@ -12,16 +12,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.admin.service.LibrarianApprovalService;
+import libraryGarden.admin.service.AdminLibrarianApprovalService;
 
 @Controller
 @RequestMapping(value="/admin/librarianApproval")
-public class LibrarianApprovalController {
+public class AdminLibrarianApprovalController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(LibrarianApprovalController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminLibrarianApprovalController.class);
 	
 	@Autowired(required=false)
-	private LibrarianApprovalService librarianApprovalService;
+	private AdminLibrarianApprovalService librarianApprovalService;
 	
 	@Autowired(required=false)
 	private PageMaker pm;

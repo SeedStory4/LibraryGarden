@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin/directorApproval")
-public class DirectorApprovalController {
+public class AdminDirectorApprovalController {
 	
     @GetMapping("/popDirectorApprovalRejectionWrite.do")
     public String popDirectorApprovalRejectionWrite() {

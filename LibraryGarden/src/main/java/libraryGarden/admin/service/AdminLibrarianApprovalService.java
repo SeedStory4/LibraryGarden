@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.SearchCriteria;
 
-public interface LibrarianApprovalService {
+public interface AdminLibrarianApprovalService {
 	
 	int librarianApprovalTotalCount(SearchCriteria scri);
 	
