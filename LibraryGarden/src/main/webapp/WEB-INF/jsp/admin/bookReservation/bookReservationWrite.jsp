@@ -13,9 +13,7 @@
 </head>
 <body class="custom-page">
 
-    <div id="header-container">
-    	<%@ include file="/WEB-INF/jsp/user/userHeader.jsp" %>
-    </div>
+    <jsp:include page="/user/userHeader.do" />
 
 	<div class="wrapper">
 		<section class="section p-0">
@@ -115,9 +113,7 @@
 		</section>
 	</div>
 	
-    <div id="footer-container">
-    	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
-    </div>
+    <jsp:include page="/cmm/footer.do" />
 
     <script>
 	// select2
