@@ -63,7 +63,7 @@
       <tr>
         <td>도서예약팝업</td>
         <td>김이슬</td>
-        <td><a href="<%= request.getContextPath() %>/user/popBookReservationWrite.do">popBookReservationWrite</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/book/popBookReservationWrite.do">popBookReservationWrite</a></td>
         <td>Book2Controller</td>
       </tr>
   
@@ -114,12 +114,12 @@
         <td rowspan="5">myPage</td>
         <td>대출이력관리</td>
         <td rowspan="2">김이슬</td>
-        <td><a href="">mypageLoanList</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/myPage/myPageLoanList.do">mypageLoanList</a></td>
         <td rowspan="2">MyPage1Controller</td>
       </tr>
       <tr>
         <td>예약관리</td>
-        <td><a href="">myPageReservationList</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/myPage/myPageReservationList.do">myPageReservationList</a></td>
       </tr>
       <tr>
         <td>도서신청관리</td>
@@ -180,7 +180,7 @@
         <td>bookLoan</td>
         <td>등록</td>
         <td rowspan="5">김이슬</td>
-        <td><a href="">bookLoanWrite</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookLoan/bookLoanWrite.do">bookLoanWrite</a></td>
         <td>BookLoanController</td>
       </tr>
 
@@ -188,20 +188,20 @@
       <tr>
         <td rowspan="4">bookReservation</td>
         <td>목록</td>
-        <td><a href="">bookReservationList</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookReservation/bookReservationList.do">bookReservationList</a></td>
         <td rowspan="4">BookReservationController</td>
       </tr>
       <tr>
         <td>등록</td>
-        <td><a href="">bookReservationWrite</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookReservation/bookReservationWrite.do">bookReservationWrite</a></td>
       </tr>
       <tr>
         <td>등록 팝업</td>
-        <td><a href="">popBookReservationWrite</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookReservation/popBookReservationWrite.do">popBookReservationWrite</a></td>
       </tr>
       <tr>
         <td>수정 팝업</td>
-        <td><a href="">popBookReservationModify</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookReservation/popBookReservationModify.do">popBookReservationModify</a></td>
       </tr>
   
       <!-- 희망도서관리 -->
