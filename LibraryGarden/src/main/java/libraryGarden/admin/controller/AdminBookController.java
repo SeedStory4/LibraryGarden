@@ -1,5 +1,5 @@
 package libraryGarden.admin.controller;
 
-public class BookController {
+public class AdminBookController {
 	
 }

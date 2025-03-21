@@ -1,5 +1,5 @@
 package libraryGarden.admin.service;
 
-public class BookService {
+public class AdminBookServiceImpl {
 
 }

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
 @RequestMapping("/admin/bookLoan")
-public class BookLoanController {
+public class AdminBookLoanController {
 
 	// 도서 대여
 	@GetMapping("/bookLoanWrite.do")

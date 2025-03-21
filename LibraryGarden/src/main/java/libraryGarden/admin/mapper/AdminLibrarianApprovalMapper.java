@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import libraryGarden.domain.ApprovalVo;
 
-public interface LibrarianApprovalMapper {
+public interface AdminLibrarianApprovalMapper {
 
 	public int librarianApprovalTotalCount(HashMap<String,Object> hm);
 	

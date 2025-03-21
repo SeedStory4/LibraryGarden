@@ -7,18 +7,18 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import libraryGarden.admin.mapper.LibrarianApprovalMapper;
+import libraryGarden.admin.mapper.AdminLibrarianApprovalMapper;
 import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.SearchCriteria;
 
 @Service
-public class LibrarianApprovalServiceImpl implements LibrarianApprovalService{
+public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApprovalService{
 	
-	private LibrarianApprovalMapper lm;
+	private AdminLibrarianApprovalMapper lm;
 
 	@Autowired
-	public LibrarianApprovalServiceImpl(SqlSession sqlSession) {
-		this.lm = sqlSession.getMapper(LibrarianApprovalMapper.class);
+	public AdminLibrarianApprovalServiceImpl(SqlSession sqlSession) {
+		this.lm = sqlSession.getMapper(AdminLibrarianApprovalMapper.class);
 	}
 
 	@Override

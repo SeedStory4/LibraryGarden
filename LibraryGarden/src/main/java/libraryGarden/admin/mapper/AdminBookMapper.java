@@ -1,5 +1,5 @@
 package libraryGarden.admin.mapper;
 
-public class BookMapper {
+public class AdminBookMapper {
 
 }
