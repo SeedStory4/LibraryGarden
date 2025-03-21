@@ -51,6 +51,11 @@ document.addEventListener("DOMContentLoaded", function () {
       );
       if (selectedDateEl) {
         selectedDateEl.classList.add("fc-day-selected");
+        
+        // 🔹 만약 선택된 날짜가 이전 달/다음 달이면 흰색으로 변경
+        if (selectedDateEl.classList.contains("fc-day-other")) {
+          selectedDateEl.style.color = "white";
+        }
       }
 
       // 선택한 날짜 업데이트 (YYYY.MM.DD 형식 적용)
