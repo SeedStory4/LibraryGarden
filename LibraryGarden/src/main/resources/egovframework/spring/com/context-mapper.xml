@@ -12,8 +12,7 @@
 		
 		<property name="mapperLocations">
 			<list>
-				<!-- <value>classpath:/egovframework/mapper/let/**/*_${Globals.DbType}.xml</value> -->
-				<value>classpath:/egovframework/mapper/let/**/*.xml</value>
+				<value>classpath:/egovframework/mapper/let/**/*_${Globals.DbType}.xml</value>
 				<value>classpath:/egovframework/mapper/admin/*Mapper.xml</value>
 				<value>classpath:/egovframework/mapper/user/*Mapper.xml</value>
 			</list>
