@@ -19,6 +19,7 @@
 		
 		<typeAlias alias="bv"				type="libraryGarden.domain.BookVo"/>
 		<typeAlias alias="av"				type="libraryGarden.domain.ApprovalVo"/>
+		<typeAlias alias="ad"				type="libraryGarden.domain.ApprovalDto"/>
 	</typeAliases>
     
 </configuration>

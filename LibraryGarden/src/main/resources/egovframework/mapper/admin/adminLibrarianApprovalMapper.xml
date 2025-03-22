@@ -3,14 +3,35 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="libraryGarden.admin.mapper.AdminLibrarianApprovalMapper">
-
+			
+	<sql id="search">
+		<if test="searchType != null and searchType.equals('title')">
+			and B.title like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType != null and searchType.equals('author')">
+			and B.author like concat('%',#{keyword},'%')
+		</if>
+		<if test="searchType != null and searchType.equals('name')">
+			and U.name like concat('%',#{keyword},'%')
+		</if>
+		<if test="filter != null">
+			and A.status like concat('%',#{filter},'%')
+		</if>
+	</sql>
+	
   	<select id="librarianApprovalTotalCount" parameterType="HashMap" resultType="int">
-		SELECT COUNT(*) AS cnt FROM APPROVAL WHERE delyn = 'N'
-		
+		SELECT COUNT(*) AS cnt
+		FROM APPROVAL AS A JOIN BOOKS AS B ON A.bidx = B.bidx JOIN USER AS U ON A.uidx = U.uidx 
+		WHERE A.delyn = 'N' 
+		<include refid="search"/>
 	</select>
 	
- 	<select id="librarianApprovalSelectAll" parameterType="HashMap" resultType="av">
-		SELECT * FROM APPROVAL WHERE delyn = 'N' ORDER BY aidx DESC <!-- LIMIT #{startPageNum}, #{perPageNum} -->
+ 	<select id="librarianApprovalSelectAll" parameterType="HashMap" resultType="ad">
+		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, A.aidx, A.regDate, A.status, A.rejectionReason 
+		FROM APPROVAL AS A JOIN BOOKS AS B ON A.bidx = B.bidx JOIN USER AS U ON A.uidx = U.uidx 
+		WHERE A.delyn = 'N' 
+		<include refid="search"/> 
+		ORDER BY A.aidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 		
 </mapper>

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PageMaker {
 
-	private int displayPageNum = 5;
+	private int displayPageNum = 10;
 	private int startPage;
 	private int endPage;
 	private int totalCount;
@@ -43,9 +43,9 @@ public class PageMaker {
 		return totalCount;
 	}
 
-	public void setTotalCount(int totalCount) {  // �� �Խù��� ����� �޴� �޼ҵ�
+	public void setTotalCount(int totalCount) {
 		this.totalCount = totalCount;
-		calcData();  // ������ ��� ����Ʈ ��ȣ�� ��Ÿ���ֱ� ���� ����
+		calcData();
 		
 	}
 
@@ -75,36 +75,19 @@ public class PageMaker {
 	
 	private void calcData() {
 		
-		// 1. �⺻������ 1�������� 10���� ��Ÿ���� �����Ѵ�  (�������׺���̼ǿ���)
-		endPage = (int)(Math.ceil(scri.getPage() / (double)displayPageNum) * displayPageNum);  // ��� �ø�ó�� �ϴ� �޼ҵ� ceil()
-		// Math.ceil(scri.getPage() / (double)displayPageNum -> ���� �������� �ѹ��� �����ִ� ������ ���� ������ ���° ������ �׺���̼����� Ȯ���Ѵ�.
-		// Math.ceil(scri.getPage() / (double)displayPageNum) * displayPageNum -> ������ �׺���̼ǿ� �ѹ��� �����ִ� ������ ���� ���ؼ� ������ �������� ���Ѵ�.
-		// (int)(Math.ceil(scri.getPage() / (double)displayPageNum) * displayPageNum) -> int������ ����ȯ
+		endPage = (int)(Math.ceil(scri.getPage() / (double)displayPageNum) * displayPageNum);
 		
-		// 2. endPage�� �����Ǿ����� ������������ ����
 		startPage = (endPage - displayPageNum) + 1;
-		// endPage - displayPageNum -> ������ ���������� �ѹ��� �����ִ� ������ ���� ���� ���� ������ �׺���̼��� ������ �������� Ȯ���Ѵ�.
-		// (endPage - displayPageNum) + 1 -> ���� ������ �׺���̼��� ������ �������� 1�� ���ؼ� ���� ������ �׺���̼��� ó�� �������� ���Ѵ�.
 		
-		// 3. ���� �Խù����� ���� endPage�� ���ϰڴ�
 		int tempEndPage = (int)(Math.ceil(totalCount / (double)scri.getPerPageNum()));
-		// totalCount / (double)scri.getPerPageNum() -> �� �Խù����� �� �������� ���̴� �Խù� ���� ������ ��ü ���������� ���Ѵ�.
-		// Math.ceil(totalCount / (double)scri.getPerPageNum()) -> ���� �Խù� ����(������)�� ������ ������ �Ҽ��� �ø� �Ѵ�.
-		// (int)(Math.ceil(totalCount / (double)scri.getPerPageNum()))) -> int������ ����ȯ
-
-		// 4. ������ endPage�� ���� endPage�� ���ؼ� ���� endPage�� ���Ѵ�
+		
 		if (endPage > tempEndPage) {
 			endPage = tempEndPage;
 		}
-		// endPage���� ����endPage(tempEndPage)�� ������ endPage�� ����endPage(tempEndPage)�� �����Ѵ�.
 		
-		// 5. ����, ���� ��ư �����
-		prev = (startPage == 1? false : true);  // ���׿����� ���
-		// ������������ 1�̸� ������ư�� ���ش�.
+		prev = (startPage == 1? false : true);
 		
 		next = (endPage * scri.getPerPageNum() >= totalCount ? false : true);
-		// ������ �������� �� �������� ���̴� �Խù� ���� ���� ���� ��ü �Խù������� ũ�ų� ������ ���� �������� �Խ����� ������ �������̹Ƿ�
-		// ������ư�� ���ش�.
 	}
 	
 }

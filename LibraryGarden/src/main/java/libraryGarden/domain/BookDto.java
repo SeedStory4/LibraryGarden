@@ -1,5 +1,5 @@
 package libraryGarden.domain;
 
-public class BookDao {
+public class BookDto {
 
 }
