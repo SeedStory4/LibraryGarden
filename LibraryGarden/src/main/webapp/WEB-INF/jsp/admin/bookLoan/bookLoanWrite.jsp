@@ -23,18 +23,19 @@
 				<div class="user-number flex gap-20">
 					<label class="flex gap-20">
 						<span>회원번호</span>
-						<input type="text" class="w-290 shadow">
+						<input type="text" id="userNumber" class="w-290 shadow">
 					</label>
 					<button class="btn btn-primary btn-small number-check" onClick="numberCheck()" type="button">확인</button>
 				</div>
 				<div class="book-list border-top-2 none">
-					<p class="loan-info mb-20">김시연(017147)님의 현재 대출가능여부는 <span class="red bold">"이용불가(~2025.03.06)"</span>입니다.</p>
+					<!-- 대출 가능 여부를 동적으로 표시 -->
+                    <p class="loan-info mb-20"></p>
 					<div class="search flex gap-20">				
 						<label class="flex gap-20">
 							<span>도서구분</span>
-							<input type="text" class="w-290 shadow">
+							<input type="text" id="bookCode" class="w-290 shadow">
 						</label>
-						<button class="btn btn-primary btn-small">등록</button>
+						<button class="btn btn-primary btn-small" onClick="addBook()">등록</button>
 					</div>
 					<div class="table">
 						<table>
@@ -64,42 +65,14 @@
 									<th>삭제/반납</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>DM250314</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="blue">대출중</td>									
-									<td><button class="btn btn-small btn-red mb-5">삭제</button><button class="btn btn-small btn-primary">반납</button></td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>DM250314</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="green">반납완료</td>									
-									<td></td>
-								</tr>
-							</tbody>
+							<tbody id="loanList">
+                                <!-- 대출 목록이 동적으로 추가될 부분 -->
+                            </tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
-						</ul>	
+                        <!-- 페이지네이션 -->
+                        <ul class="paging flex w-270 justify-spacebtween" id="pagination">
+                            <!-- 페이지 번호가 동적으로 추가될 부분 -->
+                        </ul>	
 					</div>
 				</div>
 			</div>
@@ -108,17 +81,8 @@
 	
     <jsp:include page="/cmm/footer.do" />
 
-    <script>
-	// select2
-	$(document).ready(function() {
-		$('.js-example-basic-single').select2();
-	});
-	
-	// 회원번호 확인
-	function numberCheck () {
-		document.querySelector(".book-list").classList.remove("none");
-	}
-    </script>
+    <!-- 외부 JS 파일 링크 -->
+    <script src="${pageContext.request.contextPath}/js/bookLoanWrite.js"></script>
 	
 </body>
 </html>
