@@ -44,7 +44,7 @@
         <td></td>
         <td></td>
         <td>채형찬</td>
-        <td><a href="">main</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/main.do">main</a></td>
         <td>MainController</td>
       </tr>
   
@@ -81,32 +81,32 @@
         <td rowspan="7">user</td>
         <td>회원가입 약관동의</td>
         <td rowspan="7">채형찬</td>
-        <td><a href="">userPrivacyPolicy</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userPrivacyPolicy.do">userPrivacyPolicy</a></td>
         <td rowspan="7">UserController</td>
       </tr>
       <tr>
         <td>회원가입 정보 입력</td>
-        <td><a href="">userJoin</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userJoin.do">userJoin</a></td>
       </tr>
       <tr>
         <td>로그인</td>
-        <td><a href="">userLogin</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userLogin.do">userLogin</a></td>
       </tr>
       <tr>
         <td>ID 찾기</td>
-        <td><a href="">userSearchId</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userSearchId.do">userSearchId</a></td>
       </tr>
       <tr>
         <td>ID 찾기 결과</td>
-        <td><a href="">userFoundId</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userFoundId.do">userFoundId</a></td>
       </tr>
       <tr>
         <td>PW 찾기</td>
-        <td><a href="">userSearchPassword</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userSearchPassword.do">userSearchPassword</a></td>
       </tr>
       <tr>
         <td>PW 찾기 결과</td>
-        <td><a href="">userFoundPassword</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/user/userFoundPassword.do">userFoundPassword</a></td>
       </tr>
   
       <!-- 마이페이지 -->
@@ -136,7 +136,7 @@
       <tr>
         <td>회원 정보 수정</td>
         <td rowspan="2">채형찬</td>
-        <td><a href="">myPageModify</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/myPage/myPageModify.do">myPageModify</a></td>
         <td>MyPage4Controller</td>
       </tr>
   
@@ -146,7 +146,7 @@
         <td rowspan="25">admin</td>
         <td></td>
         <td></td>
-        <td><a href="">main</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/main.do">main</a></td>
         <td>MainController</td>
       </tr>
   
@@ -267,16 +267,16 @@
         <td rowspan="3">user</td>
         <td>목록</td>
         <td rowspan="3">채형찬</td>
-        <td><a href="">userList</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/user/userList.do">userList</a></td>
         <td rowspan="3">UserController</td>
       </tr>
       <tr>
         <td>상세</td>
-        <td><a href="">userDetail</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/user/userDetail.do">userDetail</a></td>
       </tr>
       <tr>
         <td>수정</td>
-        <td><a href="">userModify</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/user/userModify.do">userModify</a></td>
       </tr>
     </tbody>    
   </table>

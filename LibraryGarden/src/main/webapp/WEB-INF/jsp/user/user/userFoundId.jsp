@@ -18,7 +18,7 @@
 			<!-- 메인 콘텐츠 -->
 			<section class="section-find">
 				<div class="draft-header mb-45">
-					<img src="../images/magnifyingGlass.png" alt="magnifyingGlass" class="magnifyingGlass">
+					<img src="<%= request.getContextPath() %>/images/magnifyingGlass.png" alt="magnifyingGlass" class="magnifyingGlass">
 					<span class="font-673D31-30">아이디 찾기 완료</span>
 				</div>
 

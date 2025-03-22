@@ -2,25 +2,22 @@ package libraryGarden.admin.controller;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/admin")
 public class AdminMainController {
 	
-	 @GetMapping("/user/main.do")
+	 	@GetMapping("/main.do")
 	    public String main() {
-	        return "user/main";
+	        return "admin/main";
 	    }
 
-	    @GetMapping("/user/userHeader.do")
-	    public String userHeader() {
-	        return "user/userHeader";
-	    }
-	    
 	    @GetMapping("/cmm/footer.do")
 	    public String footer() {
 	        return "cmm/footer";
 	    }
-	    @GetMapping("/admin/adminHeader.do")
+	    @GetMapping("/adminHeader.do")
 	    public String adminHeader() {
 	        return "admin/adminHeader";
 	    }

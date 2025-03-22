@@ -18,7 +18,7 @@
 			<!-- 메인 콘텐츠 -->
 			<section class="section">
 				<div class="draft-header">
-					<img src="../images/로고.png" alt="로고" class="logo">
+					<img src="<%= request.getContextPath() %>/images/로고.png" alt="로고" class="logo">
 				</div>
 
 				<!-- 로그인 입력  -->
