@@ -18,7 +18,7 @@
 			<!-- 메인 콘텐츠 -->
 			<section class="section-find">
 				<div class="draft-header ">
-					<img src="../images/mail.png" alt="mail" class="mail">
+					<img src="<%= request.getContextPath() %>/images/mail.png" alt="mail" class="mail">
 				</div>
 
 				<!-- 아이디 찾기 입력 -->
