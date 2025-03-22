@@ -36,7 +36,29 @@
         <property name="webBindingInitializer">
             <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
         </property>
+        
+		<!-- 메시지 컨버터 직접 등록 -->
+    	<property name="messageConverters">
+        	<list>
+            	<!-- 예: 문자열 변환기 -->
+            	<bean class="org.springframework.http.converter.StringHttpMessageConverter">
+                	<property name="supportedMediaTypes">
+                    	<list>
+                        	<value>text/plain;charset=UTF-8</value>
+                        	<value>text/html;charset=UTF-8</value>
+                    	</list>
+                	</property>
+            	</bean>
+
+            	<!-- JSON 변환기 (Jackson 2.x) -->
+            	<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter">
+                <!-- (필요하면 custom ObjectMapper 주입 가능) -->
+            	</bean>
+        	</list>
+    	</property>
     </bean>
+    
+    
 
     <!-- 로그인 체크가 필요한 URL과 로그인 여부를 체크해준다 -->
     <mvc:interceptors>
