@@ -24,15 +24,17 @@
 			
 			<div class="contents">
 				<div class="book-list pt-0">
+					<form action="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do">
 					<div class="search flex gap-20 justify-center">
-						<select class="js-example-basic-single select shadow" name="state">
-							<option value="title">제목</option>
+						<select class="js-example-basic-single select shadow" name="searchType">
+							<option value="title" selected>제목</option>
 							<option value="author">저자</option>
 							<option value="name">신청자</option>
 						</select>
-						<input type="text" class="shadow w-720">						
+						<input type="text" class="shadow w-720" name="keyword" value="">
 						<button class="btn btn-primary btn-small">검색</button>
 					</div>
+					</form>
 					<ul class="tab flex gap-3">
 						<li class="on shadow"><a href="#">전체</a></li>
 						<li class="shadow"><a href="#">대기</a></li>
