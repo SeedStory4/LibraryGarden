@@ -13,13 +13,9 @@ import libraryGarden.domain.SearchCriteria;
 
 @Service
 public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApprovalService{
-	
-	private AdminLibrarianApprovalMapper lm;
 
 	@Autowired
-	public AdminLibrarianApprovalServiceImpl(SqlSession sqlSession) {
-		this.lm = sqlSession.getMapper(AdminLibrarianApprovalMapper.class);
-	}
+	private AdminLibrarianApprovalMapper lm;
 
 	@Override
 	public int librarianApprovalTotalCount(SearchCriteria scri) {
@@ -37,10 +33,11 @@ public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApproval
 	public ArrayList<ApprovalVo> librarianApprovalSelectAll(SearchCriteria scri) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
-		hm.put("startPageNum", (scri.getPage() - 1) * scri.getPerPageNum());
-		hm.put("perPageNum", scri.getPerPageNum());
-		hm.put("searchType", scri.getSearchType());
-		hm.put("keyword", scri.getKeyword());
+		/*
+		 * hm.put("startPageNum", (scri.getPage() - 1) * scri.getPerPageNum());
+		 * hm.put("perPageNum", scri.getPerPageNum()); hm.put("searchType",
+		 * scri.getSearchType()); hm.put("keyword", scri.getKeyword());
+		 */
 		
 		ArrayList<ApprovalVo> alist = lm.librarianApprovalSelectAll(hm);
 		

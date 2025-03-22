@@ -28,20 +28,23 @@ public class AdminLibrarianApprovalController {
 	
 	@RequestMapping(value="/librarianApprovalList.do")
 	public String librarianApprovalList(
+			SearchCriteria scri,
 			Model model) {
 		
-		logger.info("librarianApprovalList 들어옴");
+		 logger.debug("librarianApprovalList 들어옴!!!!");
+		 System.out.println("librarianApprovalList 들어옴");
+		 System.out.println("scri : " + scri.getSearchType());
 		
-		// pm.setScri(scri);
+		 pm.setScri(scri);
+
+		 // 페이징 처리하기 위한 전체 데이터 갯수 가져오기
+		 int cnt = librarianApprovalService.librarianApprovalTotalCount(scri);
+		 pm.setTotalCount(cnt);
 		
-		// 페이징 처리하기 위한 전체 데이터 갯수 가져오기
-		// int cnt = librarianApprovalService.librarianApprovalTotalCount(scri);
-		
-		// pm.setTotalCount(cnt);
-		
-		// ArrayList<ApprovalVo> alist = librarianApprovalService.librarianApprovalSelectAll(scri);
-		// model.addAttribute("alist", alist);
-		// model.addAttribute("pm", pm);
+		 ArrayList<ApprovalVo> alist = librarianApprovalService.librarianApprovalSelectAll(scri);
+		 
+		 model.addAttribute("alist", alist);
+		 model.addAttribute("pm", pm);
 		
 		return "admin/librarianApproval/librarianApprovalList";
 	}
