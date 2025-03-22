@@ -22,16 +22,18 @@
 				</div>
 
 				<!-- 로그인 입력  -->
+			<form action="${pageContext.request.contextPath}/user/user/loginAction.do" method="post">
 				<div class="draft-content ml-mr-50">
-					<input type="text" class="user-A-input mb-40" placeholder="아이디" >
+					<input type="text" name="id" class="user-A-input mb-40" placeholder="아이디" >
 					
-					<input type="password" class="user-A-input mb-77" placeholder="비밀번호" >
+					<input type="password" name="password" class="user-A-input mb-77" placeholder="비밀번호" >
 				</div>
 
 				<!-- 로그인 버튼 -->
 				<div class="draft-actions mb-33">
-					<button class="draft-btn-small btn-submit-600-65 ">로그인</button>
+					<button type="submit" class="draft-btn-small btn-submit-600-65 ">로그인</button>
 				</div>
+			</form>
 
 				<!-- 아이디 찾기/비밀번호 찾기/회원가입 링크 -->
 				<div class="flex-center font-1D6093-13 mb-37"> <a href="<%= request.getContextPath() %>/user/user/userSearchId.do" class="pl-pr-10">아이디 찾기</a>|<a href="<%= request.getContextPath() %>/user/user/userSearchPassword.do" class="pl-pr-10">비밀번호 찾기</a>|<a href="<%= request.getContextPath() %>/user/user/userJoin.do" class="pl-pr-10">회원가입</a></div>
