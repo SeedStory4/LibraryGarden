@@ -24,5 +24,15 @@ public class UserServiceImpl implements UserService {
     public boolean isDuplicateId(String id) {
         return userMapper.countUserById(id) > 0;
     }
+    
+    @Override
+    public String getLastUserNumber() {
+        return userMapper.getLastUserNumber();
+    }
+    
+    @Override
+    public UserVo login(UserVo userVo) {
+        return userMapper.login(userVo);
+    }
 
 }

@@ -22,7 +22,7 @@
 		
 		      <!-- 회원가입 form -->
 		      <div class="draft-content ml-mr-50">
-		        <form action="<%= request.getContextPath() %>/user/userJoinAction.do" method="post" id="joinForm">
+		        <form action="<%= request.getContextPath() %>/user/user/userJoinAction.do" method="post" id="joinForm">
 		          <input type="text" name="name" class="user-A-input mb-30" placeholder="이름" maxlength="10" required>
 		
 		          <input type="text" name="id" class="user-A-input mb-17" placeholder="아이디" required>
