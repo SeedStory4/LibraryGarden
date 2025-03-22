@@ -23,6 +23,9 @@
 	    <Logger name="org.springframework" level="INFO" additivity="false">
 	        <AppenderRef ref="console" />
 	    </Logger>
+	    <Logger name="libraryGarden" level="DEBUG" additivity="false">
+	        <AppenderRef ref="console" />
+	    </Logger>
         <Root level="ERROR">
             <AppenderRef ref="console" />
         </Root>
