@@ -16,9 +16,9 @@
 				<li><a href="#">내 도서</a></li>
 			</ul>
 			<ul class="nav-auth">
-				<li><a href="#">회원가입</a></li>
+				<li><a href="<%= request.getContextPath() %>/user/user/userJoin.do">회원가입</a></li>
 				<li>·</li>
-				<li><a href="#">로그인</a></li>
+				<li><a href="<%= request.getContextPath() %>/user/user/userLogin.do">로그인</a></li>
            <!-- <li><a href="#">마이페이지</a></li>
 				<li>·</li>
 				<li><a href="#">로그아웃</a></li> -->				

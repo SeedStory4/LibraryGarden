@@ -34,7 +34,7 @@
 				</div>
 
 				<!-- 아이디 찾기/비밀번호 찾기/회원가입 링크 -->
-				<div class="flex-center font-1D6093-13 mb-37"> <a href="#" class="pl-pr-10">아이디 찾기</a>|<a href="#" class="pl-pr-10">비밀번호 찾기</a>|<a href="#" class="pl-pr-10">회원가입</a></div>
+				<div class="flex-center font-1D6093-13 mb-37"> <a href="<%= request.getContextPath() %>/user/user/userSearchId.do" class="pl-pr-10">아이디 찾기</a>|<a href="<%= request.getContextPath() %>/user/user/userSearchPassword.do" class="pl-pr-10">비밀번호 찾기</a>|<a href="<%= request.getContextPath() %>/user/user/userJoin.do" class="pl-pr-10">회원가입</a></div>
 			</section>
 		</div>
 	</div>
