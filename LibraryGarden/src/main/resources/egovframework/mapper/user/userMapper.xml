@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="libraryGarden.user.mapper.UserMapper">
+
+    <!-- 회원 가입 -->
+    <insert id="insertUser" parameterType="libraryGarden.domain.UserVo">
+        INSERT INTO USER (
+            id, password, name, phone, email, address, userNumber
+        ) VALUES (
+            #{id}, #{password}, #{name}, #{phone}, #{email}, #{address}, UUID()
+        )
+    </insert>
+
+    <!-- 아이디 중복 확인 -->
+    <select id="countUserById" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM USER WHERE id = #{id}
+    </select>
+
+</mapper>
