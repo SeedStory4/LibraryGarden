@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import libraryGarden.domain.ApprovalVo;
+import libraryGarden.domain.ApprovalDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.admin.service.AdminLibrarianApprovalService;
@@ -29,19 +29,18 @@ public class AdminLibrarianApprovalController {
 	@RequestMapping(value="/librarianApprovalList.do")
 	public String librarianApprovalList(
 			SearchCriteria scri,
+			ApprovalDto ad,
 			Model model) {
-		
-		 logger.debug("librarianApprovalList 들어옴!!!!");
-		 System.out.println("librarianApprovalList 들어옴");
-		 System.out.println("scri : " + scri.getSearchType());
+		 
+		 logger.debug("📝 librarianApprovalList 들어옴");
 		
 		 pm.setScri(scri);
-
-		 // 페이징 처리하기 위한 전체 데이터 갯수 가져오기
-		 int cnt = librarianApprovalService.librarianApprovalTotalCount(scri);
+		 String filter = ad.getStatus();
+		 
+		 int cnt = librarianApprovalService.librarianApprovalTotalCount(scri, filter);
 		 pm.setTotalCount(cnt);
 		
-		 ArrayList<ApprovalVo> alist = librarianApprovalService.librarianApprovalSelectAll(scri);
+		 ArrayList<ApprovalDto> alist = librarianApprovalService.librarianApprovalSelectAll(scri, filter);
 		 
 		 model.addAttribute("alist", alist);
 		 model.addAttribute("pm", pm);

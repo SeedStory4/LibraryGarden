@@ -6,6 +6,7 @@ public class ApprovalVo {
 	private int uidx;
 	private int rqidx;
 	private int bidx;
+	private String status;
 	private String rejectionReason;
 	private String approvalDate;
 	private String regDate;
@@ -41,6 +42,12 @@ public class ApprovalVo {
 	}
 	public void setRejectionReason(String rejectionReason) {
 		this.rejectionReason = rejectionReason;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	public String getApprovalDate() {
 		return approvalDate;
