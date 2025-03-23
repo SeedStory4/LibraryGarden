@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -23,21 +24,24 @@
 			<h2 class="section-title m-0 normal relative">결재관리 목록<button class="btn btn-primary absolute">기안등록</button></h2>
 			
 			<div class="contents">
+				<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
 				<div class="book-list pt-0">
+					<form action="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do">
 					<div class="search flex gap-20 justify-center">
-						<select class="js-example-basic-single select shadow" name="state">
-							<option value="title">제목</option>
+						<select class="js-example-basic-single select shadow" name="searchType">
+							<option value="title" selected>제목</option>
 							<option value="author">저자</option>
 							<option value="name">신청자</option>
 						</select>
-						<input type="text" class="shadow w-720">						
+						<input type="text" class="shadow w-720" name="keyword" value="">
 						<button class="btn btn-primary btn-small">검색</button>
 					</div>
+					</form>
 					<ul class="tab flex gap-3">
-						<li class="on shadow"><a href="#">전체</a></li>
-						<li class="shadow"><a href="#">대기</a></li>
-						<li class="shadow"><a href="#">승인</a></li>
-						<li class="shadow"><a href="#">반려</a></li>
+						<li class="shadow <c:if test="${empty requestScope.filter}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?${queryParam}">전체</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '대기'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?status=대기&${queryParam}">대기</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '승인'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?status=승인&${queryParam}">승인</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '반려'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?status=반려&${queryParam}">반려</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -64,46 +68,41 @@
 								</tr>
 							</thead>
 							<tbody>
+      							<c:forEach items="${requestScope.alist}" var="ad" varStatus="status">
 								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="blue">대기</td>
+									<td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
+									<td><img src="${ad.coverImg}" alt="${ad.title}"></td>
+									<td><a href="${pageContext.request.contextPath}/admin/directorApproval/${ad.aidx}/directorApprovalDetail">"${ad.title}"</a></td>
+									<td>${ad.author}</td>
+									<td>${ad.publisher}</td>
+									<td>${ad.name}<br>(${ad.userNumber})</td>
+									<td>${fn:substringBefore(ad.regDate, ' ')}</td>
+									<td class=
+										<c:if test="${ad.status eq '대기'}">"blue"</c:if>
+										<c:if test="${ad.status eq '승인'}">"green"</c:if>
+										<c:if test="${ad.status eq '반려'}">"red pointer openRejectionModal" data-reason="${ad.rejectionReason}"</c:if>
+									>${ad.status}</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="green">승인</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="red pointer" id="openRejectionModal">반려</td>
-								</tr>
+								</c:forEach>
 							</tbody>
-						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
+						</table>						
+      
+      					<ul class="paging flex w-270 justify-center">
+							<c:if test="${requestScope.pm.prev == true}">
+							<li>
+					          <a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					        </li>
+							</c:if> 
+							
+					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?page=${i}&${queryParam}">${i}</a></li>
+					        </c:forEach>
+					        
+					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
+							<li class="page-item">
+					          <a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					        </li>
+							</c:if>
 						</ul>
 					</div>
 				</div>
@@ -119,9 +118,7 @@
 	        </div>
 	
 	        <!-- 반려사유 -->
-	        <div class="rejection-detail shadow">
-	
-	        </div>
+	        <div class="rejection-detail shadow"></div>
 	
 	        <!-- 버튼 영역 -->
 	        <div class="button-group">
@@ -141,6 +138,17 @@
 	$(document).ready(function() {
 		$('.js-example-basic-single').select2();
 	});
+	
+	// 반려사유 팝업
+	const openRejectionModal = document.querySelectorAll(".openRejectionModal");
+	if(openRejectionModal != null) {
+		function openRejectionModalClick(e) {
+ 			const rejectionReason = e.target.attributes["data-reason"].value;
+			const rejectionDetail = document.querySelector(".rejection-detail");
+			rejectionDetail.textContent = rejectionReason;
+		}
+		openRejectionModal.forEach((e) => e.addEventListener("click", openRejectionModalClick));
+	}
     </script>
 	
 </body>

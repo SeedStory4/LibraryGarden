@@ -44,6 +44,7 @@ public class AdminLibrarianApprovalController {
 		 
 		 model.addAttribute("alist", alist);
 		 model.addAttribute("pm", pm);
+		 model.addAttribute("filter", filter);
 		
 		return "admin/librarianApproval/librarianApprovalList";
 	}
