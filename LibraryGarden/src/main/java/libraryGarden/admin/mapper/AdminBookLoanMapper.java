@@ -3,6 +3,8 @@ package libraryGarden.admin.mapper;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
+
 public interface AdminBookLoanMapper {
 
     public String selectUserLoanStatus(String userNumber);
@@ -10,5 +12,9 @@ public interface AdminBookLoanMapper {
     public int selectUserLoanTotalCount(String userNumber);
     public String selectUserName(String userNumber);
     public int updateOverdueStatus();
+    
+    public void insertBookLoan(@Param("userNumber") String userNumber, @Param("code") String code);
+    public void updateLibraryBookStatusToLoan(@Param("code") String code);
+    public String selectBookStatus(@Param("code") String code);
 
 }
