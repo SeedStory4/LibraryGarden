@@ -80,7 +80,7 @@
 		WHERE u.userNumber = #{userNumber}
 	</select>
 
-	<!-- 예시: Overdue 테이블 상태 변경 endDate 당일부터 status가 'N'으로 업데이트되서 이용가능으로 전환 -->
+	<!-- Overdue 테이블 상태 변경 endDate 당일부터 status가 'N'으로 업데이트되서 이용가능으로 전환 -->
 	<update id="updateOverdueStatus">
 		<![CDATA[
 		UPDATE OVERDUE
@@ -89,5 +89,31 @@
 		AND endDate <= CURRENT_DATE()
 		]]>
 	</update>
+	
+	<!-- 도서 상태 조회 -->
+	<select id="selectBookStatus" parameterType="String" resultType="String">
+    	SELECT status
+    	FROM LIBRARYBOOKS
+    	WHERE code = #{code}
+	</select>
+
+    <!-- 도서 대여 등록 -->
+    <insert id="insertBookLoan">
+        INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate, status)
+        VALUES (
+            (SELECT uidx FROM USER WHERE userNumber = #{userNumber}),
+            (SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
+            NOW(),
+            DATE_ADD(NOW(), INTERVAL 7 DAY),
+            '대여중'
+        )
+    </insert>
+
+    <!-- 도서 상태 대출중으로 변경 -->
+    <update id="updateLibraryBookStatusToLoan">
+        UPDATE LIBRARYBOOKS
+        SET status = '대출중'
+        WHERE code = #{code}
+    </update>
 
 </mapper>

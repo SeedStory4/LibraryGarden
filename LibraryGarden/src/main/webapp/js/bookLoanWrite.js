@@ -104,3 +104,46 @@ function numberCheck(page = 1, perPageNum = 12) {
         }
     });
 }
+
+// addBook 도서 등록
+function addBook() {
+    var userNumber = $('#userNumber').val();
+    var code = $('#bookCode').val();
+
+    if (!userNumber || !code) {
+        alert("회원번호와 도서구분 코드를 모두 입력해주세요.");
+        return;
+    }
+
+    $.ajax({
+        url: '/sht_webapp/admin/bookLoan/checkBookStatus.do',
+        type: 'POST',
+        data: { code: code },
+        success: function(response) {
+            if (response === "대출중" || response === "예약대기") {
+                alert("현재 대출 중이거나 예약 대기 상태인 도서입니다. 대출할 수 없습니다.");
+                return;
+            } else if (response === "없는 도서") {
+                alert("없는 도서입니다.");
+                return;
+            }
+
+            // 대출 가능한 상태일 때
+            $.ajax({
+                url: '/sht_webapp/admin/bookLoan/addBookLoan.do',
+                type: 'POST',
+                data: { userNumber: userNumber, code: code },
+                success: function(response) {
+                    alert(response);
+                    numberCheck();  // 대출 목록 갱신
+                },
+                error: function(xhr, status, error) {
+                    alert("대여 등록 실패: " + xhr.responseText);
+                }
+            });
+        },
+        error: function(xhr, status, error) {
+            alert("도서 상태 조회 오류: " + xhr.responseText);
+        }
+    });
+}

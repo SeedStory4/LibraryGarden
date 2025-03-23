@@ -43,5 +43,29 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
 
         return result;
     }
+    
+    @Override
+    public void addBookLoan(String userNumber, String code) throws Exception {
+        // 대여 정보 등록
+        adminBookLoanMapper.insertBookLoan(userNumber, code);
+        // 도서 상태 업데이트 (대출중으로)
+        adminBookLoanMapper.updateLibraryBookStatusToLoan(code);
+    }
+    
+    @Override
+    public String getBookStatus(String code) throws Exception {
+        String status = adminBookLoanMapper.selectBookStatus(code);
+        if (status == null) {
+            return "없는 도서";  // 도서 코드가 존재하지 않는 경우
+        }
+        return status;
+    }
+    
+    @Override
+    public boolean isUserOverdue(String userNumber) throws Exception {
+        String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
+        // '이용불가'라는 문자열이 포함되어 있으면 연체 중으로 간주
+        return loanStatus.contains("이용불가");
+    }
 
 }
