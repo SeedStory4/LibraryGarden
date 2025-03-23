@@ -47,6 +47,7 @@
 	<select id="selectUserLoanList" parameterType="map"
 		resultType="map">
 		SELECT
+		l.lidx,
 		b.coverImg,
 		b.title,
 		b.author,
@@ -54,21 +55,20 @@
 		DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
 		DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
 		CASE
-		WHEN l.returnDate IS
-		NOT NULL THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
+		WHEN l.returnDate IS NOT NULL
+		THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
 		ELSE '-'
-		END AS
-		returnDate,
-		l.status
+		END AS returnDate,
+		l.status,
+		l.delyn
 		FROM LOAN l
 		JOIN USER u ON l.uidx = u.uidx
-		JOIN
-		LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
+		JOIN LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
 		JOIN BOOKS b ON lb.bidx = b.bidx
 		WHERE u.userNumber = #{userNumber}
+		AND l.delyn = 'N'
 		ORDER BY l.loanDate DESC
-		LIMIT
-		#{startPageNum}, #{perPageNum}
+		LIMIT #{startPageNum}, #{perPageNum}
 	</select>
 
 	<!-- 대출 목록 전체 개수 조회 -->
@@ -89,31 +89,79 @@
 		AND endDate <= CURRENT_DATE()
 		]]>
 	</update>
-	
+
 	<!-- 도서 상태 조회 -->
-	<select id="selectBookStatus" parameterType="String" resultType="String">
-    	SELECT status
-    	FROM LIBRARYBOOKS
-    	WHERE code = #{code}
+	<select id="selectBookStatus" parameterType="String"
+		resultType="String">
+		SELECT status
+		FROM LIBRARYBOOKS
+		WHERE code = #{code}
 	</select>
 
-    <!-- 도서 대여 등록 -->
-    <insert id="insertBookLoan">
-        INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate, status)
+	<!-- 도서 대여 등록 -->
+	<insert id="insertBookLoan">
+		INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate,
+		status)
+		VALUES (
+		(SELECT uidx FROM USER WHERE userNumber =
+		#{userNumber}),
+		(SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
+		NOW(),
+		DATE_ADD(NOW(), INTERVAL 7 DAY),
+		'대여중'
+		)
+	</insert>
+
+	<!-- 도서 상태 대출중으로 변경 -->
+	<update id="updateLibraryBookStatusToLoan">
+		UPDATE LIBRARYBOOKS
+		SET status = '대출중'
+		WHERE code =
+		#{code}
+	</update>
+
+	<!-- 대여 삭제 -->
+	<update id="deleteLoan" parameterType="int">
+		UPDATE LOAN
+		SET delyn = 'Y'
+		WHERE lidx = #{lidx}
+	</update>
+
+	<!-- 도서 상태 대출 가능으로 변경 -->
+	<update id="updateLibraryBookStatusToAvailable"
+		parameterType="int">
+		UPDATE LIBRARYBOOKS
+		SET status = '대출가능'
+		WHERE lbidx =
+		(SELECT lbidx FROM LOAN WHERE lidx = #{lidx})
+	</update>
+	
+	<!-- 반납 상태로 변경 -->
+    <update id="updateLoanStatusToReturned" parameterType="int">
+        UPDATE LOAN
+        SET status = '반납완료', returnDate = NOW()
+        WHERE lidx = #{lidx}
+    </update>
+	
+	<!-- 반납 예정일 조회 -->
+    <select id="selectDueDate" parameterType="int" resultType="date">
+        SELECT dueDate
+        FROM LOAN
+        WHERE lidx = #{lidx}
+    </select>
+
+    <!-- 연체 등록 -->
+    <insert id="insertOverdue" parameterType="map">
+        INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
         VALUES (
-            (SELECT uidx FROM USER WHERE userNumber = #{userNumber}),
-            (SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
+            #{lidx},
+            (SELECT uidx FROM LOAN WHERE lidx = #{lidx}),
+            'Y',
             NOW(),
-            DATE_ADD(NOW(), INTERVAL 7 DAY),
-            '대여중'
+            DATE_ADD(NOW(), INTERVAL (
+                (SELECT DATEDIFF(NOW(), dueDate) FROM LOAN WHERE lidx = #{lidx}) * 2 + 1
+            ) DAY)
         )
     </insert>
-
-    <!-- 도서 상태 대출중으로 변경 -->
-    <update id="updateLibraryBookStatusToLoan">
-        UPDATE LIBRARYBOOKS
-        SET status = '대출중'
-        WHERE code = #{code}
-    </update>
 
 </mapper>

@@ -1,5 +1,6 @@
 package libraryGarden.admin.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -66,6 +67,35 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
         String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
         // '이용불가'라는 문자열이 포함되어 있으면 연체 중으로 간주
         return loanStatus.contains("이용불가");
+    }
+    
+    // 삭제
+    @Override
+    public void deleteLoan(int lidx) throws Exception {
+        // 대여 삭제
+        adminBookLoanMapper.deleteLoan(lidx);
+        // 도서 상태 대출 가능으로 변경
+        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+    }
+    
+    @Override
+    public void returnBookLoan(int lidx) throws Exception {
+        // 반납일 설정
+        Date dueDate = adminBookLoanMapper.selectDueDate(lidx);
+        Date now = new Date();
+
+        // 반납 상태 업데이트 (반납일 추가)
+        adminBookLoanMapper.updateLoanStatusToReturned(lidx);
+        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+
+        // 연체 여부 판단
+        if (now.after(dueDate)) {
+            long overdueDays = (now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24); // 연체일수 계산
+            int overduePenaltyDays = (int) overdueDays * 2 + 1; // 연체일수 * 2 + 1
+
+            // 연체 등록
+            adminBookLoanMapper.insertOverdue(lidx, overduePenaltyDays);
+        }
     }
 
 }

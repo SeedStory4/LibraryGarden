@@ -39,32 +39,34 @@ function numberCheck(page = 1, perPageNum = 12) {
             var tbody = $('#loanList');
             tbody.empty();
 
-            if (Array.isArray(loanList) && loanList.length > 0) {
-                loanList.forEach(function(item, index) {
-                    var row = `
-                        <tr>
-                            <td>${(page - 1) * perPageNum + index + 1}</td>
-                            <td><img src="${item.coverImg}" alt="${item.title}"></td>
-                            <td>${item.title}</td>
-                            <td>${item.author}</td>
-                            <td>${item.code}</td>
-                            <td>${item.loanDate}</td>
-                            <td>${item.dueDate}</td>
-                            <td>${item.returnDate || "-"}</td>
-                            <td class="${item.status === '대여중' ? 'blue' : item.status === '연체반납' ? 'red' : 'green'}">
-                                ${item.status}
-                            </td>
-                            <td>
-                                ${item.status === '대여중' ? `
-                                    <button class="btn btn-small btn-red mb-5" onClick="deleteLoan(${item.lidx})">삭제</button>
-                                    <button class="btn btn-small btn-primary" onClick="returnLoan(${item.lidx})">반납</button>
-                                ` : ''}
-                            </td>
-                        </tr>
-                    `;
-                    tbody.append(row);
-                });
+			if (Array.isArray(loanList) && loanList.length > 0) {
+			    loanList.forEach(function(item, index) {
+			        // 삭제여부 확인
+			        if (item.delyn === 'Y') return;
 
+			        var row = `
+			            <tr id="loan-row-${item.lidx}">
+			                <td>${(page - 1) * perPageNum + index + 1}</td>
+			                <td><img src="${item.coverImg}" alt="${item.title}"></td>
+			                <td>${item.title}</td>
+			                <td>${item.author}</td>
+			                <td>${item.code}</td>
+			                <td>${item.loanDate}</td>
+			                <td>${item.dueDate}</td>
+			                <td>${item.returnDate || "-"}</td>
+			                <td class="${item.status === '대여중' ? 'blue' : item.status === '연체반납' ? 'red' : 'green'}">
+			                    ${item.status}
+			                </td>
+			                <td>
+			                    ${item.status === '대여중' ? `
+			                        <button class="btn btn-small btn-red mb-5" onClick="deleteLoan(${item.lidx})">삭제</button>
+			                        <button class="btn btn-small btn-primary" onClick="returnLoan(${item.lidx})">반납</button>
+			                    ` : ''}
+			                </td>
+			            </tr>
+			        `;
+			        tbody.append(row);
+			    });
                 // 페이지 번호 표시
                 var pageCount = Math.ceil(totalCount / perPageNum);
                 var pagination = $('#pagination');
@@ -147,3 +149,49 @@ function addBook() {
         }
     });
 }
+
+
+// 대여 삭제
+function deleteLoan(lidx) {
+    if (!confirm("정말로 삭제하시겠습니까?")) {
+        return;
+    }
+
+    $.ajax({
+        url: '/sht_webapp/admin/bookLoan/deleteLoan.do',
+        type: 'POST',
+        data: { lidx: lidx },
+        success: function(response) {
+            alert(response);
+            // 삭제 후 대출 목록 갱신
+            numberCheck();
+        },
+        error: function(xhr, status, error) {
+            alert("대여 삭제 실패: " + xhr.responseText);
+        }
+    });
+}
+
+// 반납 처리
+function returnLoan(lidx) {
+    if (!confirm("반납 처리하시겠습니까?")) {
+        return;
+    }
+
+    $.ajax({
+        url: '/sht_webapp/admin/bookLoan/returnLoan.do',
+        type: 'POST',
+        data: { lidx: lidx },
+        success: function(response) {
+            alert(response);
+            // 반납 후 대출 목록 갱신
+            numberCheck();
+        },
+        error: function(xhr, status, error) {
+            alert("반납 처리 실패: " + xhr.responseText);
+        }
+    });
+}
+
+
+
