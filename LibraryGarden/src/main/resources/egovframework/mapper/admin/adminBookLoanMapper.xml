@@ -3,7 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="libraryGarden.admin.mapper.AdminBookLoanMapper">
+<mapper
+	namespace="libraryGarden.admin.mapper.AdminBookLoanMapper">
 
 	<!-- 회원 이름 조회 -->
 	<select id="selectUserName" parameterType="String"
@@ -20,34 +21,73 @@
 		WHEN EXISTS (
 		SELECT 1
 		FROM OVERDUE o
-		JOIN USER u ON o.uidx = u.uidx
-		WHERE u.userNumber = #{userNumber} AND o.status = 'Y'
+		JOIN USER u
+		ON o.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber} AND o.status =
+		'Y'
 		)
 		THEN CONCAT('이용불가(~',
-		(SELECT DATE_FORMAT(MAX(o2.endDate), '%Y-%m-%d')
+		(SELECT DATE_FORMAT(MAX(o2.endDate),
+		'%Y.%m.%d')
 		FROM OVERDUE o2
 		JOIN USER u2 ON o2.uidx = u2.uidx
-		WHERE u2.userNumber = #{userNumber} AND o2.status = 'Y'
+		WHERE
+		u2.userNumber = #{userNumber} AND o2.status = 'Y'
 		),
 		')')
 		ELSE '이용가능'
-		END AS loanStatus
+		END
+		AS loanStatus
 		FROM USER u
 		WHERE u.userNumber = #{userNumber};
 	</select>
 
 
 	<!-- 대출 목록 조회 -->
-	<select id="selectUserLoanList" parameterType="String"
+	<select id="selectUserLoanList" parameterType="map"
 		resultType="map">
-		SELECT b.coverImg, b.title, b.author, lb.code, l.loanDate, l.dueDate,
-		l.returnDate, l.status
+		SELECT
+		b.coverImg,
+		b.title,
+		b.author,
+		lb.code,
+		DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
+		DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
+		CASE
+		WHEN l.returnDate IS
+		NOT NULL THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
+		ELSE '-'
+		END AS
+		returnDate,
+		l.status
 		FROM LOAN l
 		JOIN USER u ON l.uidx = u.uidx
-		JOIN LIBRARY_BOOKS lb ON l.lbidx = lb.lbidx
+		JOIN
+		LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
 		JOIN BOOKS b ON lb.bidx = b.bidx
 		WHERE u.userNumber = #{userNumber}
-		ORDER BY l.loanDate DESC;
+		ORDER BY l.loanDate DESC
+		LIMIT
+		#{startPageNum}, #{perPageNum}
 	</select>
+
+	<!-- 대출 목록 전체 개수 조회 -->
+	<select id="selectUserLoanTotalCount" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM LOAN l
+		JOIN USER u ON l.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber}
+	</select>
+
+	<!-- 예시: Overdue 테이블 상태 변경 endDate 당일부터 status가 'N'으로 업데이트되서 이용가능으로 전환 -->
+	<update id="updateOverdueStatus">
+		<![CDATA[
+		UPDATE OVERDUE
+		SET status = 'N'
+		WHERE status = 'Y'
+		AND endDate <= CURRENT_DATE()
+		]]>
+	</update>
 
 </mapper>

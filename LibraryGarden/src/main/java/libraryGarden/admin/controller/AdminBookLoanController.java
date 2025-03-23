@@ -22,17 +22,19 @@ public class AdminBookLoanController {
 	// 도서 대여
 	@GetMapping("/bookLoanWrite.do")
 	public String bookLoanWrite() {
-		System.out.println("bookLoanWrite.do 호출됨");
+		//System.out.println("bookLoanWrite.do 호출됨");
 		return "admin/bookLoan/bookLoanWrite";
 	}
 	
     // 회원번호로 대출 가능 여부와 대출 목록 조회 (AJAX)
-	@GetMapping(value="/checkUserLoanStatus.do")
-	@ResponseBody
-	public Map<String, Object> checkUserLoanStatus(@RequestParam("userNumber") String userNumber) {
-	    System.out.println("checkUserLoanStatus.do 호출됨: userNumber = " + userNumber);
-	    Map<String, Object> result = adminBookLoanService.getUserLoanInfo(userNumber);
-	    return result;
-	}
+    @GetMapping(value="/checkUserLoanStatus.do")
+    @ResponseBody
+    public Map<String, Object> checkUserLoanStatus(
+            @RequestParam("userNumber") String userNumber,
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "perPageNum", defaultValue = "12") int perPageNum) {
+        Map<String, Object> result = adminBookLoanService.getUserLoanInfo(userNumber, page, perPageNum);
+        return result;
+    }
 
 }

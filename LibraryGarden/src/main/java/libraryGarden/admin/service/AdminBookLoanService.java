@@ -4,6 +4,6 @@ import java.util.Map;
 
 public interface AdminBookLoanService {
 
-    public Map<String, Object> getUserLoanInfo(String userNumber);	
+	public Map<String, Object> getUserLoanInfo(String userNumber, int page, int perPageNum);	
 
 }
