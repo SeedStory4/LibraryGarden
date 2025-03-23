@@ -40,6 +40,8 @@ public class AdminBookLoanController {
         return result;
     }
     
+    
+    // 도서 대여 등록
     @PostMapping("/addBookLoan.do")
     public ResponseEntity<String> addBookLoan(@RequestParam String userNumber, @RequestParam String code) {
         try {
@@ -56,7 +58,7 @@ public class AdminBookLoanController {
         }
     }
 
-
+    // 도서 상태 조회
     @PostMapping("/checkBookStatus.do")
     public ResponseEntity<String> checkBookStatus(@RequestParam String code) {
         try {
@@ -64,6 +66,28 @@ public class AdminBookLoanController {
             return ResponseEntity.ok(status);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("도서 상태 조회 실패: " + e.getMessage());
+        }
+    }
+    
+    // 대여 삭제
+    @PostMapping("/deleteLoan.do")
+    public ResponseEntity<String> deleteLoan(@RequestParam int lidx) {
+        try {
+            adminBookLoanService.deleteLoan(lidx);
+            return ResponseEntity.ok("대여 삭제 성공");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대여 삭제 실패: " + e.getMessage());
+        }
+    }
+    
+    // 반납 처리
+    @PostMapping("/returnLoan.do")
+    public ResponseEntity<String> returnLoan(@RequestParam int lidx) {
+        try {
+            adminBookLoanService.returnBookLoan(lidx);
+            return ResponseEntity.ok("반납 처리 완료");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("반납 처리 실패: " + e.getMessage());
         }
     }
 
