@@ -250,7 +250,7 @@
       <tr>
         <td rowspan="3">directorApproval</td>
         <td>기안 목록</td>
-        <td><a href="">directorApprovalList</a></td>
+        <td><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do">directorApprovalList</a></td>
         <td rowspan="3">DirectorApprovalController</td>
       </tr>
       <tr>

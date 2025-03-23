@@ -24,6 +24,7 @@
 			<h2 class="section-title m-0 normal relative">결재관리 목록<button class="btn btn-primary absolute">기안등록</button></h2>
 			
 			<div class="contents">
+				<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
 				<div class="book-list pt-0">
 					<form action="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do">
 					<div class="search flex gap-20 justify-center">
@@ -37,10 +38,10 @@
 					</div>
 					</form>
 					<ul class="tab flex gap-3">
-						<li class="on shadow"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do">전체</a></li>
-						<li class="shadow"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?status=대기">대기</a></li>
-						<li class="shadow"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?status=승인">승인</a></li>
-						<li class="shadow"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?status=반려">반려</a></li>
+						<li class="shadow <c:if test="${empty requestScope.filter}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?${queryParam}">전체</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '대기'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?status=대기&${queryParam}">대기</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '승인'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?status=승인&${queryParam}">승인</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '반려'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do?status=반려&${queryParam}">반려</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -79,14 +80,13 @@
 									<td class=
 										<c:if test="${ad.status eq '대기'}">"blue"</c:if>
 										<c:if test="${ad.status eq '승인'}">"green"</c:if>
-										<c:if test="${ad.status eq '반려'}">"red pointer" id="openRejectionModal" data-reason="${ad.rejectionReason}"</c:if>
+										<c:if test="${ad.status eq '반려'}">"red pointer openRejectionModal" data-reason="${ad.rejectionReason}"</c:if>
 									>${ad.status}</td>
 								</tr>
 								</c:forEach>
 							</tbody>
 						</table>						
-      
-      					<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
+            					
 						<ul class="paging flex w-270 justify-center">
 							<c:if test="${requestScope.pm.prev == true}">
 							<li>
@@ -140,12 +140,15 @@
 	});
 	
 	// 반려사유 팝업
-	function openRejectionModalClick(e) {
-		const rejectionReason = e.target.attributes["data-reason"].value;
-		const rejectionDetail = document.querySelector(".rejection-detail");
-		rejectionDetail.textContent = rejectionReason;		
+	const openRejectionModal = document.querySelectorAll(".openRejectionModal");
+	if(openRejectionModal != null) {
+		function openRejectionModalClick(e) {
+			const rejectionReason = e.target.attributes["data-reason"].value;
+			const rejectionDetail = document.querySelector(".rejection-detail");
+			rejectionDetail.textContent = rejectionReason;
+		}
+		openRejectionModal.forEach((e) => e.addEventListener("click", openRejectionModalClick));
 	}
-	document.querySelector("#openRejectionModal").addEventListener("click", openRejectionModalClick);
     </script>
 	
 </body>

@@ -5,14 +5,15 @@ document.addEventListener("DOMContentLoaded", function () {
   const rejectionInput = document.getElementById("rejectionReason");
 
   // 모달 열기 (예제: 버튼 클릭 시 실행)
-  if(document.querySelector('#openRejectionModal') != null) {
-	  document
-	    .getElementById("openRejectionModal")
-	    .addEventListener("click", function () {
-	      modal.style.display = "flex";
-	    });
-    }
-    
+  const openRejectionModal = document.querySelectorAll(".openRejectionModal");
+  if(openRejectionModal != null) {
+	  openRejectionModal.forEach(function(e) {
+		  e.addEventListener("click", function () {
+	      	modal.style.display = "flex";
+	      });
+	  });
+  }
+  
   // 포커스 시 box-shadow 강제 적용 및 높이 고정
   if(document.querySelector('#rejectionReason') != null) {
 	  rejectionTextarea.addEventListener("focus", function () {
