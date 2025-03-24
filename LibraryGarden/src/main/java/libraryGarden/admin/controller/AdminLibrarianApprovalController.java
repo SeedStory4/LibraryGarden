@@ -7,9 +7,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.admin.service.AdminLibrarianApprovalService;
@@ -48,50 +50,23 @@ public class AdminLibrarianApprovalController {
 		
 		return "admin/librarianApproval/librarianApprovalList";
 	}
+
+	@RequestMapping(value="/{aidx}/librarianApprovalDetail.do")
+	public String librarianApprovalDetail(
+			@PathVariable("aidx") int aidx,
+			Model model) {
+		 
+		logger.debug("📝 librarianApprovalDetail 들어옴");
+		
+//		ApprovalVo av = librarianApprovalService.librarianApprovalSelectOne(aidx);
+//				
+//		model.addAttribute("av", av);
+		
+		return "admin/librarianApproval/librarianApprovalDetail";
+	}
 	
-//	@RequestMapping(value="/{boardcode}/{period}/boardList.do")
-//	public String boardList(
-//			@PathVariable("boardcode") String boardcode,
-//			@PathVariable("period") int period,
-//			SearchCriteria scri,
-//			Model model) {
 //		
-//		logger.info("boardList����");
 //		
-//		pm.setScri(scri);  // <-- PageMaker�� SearhCriteria ��Ƽ� ������ �ٴѴ�
-//		
-//		// ����¡ ó���ϱ� ���� ��ü ������ ���� ��������
-//		int cnt = boardService.boardTotalCount(scri, boardcode, period);
-//		
-//		pm.setTotalCount(cnt);  // <-- PageMaker�� ��ü�Խù����� ��Ƽ� ������ ���
-//		
-//		String menu = "";
-//		String path = "";
-//		if(boardcode.equals("travel")) {
-//			if(period == 1) {
-//				menu = "����ġ��";
-//			} else if(period == 2) {
-//				menu = "1��2��";
-//			} else if(period == 3) {
-//				menu = "2��3��";
-//			} else if(period == 4) {
-//				menu = "3��4��";
-//			}
-//			path = "WEB-INF/board/travelList";
-//		} else if(boardcode.equals("free")) {
-//			menu = "�����Խ���";
-//			path = "WEB-INF/board/boardList";
-//		} else if(boardcode.equals("notice")){
-//			menu = "��������";
-//			path = "WEB-INF/board/boardList";
-//		}
-//		
-//		ArrayList<BoardDto> blist = boardService.boardSelectAll(scri, boardcode, period);
-//		model.addAttribute("blist", blist);	 // ȭ����� ������ �������� model ��ü�� ��´�(redirect ��� ���ϹǷ� Modele�� ���)
-//		model.addAttribute("pm", pm);  // forward ������� �ѱ�� ������ ������ �����ϴ�
-//		model.addAttribute("menu", menu);
-//		model.addAttribute("boardcode", boardcode);
-//		model.addAttribute("period", period);
 //		
 //		return path;
 //	}
@@ -357,40 +332,7 @@ public class AdminLibrarianApprovalController {
 //		return entity;
 //	}
 //	
-//	@RequestMapping(value="/{bidx}/boardContents.do")
-//	public String boardContents(@PathVariable("bidx") int bidx, Model model) {
-//
-//		logger.info("boardContents ����");
-//		
-//		boardService.boardViewCntUpdate(bidx);  // ��ȸ�� ������Ʈ �ϱ�
-//		BoardVo bv = boardService.boardSelectOne(bidx);  // �ش�Ǵ� bidx�� �Խù� ������ ������
-//		
-//		String menu = "";
-//		String path = "";
-//		if(bv.getBoardcode().equals("travel")) {
-//			if(bv.getPeriod() == 1) {
-//				menu = "����ġ��";
-//			} else if(bv.getPeriod() == 2) {
-//				menu = "1��2��";
-//			} else if(bv.getPeriod() == 3) {
-//				menu = "2��3��";
-//			} else if(bv.getPeriod() == 4) {
-//				menu = "3��4��";
-//			}
-//			path = "WEB-INF/board/travelContents";
-//		} else if(bv.getBoardcode().equals("free")) {
-//			menu = "�����Խ���";
-//			path = "WEB-INF/board/boardContents";
-//		} else if(bv.getBoardcode().equals("notice")){
-//			menu = "��������";
-//			path = "WEB-INF/board/boardContents";
-//		}
-//		
-//		model.addAttribute("bv", bv);
-//		model.addAttribute("menu", menu);
-//		
-//		return path;
-//	}
+//	
 //			
 //	@RequestMapping(value="/{bidx}/boardDeleteAction.do")
 //	public String boardDeleteAction(

@@ -239,7 +239,7 @@
       </tr>
       <tr>
         <td>기안 상세</td>
-        <td><a href="">librarianApprovalDetail</a></td>
+        <td><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalDetail.do">librarianApprovalDetail</a></td>
       </tr>
       <tr>
         <td>기안 수정</td>
@@ -255,7 +255,7 @@
       </tr>
       <tr>
         <td>기안 상세</td>
-        <td><a href="">directorApprovalDetail</a></td>
+        <td><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalDetail.do">directorApprovalDetail</a></td>
       </tr>
       <tr>
         <td>반려사유 팝업</td>

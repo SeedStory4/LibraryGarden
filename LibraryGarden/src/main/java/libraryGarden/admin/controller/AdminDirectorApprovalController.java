@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import libraryGarden.admin.service.AdminDirectorApprovalService;
@@ -50,6 +51,20 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 		return "admin/directorApproval/directorApprovalList";
 	}
 	
+	@RequestMapping(value="/{aidx}/directorApprovalDetail.do")
+	public String directorApprovalDetail(
+			@PathVariable("aidx") int aidx,
+			Model model) {
+		 
+		logger.debug("📝 directorApprovalDetail 들어옴");
+		
+//		ApprovalVo av = directorApprovalService.directorApprovalSelectOne(aidx);
+//				
+//		model.addAttribute("av", av);
+		
+		return "admin/directorApproval/directorApprovalDetail";
+	}
+		
     @GetMapping("/popDirectorApprovalRejectionWrite.do")
     public String popDirectorApprovalRejectionWrite() {
         return "admin/directorApproval/popDirectorApprovalRejectionWrite";

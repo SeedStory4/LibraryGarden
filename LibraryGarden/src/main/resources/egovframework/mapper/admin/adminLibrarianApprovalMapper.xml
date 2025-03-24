@@ -34,4 +34,7 @@
 		ORDER BY A.aidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 		
+	<select id="librarianApprovalSelectOne" parameterType="int" resultType="lbv">
+		select * from board where delyn = 'N' and bidx = #{bidx}
+	</select>
 </mapper>
