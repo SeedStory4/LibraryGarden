@@ -14,5 +14,8 @@ public interface UserService {
     String getLastUserNumber();
     
     UserVo login(UserVo userVo);
+    
+    // 아이디 유효성검사
+    int countUserById(String id);
 
 }

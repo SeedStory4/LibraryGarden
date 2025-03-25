@@ -58,11 +58,45 @@
 		        return;
 		      }
 		
-		      // 추후 AJAX로 중복확인 구현
-		      alert("입력된 아이디: " + userId + "\n(중복확인 기능은 추후 구현 예정)");
+		      fetch("<%= request.getContextPath() %>/user/user/checkId.do", {
+		        method: "POST",
+		        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+		        body: new URLSearchParams({ id: userId })
+		      })
+		      .then(res => res.text())
+		      .then(result => {
+		    	  
+		    	  console.log("서버 응답 결과:", result); // <-- 디버깅 로그!
+		        
+		    	  if (result === "OK") {
+		          alert("사용 가능한 아이디입니다!");
+		        } else {
+		          alert("이미 사용 중인 아이디입니다.");
+		        }
+		      })
+		      .catch(err => {
+		        console.error("중복 확인 오류:", err);
+		        alert("서버 오류 발생!");
+		      });
 		    });
+		    
+		    
+		    
+		 	// 회원가입 form 제출 시 비밀번호 확인
+		    document.getElementById("joinForm").addEventListener("submit", function (e) {
+		      const pw = document.querySelector("input[name='password']").value;
+		      const pwConfirm = document.querySelector("input[name='passwordConfirm']").value;
+
+		      if (pw !== pwConfirm) {
+		        e.preventDefault(); // 폼 전송 막기
+		        alert("비밀번호가 서로 일치하지 않습니다.");
+		      }
+		    });
+		    
+		    
 		  });
 		</script>
+
 		
 		<!-- 푸터 로드 -->
 		<jsp:include page="/common/footer.jsp" /> 
