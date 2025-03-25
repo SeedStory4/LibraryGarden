@@ -11,6 +11,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.domain.UserVo;
@@ -95,6 +98,19 @@ public class UserController {
             model.addAttribute("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다.");
             return "/user/user/userLogin"; // 다시 로그인 페이지로
         }
+    }
+    
+    @RequestMapping(value = "/logout.do", method = RequestMethod.POST)
+    public String logout(HttpSession session) {
+        session.invalidate(); // 세션 초기화
+        return "redirect:/user/main.do"; // 로그아웃 후 메인 페이지로 이동
+    }
+    
+    @ResponseBody
+    @RequestMapping(value = "/checkId.do", method = RequestMethod.POST)
+    public String checkId(@RequestParam("id") String id) {
+        int count = userService.countUserById(id);
+        return (count == 0) ? "OK" : "DUPLICATE";
     }
     
     

@@ -34,5 +34,10 @@ public class UserServiceImpl implements UserService {
     public UserVo login(UserVo userVo) {
         return userMapper.login(userVo);
     }
+    
+    @Override
+    public int countUserById(String id) {
+        return userMapper.countUserById(id);
+    }
 
 }
