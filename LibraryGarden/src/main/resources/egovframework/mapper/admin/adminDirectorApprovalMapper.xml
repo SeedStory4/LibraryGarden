@@ -20,9 +20,9 @@
 	</sql>
 	
   	<select id="directorApprovalTotalCount" parameterType="HashMap" resultType="int">
-		SELECT COUNT(*) AS cnt
-		FROM APPROVAL AS A
-		JOIN USER AS U ON A.uidx = U.uidx
+		SELECT COUNT(*) AS cnt 
+		FROM APPROVAL AS A 
+		JOIN USER AS U ON A.uidx = U.uidx 
 		LEFT JOIN (
 		    SELECT bidx, coverImg, title, author, publisher FROM BOOKS
 		) AS B ON B.bidx = IFNULL(A.bidx, (SELECT RQ.bidx FROM REQUEST AS RQ WHERE RQ.rqidx = A.rqidx)) 
@@ -31,14 +31,15 @@
 	</select>
 	
  	<select id="directorApprovalSelectAll" parameterType="HashMap" resultType="ad">
-		SELECT A.aidx, B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, A.aidx, A.regDate, A.status, A.rejectionReason 
-		FROM APPROVAL AS A
-		JOIN USER AS U ON A.uidx = U.uidx
+		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, A.aidx, A.regDate, A.status, A.rejectionReason 
+		FROM APPROVAL AS A 
+		JOIN USER AS U ON A.uidx = U.uidx 
 		LEFT JOIN (
 		    SELECT bidx, coverImg, title, author, publisher FROM BOOKS
 		) AS B ON B.bidx = IFNULL(A.bidx, (SELECT RQ.bidx FROM REQUEST AS RQ WHERE RQ.rqidx = A.rqidx)) 
-		WHERE A.delyn = 'N'
-		<include refid="search"/> LIMIT #{startPageNum}, #{perPageNum};
+		WHERE A.delyn = 'N' 
+		<include refid="search"/> 
+		ORDER BY A.aidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 		
 </mapper>

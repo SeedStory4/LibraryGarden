@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import libraryGarden.admin.service.AdminDirectorApprovalService;
+import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.ApprovalDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
@@ -35,8 +36,11 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 			Model model) {
 		 
 		 logger.debug("📝 directorApprovalList 들어옴");
-		
+
+		 UrlEncoder encoder = new UrlEncoder();		 
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
 		 pm.setScri(scri);
+		 
 		 String filter = ad.getStatus();
 		 
 		 int cnt = directorApprovalService.directorApprovalTotalCount(scri, filter);

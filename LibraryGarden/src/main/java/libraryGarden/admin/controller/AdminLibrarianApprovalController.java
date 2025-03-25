@@ -11,10 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import libraryGarden.domain.ApprovalDto;
-import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.admin.service.AdminLibrarianApprovalService;
+import libraryGarden.cmm.util.UrlEncoder;
 
 @Controller
 @RequestMapping(value="/admin/librarianApproval")
@@ -34,9 +34,12 @@ public class AdminLibrarianApprovalController {
 			ApprovalDto ad,
 			Model model) {
 		 
-		 logger.debug("📝 librarianApprovalList 들어옴");
-		
+		 logger.debug("📝 librarianApprovalList 들어옴");		
+
+		 UrlEncoder encoder = new UrlEncoder();		 
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
 		 pm.setScri(scri);
+
 		 String filter = ad.getStatus();
 		 
 		 int cnt = librarianApprovalService.librarianApprovalTotalCount(scri, filter);
