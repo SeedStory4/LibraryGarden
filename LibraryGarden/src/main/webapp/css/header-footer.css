@@ -104,3 +104,15 @@ footer {
     gap: 10px; /* 마이페이지 · 로그아웃 간격 */
 }
 
+
+/* 로그아웃이 버튼으로 바뀜에 따라 css 추가 */
+
+.logout-btn {
+  background: none;
+  border: none;
+  color: #673D31;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}
+

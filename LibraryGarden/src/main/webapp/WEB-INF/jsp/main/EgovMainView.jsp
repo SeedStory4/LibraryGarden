@@ -53,12 +53,12 @@
         <td rowspan="3">book</td>
         <td>목록</td>
         <td rowspan="2">김시연</td>
-        <td><a href="">bookList</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/book/bookList.do">bookList</a></td>
         <td rowspan="2">Book1Controller</td>
       </tr>
       <tr>
         <td>상세</td>
-        <td><a href="">bookDetail</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/book/bookDetail.do">bookDetail</a></td>
       </tr>
       <tr>
         <td>도서예약팝업</td>
@@ -72,7 +72,7 @@
         <td>bookRequest</td>
         <td>신청</td>
         <td>김시연</td>
-        <td><a href="">bookRequestWrite</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/bookRequest/bookRequestWrite.do">bookRequestWrite</a></td>
         <td>BookRequestController</td>
       </tr>
   
@@ -124,7 +124,7 @@
       <tr>
         <td>도서신청관리</td>
         <td>김시연</td>
-        <td><a href="">myPageRequestList</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/myPage/myPageRequestList.do">myPageRequestList</a></td>
         <td>MyPage2Controller</td>
       </tr>
       <tr>
@@ -155,24 +155,24 @@
         <td rowspan="5">book</td>
         <td>목록</td>
         <td rowspan="5">김시연</td>
-        <td><a href="">bookList</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/book/bookList.do">bookList</a></td>
         <td rowspan="5">BookController</td>
       </tr>
       <tr>
         <td>상세</td>
-        <td><a href="">bookDetail</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/book/bookDetail.do">bookDetail</a></td>
       </tr>
       <tr>
         <td>수정</td>
-        <td><a href="">bookModify</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/book/bookModify.do">bookModify</a></td>
       </tr>
       <tr>
         <td>등록</td>
-        <td><a href="">bookWrite</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/book/bookWrite.do">bookWrite</a></td>
       </tr>
       <tr>
         <td>도서선택 팝업</td>
-        <td><a href="">popBookSelect</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/book/popBookSelect.do">popBookSelect</a></td>
       </tr>
   
       <!-- 도서대여 -->
@@ -209,12 +209,12 @@
         <td rowspan="2">bookRequest</td>
         <td>목록</td>
         <td rowspan="2">김시연</td>
-        <td><a href="">bookRequestList</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestList.do">bookRequestList</a></td>
         <td rowspan="2">BookRequestController</td>
       </tr>
       <tr>
         <td>상세</td>
-        <td><a href="">bookRequestDetail</a></td>
+        <td><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestDetail.do">bookRequestDetail</a></td>
       </tr>
      
       <!-- 결재관리(사서) -->

@@ -1,5 +1,6 @@
 package libraryGarden.admin.service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,23 +18,84 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     
     
     @Override
-    public Map<String, Object> getUserLoanInfo(String userNumber) {
+    public Map<String, Object> getUserLoanInfo(String userNumber, int page, int perPageNum) {
         Map<String, Object> result = new HashMap<>();
-        System.out.println("서비스 호출됨: userNumber = " + userNumber);
+        //System.out.println("서비스 호출됨: userNumber = " + userNumber);
 
         String userName = adminBookLoanMapper.selectUserName(userNumber);
-        System.out.println("회원 이름 조회 결과: " + userName);
+        //System.out.println("회원 이름 조회 결과: " + userName);
         result.put("userName", userName);
 
         String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
-        System.out.println("대출 가능 여부 조회 결과: " + loanStatus);
+        //System.out.println("대출 가능 여부 조회 결과: " + loanStatus);
         result.put("loanStatus", loanStatus);
 
-        List<Map<String, Object>> loanList = adminBookLoanMapper.selectUserLoanList(userNumber);
-        System.out.println("대출 목록 조회 결과: " + loanList);
+        Map<String, Object> params = new HashMap<>();
+        int startPageNum = (page - 1) * perPageNum;
+        params.put("userNumber", userNumber);
+        params.put("startPageNum", startPageNum);
+        params.put("perPageNum", perPageNum);
+
+        List<Map<String, Object>> loanList = adminBookLoanMapper.selectUserLoanList(params);
+        int totalCount = adminBookLoanMapper.selectUserLoanTotalCount(userNumber);
+        
         result.put("loanList", loanList);
+        result.put("totalCount", totalCount);
 
         return result;
+    }
+    
+    @Override
+    public void addBookLoan(String userNumber, String code) throws Exception {
+        // 대여 정보 등록
+        adminBookLoanMapper.insertBookLoan(userNumber, code);
+        // 도서 상태 업데이트 (대출중으로)
+        adminBookLoanMapper.updateLibraryBookStatusToLoan(code);
+    }
+    
+    @Override
+    public String getBookStatus(String code) throws Exception {
+        String status = adminBookLoanMapper.selectBookStatus(code);
+        if (status == null) {
+            return "없는 도서";  // 도서 코드가 존재하지 않는 경우
+        }
+        return status;
+    }
+    
+    @Override
+    public boolean isUserOverdue(String userNumber) throws Exception {
+        String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
+        // '이용불가'라는 문자열이 포함되어 있으면 연체 중으로 간주
+        return loanStatus.contains("이용불가");
+    }
+    
+    // 삭제
+    @Override
+    public void deleteLoan(int lidx) throws Exception {
+        // 대여 삭제
+        adminBookLoanMapper.deleteLoan(lidx);
+        // 도서 상태 대출 가능으로 변경
+        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+    }
+    
+    @Override
+    public void returnBookLoan(int lidx) throws Exception {
+        // 반납일 설정
+        Date dueDate = adminBookLoanMapper.selectDueDate(lidx);
+        Date now = new Date();
+
+        // 반납 상태 업데이트 (반납일 추가)
+        adminBookLoanMapper.updateLoanStatusToReturned(lidx);
+        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+
+        // 연체 여부 판단
+        if (now.after(dueDate)) {
+            long overdueDays = (now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24); // 연체일수 계산
+            int overduePenaltyDays = (int) overdueDays * 2 + 1; // 연체일수 * 2 + 1
+
+            // 연체 등록
+            adminBookLoanMapper.insertOverdue(lidx, overduePenaltyDays);
+        }
     }
 
 }

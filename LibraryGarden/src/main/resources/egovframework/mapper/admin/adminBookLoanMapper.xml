@@ -3,7 +3,8 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="libraryGarden.admin.mapper.AdminBookLoanMapper">
+<mapper
+	namespace="libraryGarden.admin.mapper.AdminBookLoanMapper">
 
 	<!-- 회원 이름 조회 -->
 	<select id="selectUserName" parameterType="String"
@@ -20,34 +21,147 @@
 		WHEN EXISTS (
 		SELECT 1
 		FROM OVERDUE o
-		JOIN USER u ON o.uidx = u.uidx
-		WHERE u.userNumber = #{userNumber} AND o.status = 'Y'
+		JOIN USER u
+		ON o.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber} AND o.status =
+		'Y'
 		)
 		THEN CONCAT('이용불가(~',
-		(SELECT DATE_FORMAT(MAX(o2.endDate), '%Y-%m-%d')
+		(SELECT DATE_FORMAT(MAX(o2.endDate),
+		'%Y.%m.%d')
 		FROM OVERDUE o2
 		JOIN USER u2 ON o2.uidx = u2.uidx
-		WHERE u2.userNumber = #{userNumber} AND o2.status = 'Y'
+		WHERE
+		u2.userNumber = #{userNumber} AND o2.status = 'Y'
 		),
 		')')
 		ELSE '이용가능'
-		END AS loanStatus
+		END
+		AS loanStatus
 		FROM USER u
 		WHERE u.userNumber = #{userNumber};
 	</select>
 
 
 	<!-- 대출 목록 조회 -->
-	<select id="selectUserLoanList" parameterType="String"
+	<select id="selectUserLoanList" parameterType="map"
 		resultType="map">
-		SELECT b.coverImg, b.title, b.author, lb.code, l.loanDate, l.dueDate,
-		l.returnDate, l.status
+		SELECT
+		l.lidx,
+		b.coverImg,
+		b.title,
+		b.author,
+		lb.code,
+		DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
+		DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
+		CASE
+		WHEN l.returnDate IS NOT NULL
+		THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
+		ELSE '-'
+		END AS returnDate,
+		l.status,
+		l.delyn
 		FROM LOAN l
 		JOIN USER u ON l.uidx = u.uidx
-		JOIN LIBRARY_BOOKS lb ON l.lbidx = lb.lbidx
+		JOIN LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
 		JOIN BOOKS b ON lb.bidx = b.bidx
 		WHERE u.userNumber = #{userNumber}
-		ORDER BY l.loanDate DESC;
+		AND l.delyn = 'N'
+		ORDER BY l.loanDate DESC
+		LIMIT #{startPageNum}, #{perPageNum}
 	</select>
+
+	<!-- 대출 목록 전체 개수 조회 -->
+	<select id="selectUserLoanTotalCount" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM LOAN l
+		JOIN USER u ON l.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber}
+	</select>
+
+	<!-- Overdue 테이블 상태 변경 endDate 당일부터 status가 'N'으로 업데이트되서 이용가능으로 전환 -->
+	<update id="updateOverdueStatus">
+		<![CDATA[
+		UPDATE OVERDUE
+		SET status = 'N'
+		WHERE status = 'Y'
+		AND endDate <= CURRENT_DATE()
+		]]>
+	</update>
+
+	<!-- 도서 상태 조회 -->
+	<select id="selectBookStatus" parameterType="String"
+		resultType="String">
+		SELECT status
+		FROM LIBRARYBOOKS
+		WHERE code = #{code}
+	</select>
+
+	<!-- 도서 대여 등록 -->
+	<insert id="insertBookLoan">
+		INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate,
+		status)
+		VALUES (
+		(SELECT uidx FROM USER WHERE userNumber =
+		#{userNumber}),
+		(SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
+		NOW(),
+		DATE_ADD(NOW(), INTERVAL 7 DAY),
+		'대여중'
+		)
+	</insert>
+
+	<!-- 도서 상태 대출중으로 변경 -->
+	<update id="updateLibraryBookStatusToLoan">
+		UPDATE LIBRARYBOOKS
+		SET status = '대출중'
+		WHERE code =
+		#{code}
+	</update>
+
+	<!-- 대여 삭제 -->
+	<update id="deleteLoan" parameterType="int">
+		UPDATE LOAN
+		SET delyn = 'Y'
+		WHERE lidx = #{lidx}
+	</update>
+
+	<!-- 도서 상태 대출 가능으로 변경 -->
+	<update id="updateLibraryBookStatusToAvailable"
+		parameterType="int">
+		UPDATE LIBRARYBOOKS
+		SET status = '대출가능'
+		WHERE lbidx =
+		(SELECT lbidx FROM LOAN WHERE lidx = #{lidx})
+	</update>
+	
+	<!-- 반납 상태로 변경 -->
+    <update id="updateLoanStatusToReturned" parameterType="int">
+        UPDATE LOAN
+        SET status = '반납완료', returnDate = NOW()
+        WHERE lidx = #{lidx}
+    </update>
+	
+	<!-- 반납 예정일 조회 -->
+    <select id="selectDueDate" parameterType="int" resultType="date">
+        SELECT dueDate
+        FROM LOAN
+        WHERE lidx = #{lidx}
+    </select>
+
+    <!-- 연체 등록 -->
+    <insert id="insertOverdue" parameterType="map">
+        INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
+        VALUES (
+            #{lidx},
+            (SELECT uidx FROM LOAN WHERE lidx = #{lidx}),
+            'Y',
+            NOW(),
+            DATE_ADD(NOW(), INTERVAL (
+                (SELECT DATEDIFF(NOW(), dueDate) FROM LOAN WHERE lidx = #{lidx}) * 2 + 1
+            ) DAY)
+        )
+    </insert>
 
 </mapper>
