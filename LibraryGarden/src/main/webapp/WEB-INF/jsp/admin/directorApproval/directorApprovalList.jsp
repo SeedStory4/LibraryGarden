@@ -72,7 +72,7 @@
 								<tr>
 									<td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
 									<td><img src="${ad.coverImg}" alt="${ad.title}"></td>
-									<td><a href="${pageContext.request.contextPath}/admin/directorApproval/${ad.aidx}/directorApprovalDetail">"${ad.title}"</a></td>
+									<td><a href="${pageContext.request.contextPath}/admin/directorApproval/${ad.aidx}/directorApprovalDetail.do">${ad.title}</a></td>
 									<td>${ad.author}</td>
 									<td>${ad.publisher}</td>
 									<td>${ad.name}<br>(${ad.userNumber})</td>
