@@ -1,23 +1,27 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>내 도서</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/css/list.css">
 </head>
 <body class="custom-page">
 
-    <jsp:include page="/user/userHeader.do" />
+	<jsp:include page="/user/userHeader.do" />
 
 	<div class="wrapper">
 		<section class="section p-0">
 			<h2 class="section-title m-0 normal">내 도서</h2>
-			
+
 			<div class="contents">
-				<p class="loan-info">김시연(017147)님의 현재 대출가능여부는 <span class="green bold">"이용가능"</span>입니다.</p>
+				<p class="loan-info">${name}(${userNumber})님의
+					현재 대출가능여부는 <span
+						class="${loanStatus == '이용가능' ? 'green' : 'red'} bold">"${loanStatus}"</span>입니다.
+				</p>
 				<div class="list">
 					<ul class="tab flex gap-3">
 						<li class="on shadow"><a href="#">대출이력</a></li>
@@ -51,57 +55,38 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="blue">대출중</td>
-									<td><button class="btn btn-small btn-secondary1">연장</button></td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="green">반납완료</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td>2025.03.14</td>
-									<td class="red">연체반납</td>
-									<td></td>
-								</tr>
+								<c:forEach var="loan" items="${loanList['loanList']}"
+									varStatus="status">
+									<tr>
+										<td>${status.index + 1}</td>
+										<!-- 순차적인 번호 출력 -->
+										<td>${loan.title}</td>
+										<td>${loan.author}</td>
+										<td>${loan.publisher}</td>
+										<!-- BOOKS 테이블에서 가져온 publisher -->
+										<td>${loan.loanDate}</td>
+										<td>${loan.dueDate}</td>
+										<td>${loan.returnDate}</td>
+										<td
+											class="${loan.status == '대여중' ? 'blue' : loan.status == '연체반납' ? 'red' : 'green'}">
+											${loan.status}</td>
+										<td><button class="btn btn-small btn-secondary1">연장</button></td>
+									</tr>
+								</c:forEach>
 							</tbody>
 						</table>
 						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
-						</ul>	
+							<c:forEach var="i" begin="1" end="${totalPageCount}">
+								<li><a href="#">${i}</a></li>
+							</c:forEach>
+						</ul>
 					</div>
 				</div>
 			</div>
 		</section>
 	</div>
-	
-    <jsp:include page="/cmm/footer.do" />
-	
+
+	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp"%>
+
 </body>
 </html>

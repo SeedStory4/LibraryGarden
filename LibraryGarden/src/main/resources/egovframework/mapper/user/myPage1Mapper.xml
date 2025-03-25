@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="libraryGarden.user.mapper.MyPage1Mapper">
+
+	<!-- 회원 이름 조회 -->
+	<select id="selectUserName" parameterType="String"
+		resultType="String">
+		SELECT name
+		FROM USER
+		WHERE userNumber = #{userNumber}
+	</select>
+
+	<!-- 대출 가능 여부 조회 -->
+	<select id="selectUserLoanStatus" parameterType="String"
+		resultType="String">
+		SELECT CASE
+		WHEN EXISTS (
+		SELECT 1
+		FROM OVERDUE o
+		JOIN USER u ON o.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber} AND o.status = 'Y'
+		) THEN CONCAT('이용불가(~',
+		(SELECT DATE_FORMAT(MAX(o2.endDate), '%Y.%m.%d')
+		FROM OVERDUE o2
+		JOIN USER u2 ON o2.uidx = u2.uidx
+		WHERE u2.userNumber = #{userNumber} AND o2.status = 'Y'
+		), ')')
+		ELSE '이용가능'
+		END AS loanStatus
+		FROM USER u
+		WHERE u.userNumber = #{userNumber}
+	</select>
+
+
+	<!-- 대출 목록 조회 -->
+	<select id="selectUserLoanList" parameterType="map"
+		resultType="map">
+		SELECT
+		@rownum := @rownum + 1 AS rownum,  <!-- 순차적인 숫자 생성 -->
+		b.title,
+		b.author,
+		b.publisher,  <!-- BOOKS 테이블에서 publisher 가져오기 -->
+		DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
+		DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
+		CASE WHEN l.returnDate IS NOT NULL
+		THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
+		ELSE '-'
+		END AS returnDate,
+		l.status
+		FROM LOAN l
+		JOIN USER u ON l.uidx = u.uidx
+		JOIN LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
+		JOIN BOOKS b ON lb.bidx = b.bidx
+		CROSS JOIN (SELECT @rownum := 0) AS r  <!-- 순차적인 번호를 위한 초기화 -->
+		WHERE u.userNumber = #{userNumber}
+		AND l.delyn = 'N'
+		ORDER BY l.loanDate DESC
+		LIMIT #{startPageNum}, #{perPageNum}
+	</select>
+
+	<!-- 대출 목록 전체 개수 조회 -->
+	<select id="selectUserLoanTotalCount" parameterType="String"
+		resultType="int">
+		SELECT COUNT(*)
+		FROM LOAN l
+		JOIN USER u ON l.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber}
+	</select>
+
+</mapper>
