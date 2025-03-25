@@ -1,6 +1,6 @@
 package libraryGarden.domain;
 
-public class OverdueVO {
+public class OverdueVo {
 	
     private int oidx;         // 연체 ID
     private int lidx;         // 대출/반납 ID 

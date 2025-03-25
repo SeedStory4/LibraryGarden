@@ -21,6 +21,7 @@ function numberCheck(page = 1, perPageNum = 12) {
                 $('.loan-info').html('');
                 $('#loanList').empty().append(`<tr><td colspan="10">대출 기록이 없습니다.</td></tr>`);
                 $('#pagination').empty();
+				$('#bookCode').val('');  // 도서구분 input 초기화
                 return;  // 더 이상 처리하지 않음
             }
 
@@ -124,9 +125,11 @@ function addBook() {
         success: function(response) {
             if (response === "대출중" || response === "예약대기") {
                 alert("현재 대출 중이거나 예약 대기 상태인 도서입니다. 대출할 수 없습니다.");
+				$('#bookCode').val('');
                 return;
             } else if (response === "없는 도서") {
                 alert("없는 도서입니다.");
+				$('#bookCode').val('');
                 return;
             }
 
@@ -138,14 +141,17 @@ function addBook() {
                 success: function(response) {
                     alert(response);
                     numberCheck();  // 대출 목록 갱신
+					$('#bookCode').val('');
                 },
                 error: function(xhr, status, error) {
                     alert("대여 등록 실패: " + xhr.responseText);
+					$('#bookCode').val('');
                 }
             });
         },
         error: function(xhr, status, error) {
             alert("도서 상태 조회 오류: " + xhr.responseText);
+			$('#bookCode').val('');
         }
     });
 }

@@ -1,6 +1,6 @@
 package libraryGarden.domain;
 
-public class LoanVO {
+public class LoanVo {
 	
     private int lidx;
     private int lbidx;

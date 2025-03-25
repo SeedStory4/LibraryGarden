@@ -1,6 +1,6 @@
 package libraryGarden.domain;
 
-public class LibraryBookVO {
+public class LibraryBooksVo {
 	
     private int lbidx;
     private int bidx;

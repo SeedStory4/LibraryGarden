@@ -79,7 +79,7 @@
 		</section>
 	</div>
 	
-    <jsp:include page="/cmm/footer.do" />
+    <%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
 
     <!-- 외부 JS 파일 링크 -->
     <script src="${pageContext.request.contextPath}/js/bookLoanWrite.js"></script>
