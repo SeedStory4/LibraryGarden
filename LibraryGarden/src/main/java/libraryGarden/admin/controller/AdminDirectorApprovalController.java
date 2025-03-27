@@ -37,15 +37,21 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 		 
 		 logger.debug("📝 directorApprovalList 들어옴");
 
+		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
 		 UrlEncoder encoder = new UrlEncoder();		 
 		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
+		 
+		 // 사용자가 입력한 검색조건과 검색어 저장
 		 pm.setScri(scri);
-		 
+
+		 // 결재 상태별로 데이터를 보여주기 위해서 현재 탭의 결재 상태 저장
 		 String filter = ad.getStatus();
-		 
+
+		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
 		 int cnt = directorApprovalService.directorApprovalTotalCount(scri, filter);
 		 pm.setTotalCount(cnt);
-		
+
+		 // 목록에서 보여줄 데이터 DB에서 가져오기
 		 ArrayList<ApprovalDto> alist = directorApprovalService.directorApprovalSelectAll(scri, filter);
 		 
 		 model.addAttribute("alist", alist);
