@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="libraryGarden.admin.mapper.AdminBookReservationMapper">
+			
+	<sql id="search">
+		<if test="searchType != null and searchType.equals('title')">
+			AND B.title LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="searchType != null and searchType.equals('author')">
+			AND B.author LIKE CONCAT('%',#{keyword},'%')
+		</if>
+		<if test="searchType != null and searchType.equals('name')">
+			AND U.name LIKE CONCAT('%',#{keyword},'%')
+		</if>
+    	<if test="filter != null and filter != ''">
+        	AND R.status = #{filter}
+    	</if>
+	</sql>
+	
+	<select id="bookReservationTotalCount" parameterType="HashMap" resultType="int">
+	    SELECT COUNT(*) 
+	    FROM RESERVATION R
+	    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
+	    JOIN BOOKS B ON LB.bidx = B.bidx
+	    JOIN USER U ON R.uidx = U.uidx
+	    WHERE R.delyn = 'N'
+	    <include refid="search"/>
+	</select>
+	
+		
+	<select id="bookReservationSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.ReservationDto">
+	    SELECT 
+	        R.ridx,
+	        B.coverImg,
+	        B.title,
+	        B.author,
+	        B.publisher,
+	        U.name,
+	        U.userNumber,
+	        R.pickupDate,
+	        R.status
+	    FROM RESERVATION R
+	    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
+	    JOIN BOOKS B ON LB.bidx = B.bidx
+	    JOIN USER U ON R.uidx = U.uidx
+	    WHERE R.delyn = 'N'
+	    <include refid="search"/>
+	    ORDER BY R.ridx DESC
+	    LIMIT #{startPageNum}, #{perPageNum}
+	</select>
+		
+</mapper>
