@@ -70,15 +70,29 @@
 										<td
 											class="${loan.status == '대여중' ? 'blue' : loan.status == '연체반납' ? 'red' : 'green'}">
 											${loan.status}</td>
-										<td><button class="btn btn-small btn-secondary1">연장</button></td>
+										<td><c:if test="${loan.status == '대여중'}">
+												<button class="btn btn-small btn-secondary1">연장</button>
+											</c:if></td>
 									</tr>
 								</c:forEach>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
+						<ul class="paging flex w-270 justify-center">
+							<!-- ◀ 이전 페이지 (첫 페이지가 아닐 때만 표시) -->
+							<c:if test="${currentPage > 1}">
+								<li><a href="?page=${currentPage - 1}">◀</a></li>
+							</c:if>
+
+							<!-- 페이지 번호는 항상 표시 -->
 							<c:forEach var="i" begin="1" end="${totalPageCount}">
-								<li><a href="#">${i}</a></li>
+								<li><a href="?page=${i}"
+									class="${i == currentPage ? 'on' : ''}">${i}</a></li>
 							</c:forEach>
+
+							<!-- ▶ 다음 페이지 (마지막 페이지가 아닐 때만 표시) -->
+							<c:if test="${currentPage < totalPageCount}">
+								<li><a href="?page=${currentPage + 1}">▶</a></li>
+							</c:if>
 						</ul>
 					</div>
 				</div>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.UserVo;
@@ -26,34 +27,37 @@ public class MyPage1Controller {
 	
 	
     // 내 도서 대출 목록 화면
-    @GetMapping("/myPageLoanList.do")
-    public String myPageLoanList(HttpSession session, Model model) throws Exception {
-        // 세션에서 loginUser 객체 가져오기
-        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+	@GetMapping("/myPageLoanList.do")
+	public String myPageLoanList(
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    HttpSession session,
+	    Model model
+	) throws Exception {
+	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return "redirect:/user/user/userLogin.do";
+	    }
 
-        if (loginUser == null) {
-            return "redirect:/user/user/userLogin.do"; // 로그인 안 된 경우 로그인 페이지로 리디렉션
-        }
+	    String userNumber = loginUser.getUserNumber();
+	    String name = loginUser.getName();
 
-        // loginUser 객체에서 필요한 정보 추출
-        String userNumber = loginUser.getUserNumber(); // userNumber 가져오기
-        String name = loginUser.getName(); // name 가져오기
+	    String loanStatus = myPage1Service.getUserLoanStatus(userNumber);
+	    model.addAttribute("loanStatus", loanStatus);
 
-        // 대출 가능 여부 조회
-        String loanStatus = myPage1Service.getUserLoanStatus(userNumber);
-        model.addAttribute("loanStatus", loanStatus);
-        
-        // 대출 목록 조회 (페이징 처리)
-        Map<String, Object> loanList = myPage1Service.getUserLoanInfo(userNumber, 1, 12);
-        model.addAttribute("loanList", loanList);
-        System.out.println("Loan List나와요? " + loanList);
+	    int perPageNum = 12;
+	    Map<String, Object> loanList = myPage1Service.getUserLoanInfo(userNumber, page, perPageNum);
+	    model.addAttribute("loanList", loanList);
 
-        // 사용자 이름 및 번호
-        model.addAttribute("name", name);
-        model.addAttribute("userNumber", userNumber);
+	    int totalCount = (int) loanList.get("totalCount");
+	    int totalPageCount = (int) Math.ceil((double) totalCount / perPageNum);
 
-        return "user/myPage/myPageLoanList"; // JSP 페이지로 데이터 전달
-    }
+	    model.addAttribute("totalPageCount", totalPageCount);
+	    model.addAttribute("currentPage", page); // 현재 페이지 정보도 전달
+	    model.addAttribute("name", name);
+	    model.addAttribute("userNumber", userNumber);
+
+	    return "user/myPage/myPageLoanList";
+	}
     
     
     

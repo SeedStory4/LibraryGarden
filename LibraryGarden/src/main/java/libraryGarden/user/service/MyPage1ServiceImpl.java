@@ -22,7 +22,12 @@ public class MyPage1ServiceImpl implements MyPage1Service{
     @Override
     public Map<String, Object> getUserLoanInfo(String userNumber, int page, int perPageNum) throws Exception {
         Map<String, Object> result = new HashMap<>();
-        List<Map<String, Object>> loanList = myPage1Mapper.selectUserLoanList(userNumber, page, perPageNum);
+
+        // 페이징 계산 추가
+        int startPageNum = (page - 1) * perPageNum;
+
+        List<Map<String, Object>> loanList = myPage1Mapper.selectUserLoanList(userNumber, startPageNum, perPageNum);
+
         int totalCount = myPage1Mapper.selectUserLoanTotalCount(userNumber);
 
         result.put("loanList", loanList);

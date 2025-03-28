@@ -55,19 +55,23 @@
 		DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
 		DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
 		CASE
-		WHEN l.returnDate IS NOT NULL
+		WHEN l.returnDate IS
+		NOT NULL
 		THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
 		ELSE '-'
-		END AS returnDate,
+		END AS
+		returnDate,
 		l.status,
 		l.delyn
 		FROM LOAN l
 		JOIN USER u ON l.uidx = u.uidx
 		JOIN LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
-		JOIN BOOKS b ON lb.bidx = b.bidx
+		JOIN BOOKS b ON lb.bidx =
+		b.bidx
 		WHERE u.userNumber = #{userNumber}
 		AND l.delyn = 'N'
-		ORDER BY l.loanDate DESC
+		ORDER BY
+		l.loanDate DESC
 		LIMIT #{startPageNum}, #{perPageNum}
 	</select>
 
@@ -115,9 +119,13 @@
 	<!-- 도서 상태 대출중으로 변경 -->
 	<update id="updateLibraryBookStatusToLoan">
 		UPDATE LIBRARYBOOKS
-		SET status = '대출중'
-		WHERE code =
-		#{code}
+		SET status = '대출중',
+		loanDate =
+		NOW(),
+		dueDate = DATE_ADD(NOW(), INTERVAL 7 DAY),
+		returnDate = NULL,
+		modify = NOW()
+		WHERE code = #{code}
 	</update>
 
 	<!-- 대여 삭제 -->
@@ -131,37 +139,49 @@
 	<update id="updateLibraryBookStatusToAvailable"
 		parameterType="int">
 		UPDATE LIBRARYBOOKS
-		SET status = '대출가능'
-		WHERE lbidx =
-		(SELECT lbidx FROM LOAN WHERE lidx = #{lidx})
+		SET status = '대출가능',
+		loanDate = NULL,
+		dueDate = NULL,
+		returnDate = NOW(),
+		modify = NOW()
+		WHERE lbidx = (
+		SELECT lbidx FROM LOAN WHERE lidx = #{lidx}
+		)
 	</update>
-	
-	<!-- 반납 상태로 변경 -->
-    <update id="updateLoanStatusToReturned" parameterType="int">
-        UPDATE LOAN
-        SET status = '반납완료', returnDate = NOW()
-        WHERE lidx = #{lidx}
-    </update>
-	
-	<!-- 반납 예정일 조회 -->
-    <select id="selectDueDate" parameterType="int" resultType="date">
-        SELECT dueDate
-        FROM LOAN
-        WHERE lidx = #{lidx}
-    </select>
 
-    <!-- 연체 등록 -->
-    <insert id="insertOverdue" parameterType="map">
-        INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
-        VALUES (
-            #{lidx},
-            (SELECT uidx FROM LOAN WHERE lidx = #{lidx}),
-            'Y',
-            NOW(),
-            DATE_ADD(NOW(), INTERVAL (
-                (SELECT DATEDIFF(NOW(), dueDate) FROM LOAN WHERE lidx = #{lidx}) * 2 + 1
-            ) DAY)
-        )
-    </insert>
+	<!-- 반납 상태로 변경 -->
+	<update id="updateLoanStatusToReturned" parameterType="int">
+		UPDATE
+		LOAN
+		SET status = '반납완료',
+		returnDate = NOW(),
+		modify = NOW()
+		WHERE lidx =
+		#{lidx}
+	</update>
+
+	<!-- 반납 예정일 조회 -->
+	<select id="selectDueDate" parameterType="int" resultType="date">
+		SELECT dueDate
+		FROM LOAN
+		WHERE lidx = #{lidx}
+	</select>
+
+	<!-- 연체 등록 -->
+	<insert id="insertOverdue" parameterType="map">
+		INSERT INTO OVERDUE
+		(lidx, uidx, status, startDate, endDate)
+		VALUES (
+		#{lidx},
+		(SELECT uidx
+		FROM LOAN WHERE lidx = #{lidx}),
+		'Y',
+		NOW(),
+		DATE_ADD(NOW(), INTERVAL (
+		(SELECT DATEDIFF(NOW(), dueDate) FROM LOAN WHERE lidx = #{lidx}) * 2 +
+		1
+		) DAY)
+		)
+	</insert>
 
 </mapper>
