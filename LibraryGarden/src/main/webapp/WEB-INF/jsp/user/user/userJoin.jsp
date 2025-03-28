@@ -73,8 +73,12 @@
 		        
 		    	  if (result === "OK") {
 		          alert("사용 가능한 아이디입니다!");
+		          isIdChecked = true;              // 중복검사 성공 플래그 설정
+		          lastCheckedId = userId;          // 중복검사 당시의 아이디 기억
 		        } else {
 		          alert("이미 사용 중인 아이디입니다.");
+		          isIdChecked = false;             // 실패 시는 다시 false로
+		          lastCheckedId = "";              // 이전 기록 제거
 		        }
 		      })
 		      .catch(err => {
