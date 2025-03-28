@@ -115,7 +115,7 @@
 		</section>
 	</div>
 	
-    <jsp:include page="/cmm/footer.do" />
+    <%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
 
     <script>
 	// select2
