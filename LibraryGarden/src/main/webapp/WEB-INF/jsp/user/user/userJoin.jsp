@@ -50,7 +50,10 @@
 		<!-- JS: 중복확인 클릭 이벤트 -->
 		<script>
 		  document.addEventListener("DOMContentLoaded", function() {
-		    document.getElementById("idCheckBtn").addEventListener("click", function () {
+			  let isIdChecked = false;
+			  let lastCheckedId = "";
+		   
+			document.getElementById("idCheckBtn").addEventListener("click", function () {
 		      let userId = document.querySelector("input[name='id']").value.trim();
 		
 		      if (userId === "") {
@@ -82,19 +85,75 @@
 		    
 		    
 		    
-		 	// 회원가입 form 제출 시 비밀번호 확인
 		    document.getElementById("joinForm").addEventListener("submit", function (e) {
-		      const pw = document.querySelector("input[name='password']").value;
-		      const pwConfirm = document.querySelector("input[name='passwordConfirm']").value;
+		        const form = e.target;
+		        const name = form.name.value.trim();
+		        const id = form.id.value.trim();
+		        const pw = form.password.value.trim();
+		        const pwConfirm = form.passwordConfirm.value.trim();
+		        const phone = form.phone.value.trim();
+		        const email = form.email.value.trim();
+		        const address = form.address.value.trim();
 
-		      if (pw !== pwConfirm) {
-		        e.preventDefault(); // 폼 전송 막기
-		        alert("비밀번호가 서로 일치하지 않습니다.");
-		      }
+		        if (name === "") {
+		          alert("이름을 입력해주세요.");
+		          form.name.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (id === "") {
+		          alert("아이디를 입력해주세요.");
+		          form.id.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (pw === "") {
+		          alert("비밀번호를 입력해주세요.");
+		          form.password.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (pwConfirm === "") {
+		          alert("비밀번호 확인을 입력해주세요.");
+		          form.passwordConfirm.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (pw !== pwConfirm) {
+		          alert("비밀번호가 서로 일치하지 않습니다.");
+		          form.passwordConfirm.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (phone === "") {
+		          alert("휴대전화번호를 입력해주세요.");
+		          form.phone.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (email === "") {
+		          alert("이메일을 입력해주세요.");
+		          form.email.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        if (address === "") {
+		          alert("주소를 입력해주세요.");
+		          form.address.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        
+		     // 아이디 중복확인 여부 체크
+		        if (!isIdChecked || id !== lastCheckedId) {
+		          alert("아이디 중복 확인을 해주세요.");
+		          form.id.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		     
+		      });
 		    });
-		    
-		    
-		  });
 		</script>
 
 		
