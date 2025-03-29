@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -23,14 +23,16 @@
 			
 			<div class="contents">
 				<div class="book-list pt-0">
+				<form action="${pageContext.request.contextPath}/user/book/bookList.do">
 					<div class="search flex gap-20 justify-center">
-						<select class="js-example-basic-single select shadow" name="state">
-							<option value="title">제목</option>
+						<select class="js-example-basic-single select shadow" name="searchType">
+							<option value="title" selected>제목</option>
 							<option value="author">저자</option>
 						</select>
-						<input type="text" class="shadow w-720">						
+						<input type="text" class="shadow w-720" name="keyword" value="">						
 						<button class="btn btn-primary btn-small">검색</button>
 					</div>
+				</form>
 					<div class="table">
 						<table>
 							<colgroup>
@@ -58,49 +60,51 @@
 								</tr>
 							</thead>
 							<tbody>
+							    <c:forEach items="${requestScope.lblist}" var="lbd" varStatus="status">
 								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>802.123 한 127 v1</td>
-									<td>일반열람실</td>
-									<td>2025.03.14</td>
-									<td class="blue">대출중</td>
+									<td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
+									<td><img src="${lbd.coverImg}" alt="${lbd.title}"></td>
+									<td><a href="${pageContext.request.contextPath}/user/book/${lbd.lbidx}/bookDetail.do">${lbd.title}</a></td>
+									<td>${lbd.author}</td>
+									<td>${lbd.publisher}</td>
+									<td>${lbd.callName}</td>
+									<td>${lbd.location}</td>
+									<td><c:choose>
+										  <c:when test="${not empty lbd.dueDate}">
+										    <c:if test="${lbd.status eq '대출중'}">${lbd.dueDate}</c:if>
+										    <c:if test="${lbd.status ne '대출중'}">-</c:if>	
+										  </c:when>
+										  <c:otherwise>
+										    -
+										  </c:otherwise>
+										</c:choose>
+									</td>
+									<td class=
+										<c:if test="${lbd.status eq '대출중'}">"blue"</c:if>
+										<c:if test="${lbd.status eq '대출가능'}">"green"</c:if>
+										<c:if test="${lbd.status eq '예약대기'}">"green"</c:if>
+										<c:if test="${lbd.status eq '대출불가'}">"red pointer openRejectionModal" </c:if>
+									>${lbd.status}</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>802.123 한 127 v1</td>
-									<td>어린이열람실</td>
-									<td>-</td>
-									<td class="green">대출가능</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>802.123 한 127 v1</td>
-									<td>일반열람실</td>
-									<td>-</td>
-									<td class="orange">예약대기</td>
-								</tr>
+								</c:forEach>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
+						<ul class="paging flex w-270 justify-center">
+							<c:if test="${requestScope.pm.prev == true}">
+							<li>
+					          <a href="${pageContext.request.contextPath}/user/book/bookList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					        </li>
+							</c:if> 
+							
+					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/user/book/bookList.do?page=${i}&${queryParam}">${i}</a></li>
+					        </c:forEach>
+					        
+					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
+							<li class="page-item">
+					          <a href="${pageContext.request.contextPath}/user/book/bookList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					        </li>
+							</c:if>
 						</ul>
 					</div>
 				</div>

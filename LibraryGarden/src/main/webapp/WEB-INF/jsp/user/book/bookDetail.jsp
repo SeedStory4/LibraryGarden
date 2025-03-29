@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>도서상세</title>
-<link rel="stylesheet" href="<%= request.getContextPath() %>/css/font.css">
-<link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/font.css">
+<link rel="stylesheet"
+	href="<%=request.getContextPath()%>/css/adminMain.css">
 </head>
 <body>
 
@@ -24,37 +26,47 @@
 				<!-- 선 추가 -->
 
 				<!-- 도서 정보 -->
+				<c:set var="lbd" value="${requestScope.lbd}" />
 				<div class="draft-content">
-					<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지"
+					<img src="${lbd.coverImg}" alt="${lbd.title}"
 						class="draft-book-img">
 					<div class="draft-info">
 						<p>
-							<span class="info-title">● 제목</span> <span class="info-content">채식주의자</span>
+							<span class="info-title">● 제목</span> <span class="info-content">${lbd.title}</span>
 						</p>
 						<p>
-							<span class="info-title">● 부제</span> <span class="info-content">채식주의자</span>
+							<span class="info-title">● 부제</span> <span class="info-content">
+								<c:choose>
+									<c:when test="${not empty lbd.subtitle}">
+									${lbd.subtitle}
+								  	</c:when>
+									<c:otherwise>
+								    -
+								    </c:otherwise>
+								</c:choose>
+							</span>
 						</p>
 						<p>
-							<span class="info-title">● 서명/저자사항</span> <span
-								class="info-content">한강</span>
+							<span class="info-title">● 서명/저자사항</span> <span class="info-content">${lbd.author}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판사</span> <span class="info-content">창비</span>
+							<span class="info-title">● 출판사</span> <span class="info-content">${lbd.publisher}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판년도</span> <span class="info-content">2024년</span>
+							<span class="info-title">● 출판년도</span> <span class="info-content">${lbd.publishedYear}년</span>
 						</p>
 						<p>
-							<span class="info-title">● 전체쪽수</span> <span class="info-content">216쪽</span>
+							<span class="info-title">● 전체쪽수</span> <span class="info-content">${lbd.totalPages}쪽</span>
 						</p>
 						<p>
-							<span class="info-title">● ISBN</span> <span class="info-content">12345687351</span>
+							<span class="info-title">● ISBN</span> <span class="info-content">${lbd.isbn}</span>
 						</p>
 						<p>
-							<span class="info-title">● 서적정보</span> <span class="info-content">145×210mm/300g</span>
+							<span class="info-title">● 서적정보</span> <span class="info-content">${lbd.info}/${lbd.category}</span>
 						</p>
 					</div>
-					 <button class="request-status-btn status-btn-ing">대출중(~2024.05.31)</button> 
+					
+					<button class="request-status-btn status-btn-ing <c:if test="${empty lbd.status}">on</c:if>" >대출중(~2024.05.31)</button>
 					<!-- <button class="request-status-btn status-btn-ok">대출가능</button> -->
 					<!-- <button class="request-status-btn status-btn-wating">예약대기</button> -->
 					<!-- <button class="request-status-btn status-btn-no">대출불가</button> -->
@@ -64,13 +76,7 @@
 				<div class="draft-book-description shadow ml-28">
 					<div class="description-content">
 						<p>
-							2016년 인터내셔널 부커상을 수상하며 한국문학의 입지를 한단계 확장시킨 한강의 장편소설.<br> 상처받은
-							영혼의 고통과 식물적 상상력의 강렬한 결합을 정교한 구성과 흡인력 있는 문체로 보여주며 섬뜩한 아름다움의 미학을
-							한강만의 방식으로 완성한 역작이다.<br> <br> 소설에는 어느 날부터 육식을 거부하며 가족들과
-							갈등을 빚기 시작하는 ‘영혜’가 중심인물로 등장한다. 하지만 영혜를 둘러싼 세 인물인 남편, 형부, 언니의 시선에서
-							서술되며 영혜는 단 한번도 주도적인 화자의 위치를 얻지 못한다. 가족의 이름으로 자행되는 가부장의 폭력, 그리고 그
-							폭력에 저항하며 금식을 통해 동물성을 벗어던지고 나무가 되고자 한 영혜가 보여주는 식물적 상상력의 경지는 모든 세대
-							독자를 아우르며 더 크나큰 공명을 이루어낼 것이다.
+							{lbd.info}
 						</p>
 					</div>
 				</div>
@@ -112,6 +118,6 @@
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" /> 
+	<jsp:include page="/common/footer.jsp" />
 </body>
 </html>
