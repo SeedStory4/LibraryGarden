@@ -22,7 +22,7 @@
 		
 		      <!-- 회원가입 form -->
 		      <div class="draft-content ml-mr-50">
-		        <form action="<%= request.getContextPath() %>/user/user/userJoinAction.do" method="post" id="joinForm">
+		        <form action="<%= request.getContextPath() %>/user/user/userJoinAction.do" method="post" id="joinForm" novalidate>
 		          <input type="text" name="name" class="user-A-input mb-30" placeholder="이름" maxlength="10" required>
 		
 		          <input type="text" name="id" class="user-A-input mb-17" placeholder="아이디" required>
@@ -86,6 +86,12 @@
 		        alert("서버 오류 발생!");
 		      });
 		    });
+			
+			// 아이디 입력값 변경 시 중복확인 상태 초기화
+			  document.querySelector("input[name='id']").addEventListener("input", function () {
+			    isIdChecked = false;
+			    lastCheckedId = "";
+			  });
 		    
 		    
 		    
@@ -141,6 +147,15 @@
 		          e.preventDefault();
 		          return;
 		        }
+		        
+		        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+		        if (!emailRegex.test(email)) {
+		          alert("올바른 이메일 형식이 아닙니다.");
+		          form.email.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        
 		        if (address === "") {
 		          alert("주소를 입력해주세요.");
 		          form.address.focus();
@@ -160,7 +175,6 @@
 		    });
 		</script>
 
-		
 		<!-- 푸터 로드 -->
 		<jsp:include page="/common/footer.jsp" /> 
 		
