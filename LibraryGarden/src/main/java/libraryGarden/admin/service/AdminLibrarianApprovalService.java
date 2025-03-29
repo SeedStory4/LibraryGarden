@@ -3,7 +3,7 @@ package libraryGarden.admin.service;
 import java.util.ArrayList;
 
 import libraryGarden.domain.ApprovalDto;
-import libraryGarden.domain.LibraryBookVO;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.SearchCriteria;
 
 public interface AdminLibrarianApprovalService {
@@ -12,6 +12,6 @@ public interface AdminLibrarianApprovalService {
 	
 	public ArrayList<ApprovalDto> librarianApprovalSelectAll(SearchCriteria scri, String filter);
 	
-	public LibraryBookVO(int aidx);
+	public BookVo librarianApprovalSelectOne(int aidx);
 	
 }

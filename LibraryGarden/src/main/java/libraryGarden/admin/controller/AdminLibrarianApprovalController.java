@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.admin.service.AdminLibrarianApprovalService;
@@ -34,12 +35,8 @@ public class AdminLibrarianApprovalController {
 			ApprovalDto ad,
 			Model model) {
 		 
-		 logger.debug("📝 librarianApprovalList 들어옴");		
+		 logger.debug("📝 librarianApprovalList 들어옴");
 
-		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
-		 UrlEncoder encoder = new UrlEncoder();		 
-		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
-		 
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 pm.setScri(scri);
 
@@ -52,34 +49,35 @@ public class AdminLibrarianApprovalController {
 		
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
 		 ArrayList<ApprovalDto> alist = librarianApprovalService.librarianApprovalSelectAll(scri, filter);
+
+		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
+		 UrlEncoder encoder = new UrlEncoder();
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
 		 
 		 model.addAttribute("alist", alist);
 		 model.addAttribute("pm", pm);
 		 model.addAttribute("filter", filter);
 		
-		return "admin/librarianApproval/librarianApprovalList";
+		 return "admin/librarianApproval/librarianApprovalList";
 	}
 
 	@RequestMapping(value="/{aidx}/librarianApprovalDetail.do")
 	public String librarianApprovalDetail(
 			@PathVariable("aidx") int aidx,
 			Model model) {
-		 
+		
 		logger.debug("📝 librarianApprovalDetail 들어옴");
 		
-//		ApprovalVo av = librarianApprovalService.librarianApprovalSelectOne(aidx);
-//				
-//		model.addAttribute("av", av);
+		// 도서 정보 DB에서 가져오기
+		BookVo bv = librarianApprovalService.librarianApprovalSelectOne(aidx);
+		
+		model.addAttribute("bv", bv);
 		
 		return "admin/librarianApproval/librarianApprovalDetail";
 	}
 	
-//		
-//		
-//		
-//		return path;
-//	}
-//	
+	
+
 //	@RequestMapping(value="/{boardcode}/{period}/boardWrite.do")
 //	public String boardWrite(
 //			@PathVariable("boardcode") String boardcode,
@@ -254,95 +252,6 @@ public class AdminLibrarianApprovalController {
 //		return path;
 //	}
 //		
-//	@RequestMapping(value="/imagePreview.do", method=RequestMethod.POST)
-//	public ResponseEntity<Map<String, String>> imagePreview(@RequestParam("upload") MultipartFile upload, HttpServletRequest request) {
-//		
-//		System.out.println("imagePreview ����");
-//		
-//		// ���� ���� ���丮. �������
-//		String uploadDirectory = "D:\\dev\\myprj\\myprjSpring\\myprj\\src\\main\\webapp\\resources\\ckeditor5Builder\\ckeditor5\\imagePreview\\";
-//		File directory = new File(uploadDirectory);
-//		
-//		// ���丮�� �������� ������ ����
-//		if (!directory.exists()) {
-//			directory.mkdirs();  // ���丮 ����
-//		}
-//		
-//	    String fileName = UUID.randomUUID().toString() + "_" + upload.getOriginalFilename();  // ������ ���� �̸� ����
-//	    File file  = new File(directory, fileName);
-//
-//	    try {
-//	        // ������ ������ ����
-//	        upload.transferTo(file);
-//	        
-//	        // ���ε�� ������ URL�� ��ȯ
-//	        String fileUrl = request.getScheme() + "://" + request.getServerName() + ":" + request.getServerPort() + request.getContextPath() + 
-//	                "/board/displayFile.do?fileName=" + fileName + "&type=" + "preview";
-//	        
-//	        // Map<String, Object> response = new HashMap<>();
-//	        // response.put("uploaded", true); // ���ε� ���� ����
-//	        // response.put("url", fileUrl);
-//
-//	        Map<String, String> response = Map.of("url", fileUrl);
-//	        return ResponseEntity.ok(response); // JSON �������� ��ȯ
-//	        
-//	    } catch (IOException e) {
-//	        e.printStackTrace();
-//	        
-//	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
-//	    }
-//	}
-//	
-//	@RequestMapping(value="/displayFile.do", method=RequestMethod.GET)  // �����ο� ������ �Ǿ�� ��
-//	public ResponseEntity<byte[]> displayFile(
-//			@RequestParam("fileName") String fileName,
-//			@RequestParam("type") String type  // �̸����� �̹������� ����
-//			) {
-//		
-//		logger.info("displayFile����");
-//	
-//		ResponseEntity<byte[]> entity = null;  // ResponseEntity : Collectionó�� ��ü�� ��´�.
-//		InputStream in = null;
-//		
-//		try{
-//			String formatName = fileName.substring(fileName.lastIndexOf(".")+1);  // ������ Ȯ���ڸ� ����
-//			MediaType mType = MediaUtils.getMediaType(formatName);  // MediaUtils�� Ȯ���ڸ� �־ ������ Ÿ���� �˾Ƴ�
-//			
-//			HttpHeaders headers = new HttpHeaders();		
-//			System.out.println("type : " + type);
-//			String uploadPath = "";
-//			if(type.equals("preview")) {
-//				uploadPath = "D:\\dev\\myprj\\myprjSpring\\myprj\\src\\main\\webapp\\resources\\ckeditor5Builder\\ckeditor5\\imagePreview\\";		
-//			} else if(type.equals("thumbnail")) {
-//				uploadPath = "D:\\dev\\myprj\\myprjSpring\\myprj\\src\\main\\webapp\\resources\\boardImages\\";
-//			}
-//			
-//			in = new FileInputStream(uploadPath+fileName);  // ���� �б�
-//		
-//			if(mType != null){  // ������ Ÿ���� JPG, GIF, PNG �� �ϳ��� ���				
-//				headers.setContentType(mType);
-//			}
-//			
-//			entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);  // �������� �Ű������� ���� �޾Ƽ� ����
-//			
-//		}catch(Exception e){
-//			e.printStackTrace();
-//			entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-//			
-//		}finally{
-//			try {
-//				in.close();
-//			} catch (IOException e) {
-//				
-//				e.printStackTrace();
-//			}
-//		}
-//				
-//		return entity;
-//	}
-//	
-//	
-//			
 //	@RequestMapping(value="/{bidx}/boardDeleteAction.do")
 //	public String boardDeleteAction(
 //			@PathVariable("bidx") int bidx,
@@ -367,120 +276,4 @@ public class AdminLibrarianApprovalController {
 //	
 //	
 //	
-////		// ������ ������ ���� ��ο� ���� �ű��
-////		@RequestMapping(value="/displayFile.aws", method=RequestMethod.GET)  // �����ο� ������ �Ǿ�� ��
-////		public ResponseEntity<byte[]> displayFile(
-////				@RequestParam("fileName") String fileName,
-////				@RequestParam(value="down", defaultValue="0") int down  // �ٿ� ������, ȭ�鿡�� �������� ����
-////				) {
-////
-////			logger.info("displayFile����");
-////			
-////			ResponseEntity<byte[]> entity = null;  // ResponseEntity : Collectionó�� ��ü�� ��´�.
-////			InputStream in = null;
-////			
-////			try{
-////				String formatName = fileName.substring(fileName.lastIndexOf(".")+1);  // ������ Ȯ���ڸ� ����
-////				MediaType mType = MediaUtils.getMediaType(formatName);  // MediaUtils�� Ȯ���ڸ� �־ ������ Ÿ���� �˾Ƴ�
-////				
-////				HttpHeaders headers = new HttpHeaders();		
-////				 
-////				in = new FileInputStream(uploadPath+fileName);  // ���� �б�
-////							
-////				if(mType != null){  // ������ Ÿ���� JPG, GIF, PNG �� �ϳ��� ���
-////					
-////					if (down==1) {  // �ٿ��� �޴´�
-////						fileName = fileName.substring(fileName.indexOf("_")+1);
-////						headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-////						headers.add("Content-Disposition", "attachment; filename=\""+
-////								new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");	
-////						
-////					}else {  // �ٿ���� �ʰ� Ÿ���� ����
-////						headers.setContentType(mType);	
-////					}
-////					
-////				}else{  // �̸����� ���� �ʰ� �ٿ��� �޴´�.
-////					
-////					fileName = fileName.substring(fileName.indexOf("_")+1);
-////					headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
-////					headers.add("Content-Disposition", "attachment; filename=\""+
-////							new String(fileName.getBytes("UTF-8"),"ISO-8859-1")+"\"");				
-////				}
-////				
-////				entity = new ResponseEntity<byte[]>(IOUtils.toByteArray(in), headers, HttpStatus.CREATED);  // �������� �Ű������� ���� �޾Ƽ� ����
-////				
-////			}catch(Exception e){
-////				e.printStackTrace();
-////				entity = new ResponseEntity<byte[]>(HttpStatus.BAD_REQUEST);
-////				
-////			}finally{
-////				try {
-////					in.close();
-////				} catch (IOException e) {
-////					
-////					e.printStackTrace();
-////				}
-////			}
-////					
-////			return entity;
-////		}
-//	
-//		
-//	@RequestMapping(value="boardReply.aws", method=RequestMethod.GET)
-//	public String boardReply(
-//		@RequestParam("bidx") int bidx,
-//		Model model) {
-//
-//		logger.info("boardReply����");
-//		
-//		BoardVo bv = boardService.boardSelectOne(bidx);
-//		
-//		model.addAttribute("bv", bv);
-//		
-//		return "WEB-INF/board/boardReply";
-//	
-//	}
-//
-//	@RequestMapping(value="boardReplyAction.aws", method=RequestMethod.POST)
-//	public String boardReplyAction(
-//			BoardVo bv,
-//			@RequestParam("attachfile") MultipartFile filename,  // input�� name �̸��� BoardVo�� �ִ� ������Ƽ �̸��� �����ϸ� BoardVo�� ���� �Ѿ�� @RequestParam���� ���� �� �����Ƿ�, input�� name�� filename�� �ƴ� attachfile���� �Ѵ�.
-//			HttpServletRequest request,
-//			RedirectAttributes rttr
-//			) throws Exception {
-//		
-//		logger.info("boardReplyAction����");
-//		
-//		// ����÷��
-//		MultipartFile file = filename;
-//		String uploadedFileName = "";
-//		
-//		if(!file.getOriginalFilename().equals("")) {			
-//			uploadedFileName = UploadFileUtiles.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
-//		}
-//
-//		String midx = request.getSession().getAttribute("midx").toString();
-//		int midx_int = Integer.parseInt(midx);
-//		String ip = userip.getUserIp(request);
-//
-//		bv.setUploadedFilename(uploadedFileName);
-//		bv.setMidx(midx_int);
-//		bv.setIp(ip);		
-//		
-//		int maxBidx = 0;
-//		maxBidx = boardService.boardReply(bv);
-//
-//		String path = "";
-//		if (maxBidx != 0) {
-//			rttr.addFlashAttribute("msg", "�亯 ��� ����");
-//			path = "redirect:/board/boardContents.aws?bidx=" + maxBidx;
-//			
-//		} else {
-//			rttr.addFlashAttribute("msg", "�亯�� ��ϵ��� �ʾҽ��ϴ�.");
-//			path ="redirect:/board/boardReply.aws?bidx=" + bv.getBidx();
-//			
-//		}
-//		
-//		return path;
-//	}
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminLibrarianApprovalMapper;
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.SearchCriteria;
 
 @Service
@@ -46,11 +47,11 @@ public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApproval
 	}
 	
 	@Override
-	public ApprovalDto librarianApprovalSelectOne(int aidx) {
-			
-		ApprovalDto ad = lm.librarianApprovalSelectOne(aidx);
+	public BookVo librarianApprovalSelectOne(int aidx) {
 		
-		return ad;
+		BookVo bv = lm.librarianApprovalSelectOne(aidx);
+		
+		return bv;
 	};
 	
 }

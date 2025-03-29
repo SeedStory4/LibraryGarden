@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import libraryGarden.admin.service.AdminDirectorApprovalService;
 import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 
@@ -37,10 +38,6 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 		 
 		 logger.debug("📝 directorApprovalList 들어옴");
 
-		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
-		 UrlEncoder encoder = new UrlEncoder();		 
-		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
-		 
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 pm.setScri(scri);
 
@@ -53,6 +50,10 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
 		 ArrayList<ApprovalDto> alist = directorApprovalService.directorApprovalSelectAll(scri, filter);
+
+		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
+		 UrlEncoder encoder = new UrlEncoder();
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
 		 
 		 model.addAttribute("alist", alist);
 		 model.addAttribute("pm", pm);
@@ -67,10 +68,11 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 			Model model) {
 		 
 		logger.debug("📝 directorApprovalDetail 들어옴");
+
+		// 도서 정보 DB에서 가져오기
+		BookVo bv = directorApprovalService.directorApprovalSelectOne(aidx);
 		
-//		ApprovalVo av = directorApprovalService.directorApprovalSelectOne(aidx);
-//				
-//		model.addAttribute("av", av);
+		model.addAttribute("bv", bv);
 		
 		return "admin/directorApproval/directorApprovalDetail";
 	}

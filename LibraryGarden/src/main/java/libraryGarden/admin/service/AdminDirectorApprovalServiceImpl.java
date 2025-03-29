@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminDirectorApprovalMapper;
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.SearchCriteria;
 
 @Service
@@ -46,6 +47,11 @@ public class AdminDirectorApprovalServiceImpl implements AdminDirectorApprovalSe
 		return alist;
 	}
 	
-	
-	
+	@Override
+	public BookVo directorApprovalSelectOne(int aidx){
+		
+		BookVo bv = dm.directorApprovalSelectOne(aidx);
+		
+		return bv;	
+	}
 }
