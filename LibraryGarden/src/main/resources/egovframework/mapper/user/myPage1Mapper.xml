@@ -3,16 +3,14 @@
 <mapper namespace="libraryGarden.user.mapper.MyPage1Mapper">
 
 	<!-- 회원 이름 조회 -->
-	<select id="selectUserName" parameterType="String"
-		resultType="String">
+	<select id="selectUserName" parameterType="String" resultType="String">
 		SELECT name
 		FROM USER
 		WHERE userNumber = #{userNumber}
 	</select>
 
 	<!-- 대출 가능 여부 조회 -->
-	<select id="selectUserLoanStatus" parameterType="String"
-		resultType="String">
+	<select id="selectUserLoanStatus" parameterType="String" resultType="String">
 		SELECT CASE
 		WHEN EXISTS (
 		SELECT 1
@@ -33,8 +31,7 @@
 
 
 	<!-- 대출 목록 조회 -->
-	<select id="selectUserLoanList" parameterType="map"
-		resultType="map">
+	<select id="selectUserLoanList" parameterType="map" resultType="map">
 		SELECT
 		@rownum := @rownum + 1 AS rownum,  <!-- 순차적인 숫자 생성 -->
 		b.title,
@@ -59,12 +56,42 @@
 	</select>
 
 	<!-- 대출 목록 전체 개수 조회 -->
-	<select id="selectUserLoanTotalCount" parameterType="String"
-		resultType="int">
+	<select id="selectUserLoanTotalCount" parameterType="String" resultType="int">
 		SELECT COUNT(*)
 		FROM LOAN l
 		JOIN USER u ON l.uidx = u.uidx
 		WHERE u.userNumber = #{userNumber}
 	</select>
+	
+		<!-- 예약 목록 조회 -->
+	<select id="selectUserReservationList" parameterType="map" resultType="map">
+		SELECT
+			@rownum := @rownum + 1 AS rownum,  <!-- 순번 생성 -->
+			b.title,
+			b.author,
+			b.publisher,
+			DATE_FORMAT(r.reservationDate, '%Y.%m.%d') AS reservationDate,
+			DATE_FORMAT(r.pickupDate, '%Y.%m.%d') AS pickupDate,
+			DATE_FORMAT(r.dueDate, '%Y.%m.%d') AS dueDate,
+			r.status
+		FROM RESERVATION r
+		JOIN USER u ON r.uidx = u.uidx
+		JOIN LIBRARYBOOKS lb ON r.lbidx = lb.lbidx
+		JOIN BOOKS b ON lb.bidx = b.bidx
+		CROSS JOIN (SELECT @rownum := 0) AS rnum
+		WHERE u.userNumber = #{userNumber}
+		ORDER BY r.reservationDate DESC
+		LIMIT #{startPageNum}, #{perPageNum}
+	</select>
+
+
+	<!-- 예약 목록 전체 개수 조회 -->
+	<select id="selectUserReservationTotalCount" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		FROM RESERVATION R
+		JOIN USER u ON R.uidx = u.uidx
+		WHERE u.userNumber = #{userNumber}
+	</select>
+	
 
 </mapper>

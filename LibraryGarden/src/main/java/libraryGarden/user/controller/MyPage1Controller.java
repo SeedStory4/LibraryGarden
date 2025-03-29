@@ -58,16 +58,40 @@ public class MyPage1Controller {
 
 	    return "user/myPage/myPageLoanList";
 	}
-    
-    
-    
+       
 	
 	// 내 도서 예약관리
 	@GetMapping("/myPageReservationList.do")
-	public String myPageReservationList() {
-		return "user/myPage/myPageReservationList";
+	public String myPageReservationList(
+	    @RequestParam(value = "page", defaultValue = "1") int page,
+	    HttpSession session,
+	    Model model
+	) throws Exception {
+	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return "redirect:/user/user/userLogin.do";
+	    }
+
+	    String userNumber = loginUser.getUserNumber();
+	    String name = loginUser.getName();
+
+	    String loanStatus = myPage1Service.getUserLoanStatus(userNumber);
+	    model.addAttribute("loanStatus", loanStatus);
+
+	    int perPageNum = 12;
+	    Map<String, Object> reservationList = myPage1Service.getUserReservationInfo(userNumber, page, perPageNum);
+	    model.addAttribute("reservationList", reservationList);
+
+	    int totalCount = (int) reservationList.get("totalCount");
+	    int totalPageCount = (int) Math.ceil((double) totalCount / perPageNum);
+
+	    model.addAttribute("totalPageCount", totalPageCount);
+	    model.addAttribute("currentPage", page); // 현재 페이지 정보도 전달
+	    model.addAttribute("name", name);
+	    model.addAttribute("userNumber", userNumber);
+
+	    return "user/myPage/myPageReservationList";
 	}
-	
 	
 	
 	

@@ -40,5 +40,23 @@ public class MyPage1ServiceImpl implements MyPage1Service{
     public String getUserName(String userNumber) throws Exception {
         return myPage1Mapper.selectUserName(userNumber); // 회원 이름 조회
     }
+    
+    
+    @Override
+    public Map<String, Object> getUserReservationInfo(String userNumber, int page, int perPageNum) throws Exception {
+        Map<String, Object> result = new HashMap<>();
+
+        // 페이징 계산 추가
+        int startPageNum = (page - 1) * perPageNum;
+
+        List<Map<String, Object>> reservationList = myPage1Mapper.selectUserReservationList(userNumber, startPageNum, perPageNum);
+
+        int totalCount = myPage1Mapper.selectUserReservationTotalCount(userNumber);
+
+        result.put("reservationList", reservationList);
+        result.put("totalCount", totalCount);
+
+        return result;
+    }
 
 }

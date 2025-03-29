@@ -13,7 +13,7 @@
 </head>
 <body class="custom-page">
 
-	<jsp:include page="/user/userHeader.do" />
+	<jsp:include page="/admin/adminHeader.do" />
 
 	<div class="wrapper">
 		<section class="section p-0">

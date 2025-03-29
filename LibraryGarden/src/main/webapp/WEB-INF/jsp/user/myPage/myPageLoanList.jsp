@@ -24,8 +24,8 @@
 				</p>
 				<div class="list">
 					<ul class="tab flex gap-3">
-						<li class="on shadow"><a href="#">대출이력</a></li>
-						<li class="shadow"><a href="#">예약관리</a></li>
+						<li class="on shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageLoanList.do">대출이력</a></li>
+						<li class="shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageReservationList.do">예약관리</a></li>
 						<li class="shadow"><a href="#">도서신청관리</a></li>
 					</ul>
 					<div class="table">

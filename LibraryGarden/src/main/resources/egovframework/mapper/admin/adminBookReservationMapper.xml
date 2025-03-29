@@ -25,30 +25,31 @@
 	    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
 	    JOIN BOOKS B ON LB.bidx = B.bidx
 	    JOIN USER U ON R.uidx = U.uidx
-	    WHERE R.delyn = 'N'
+	    WHERE R.delyn IN ('N', 'Y')
 	    <include refid="search"/>
 	</select>
 	
 		
-	<select id="bookReservationSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.ReservationDto">
-	    SELECT 
-	        R.ridx,
-	        B.coverImg,
-	        B.title,
-	        B.author,
-	        B.publisher,
-	        U.name,
-	        U.userNumber,
-	        R.pickupDate,
-	        R.status
-	    FROM RESERVATION R
-	    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
-	    JOIN BOOKS B ON LB.bidx = B.bidx
-	    JOIN USER U ON R.uidx = U.uidx
-	    WHERE R.delyn = 'N'
-	    <include refid="search"/>
-	    ORDER BY R.ridx DESC
-	    LIMIT #{startPageNum}, #{perPageNum}
-	</select>
+<select id="bookReservationSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.ReservationDto">
+    SELECT 
+        R.ridx,
+        B.coverImg,
+        B.title,
+        B.author,
+        B.publisher,
+        LB.callName,
+        U.name,
+        U.userNumber,
+        R.pickupDate,
+        R.status
+    FROM RESERVATION R
+    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
+    JOIN BOOKS B ON LB.bidx = B.bidx
+    JOIN USER U ON R.uidx = U.uidx
+    WHERE R.delyn IN ('N', 'Y')
+    <include refid="search"/>
+    ORDER BY R.ridx DESC
+    LIMIT #{startPageNum}, #{perPageNum}
+</select>
 		
 </mapper>
