@@ -10,8 +10,9 @@ public class BookVo {
     private String publisher;
     private int publishedYear;
     private int totalPages;
-    private int isbn;
+    private String isbn;
     private String info;
+    private String category;
     private String introduction;
     private int price;
     private String regdate;
@@ -67,10 +68,10 @@ public class BookVo {
 	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
 	}
-	public int getIsbn() {
+	public String getIsbn() {
 		return isbn;
 	}
-	public void setIsbn(int isbn) {
+	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
 	public String getInfo() {
@@ -78,6 +79,12 @@ public class BookVo {
 	}
 	public void setInfo(String info) {
 		this.info = info;
+	}
+	public String getCategory() {
+		return category;
+	}
+	public void setCategory(String category) {
+		this.category = category;
 	}
 	public String getIntroduction() {
 		return introduction;
