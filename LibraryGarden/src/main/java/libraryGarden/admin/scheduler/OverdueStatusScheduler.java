@@ -15,7 +15,7 @@ public class OverdueStatusScheduler {
     @Autowired
     private AdminBookLoanMapper adminBookLoanMapper;	
     
-    // 매일 자정에 실행 (cron 표현식은 필요에 따라 수정)
+    // (cron 표현식은 필요에 따라 수정)
     @Scheduled(cron = "0 * * * * ?") // 1분마다 업데이트 되도록 설정
     public void updateOverdueStatus() {
         int updatedCount = adminBookLoanMapper.updateOverdueStatus();

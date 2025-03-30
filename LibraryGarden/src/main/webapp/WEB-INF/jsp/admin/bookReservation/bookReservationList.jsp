@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -13,28 +14,31 @@
 </head>
 <body class="custom-page">
 
-    <jsp:include page="/user/userHeader.do" />
+    <jsp:include page="/admin/adminHeader.do" />
 
 	<div class="wrapper">
 		<section class="section p-0">
 			<h2 class="section-title m-0 normal relative">도서예약 목록<button class="btn btn-primary absolute">도서예약등록</button></h2>
 			
 			<div class="contents">
+			<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}" />
 				<div class="book-list pt-0">
+				<form action="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do">
 					<div class="search flex gap-20 justify-center">
-						<select class="js-example-basic-single select shadow" name="state">
+						<select class="js-example-basic-single select shadow" name="searchType">
 							<option value="title">제목</option>
 							<option value="author">저자</option>
 							<option value="name">예약자</option>
 						</select>
-						<input type="text" class="shadow w-720">						
+						<input type="text" class="shadow w-720" name="keyword" value="">						
 						<button class="btn btn-primary btn-small">검색</button>
 					</div>
+				</form>
 					<ul class="tab flex gap-3">
-						<li class="on shadow"><a href="#">전체</a></li>
-						<li class="shadow"><a href="#">예약중</a></li>
-						<li class="shadow"><a href="#">수령완료</a></li>
-						<li class="shadow"><a href="#">예약취소</a></li>
+						<li class="shadow <c:if test="${empty requestScope.filter}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?${queryParam}">전체</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '예약중'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?status=예약중&${queryParam}">예약중</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '수령완료'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?status=수령완료&${queryParam}">수령완료</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '예약취소'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?status=예약취소&${queryParam}">예약취소</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -62,52 +66,51 @@
 									<th>상태</th>
 								</tr>
 							</thead>
-							<tbody>
+							<tbody>										
+							<c:forEach items="${requestScope.rlist}" var="r" varStatus="status">
 								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>802.123 한 127 v1</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="blue">예약중
-										<button class="btn btn-small btn-red mt-5">취소</button>
+									<td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
+									<td><img src="${r.coverImg}" alt="${r.title}"></td>
+									<td><a href="#">${r.title}</a></td>
+									<td>${r.author}</td>
+									<td>${r.publisher}</td>
+									<td>${r.callName}</td>
+									<td>${r.name}<br>(${r.userNumber})</td>
+									<td>${r.pickupDate}</td>
+									<td class=
+										<c:if test="${r.status eq '예약중'}">"blue"</c:if>
+										<c:if test="${r.status eq '수령완료'}">"green"</c:if>
+										<c:if test="${r.status eq '예약취소'}">"red"</c:if>
+									>${r.status}
+										<c:if test="${r.status eq '예약중'}">
+											<button class="btn btn-small btn-red mt-5">취소</button>
+										</c:if>									
 									</td>
 								</tr>
+								</c:forEach>	
+							<c:if test="${empty rlist}">
 								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>802.123 한 127 v1</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="green">수령완료</td>
+									<td colspan="9" style="text-align:center;">예약된 도서가 없습니다.</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>802.123 한 127 v1</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="red">예약취소</td>
-								</tr>
+							</c:if>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
+						<ul class="paging flex w-270 justify-center">
+							<c:if test="${requestScope.pm.prev == true}">
+							<li>
+					          <a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					        </li>
+							</c:if> 
+							
+					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?page=${i}&${queryParam}">${i}</a></li>
+					        </c:forEach>
+					        
+					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
+							<li class="page-item">
+					          <a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					        </li>
+							</c:if>
 						</ul>
 					</div>
 				</div>

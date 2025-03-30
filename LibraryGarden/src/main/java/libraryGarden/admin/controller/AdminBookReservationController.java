@@ -32,10 +32,6 @@ public class AdminBookReservationController {
 			ReservationDto rd,
 			Model model) {
 		 
-		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
-		 UrlEncoder encoder = new UrlEncoder();		 
-		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
-		 
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 pm.setScri(scri);
 
@@ -48,6 +44,10 @@ public class AdminBookReservationController {
 		
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
 		 ArrayList<ReservationDto> rlist = adminBookReservationService.bookReservationSelectAll(scri, filter);
+		 
+		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
+		 UrlEncoder encoder = new UrlEncoder();		 
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
 		 
 		 model.addAttribute("rlist", rlist);
 		 model.addAttribute("pm", pm);
