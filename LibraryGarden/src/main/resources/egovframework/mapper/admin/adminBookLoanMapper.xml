@@ -150,14 +150,12 @@
 	</update>
 
 	<!-- 반납 상태로 변경 -->
-	<update id="updateLoanStatusToReturned" parameterType="int">
-		UPDATE
-		LOAN
-		SET status = '반납완료',
+	<update id="updateLoanStatusToReturned" parameterType="map">
+		UPDATE LOAN
+		SET status = #{status},
 		returnDate = NOW(),
 		modify = NOW()
-		WHERE lidx =
-		#{lidx}
+		WHERE lidx = #{lidx}
 	</update>
 
 	<!-- 반납 예정일 조회 -->

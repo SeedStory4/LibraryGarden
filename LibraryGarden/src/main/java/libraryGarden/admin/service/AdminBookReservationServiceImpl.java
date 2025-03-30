@@ -6,6 +6,7 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import libraryGarden.admin.mapper.AdminBookReservationMapper;
+import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
 
@@ -43,6 +44,41 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 		ArrayList<ReservationDto> rlist = rm.bookReservationSelectAll(hm);
 		
 		return rlist;
+	}
+	
+	@Override
+	public int bookTotalCount(SearchCriteria scri, String filter) {
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		hm.put("searchType", scri.getSearchType());
+		hm.put("keyword", scri.getKeyword());
+		hm.put("filter", filter);
+		
+		int cnt = rm.bookTotalCount(hm);
+		
+		return cnt;
+	}
+	
+	@Override
+	public ArrayList<LibraryBookDto> bookSelectAll(SearchCriteria scri, String filter) {
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		hm.put("startPageNum", (scri.getPage() - 1) * scri.getPerPageNum());
+		hm.put("perPageNum", scri.getPerPageNum());
+		hm.put("searchType", scri.getSearchType());
+		hm.put("keyword", scri.getKeyword());
+		hm.put("filter", filter);
+		
+		ArrayList<LibraryBookDto> lblist = rm.bookSelectAll(hm);
+		
+		return lblist;
+	}
+	
+	@Override
+	public boolean hasOverdue(String userNumber) {
+	    int count = rm.checkOverdue(userNumber);
+	    return count > 0;
 	}
 
 }

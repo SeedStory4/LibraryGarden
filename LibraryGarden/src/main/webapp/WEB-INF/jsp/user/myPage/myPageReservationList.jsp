@@ -62,7 +62,6 @@
 										<td>${reservation.title}</td>
 										<td>${reservation.author}</td>
 										<td>${reservation.publisher}</td>
-										<!-- BOOKS 테이블에서 가져온 publisher -->
 										<td>${reservation.pickupDate}</td>
 										<td>${reservation.dueDate}</td>
 										<td>${reservation.reservationDate}</td>
