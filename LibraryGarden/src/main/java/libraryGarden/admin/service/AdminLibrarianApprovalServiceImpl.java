@@ -53,5 +53,13 @@ public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApproval
 		
 		return bv;
 	};
-	
+
+	@Override
+	public int librarianApprovalDelete(int aidx) {
+		
+		int cnt = lm.librarianApprovalDelete(aidx);
+		
+		return cnt;
+		
+	}
 }

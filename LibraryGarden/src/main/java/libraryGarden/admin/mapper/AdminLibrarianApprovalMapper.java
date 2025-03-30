@@ -13,5 +13,7 @@ public interface AdminLibrarianApprovalMapper {
 	public ArrayList<ApprovalDto> librarianApprovalSelectAll(HashMap<String,Object> hm);
 	
 	public BookVo librarianApprovalSelectOne(int aidx);
+
+	public int librarianApprovalDelete(int aidx);
 	
 }

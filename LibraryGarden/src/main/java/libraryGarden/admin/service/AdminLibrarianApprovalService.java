@@ -14,4 +14,6 @@ public interface AdminLibrarianApprovalService {
 	
 	public BookVo librarianApprovalSelectOne(int aidx);
 	
+	public int librarianApprovalDelete(int aidx);
+	
 }
