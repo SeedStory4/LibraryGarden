@@ -18,7 +18,7 @@ public interface AdminBookLoanMapper {
     public void updateLibraryBookStatusToLoan(@Param("code") String code);
     public String selectBookStatus(@Param("code") String code);
     public void deleteLoan(@Param("lidx") int lidx); // 대여 삭제
-    public void updateLoanStatusToReturned(@Param("lidx") int lidx);
+    public void updateLoanStatusToReturned(@Param("lidx") int lidx, @Param("status") String status);
     public void updateLibraryBookStatusToAvailable(@Param("lidx") int lidx);
     public Date selectDueDate(@Param("lidx") int lidx);
     public void insertOverdue(@Param("lidx") int lidx, @Param("overduePenaltyDays") int overduePenaltyDays);

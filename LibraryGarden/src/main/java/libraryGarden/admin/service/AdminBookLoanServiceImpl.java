@@ -80,22 +80,28 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     
     @Override
     public void returnBookLoan(int lidx) throws Exception {
-        // 반납일 설정
         Date dueDate = adminBookLoanMapper.selectDueDate(lidx);
         Date now = new Date();
 
-        // 반납 상태 업데이트 (반납일 추가)
-        adminBookLoanMapper.updateLoanStatusToReturned(lidx);
-        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+        // 날짜만 비교하도록 처리
+        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
+        String dueDateStr = sdf.format(dueDate);
+        String nowStr = sdf.format(now);
 
-        // 연체 여부 판단
-        if (now.after(dueDate)) {
-            long overdueDays = (now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24); // 연체일수 계산
-            int overduePenaltyDays = (int) overdueDays * 2 + 1; // 연체일수 * 2 + 1
+        String status;
+        if (nowStr.compareTo(dueDateStr) > 0) {
+            // 연체인 경우
+            long overdueDays = (now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24);
+            int overduePenaltyDays = (int) overdueDays * 2 + 1;
 
-            // 연체 등록
             adminBookLoanMapper.insertOverdue(lidx, overduePenaltyDays);
+            status = "연체반납";
+        } else {
+            status = "반납완료";
         }
+
+        adminBookLoanMapper.updateLoanStatusToReturned(lidx, status);
+        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
     }
 
 }

@@ -6,10 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import libraryGarden.admin.service.AdminBookReservationService;
 import libraryGarden.cmm.util.UrlEncoder;
+import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
@@ -59,8 +63,58 @@ public class AdminBookReservationController {
 	
 	// 도서예약 등록
 	@GetMapping("/bookReservationWrite.do")
-	public String bookReservationWrite() {
+	public String bookReservationWrite(
+			@RequestParam(value = "userNumber", required = false) String userNumber,
+			SearchCriteria scri,
+			LibraryBookDto ld,
+			Model model) {
+		
+		 // 사용자가 입력한 검색조건과 검색어 저장
+		 pm.setScri(scri);
+
+		 // 대출 상태별로 데이터를 보여주기 위해서 현재 탭의 결재 상태 저장
+		 String filter = ld.getStatus();
+		 
+		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
+		 int cnt = adminBookReservationService.bookTotalCount(scri, filter);
+		 pm.setTotalCount(cnt);
+		
+		 // 목록에서 보여줄 데이터 DB에서 가져오기
+		 ArrayList<LibraryBookDto> lblist = adminBookReservationService.bookSelectAll(scri, filter);
+		 
+		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
+		 UrlEncoder encoder = new UrlEncoder();		 
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
+		 
+		 model.addAttribute("lblist", lblist);
+		 model.addAttribute("pm", pm);
+		 model.addAttribute("filter", filter);
+		 model.addAttribute("userNumber", userNumber); // JSP에서 필요
+		 
 		return "admin/bookReservation/bookReservationWrite";
+	}
+	
+	
+	@GetMapping("/popBookReservationWrite.do")
+	public String popBookReservationWrite(
+	    @RequestParam("lbidx") int lbidx,
+	    @RequestParam("userNumber") String userNumber,
+	    Model model) {
+		
+	    // 도서 정보, 회원 정보 등 필요한 데이터 조회 후 model에 추가
+	    model.addAttribute("lbidx", lbidx);
+	    model.addAttribute("userNumber", userNumber);
+
+	    return "admin/bookReservation/popBookReservationWrite";
+	}
+
+	
+	// 회원 연체중인지 확인
+	@PostMapping("/checkOverdue.do")
+	@ResponseBody
+	public String checkOverdue(@RequestParam("userNumber") String userNumber) {
+	    boolean hasOverdue = adminBookReservationService.hasOverdue(userNumber);
+	    return hasOverdue ? "Y" : "N";
 	}
 	
 	// 도서예약 수정 팝업
@@ -69,10 +123,6 @@ public class AdminBookReservationController {
 		return "admin/bookReservation/popBookReservationModify";
 	}
 	
-	// 도서 예약 팝업
-	@GetMapping("/popBookReservationWrite.do")
-	public String popBookReservationWrite() {
-		return "admin/bookReservation/popBookReservationWrite";
-	}
+
 
 }

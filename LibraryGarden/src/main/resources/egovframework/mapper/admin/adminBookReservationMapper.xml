@@ -30,26 +30,50 @@
 	</select>
 	
 		
-<select id="bookReservationSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.ReservationDto">
-    SELECT 
-        R.ridx,
-        B.coverImg,
-        B.title,
-        B.author,
-        B.publisher,
-        LB.callName,
-        U.name,
-        U.userNumber,
-        R.pickupDate,
-        R.status
-    FROM RESERVATION R
-    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
-    JOIN BOOKS B ON LB.bidx = B.bidx
-    JOIN USER U ON R.uidx = U.uidx
-    WHERE R.delyn IN ('N', 'Y')
-    <include refid="search"/>
-    ORDER BY R.ridx DESC
-    LIMIT #{startPageNum}, #{perPageNum}
-</select>
+	<select id="bookReservationSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.ReservationDto">
+	    SELECT 
+	        R.ridx,
+	        B.coverImg,
+	        B.title,
+	        B.author,
+	        B.publisher,
+	        LB.callName,
+	        U.name,
+	        U.userNumber,
+	        R.pickupDate,
+	        R.status
+	    FROM RESERVATION R
+	    JOIN LIBRARYBOOKS LB ON R.lbidx = LB.lbidx
+	    JOIN BOOKS B ON LB.bidx = B.bidx
+	    JOIN USER U ON R.uidx = U.uidx
+	    WHERE R.delyn IN ('N', 'Y')
+	    <include refid="search"/>
+	    ORDER BY R.ridx DESC
+	    LIMIT #{startPageNum}, #{perPageNum}
+	</select>
+	
+	<select id="bookTotalCount" parameterType="HashMap" resultType="int">
+		SELECT COUNT(*) AS cnt  
+		FROM LIBRARYBOOKS AS LB
+		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'
+		<include refid="search"/>
+	</select>
+	
 		
+	<select id="bookSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.LibraryBookDto">
+		SELECT B.coverImg, B.title, B.author, B.publisher, LB.lbidx, LB.code, LB.callName, LB.location, LB.dueDate, LB.status 
+		FROM LIBRARYBOOKS AS LB
+		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'
+		<include refid="search"/>
+		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
+	</select>
+	
+	<select id="checkOverdue" parameterType="String" resultType="int">
+	SELECT COUNT(*) 
+	FROM OVERDUE o
+	JOIN USER u ON o.uidx = u.uidx
+	WHERE u.userNumber = #{userNumber}
+	  AND o.status = 'Y'
+	</select>
+
 </mapper>
