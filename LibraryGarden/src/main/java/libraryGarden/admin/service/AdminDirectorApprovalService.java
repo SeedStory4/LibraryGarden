@@ -13,4 +13,7 @@ public interface AdminDirectorApprovalService {
 	public ArrayList<ApprovalDto> directorApprovalSelectAll(SearchCriteria scri, String filter);
 
 	public BookVo directorApprovalSelectOne(int aidx);
+
+	public int directorApprovalDelete(int aidx);
+	
 }

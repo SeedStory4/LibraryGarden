@@ -3,7 +3,6 @@ package libraryGarden.admin.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +52,14 @@ public class AdminDirectorApprovalServiceImpl implements AdminDirectorApprovalSe
 		BookVo bv = dm.directorApprovalSelectOne(aidx);
 		
 		return bv;	
+	};
+
+	@Override
+	public int directorApprovalDelete(int aidx) {
+		
+		int cnt = dm.directorApprovalDelete(aidx);
+		
+		return cnt;
+		
 	}
 }

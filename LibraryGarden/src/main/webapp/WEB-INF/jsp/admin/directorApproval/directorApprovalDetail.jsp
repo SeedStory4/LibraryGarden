@@ -63,13 +63,15 @@
 				</div>
 
 				<!-- 버튼 -->
-				<div class="draft-actions mg-top">
-					<button class="draft-btn-small btn-submit">수정</button>
-					<button class="draft-btn-small btn-cancel">삭제</button>
-					<button type="button" class="draft-btn-small btn-list" onClick="history.back()">목록</button>
-					<button class="draft-btn-small btn-submit">승인</button>
-					<button class="draft-btn-small btn-cancel">반려</button>
-				</div>
+				<form name="frm">
+					<div class="draft-actions mg-top">
+						<button class="draft-btn-small btn-submit">수정</button>
+						<button type="button" class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
+						<button type="button" class="draft-btn-small btn-list" onClick="history.back()">목록</button>
+						<button class="draft-btn-small btn-submit">승인</button>
+						<button class="draft-btn-small btn-cancel">반려</button>
+					</div>
+				</form>
 			</section>
 		</div>
 	</div>
@@ -84,6 +86,20 @@
 		}
 		const price = document.querySelector(".price");
 		price.innerText = addComma("${requestScope.bv.price}") + "원";
+		
+		// 게시글 삭제
+		function del() {
+			
+	        let fm = document.frm;
+			let ans = confirm("삭제하시겠습니까?");
+		  	  if (ans == true) {
+				  fm.action="${pageContext.request.contextPath}/admin/directorApproval/${requestScope.aidx}/directorApprovalDeleteAction.do";
+				  fm.method="post";
+				  fm.submit();
+			}
+			
+			return;
+		}		
 	</script>
 </body>
 </html>
