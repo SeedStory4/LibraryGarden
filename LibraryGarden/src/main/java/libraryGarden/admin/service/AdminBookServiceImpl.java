@@ -8,7 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import libraryGarden.admin.controller.AdminBookController;
+
 import libraryGarden.admin.mapper.AdminBookMapper;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.SearchCriteria;
@@ -28,7 +28,7 @@ import libraryGarden.user.mapper.Book1Mapper;
 @Service
 public class AdminBookServiceImpl implements AdminBookService{
 
-	private static final Logger logger = LoggerFactory.getLogger(AdminBookController.class);
+	private static final Logger logger = LoggerFactory.getLogger(AdminBookServiceImpl.class);
 	
 	@Autowired
 	private AdminBookMapper abm;
