@@ -71,8 +71,8 @@
 									<td>${lbd.location}</td>
 									<td><c:choose>
 										  <c:when test="${not empty lbd.dueDate}">
-										    <c:if test="${lbd.status eq '대출중'}">${lbd.dueDate}</c:if>
-										    <c:if test="${lbd.status ne '대출중'}">-</c:if>	
+										    <c:if test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">${lbd.dueDate}</c:if>
+										    <c:if test="${lbd.status ne '대출중' and lbd.status ne '예약대기'}">-</c:if>	
 										  </c:when>
 										  <c:otherwise>
 										    -
@@ -82,7 +82,7 @@
 									<td class=
 										<c:if test="${lbd.status eq '대출중'}">"blue"</c:if>
 										<c:if test="${lbd.status eq '대출가능'}">"green"</c:if>
-										<c:if test="${lbd.status eq '예약대기'}">"green"</c:if>
+										<c:if test="${lbd.status eq '예약대기'}">"orange"</c:if>
 										<c:if test="${lbd.status eq '대출불가'}">"red pointer openRejectionModal" </c:if>
 									>${lbd.status}</td>
 								</tr>

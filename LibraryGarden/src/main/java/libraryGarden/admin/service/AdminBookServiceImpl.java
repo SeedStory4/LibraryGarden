@@ -3,9 +3,12 @@ package libraryGarden.admin.service;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import libraryGarden.admin.controller.AdminBookController;
 import libraryGarden.admin.mapper.AdminBookMapper;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.SearchCriteria;
@@ -17,7 +20,7 @@ import libraryGarden.user.mapper.Book1Mapper;
  *  - 관리자 도서관 책 전체 조회 목록 출력 메서드
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
- *  
+ *  - 관리자 도서관 책 삭제 매서드
  *  
  *  
  * @author Siyeon
@@ -25,6 +28,8 @@ import libraryGarden.user.mapper.Book1Mapper;
 @Service
 public class AdminBookServiceImpl implements AdminBookService{
 
+	private static final Logger logger = LoggerFactory.getLogger(AdminBookController.class);
+	
 	@Autowired
 	private AdminBookMapper abm;
 	
@@ -71,6 +76,18 @@ public class AdminBookServiceImpl implements AdminBookService{
 		 */ 
 		LibraryBookDto lbd = abm.BookSelectOne(lbidx);
 		return lbd;
+	}
+
+	// 관리자 도서관 책 삭제 매서드
+	@Override
+	public int BookDeleteOne(int lbidx) {
+		/* 도서관 책 상세 조회
+		 * [input] 	도서관 책 인덱스(lbidx)
+		 * [output] 삭제 여부 값(value)
+		 */ 
+		int value = abm.BookDeleteOne(lbidx);
+		logger.debug("AdminBookServiceImpl BookDeleteOne value" + value);
+		return value;
 	}
 	
 }

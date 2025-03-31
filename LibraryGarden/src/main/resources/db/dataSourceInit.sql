@@ -85,6 +85,7 @@ CREATE TABLE LIBRARYBOOKS (
     extended CHAR(1) NOT NULL DEFAULT 'N',
     regdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modify DATETIME,
+    delyn CHAR(1) NOT NULL DEFAULT 'N',
     CONSTRAINT fk_librarybooks_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
         ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_librarybooks_category FOREIGN KEY (cidx) REFERENCES CATEGORY(cidx) 
@@ -375,12 +376,13 @@ VALUES
 (8, 58, 'SS000008', '700.301.01', '일반열람실', '2025-03-20', '2025-03-27', '2025-03-27', '대출가능', '2025-03-20 14:00:00', '2025-03-27 15:30:00'),
 (9, 69, 'SS000009', '680.401.01', '일반열람실', '2025-03-16', '2025-03-23', '2025-03-23', '대출가능', '2025-03-16 10:30:00', '2025-03-23 11:00:00'),
 (10, 80, 'SS000010', '790.501.01', '일반열람실', '2025-03-14', '2025-03-21', '2025-03-23', '대출가능', '2025-03-14 08:30:00', '2025-03-23 17:00:00'),
-(11, 1, 'SS000011', '000.111.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-14 15:30:00', NULL),
-(12, 2, 'SS000012', '010.112.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-12 12:30:00', NULL),
+(11, 1, 'SS000011', '000.111.01', '보전서고', NULL, NULL, NULL, '대출불가', '2025-03-14 15:30:00', NULL), -- 대출불가
+(12, 2, 'SS000012', '010.112.01', '일반열람실','2025-03-21', '2025-03-28', '2025-03-28', '예약대기', '2025-03-12 12:30:00', NULL),-- 예약중
 (13, 3, 'SS000013', '020.113.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-15 16:30:00', NULL),
 (14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
+(15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL),
+(14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
 (15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
-
 -- LOAN 샘플 데이터 생성
 INSERT INTO LOAN (lbidx, uidx, loanDate, dueDate, returnDate, status, regdate, modify) 
 VALUES 

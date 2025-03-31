@@ -18,7 +18,7 @@
  	<select id="BookSelectAll" parameterType="HashMap" resultType="lbd">
 		SELECT B.coverImg, B.title, B.author, B.publisher, LB.lbidx, LB.code, LB.callName, LB.location, LB.dueDate, LB.status 
 		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'
+		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
 		<include refid="search"/>
 		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
@@ -27,7 +27,7 @@
 	<select id="BookTotalCount" resultType="int">
 		SELECT COUNT(*) AS cnt  
 		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'
+		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
 		<include refid="search"/>
 	</select>
 	
@@ -37,7 +37,7 @@
 		FROM LIBRARYBOOKS AS LB
 		JOIN BOOKS AS B ON LB.bidx = B.bidx
 		JOIN CATEGORY AS C ON LB.cidx = C.cidx
-		WHERE B.delyn = 'N' AND lbidx = #{lbidx};
+		WHERE B.delyn = 'N' AND LB.delyn = 'N'  AND lbidx = #{lbidx};
 	</select>
 	
 </mapper>

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,11 +8,19 @@
 <title>관리자 도서관리 상세</title>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 </head>
+
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/admin/adminHeader.do" />
+    <div id="header-container">
+    	<%@ include file="/WEB-INF/jsp/admin/adminHeader.jsp" %>
+    </div>
 
+	<c:if test="${not empty msg}">
+	    <script>
+	        alert("${msg}");
+	    </script>
+	</c:if>
 	<div class="wrapper">
 		<div class="inner">
 			<!-- 메인 콘텐츠 -->
@@ -23,40 +32,60 @@
 				<!-- 선 추가 -->
 
 				<!-- 도서 정보 -->
+				<c:set var="lbd" value="${requestScope.lbd}" />
 				<div class="draft-content">
-					<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지"
+					<img src="${lbd.coverImg}" alt="${lbd.title}"
 						class="draft-book-img">
 					<div class="draft-info">
 						<p>
-							<span class="info-title">● 제목</span> <span class="info-content">채식주의자</span>
+							<span class="info-title">● 제목</span> <span class="info-content">${lbd.title}</span>
 						</p>
 						<p>
-							<span class="info-title">● 부제</span> <span class="info-content">채식주의자</span>
+							<span class="info-title">● 부제</span> 
+							<span class="info-content">
+								<c:choose>
+									<c:when test="${not empty lbd.subtitle}">
+									${lbd.subtitle}
+								  	</c:when>
+									<c:otherwise>
+								    -
+								    </c:otherwise>
+								</c:choose>
+							</span>
 						</p>
 						<p>
-							<span class="info-title">● 서명/저자사항</span> <span
-								class="info-content">한강</span>
+							<span class="info-title">● 서명/저자사항</span> <span class="info-content">${lbd.author}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판사</span> <span class="info-content">창비</span>
+							<span class="info-title">● 출판사</span> <span class="info-content">${lbd.publisher}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판년도</span> <span class="info-content">2024년</span>
+							<span class="info-title">● 출판년도</span> <span class="info-content">${lbd.publishedYear}년</span>
 						</p>
 						<p>
-							<span class="info-title">● 전체쪽수</span> <span class="info-content">216쪽</span>
+							<span class="info-title">● 전체쪽수</span> <span class="info-content">${lbd.totalPages}쪽</span>
 						</p>
 						<p>
-							<span class="info-title">● ISBN</span> <span class="info-content">12345687351</span>
+							<span class="info-title">● ISBN</span> <span class="info-content">${lbd.isbn}</span>
 						</p>
 						<p>
-							<span class="info-title">● 서적정보</span> <span class="info-content">145×210mm/300g</span>
+							<span class="info-title">● 서적정보</span> <span class="info-content">${lbd.info} /<c:choose><c:when test="${not empty lbd.category}">${lbd.category}</c:when><c:otherwise> - </c:otherwise></c:choose></span>
 						</p>
 					</div>
-					<button class="request-status-btn status-btn-ok">대출가능</button>
-					<!-- <button class="request-status-btn status-btn-ing">대출중(~2024.05.31)</button> -->
-					<!-- <button class="request-status-btn status-btn-wating">예약대기</button> -->
-					<!-- <button class="request-status-btn status-btn-no">대출불가</button> -->
+					<c:choose>
+					  <c:when test="${lbd.status eq '대출중'}">
+					    <button class="request-status-btn status-btn-ing" >대출중(~${lbd.dueDate})</button>
+					  </c:when>
+					  <c:when test="${lbd.status eq '대출가능'}">
+					    <button class="request-status-btn status-btn-ok">대출가능</button>
+					  </c:when>
+					  <c:when test="${lbd.status eq '예약대기'}">
+					    <button class="request-status-btn status-btn-wating">예약대기</button>
+					  </c:when>
+					  <c:when test="${lbd.status eq '대출불가'}">
+					    <button class="request-status-btn status-btn-wating">대출불가</button>
+					  </c:when>
+					</c:choose>
 				</div>
 
 				<p class="description-title">● 책 소개</p>
@@ -64,13 +93,7 @@
 				<div class="draft-book-description shadow ml-28">
 					<div class="description-content">
 						<p>
-							2016년 인터내셔널 부커상을 수상하며 한국문학의 입지를 한단계 확장시킨 한강의 장편소설.<br> 상처받은
-							영혼의 고통과 식물적 상상력의 강렬한 결합을 정교한 구성과 흡인력 있는 문체로 보여주며 섬뜩한 아름다움의 미학을
-							한강만의 방식으로 완성한 역작이다.<br> <br> 소설에는 어느 날부터 육식을 거부하며 가족들과
-							갈등을 빚기 시작하는 ‘영혜’가 중심인물로 등장한다. 하지만 영혜를 둘러싼 세 인물인 남편, 형부, 언니의 시선에서
-							서술되며 영혜는 단 한번도 주도적인 화자의 위치를 얻지 못한다. 가족의 이름으로 자행되는 가부장의 폭력, 그리고 그
-							폭력에 저항하며 금식을 통해 동물성을 벗어던지고 나무가 되고자 한 영혜가 보여주는 식물적 상상력의 경지는 모든 세대
-							독자를 아우르며 더 크나큰 공명을 이루어낼 것이다.
+							${lbd.introduction}
 						</p>
 					</div>
 				</div>
@@ -91,23 +114,60 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>DM000012</td>
-							<td>802.123 한 127 v1</td>
-							<td>일반열람실</td>
-							<td>2025.03.14</td>
-							<td class="status-text-ok">대출가능</td>
-							<!-- <td class="status-text">대출중</td> -->
-							<!-- <td class="status-text text-orange">예약대기</td> -->
-							<!-- <td class="status-text text-red">대출불가</td> -->
+							<td>${lbd.code}</td>
+							<td>${lbd.callName}</td>
+							<td>${lbd.location}</td>
+							<td>
+								<c:choose>
+									<c:when test="${not empty lbd.dueDate}">
+										<c:if test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">${fn:replace(lbd.dueDate, '-', '.')}</c:if>
+										<c:if test="${lbd.status ne '대출중' and lbd.status ne '예약대기'}">-</c:if>
+								  	</c:when>
+									<c:otherwise>
+								    -
+								    </c:otherwise>
+								</c:choose>
+							</td>
+							<td class=
+										<c:if test="${lbd.status eq '대출중'}">"status-text"</c:if>
+										<c:if test="${lbd.status eq '대출가능'}">"status-text-ok"</c:if>
+										<c:if test="${lbd.status eq '예약대기'}">"status-text text-orange"</c:if>
+										<c:if test="${lbd.status eq '대출불가'}">"status-text text-red" </c:if>
+									>
+									${lbd.status}
+							</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<div class="draft-actions mg-top">
 					<button class="draft-btn-small btn-submit">예약</button>
-					<button class="draft-btn-small btn-submit">수정</button>
-					<button class="draft-btn-small btn-cancel">삭제</button>
-					<button class="draft-btn-small btn-list">목록</button>					
+					
+					<c:choose>
+				    <c:when test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">
+				        <button class="draft-btn-small btn-submit"
+				                onclick="UnableToModify()">
+				            수정
+				        </button>
+				        <button class="draft-btn-small btn-cancel"
+				                onclick="UnableToDelete()">
+				            삭제
+				        </button>
+				    </c:when>
+				
+				    <c:otherwise>
+				        <button class="draft-btn-small btn-submit"
+				                onclick="location.href='${pageContext.request.contextPath}/admin/book/${lbd.lbidx}/bookModify.do'">
+				            수정
+				        </button>
+				        <button class="draft-btn-small btn-cancel"
+				                onclick="confirmDelete('${pageContext.request.contextPath}/admin/book/${lbd.lbidx}/bookDelete.do')">
+				            삭제
+				        </button>
+				    </c:otherwise>
+				    </c:choose>
+				    
+					<button class="draft-btn-small btn-list" onclick="location.href='${pageContext.request.contextPath}/admin/book/bookList.do'">목록</button>					
 				</div>
 			</section>
 		</div>
@@ -115,6 +175,18 @@
 
 	<!-- 푸터 로드할 부분 -->
 	<jsp:include page="/common/footer.jsp" /> 
-
+	<script>
+	    function UnableToModify() { 
+			alert("'대출중', '예약대기' 상태 일때는 수정할 수 없습니다")
+	    }
+	    function UnableToDelete() {
+			alert("'대출중', '예약대기' 상태 일때는 삭제할 수 없습니다")
+	    }
+	    function confirmDelete(deleteUrl) {
+	        if (confirm('정말 삭제하시겠습니까?')) {
+	            location.href = deleteUrl;
+	        }
+	    }
+	</script>
 </body>
 </html>
