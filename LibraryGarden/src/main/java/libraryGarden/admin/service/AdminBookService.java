@@ -11,7 +11,7 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 책 전체 조회 목록 출력 메서드
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
- * 
+ *  - 관리자 도서관 책 삭제 매서드
  * 
  * @author SiYeon
  *
@@ -26,4 +26,7 @@ public interface AdminBookService {
 	
 	// 관리자 도서관 책 상세 조회 매서드
 	public LibraryBookDto BookSelectOne(int lbidx);
+	
+	// 관리자 도서관 책 삭제 매서드
+	public int BookDeleteOne(int lbidx);
 }

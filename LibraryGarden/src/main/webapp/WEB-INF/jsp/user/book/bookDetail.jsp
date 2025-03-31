@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -13,7 +14,9 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/user/userHeader.do" />
+    <div id="header-container">
+    	<%@ include file="/WEB-INF/jsp/user/userHeader.jsp" %>
+    </div>
 
 	<div class="wrapper">
 		<div class="inner">
@@ -62,21 +65,32 @@
 							<span class="info-title">● ISBN</span> <span class="info-content">${lbd.isbn}</span>
 						</p>
 						<p>
-							<span class="info-title">● 서적정보</span> <span class="info-content">${lbd.info}/${lbd.category}</span>
+							<span class="info-title">● 서적정보</span> <span class="info-content">${lbd.info} /<c:choose><c:when test="${not empty lbd.category}">${lbd.category}</c:when><c:otherwise> - </c:otherwise></c:choose></span>
 						</p>
 					</div>
 					
-					<button class="request-status-btn status-btn-ing <c:if test="${empty lbd.status}">on</c:if>" >대출중(~2024.05.31)</button>
-					<!-- <button class="request-status-btn status-btn-ok">대출가능</button> -->
-					<!-- <button class="request-status-btn status-btn-wating">예약대기</button> -->
-					<!-- <button class="request-status-btn status-btn-no">대출불가</button> -->
+					<c:choose>
+					  <c:when test="${lbd.status eq '대출중'}">
+					    <button class="request-status-btn status-btn-ing" >대출중(~${lbd.dueDate})</button>
+					  </c:when>
+					  <c:when test="${lbd.status eq '대출가능'}">
+					    <button class="request-status-btn status-btn-ok">대출가능</button>
+					  </c:when>
+					  <c:when test="${lbd.status eq '예약대기'}">
+					    <button class="request-status-btn status-btn-wating">예약대기</button>
+					  </c:when>
+					  <c:when test="${lbd.status eq '대출불가'}">
+					    <button class="request-status-btn status-btn-wating">대출불가</button>
+					  </c:when>
+					</c:choose>
 				</div>
+				
 				<p class="description-title">● 책 소개</p>
 
 				<div class="draft-book-description shadow ml-28">
 					<div class="description-content">
 						<p>
-							{lbd.info}
+							${lbd.introduction}
 						</p>
 					</div>
 				</div>
@@ -97,21 +111,35 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>DM000012</td>
-							<td>802.123 한 127 v1</td>
-							<td>일반열람실</td>
-							<td>2025.03.14</td>
-							<td class="status-text">대출중</td>
-							<!-- <td class="status-text-ok">대출가능</td> -->
-							<!-- <td class="status-text text-orange">예약대기</td> -->
-							<!-- <td class="status-text text-red">대출불가</td> -->
+							<td>${lbd.code}</td>
+							<td>${lbd.callName}</td>
+							<td>${lbd.location}</td>
+							<td>
+								<c:choose>
+									<c:when test="${not empty lbd.dueDate}">
+										<c:if test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">${fn:replace(lbd.dueDate, '-', '.')}</c:if>
+										<c:if test="${lbd.status ne '대출중' and lbd.status ne '예약대기'}">-</c:if>	
+								  	</c:when>
+									<c:otherwise>
+								    -
+								    </c:otherwise>
+								</c:choose>
+							</td>
+							<td class=
+										<c:if test="${lbd.status eq '대출중'}">"status-text"</c:if>
+										<c:if test="${lbd.status eq '대출가능'}">"status-text-ok"</c:if>
+										<c:if test="${lbd.status eq '예약대기'}">"status-text text-orange"</c:if>
+										<c:if test="${lbd.status eq '대출불가'}">"status-text text-red" </c:if>
+									>
+									${lbd.status}
+							</td>
 						</tr>
 					</tbody>
 				</table>
 
 				<div class="draft-actions mg-top">
 					<button class="draft-btn-small btn-submit">예약</button>
-					<button class="draft-btn-small btn-list">목록</button>
+					<button class="draft-btn-small btn-list"  onclick="location.href='${pageContext.request.contextPath}/user/book/bookList.do'">목록</button>
 				</div>
 			</section>
 		</div>

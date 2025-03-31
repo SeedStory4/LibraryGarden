@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.admin.service.AdminBookService;
 import libraryGarden.domain.LibraryBookDto;
@@ -20,11 +22,13 @@ import libraryGarden.user.service.Book1Service;
 /**
  * [설명] 관리자의 도서 관리 페이지
  * 
- * [주요기능]
- * - 관리자 도서관 도서 조회 목록 페이지
- * 	- 도서 조회 목록 출력 기능
- * 	- 도서 조회 검색 기능
+ * [주요기능] 
+ * - 관리자 도서관 도서 조회 목록 페이지 
+ * 	- 도서 조회 목록 출력 기능 
+ * 	- 도서 조회 검색 기능 
  * 	- 도서 조회 페이지 기능
+ * 
+ * - 관리자 도서관 도서 삭제 기능 
  * 
  * - 관리자 도서관 도서 상세 페이지 이동
  * 
@@ -33,80 +37,136 @@ import libraryGarden.user.service.Book1Service;
  * - 관리자 도서관 도서 등록 페이지 이동
  * 
  * - 관리자 도서 선택 팝업 페이지 이동
- *  
- *  
+ * 
+ * 
  * @author SiYeon
  * 
  */
 @Controller
 @RequestMapping("/admin/book")
 public class AdminBookController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(AdminBookController.class);
-	
+
 	// AdminBookService 주입
-	@Autowired(required=false)
+	@Autowired(required = false)
 	AdminBookService adminBookService;
-	
+
 	// PageMaker 주입 (페이징 기능)
-	@Autowired(required=false)
+	@Autowired(required = false)
 	private PageMaker pm;
-	
+
 	// 도서 조회 목록 페이지 이동
 	@GetMapping("/bookList.do")
-	public String bookList(SearchCriteria scri,Model model) {
-		 /* 검색 기능
-		  * - 사용자가 입력한 검색조건과 검색어 저장
-		  * [input] 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri)
-		  */ 
-		 pm.setScri(scri);
-		 
-		 /* 페이징 기능 
-		  * - 책 리스트 전체 갯수
-		  * - 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
-		  * [input]	 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri) 
-		  * [output] 조건에 따른 잭 전체 개수 cnt
-		  */ 
-		 int cnt = adminBookService.BookTotalCount(scri);
-		 
-		 /* 페이지 기능
-		  * [input] 조건에 따른 책 전체 개수 cnt
-		  */
-		 pm.setTotalCount(cnt);
-		 
-		/* 책 목록 조회
-		 * [input]	검색조건 외 페이지 기능 (scri)
+	public String bookList(SearchCriteria scri, Model model) {
+		/*
+		 * 검색 기능 - 사용자가 입력한 검색조건과 검색어 저장 
+		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지기능 (scri)
+		 * 
+		 */
+		pm.setScri(scri);
+
+		/*
+		 * 페이징 기능 - 책 리스트 전체 갯수 - 페이징을 위한 전체 데이터 갯수 DB에서 가져오기 
+		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri)
+		 * [output] 조건에 따른 잭 전체 개수 cnt
+		 */
+		int cnt = adminBookService.BookTotalCount(scri);
+
+		/*
+		 * 페이지 기능 
+		 * [input] 조건에 따른 책 전체 개수 cnt
+		 */
+		pm.setTotalCount(cnt);
+
+		/*
+		 * 책 목록 조회 
+		 * [input] 검색조건 외 페이지 기능 (scri) 
 		 * [output] 책 목록(alist)
-		 */ 
+		 */
 		ArrayList<LibraryBookDto> lblist = adminBookService.BookSelectAll(scri);
-		
-		/* Model를 통해 jsp로 이동
-		 * - lblist : 책 목록 리스트
+
+		/*
+		 * Model를 통해 jsp로 이동 
+		 * - lblist : 책 목록 리스트 
 		 * - pm : 페이징 기능
 		 */
-		model.addAttribute("lblist",lblist);
+		model.addAttribute("lblist", lblist);
 		model.addAttribute("pm", pm);
 		return "admin/book/bookList";
 	}
-	
+
 	// 도서 상세 페이지 이동
-	@GetMapping("/bookDetail.do")
-	public String bookDetail() {
+	@GetMapping("/{lbidx}/bookDetail.do")
+	public String bookDetail(@PathVariable("lbidx") int lbidx, Model model) {
+		logger.debug("bookDetail 들어옴");
+
+		/*
+		 * 도서관 책 상세 조회 
+		 * [input] 도서관 책 인덱스(lbidx) 
+		 * [output] 책 상세(lbd)
+		 */
+		LibraryBookDto lbd = adminBookService.BookSelectOne(lbidx);
+		
+		/*
+		 * Model를 통해 jsp로 이동 
+		 * - lbd : 책 상세 내용
+		 */
+		model.addAttribute("lbd", lbd);
 		return "admin/book/bookDetail";
 	}
-	
-	// 도서 수정 페이지 이동
-	@GetMapping("/bookModify.do")
-	public String bookModify() {
+
+	// 관리자 도서관 도서 삭제 기능
+	@GetMapping("/{lbidx}/bookDelete.do")
+	public String bookDelete(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
+		logger.debug("bookDelete 들어옴");
+		
+		/*
+		 * 도서관 책 삭제
+		 * [input] 도서관 책 인덱스(lbidx) 
+		 */
+		int value = adminBookService.BookDeleteOne(lbidx);
+		if (value==0) {
+			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
+			return "redirect:/admin/book/"+lbidx+"/bookDetail.do"; //삭제하지 못했을 때 삭제하려고 했던 페이지로 이동 
+		}	
+		return "redirect:/admin/book/bookList.do"; // 삭제 후 리스트로 이동
+
+	}
+
+	// 관리자 도서관 도서 수정 페이지 이동
+	@GetMapping("/{lbidx}/bookModify.do")
+	public String bookModify(@PathVariable("lbidx") int lbidx,Model model) {
+		logger.debug("bookModify 들어옴");
+		
+		/*
+		 * 도서관 책 상세 조회 
+		 * [input] 도서관 책 인덱스(lbidx) 
+		 * [output] 책 상세(lbd)
+		 */
+		LibraryBookDto lbd = adminBookService.BookSelectOne(lbidx);
+		
+		/*
+		 * Model를 통해 jsp로 이동 
+		 * - lbd : 책 상세 내용
+		 */
+		model.addAttribute("lbd", lbd);
 		return "admin/book/bookModify";
+
 	}
 	
+//	// 도서 수정 페이지 이동
+//	@GetMapping("/bookModify.do")
+//	public String bookModify() {
+//		return "admin/book/bookModify";
+//	}
+
 	// 도서 등록 페이지 이동
 	@GetMapping("/bookWrite.do")
 	public String bookWrite() {
 		return "admin/book/bookWrite";
 	}
-	
+
 	// 도서 선택 팝업 페이지 이동
 	@GetMapping("/popBookSelect.do")
 	public String popBookSelect() {
