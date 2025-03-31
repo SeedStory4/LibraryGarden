@@ -13,4 +13,7 @@ public interface AdminDirectorApprovalMapper {
 	public ArrayList<ApprovalDto> directorApprovalSelectAll(HashMap<String,Object> hm);
 
 	public BookVo directorApprovalSelectOne(int aidx);
+
+	public int directorApprovalDelete(int aidx);
+
 }

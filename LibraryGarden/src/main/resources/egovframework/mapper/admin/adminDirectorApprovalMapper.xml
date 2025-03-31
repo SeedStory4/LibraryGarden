@@ -56,5 +56,9 @@
 		LEFT JOIN REQUEST AS RQ ON RQ.rqidx = A.rqidx 
 		LEFT JOIN BOOKS AS B ON B.bidx = COALESCE(A.bidx, RQ.bidx) 
 		WHERE A.delyn = 'N' and aidx = #{aidx}
-	</select>	
+	</select>
+	
+	<update id="directorApprovalDelete" parameterType="int">
+		UPDATE APPROVAL SET delyn = 'Y', modify = now() WHERE aidx = #{aidx}
+	</update>	
 </mapper>

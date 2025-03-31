@@ -62,11 +62,11 @@
 					</div>
 				</div>
 
-				<!-- 등록/취소 버튼 -->
+				<!-- 버튼 -->
 				<form name="frm">
 					<div class="draft-actions">
 						<button class="draft-btn-small btn-submit">수정</button>
-						<button class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
+						<button type="button" class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
 						<button type="button" class="draft-btn-small btn-list" onClick="history.back()">목록</button>
 					</div>
 				</form>
