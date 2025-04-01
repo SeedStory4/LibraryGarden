@@ -2,6 +2,8 @@ package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
@@ -89,7 +92,7 @@ public class AdminLibrarianApprovalController {
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
 		int value = librarianApprovalService.librarianApprovalDelete(aidx);
 
-		// 삭제 후 이동할 url 및 메세지 설정 
+		// 삭제 후 이동할 url 및 메세지 설정
 		String path = "redirect:/admin/librarianApproval/librarianApprovalList.do";
 		rttr.addFlashAttribute("msg", "삭제되었습니다.");
 		
@@ -101,96 +104,56 @@ public class AdminLibrarianApprovalController {
 		
 		return path;
 	}
-	
 
-//	@RequestMapping(value="/{boardcode}/{period}/boardWrite.do")
-//	public String boardWrite(
-//			@PathVariable("boardcode") String boardcode,
-//			@PathVariable("period") int period,
-//			Model model) {
-//		
-//		logger.info("boardWrite����");
-//
-//		String menu = "";
-//		String path = "";
-//		if(boardcode.equals("travel")) {
-//			if(period == 1) {
-//				menu = "����ġ��";
-//			} else if(period == 2) {
-//				menu = "1��2��";
-//			} else if(period == 3) {
-//				menu = "2��3��";
-//			} else if(period == 4) {
-//				menu = "3��4��";
-//			}
-//			path = "WEB-INF/board/travelWrite";
-//		} else if(boardcode.equals("free")) {
-//			menu = "�����Խ���";
-//			path = "WEB-INF/board/boardWrite";
-//		} else if(boardcode.equals("notice")){
-//			menu = "��������";
-//			path = "WEB-INF/board/boardWrite";
-//		}
-//
-//		model.addAttribute("menu", menu);
-//		model.addAttribute("boardcode", boardcode);
-//		model.addAttribute("period", period);
-//		
-//		return path;
-//	}
-//
-//	@RequestMapping(value="/{boardcode}/{period}/boardWriteAction.do", method=RequestMethod.POST)
-//	public String boardWriteAction(
-//			@PathVariable("boardcode") String boardcode,
-//			@PathVariable("period") int period,
-//			BoardVo bv,
-//			@RequestParam("attachfile") MultipartFile filename,  // input�� name �̸��� BoardVo�� �ִ� ������Ƽ �̸��� �����ϸ� BoardVo�� ���� �Ѿ�� @RequestParam���� ���� �� �����Ƿ�, input�� name�� filename�� �ƴ� attachfile���� �Ѵ�.
-//			HttpServletRequest request,
-//			RedirectAttributes rttr,
-//			Model model,
-//			@RequestPart(name = "posterImages", required = false) MultipartFile uploadPosterImages
-//			) throws Exception {
-//		
-//		logger.info("boardWriteAction����");
-//		
-//		// ����÷��(�����)
-//		MultipartFile file = filename;
-//		String uploadedFileName = "";
-//		
-//		if(!file.getOriginalFilename().equals("")) {
-//			String uploadPath = "D:\\dev\\myprj\\myprjSpring\\myprj\\src\\main\\webapp\\resources\\boardImages\\";
-//			uploadedFileName = UploadFileUtiles.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
-//		}
-//		
-//		String midx = request.getSession().getAttribute("midx").toString();  // HttpSession�� HttpServletRequest �ȿ� ����
-//		int midx_int = Integer.parseInt(midx);
-//		bv.setMidx(midx_int);
-//		
-//		String ip = userip.getUserIp(request);
-//		bv.setIp(ip);
-//		
-//		bv.setUploadedFilename(uploadedFileName);
-//		// String replaceFileName = uploadedFileName.replaceAll("(\\/\\d{4}\\/\\d{2}\\/\\d{2})\\/s-", "$1/");
-//        // bv.setUploadedFilename(replaceFileName);
-//        
-//		int bidx = 0;
-//		bidx = boardService.boardInsert(bv);
-//				
-//		String path = "";
-//		if(bidx != 0) {			
-//			model.addAttribute("bidx", bidx);
-//			rttr.addFlashAttribute("msg", "�۾��� ����");
-//			path = "redirect:/board/" + bidx + "/boardContents.do";
-//			
-//		} else {
-//			model.addAttribute("boardcode", boardcode);
-//			model.addAttribute("period", period);
-//			rttr.addFlashAttribute("msg", "�Է��� �߸��Ǿ����ϴ�.");
-//			path = "redirect:/board/" + boardcode + "/" + period + "/boardWrite.do";
-//		}
-//		
-//		return path;
-//	}
+	@RequestMapping(value="/librarianApprovalWrite.do")
+	public String boardWrite() {
+		
+		logger.info("librarianApprovalWrite 들어옴");
+
+		return "admin/librarianApproval/librarianApprovalWrite";
+	}
+
+	@PostMapping(value="/librarianApprovalWriteAction.do")
+	public String librarianApprovalWriteAction(
+			ApprovalVo av,
+			HttpServletRequest request,
+			RedirectAttributes rttr,
+			Model model
+			) {
+		
+		logger.info("librarianApprovalWriteAction 들어옴");
+		
+		// DB에 작성자 정보를 저장하기 위해 session에 저장된 uidx를 av 안에 세팅
+//		String uidx = request.getSession().getAttribute("uidx").toString();
+//		int uidx_int = Integer.parseInt(uidx);
+//		av.setUidx(uidx_int);
+		
+		
+		av.setUidx(1);
+		av.setRqidx(1);
+		
+		// 게시글 등록 쿼리가 성공했는지 확인하기 위해 aidx의 초기값을 세팅.
+		int aidx = 0;
+		
+		// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
+		aidx = librarianApprovalService.approvalInsert(av);
+		
+		// 이동할 주소 초기화
+		String path = "";
+		
+		// 게시글 등록 후 이동할 url 및 메세지 설정
+		if(aidx != 0) {
+			rttr.addFlashAttribute("msg", "글쓰기가 성공했습니다.");
+			path = "redirect:/admin/librarianApproval/" + aidx + "/librarianApprovalDetail.do";
+			
+		// 게시글 등록 실패시 이동할 url 및 메세지 설정
+		} else {
+			rttr.addFlashAttribute("msg", "글쓰기가 실패했습니다.");
+			path = "redirect:/admin/librarianApproval/librarianApprovalWrite.do";
+		}
+		
+		return path;
+	}
 //
 //	@RequestMapping(value="/{bidx}/boardModify.do")
 //	public String boardModify(

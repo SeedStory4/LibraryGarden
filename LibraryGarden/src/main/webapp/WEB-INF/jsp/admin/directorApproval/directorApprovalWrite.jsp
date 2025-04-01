@@ -61,7 +61,7 @@
 	
 					<!-- 버튼 -->
 					<div class="draft-actions-mt">
-						<button type="button" class="draft-btn-small btn-submit" onClick="check()">등록</button>						
+						<button type="button" class="draft-btn-small btn-submit" onClick="check()">등록</button>
 						<button type="button" class="draft-btn-small btn-cancel" onClick="history.back()">취소</button>
 					</div>
 				</form>
@@ -87,7 +87,7 @@
         let fm = document.frm;
 		let ans = confirm("등록하시겠습니까?");
 	  	  if (ans == true) {
-			  fm.action="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalWriteAction.do";
+			  fm.action="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalWriteAction.do";
 			  fm.method="post";
 			  fm.submit();
 		}

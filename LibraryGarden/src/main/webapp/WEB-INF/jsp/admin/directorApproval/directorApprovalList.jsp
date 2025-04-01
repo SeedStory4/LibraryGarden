@@ -21,7 +21,7 @@
 
 	<div class="wrapper">
 		<section class="section p-0">
-			<h2 class="section-title m-0 normal relative">결재관리 목록<button class="btn btn-primary absolute">기안등록</button></h2>
+			<h2 class="section-title m-0 normal relative">결재관리 목록<a class="btn btn-primary absolute" href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalWrite.do">기안등록</a></h2>
 			
 			<div class="contents">
 				<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
