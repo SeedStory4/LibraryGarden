@@ -100,6 +100,12 @@
 			
 			return;
 		}		
+		
+		// 메세지
+		const msg = "${requestScope.msg}";
+		if (msg != null && msg != "") {
+			alert(msg);
+		}
 	</script>
 </body>
 </html>

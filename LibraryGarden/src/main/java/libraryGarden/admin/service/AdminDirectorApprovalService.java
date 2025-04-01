@@ -3,6 +3,7 @@ package libraryGarden.admin.service;
 import java.util.ArrayList;
 
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.SearchCriteria;
 
@@ -15,5 +16,7 @@ public interface AdminDirectorApprovalService {
 	public BookVo directorApprovalSelectOne(int aidx);
 
 	public int directorApprovalDelete(int aidx);
+
+	public int approvalInsert(ApprovalVo av);
 	
 }

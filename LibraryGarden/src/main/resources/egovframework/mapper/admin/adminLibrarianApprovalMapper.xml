@@ -61,4 +61,11 @@
 	<update id="librarianApprovalDelete" parameterType="int">
 		UPDATE APPROVAL SET delyn = 'Y', modify = now() WHERE aidx = #{aidx}
 	</update>
+	
+	<!-- 게시글 등록 후 이동할 상세페이지에서 게시글 내용을 보여주기 위해 새로 등록한 게시글의 aidx를 maxAidx 안에 넣어서 가져온다.(auto increment만 가능) -->
+	<insert id="approvalInsert" parameterType="HashMap" useGeneratedKeys="true" keyProperty="maxAidx">
+  		INSERT INTO APPROVAL(uidx, rqidx, bidx) 
+		VALUES(#{uidx}, #{rqidx}, #{bidx})
+	</insert>
+	
 </mapper>

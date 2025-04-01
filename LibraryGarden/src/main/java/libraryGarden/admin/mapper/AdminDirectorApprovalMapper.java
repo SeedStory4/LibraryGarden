@@ -15,5 +15,7 @@ public interface AdminDirectorApprovalMapper {
 	public BookVo directorApprovalSelectOne(int aidx);
 
 	public int directorApprovalDelete(int aidx);
-
+	
+	public int approvalInsert(HashMap<String,Object> hm);
+	
 }

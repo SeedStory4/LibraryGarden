@@ -2,6 +2,8 @@ package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import libraryGarden.admin.service.AdminDirectorApprovalService;
 import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
@@ -90,7 +93,7 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
 		int value = directorApprovalService.directorApprovalDelete(aidx);
 
-		// 삭제 후 이동할 url 및 메세지 설정 
+		// 삭제 후 이동할 url 및 메세지 설정
 		String path = "redirect:/admin/directorApproval/directorApprovalList.do";
 		rttr.addFlashAttribute("msg", "삭제되었습니다.");
 		
@@ -103,6 +106,56 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 		return path;
 	}
 
+	@RequestMapping(value="/directorApprovalWrite.do")
+	public String boardWrite() {
+		
+		logger.info("directorApprovalWrite 들어옴");
+
+		return "admin/directorApproval/directorApprovalWrite";
+	}
+
+	@PostMapping(value="/directorApprovalWriteAction.do")
+	public String directorApprovalWriteAction(
+			ApprovalVo av,
+			HttpServletRequest request,
+			RedirectAttributes rttr,
+			Model model
+			) {
+		
+		logger.info("directorApprovalWriteAction 들어옴");
+		
+		// DB에 작성자 정보를 저장하기 위해 session에 저장된 uidx를 av 안에 세팅
+//		String uidx = request.getSession().getAttribute("uidx").toString();
+//		int uidx_int = Integer.parseInt(uidx);
+//		av.setUidx(uidx_int);
+		
+		
+		av.setUidx(1);
+		av.setRqidx(1);
+		
+		// 게시글 등록 쿼리가 성공했는지 확인하기 위해 aidx의 초기값을 세팅.
+		int aidx = 0;
+		
+		// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
+		aidx = directorApprovalService.approvalInsert(av);
+		
+		// 이동할 주소 초기화
+		String path = "";
+		
+		// 게시글 등록 후 이동할 url 및 메세지 설정
+		if(aidx != 0) {
+			rttr.addFlashAttribute("msg", "글쓰기가 성공했습니다.");
+			path = "redirect:/admin/directorApproval/" + aidx + "/directorApprovalDetail.do";
+			
+		// 게시글 등록 실패시 이동할 url 및 메세지 설정
+		} else {
+			rttr.addFlashAttribute("msg", "글쓰기가 실패했습니다.");
+			path = "redirect:/admin/directorApproval/directorApprovalWrite.do";
+		}
+		
+		return path;
+	}
+	
     @GetMapping("/popDirectorApprovalRejectionWrite.do")
     public String popDirectorApprovalRejectionWrite() {
         return "admin/directorApproval/popDirectorApprovalRejectionWrite";
