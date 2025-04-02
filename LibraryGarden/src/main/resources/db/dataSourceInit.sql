@@ -1,6 +1,9 @@
 -- APPROVAL 테이블 삭제 (가장 의존성이 높음)
 DROP TABLE IF EXISTS APPROVAL;
 
+-- RESERVATION 테이블 삭제
+DROP TABLE IF EXISTS RESERVATION;
+
 -- REQUEST 테이블 삭제
 DROP TABLE IF EXISTS REQUEST;
 
@@ -142,6 +145,23 @@ CREATE TABLE REQUEST (
         ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_request_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
         ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- RESERVATION 테이블 생성 (예약 테이블)
+CREATE TABLE RESERVATION (
+    ridx INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+    lbidx INT NOT NULL,                           
+    uidx INT NOT NULL,                            
+    reservationDate DATE NOT NULL,  
+    pickupDate DATE NOT NULL,                      
+    status VARCHAR(50) NOT NULL DEFAULT '예약중',  
+    dueDate DATE NOT NULL,                      
+    modify DATETIME,                    
+    delyn CHAR(1) NOT NULL DEFAULT 'N',          
+    CONSTRAINT fk_reservation_librarybooks FOREIGN KEY (lbidx)
+        REFERENCES LIBRARYBOOKS(lbidx) ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_reservation_user FOREIGN KEY (uidx)
+        REFERENCES USER(uidx) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 -- APPROVAL 테이블 생성
@@ -376,6 +396,14 @@ VALUES (3,1),
 (3,11), 
 (4,12), 
 (4,13);
+
+
+INSERT INTO RESERVATION (lbidx, uidx, reservationDate, pickupDate, status, dueDate, modify)
+VALUES
+(12, 3, '2025-03-24', '2025-03-25', '예약중', '2025-04-01', NULL),
+(13, 4, '2025-03-23', '2025-03-24', '예약취소', '2025-3-31', '2025-03-24 15:00:00'),
+(14, 4, '2025-03-22', '2025-03-23', '수령완료', '2025-03-30', '2025-03-23 09:00:00'),
+(15, 3, '2025-03-27', '2025-03-29', '예약중', '2025-04-05', NULL);
 
 -- APPROVAL 샘플 데이터 생성
 INSERT INTO APPROVAL(uidx,rqidx,bidx,status,rejectionReason) 
