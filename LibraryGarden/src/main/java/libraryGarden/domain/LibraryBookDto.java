@@ -14,14 +14,17 @@ public class LibraryBookDto {
 
 	private int bidx; // 책 인덱스
 	private String coverImg; // 책 표지
-	private String title; // 책 체목
+    private String title; // 책 체목
+    private String originalTitle; // 책 원제
 	private String subtitle; // 책 부제
 	private String author; // 책 저자 
 	private String publisher; // 책 출판사
 	private String publishedYear; // 책 출판사
 	private String totalPages; // 책 쪽수
 	private String isbn; // 책 출판사
-	private String info; // 책 서적정보
+    private String sizeWidth; // 책 넓이
+    private String sizeHeight;// 책 높이
+    private String weight;// 책 무게
 	private String category; // 책 카테고리(분류)
 	private String introduction; // 책 소개
 	private String price; // 책 정가
@@ -55,6 +58,12 @@ public class LibraryBookDto {
 	}
 	public void setTitle(String title) {
 		this.title = title;
+	}
+	public String getOriginalTitle() {
+		return originalTitle;
+	}
+	public void setOriginalTitle(String originalTitle) {
+		this.originalTitle = originalTitle;
 	}
 	public String getSubtitle() {
 		return subtitle;
@@ -92,11 +101,23 @@ public class LibraryBookDto {
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
-	public String getInfo() {
-		return info;
+	public String getSizeWidth() {
+		return sizeWidth;
 	}
-	public void setInfo(String info) {
-		this.info = info;
+	public void setSizeWidth(String sizeWidth) {
+		this.sizeWidth = sizeWidth;
+	}
+	public String getSizeHeight() {
+		return sizeHeight;
+	}
+	public void setSizeHeight(String sizeHeight) {
+		this.sizeHeight = sizeHeight;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
 	}
 	public String getCategory() {
 		return category;
@@ -176,8 +197,6 @@ public class LibraryBookDto {
 	public void setChildCode(String childCode) {
 		this.childCode = childCode;
 	}
-
-	
 
 	
 	
