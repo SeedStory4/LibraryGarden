@@ -18,6 +18,7 @@ public class LibraryBookDto {
     private String originalTitle; // 책 원제
 	private String subtitle; // 책 부제
 	private String author; // 책 저자 
+	private String translator; // 책 번역가
 	private String publisher; // 책 출판사
 	private String publishedYear; // 책 출판사
 	private String totalPages; // 책 쪽수
@@ -41,6 +42,7 @@ public class LibraryBookDto {
 	private String name; // 카테고리 이름(문학, 등)	
 	private String parentCode; // 카테고리 상위 코드
 	private String childCode; // 카테고리 하위 코드
+	
 	public int getBidx() {
 		return bidx;
 	}
@@ -76,6 +78,12 @@ public class LibraryBookDto {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public String getTranslator() {
+		return translator;
+	}
+	public void setTranslator(String translator) {
+		this.translator = translator;
 	}
 	public String getPublisher() {
 		return publisher;
@@ -198,7 +206,5 @@ public class LibraryBookDto {
 		this.childCode = childCode;
 	}
 
-	
-	
 
 }

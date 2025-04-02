@@ -8,6 +8,7 @@ public class BookVo {
     private String originalTitle;
     private String subtitle;
     private String author;
+    private String translator;
     private String publisher;
     private int publishedYear;
     private int totalPages;
@@ -56,6 +57,12 @@ public class BookVo {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public String getTranslator() {
+		return translator;
+	}
+	public void setTranslator(String translator) {
+		this.translator = translator;
 	}
 	public String getPublisher() {
 		return publisher;
@@ -135,6 +142,8 @@ public class BookVo {
 	public void setDelyn(String delyn) {
 		this.delyn = delyn;
 	}
+	
+    
     
     
 
