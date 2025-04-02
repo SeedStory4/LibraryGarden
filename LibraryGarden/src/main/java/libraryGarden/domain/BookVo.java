@@ -5,21 +5,23 @@ public class BookVo {
     private int bidx;
     private String coverImg;
     private String title;
+    private String originalTitle;
     private String subtitle;
     private String author;
+    private String translator;
     private String publisher;
     private int publishedYear;
     private int totalPages;
     private String isbn;
-    private String info;
+    private String sizeWidth;
+    private String sizeHeight;
+    private String weight;
     private String category;
     private String introduction;
     private int price;
     private String regdate;
     private String modify;
     private String delyn;
-    
-    
 	public int getBidx() {
 		return bidx;
 	}
@@ -38,6 +40,12 @@ public class BookVo {
 	public void setTitle(String title) {
 		this.title = title;
 	}
+	public String getOriginalTitle() {
+		return originalTitle;
+	}
+	public void setOriginalTitle(String originalTitle) {
+		this.originalTitle = originalTitle;
+	}
 	public String getSubtitle() {
 		return subtitle;
 	}
@@ -49,6 +57,12 @@ public class BookVo {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
+	}
+	public String getTranslator() {
+		return translator;
+	}
+	public void setTranslator(String translator) {
+		this.translator = translator;
 	}
 	public String getPublisher() {
 		return publisher;
@@ -74,11 +88,23 @@ public class BookVo {
 	public void setIsbn(String isbn) {
 		this.isbn = isbn;
 	}
-	public String getInfo() {
-		return info;
+	public String getSizeWidth() {
+		return sizeWidth;
 	}
-	public void setInfo(String info) {
-		this.info = info;
+	public void setSizeWidth(String sizeWidth) {
+		this.sizeWidth = sizeWidth;
+	}
+	public String getSizeHeight() {
+		return sizeHeight;
+	}
+	public void setSizeHeight(String sizeHeight) {
+		this.sizeHeight = sizeHeight;
+	}
+	public String getWeight() {
+		return weight;
+	}
+	public void setWeight(String weight) {
+		this.weight = weight;
 	}
 	public String getCategory() {
 		return category;
@@ -116,5 +142,10 @@ public class BookVo {
 	public void setDelyn(String delyn) {
 		this.delyn = delyn;
 	}
+	
+    
+    
+    
+
 
 }
