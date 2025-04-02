@@ -35,10 +35,11 @@
 						class="draft-book-img">
 					<div class="draft-info">
 						<p>
-							<span class="info-title">● 제목</span> <span class="info-content">${lbd.title}</span>
+							<span class="info-title">● 제목<c:choose><c:when test="${not empty lbd.originalTitle}"> / 원제</c:when><c:otherwise> </c:otherwise></c:choose></span> <span class="info-content">${lbd.title}<c:choose><c:when test="${not empty lbd.originalTitle}"> / ${lbd.originalTitle}</c:when><c:otherwise> </c:otherwise></c:choose></span>
 						</p>
 						<p>
-							<span class="info-title">● 부제</span> <span class="info-content">
+							<span class="info-title">● 부제</span> 
+							<span class="info-content">
 								<c:choose>
 									<c:when test="${not empty lbd.subtitle}">
 									${lbd.subtitle}
@@ -50,13 +51,13 @@
 							</span>
 						</p>
 						<p>
-							<span class="info-title">● 서명/저자사항</span> <span class="info-content">${lbd.author}</span>
+							<span class="info-title">● 저자 / 번역</span> <span class="info-content">${lbd.author}<c:choose><c:when test="${not empty lbd.translator}"> / ${lbd.translator}</c:when><c:otherwise> </c:otherwise></c:choose></span>
 						</p>
 						<p>
 							<span class="info-title">● 출판사</span> <span class="info-content">${lbd.publisher}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판년도</span> <span class="info-content">${lbd.publishedYear}년</span>
+							<span class="info-title">● 출판일</span> <span class="info-content">${fn:replace(lbd.dueDate, '-', '.')}</span>
 						</p>
 						<p>
 							<span class="info-title">● 전체쪽수</span> <span class="info-content">${lbd.totalPages}쪽</span>
@@ -65,7 +66,7 @@
 							<span class="info-title">● ISBN</span> <span class="info-content">${lbd.isbn}</span>
 						</p>
 						<p>
-							<span class="info-title">● 서적정보</span> <span class="info-content">${lbd.info} /<c:choose><c:when test="${not empty lbd.category}">${lbd.category}</c:when><c:otherwise> - </c:otherwise></c:choose></span>
+							<span class="info-title">● 서적정보</span> <span class="info-content">${lbd.sizeWidth}mm * ${lbd.sizeHeight}mm / ${lbd.weight}g </span>
 						</p>
 					</div>
 					
