@@ -26,7 +26,7 @@
 		
 		        <%-- 로그인 된 상태 --%>
 		        <c:otherwise>
-		            <li><a href="<%= request.getContextPath() %>/user/user/userMypage.do">마이페이지</a></li>
+		            <li><a href="<%= request.getContextPath() %>/user/myPage/myPageModify.do">마이페이지</a></li>
 		            <li>·</li>
 		           <li>
 					  <form action="<%= request.getContextPath() %>/user/user/logout.do" method="post" style="display:inline;">

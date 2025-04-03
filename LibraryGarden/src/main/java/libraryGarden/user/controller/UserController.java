@@ -26,6 +26,9 @@ public class UserController {
 	@Resource(name = "userService")
 	private UserService userService;
 	
+//	@Resource(name = "userService")
+//	private UserVo userVo;
+	
 	
 	
 	@GetMapping("/userPrivacyPolicy.do")
@@ -67,6 +70,7 @@ public class UserController {
     
     @PostMapping("/userJoinAction.do")
     public String userJoinAction(UserVo user, RedirectAttributes rttr) {
+        
         try {
             // 마지막 userNumber 가져오기
             String lastUserNumber = userService.getLastUserNumber();
@@ -78,25 +82,25 @@ public class UserController {
 
             userService.insertUser(user);
             logger.info("회원가입 성공 - ID: {}, userNumber: {}", user.getId(), formattedNumber);
-            rttr.addFlashAttribute("message", "회원가입이 완료되었습니다.");
+            rttr.addFlashAttribute("joinSuccessMessage", "회원가입이 완료되었습니다.");
             return "redirect:/user/user/userLogin.do";
         } catch (Exception e) {
             logger.error("회원가입 중 오류 발생", e);
-            rttr.addFlashAttribute("error", "회원가입 중 오류가 발생했습니다.");
+            rttr.addFlashAttribute("errorMessage", "회원가입 중 오류가 발생했습니다.");
             return "redirect:/user/user/userJoin.do";
         }
     }
     
     @PostMapping("/loginAction.do")
-    public String login(UserVo userVo, HttpSession session, Model model) {
+    public String login(UserVo userVo, HttpSession session, RedirectAttributes rttr) {
         UserVo loginUser = userService.login(userVo);
 
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
             return "redirect:/user/main.do"; // 로그인 성공 시 메인 페이지로
         } else {
-            model.addAttribute("loginFail", "아이디 또는 비밀번호가 일치하지 않습니다.");
-            return "/user/user/userLogin"; // 다시 로그인 페이지로
+        	rttr.addFlashAttribute("loginFailMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
+        	return "redirect:/user/user/userLogin.do"; // 다시 로그인 페이지로
         }
     }
     

@@ -9,6 +9,6 @@ public interface UserMapper {
     
     String getLastUserNumber();
     
-    UserVo login(UserVo userVo);
+    UserVo selectUserById(String id);
 
 }

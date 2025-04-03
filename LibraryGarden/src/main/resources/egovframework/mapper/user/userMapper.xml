@@ -24,12 +24,16 @@
 	    SELECT MAX(userNumber) FROM USER
 	</select>
 	
-	<select id="login" parameterType="libraryGarden.domain.UserVo" resultType="libraryGarden.domain.UserVo">
-	    SELECT * FROM USER 
-	    WHERE id = #{id} 
-	    AND password = #{password}
+	<select id="login" parameterType="string" resultType="libraryGarden.domain.UserVo">
+	    SELECT *
+	    FROM USER
+	    WHERE ID = #{id}
 	</select>
+
 	
+	<select id="selectUserById" resultType="libraryGarden.domain.UserVo" parameterType="String">
+	  SELECT * FROM USER WHERE ID = #{id}
+	</select>
 	
 
 </mapper>
