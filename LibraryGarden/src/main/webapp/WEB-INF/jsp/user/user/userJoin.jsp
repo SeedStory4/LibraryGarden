@@ -9,6 +9,7 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/userAccountManagement.css">
 </head>
 <body>
+		
 
 		<!-- 헤더 로드 -->
 		<jsp:include page="/user/userHeader.do" />
@@ -32,7 +33,7 @@
 		
 		          <input type="password" name="password" class="user-A-input mb-30" placeholder="비밀번호" required>
 		          <input type="password" name="passwordConfirm" class="user-A-input mb-30" placeholder="비밀번호 확인" required>
-		          <input type="tel" name="phone" class="user-A-input mb-30" placeholder="휴대전화번호 ( 예> 01012345678 )" required>
+		          <input type="tel" name="phone" pattern="^\+?\d{10,15}$" class="user-A-input mb-30" placeholder="휴대전화번호 ( 예> 01012345678 )" required>
 		          <input type="email" name="email" class="user-A-input mb-30" placeholder="이메일" required>
 		          <input type="text" name="address" class="user-A-input mb-57" placeholder="주소" required>
 		
@@ -58,6 +59,13 @@
 		
 		      if (userId === "") {
 		        alert("아이디를 입력해주세요.");
+		        return;
+		      }
+		      
+		      // 아이디 형식 검사
+		      const idRegex = /^[a-zA-Z0-9]+$/;
+		      if (!idRegex.test(userId)) {
+		        alert("아이디는 영문자와 숫자만 입력 가능합니다.");
 		        return;
 		      }
 		
@@ -92,6 +100,20 @@
 			    isIdChecked = false;
 			    lastCheckedId = "";
 			  });
+			
+			// 전화번호 오직 숫자만와 +만 허용 
+			  document.querySelector("input[name='phone']").addEventListener("input", function () {
+	        	  // 입력값 중 숫자와 +만 허용
+	        	  this.value = this.value.replace(/[^0-9+]/g, "");
+
+	        	  // "+"가 맨 앞에 1번만 오도록 제한
+	        	  if (this.value.indexOf('+') > 0) {
+	        	    this.value = this.value.replace(/\+/g, ''); // 맨 앞이 아닌 "+"는 제거
+	        	  }
+	        	  if ((this.value.match(/\+/g) || []).length > 1) {
+	        	    this.value = this.value.replace(/\+/g, '+'); // "+"가 2개 이상이면 하나만 남기기
+	        	  }
+	        	});
 		    
 		    
 		    
@@ -117,12 +139,32 @@
 		          e.preventDefault();
 		          return;
 		        }
+		        
+		     // 아이디 영어로만 하기
+		        const idRegex = /^[a-zA-Z0-9]+$/;
+		        if (!idRegex.test(id)) {
+		          alert("아이디는 영문자와 숫자만 입력 가능합니다.");
+		          form.id.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        
+		        
 		        if (pw === "") {
 		          alert("비밀번호를 입력해주세요.");
 		          form.password.focus();
 		          e.preventDefault();
 		          return;
 		        }
+		        
+		        const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+		        if (!pwRegex.test(pw)) {
+		          alert("비밀번호는 8자 이상, 영문/숫자/를 포함해야 합니다.");
+		          form.password.focus();
+		          e.preventDefault();
+		          return;
+		        }
+		        
 		        if (pwConfirm === "") {
 		          alert("비밀번호 확인을 입력해주세요.");
 		          form.passwordConfirm.focus();
@@ -135,6 +177,7 @@
 		          e.preventDefault();
 		          return;
 		        }
+		        
 		        if (phone === "") {
 		          alert("휴대전화번호를 입력해주세요.");
 		          form.phone.focus();
