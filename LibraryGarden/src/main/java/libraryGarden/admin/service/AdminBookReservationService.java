@@ -1,6 +1,7 @@
 package libraryGarden.admin.service;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.ReservationDto;
@@ -13,4 +14,5 @@ public interface AdminBookReservationService {
 	public int bookTotalCount(SearchCriteria scri, String filter); // 책 총 갯수
 	public ArrayList<LibraryBookDto> bookSelectAll(SearchCriteria scri, String filter); // 책 모든 리스트 가져오기
 	public boolean hasOverdue(String userNumber);
+	List<String> getReservedDatesByLbidx(int lbidx); 
 }
