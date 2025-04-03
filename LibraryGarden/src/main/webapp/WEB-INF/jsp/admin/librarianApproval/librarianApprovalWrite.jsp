@@ -5,6 +5,11 @@
 <head>
 <meta charset="UTF-8">
 <title>사서 기안 등록</title>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reservation.css" />
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 </head>
 <body>
@@ -19,8 +24,8 @@
 				<div class="draft-header">
 					<div class="section-title draft-title">기안 등록</div>
 					<div class="draft-buttons">
-						<button class="draft-btn btn-green">희망도서선택</button>
-						<button class="draft-btn btn-green small">도서선택</button>
+						<button class="draft-btn btn-green openModal" data-modalType="bookRequestSelect">희망도서선택</button>
+						<button class="draft-btn btn-green small openModal" data-modalType="bookSelect">도서선택</button>
 					</div>
 				</div>
 				<hr class="draft-divider">
@@ -29,32 +34,31 @@
 				<!-- 도서 정보 -->
 				<form name="frm">
 					<div class="draft-content">
-						<img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="도서 이미지" class="draft-book-img">
+						<img src="${requestScope.bv.coverImg}" alt="${requestScope.bv.title}" class="draft-book-img">
 						<div class="draft-info">
 							<p>
-								<span class="info-title">● 제목</span> <span class="info-content title">채식주의자</span>
+								<span class="info-title">● 제목</span> <span class="info-content title">${requestScope.bv.title}</span>
 							</p>
 							<p>
-								<span class="info-title">● 부제</span> <span class="info-content">채식주의자</span>
+								<span class="info-title">● 부제</span> <span class="info-content">${requestScope.bv.subtitle}</span>
 							</p>
 							<p>
-								<span class="info-title">● 서명/저자사항</span> <span
-									class="info-content">한강</span>
+								<span class="info-title">● 서명/저자사항</span> <span class="info-content">${requestScope.bv.author}</span>
 							</p>
 							<p>
-								<span class="info-title">● 출판사</span> <span class="info-content">창비</span>
+								<span class="info-title">● 출판사</span> <span class="info-content">${requestScope.bv.publisher}</span>
 							</p>
 							<p>
-								<span class="info-title">● 출판년도</span> <span class="info-content">2024년</span>
+								<span class="info-title">● 출판년도</span> <span class="info-content">${requestScope.bv.publishedYear}</span>
 							</p>
 							<p>
-								<span class="info-title">● 전체쪽수</span> <span class="info-content">216쪽</span>
+								<span class="info-title">● 전체쪽수</span> <span class="info-content">${requestScope.bv.totalPages}쪽</span>
 							</p>
 							<p>
-								<span class="info-title">● ISBN</span> <span class="info-content">12345687351</span>
+								<span class="info-title">● ISBN</span> <span class="info-content"></span>
 							</p>
 							<p>
-								<span class="info-title">● 서적정보</span> <span class="info-content">145×210mm/300g</span>
+								<span class="info-title">● 서적정보</span> <span class="info-content">${requestScope.bv.info}</span>
 							</p>
 						</div>
 					</div>
@@ -66,13 +70,45 @@
 					</div>
 				</form>
 			</section>
+			
+			<!-- 희망도서선택 모달 -->
+		    <div class="modal" style="display: none">
+		      <div class="modal-content w-1000">
+		        <div class="title-container">
+		          <div class="title"></div>
+		          <div class="title-line"></div>
+		        </div>
+		
+		        <!-- 컨텐츠 영역 -->
+		        <%-- <c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set> --%>
+				
+		        <div class="book-list">
+		          <form name="frm">
+			          <div class="search flex gap-20 justify-center">
+			            <select class="js-example-basic-single select shadow" name="state" name="searchType">
+			              <option value="title" selected>제목</option>
+			              <option value="author">저자</option>
+			              <option value="name">신청자</option>
+			            </select>
+			            <input type="text" class="shadow w-520" name="keyword">						
+			            <button type="button" class="btn btn-primary btn-small" onClick="search()">검색</button>
+			          </div>
+		          </form>
+		          <div class="table"></div>
+		        </div>
+		
+		        <!-- 버튼 영역 -->
+		        <div class="button-group">
+		          <button class="btn btn-red" id="closeModal">취소</button>
+		        </div>
+		      </div>
+		    </div>
 		</div>
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
 	<jsp:include page="/common/footer.jsp" />
-
-
+	
 	<script>
 	// 게시글 등록
 	function check() {
@@ -100,6 +136,158 @@
 	if (msg != null && msg != "") {
 		alert(msg);
 	}
+	
+	// select2
+    $(document).ready(function() {
+      $('.js-example-basic-single').select2();
+    });
+	
+    let selectedDate = null;
+
+    // 모달 열기
+    const openModalBtns = document.querySelectorAll(".openModal");
+    function openModalClick(e) {
+	    
+	    const scri = {
+   			"searchType" : "${requestScope.pm.scri.searchType}",
+   			"keyword" : "${requestScope.pm.scri.keyword}",
+   			"page" : "${requestScope.pm.endPage + 1}"
+        };
+    	
+		$.ajax({
+			 type: "post",  // 전송방식
+			 //url: "${pageContext.request.contextPath}/admin/librarianApproval/bookRequestList.do?page=${requestScope.pm.endPage + 1}&keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}",
+			 url: "${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do",
+			 dataType: "json",  // 받는 형식. json 타입은 문서에서 {"key값": "value값", "key값" : "value값"} 형식으로 구성
+			 data: JSON.stringify(scri),
+			       contentType: 'application/json',
+			       success: function(result) {  // 결과가 넘어와서 성공했을 때 받는 영역
+					 // alert("전송성공 테스트");
+					 console.dir(result);
+					 
+					 // html 만들기
+					 // 1. 제목 설정
+					 // const modalType = e.target.attributes["data-modalType"].value;
+					 document.querySelector(".modal .title").innerText = e.target.innerText;
+					 
+					 // 2. table 설정
+					 const alist = result.alist;
+					 const pm = result.pm;
+					 
+		 			 let listcontent = 
+		 				 `<table>
+				              <colgroup>
+				                <col width="8%">
+				                <col width="9%">
+				                <col>
+				                <col width="16%">
+				                <col width="15%">
+				                <col width="11%">
+				                <col width="11%">
+				                <col width="10%">
+				              </colgroup>
+				              <thead>
+				                <tr>
+				                  <th>번호</th>
+				                  <th>표지</th>
+				                  <th>제목</th>
+				                  <th>저자</th>
+				                  <th>출판사</th>
+				                  <th>신청자</th>
+				                  <th>신청일</th>
+				                  <th>선택</th>
+				                </tr>
+				              </thead>
+				              <tbody>`;
+				              
+					 for(var i = 0; i < alist.length; i++){
+						 listcontent += `<tr>`;
+						 listcontent += `<td>\${(pm.scri.page - 1) * pm.scri.perPageNum + i + 1}</td>`;
+						 listcontent += `<td><img src=\${alist[i].coverImg} alt=\${alist[i].title}></td>`;
+						 listcontent += `<td>\${alist[i].title}</td>`;
+						 listcontent += `<td>\${alist[i].author}</td>`;
+						 listcontent += `<td>\${alist[i].publisher}</td>`;
+						 listcontent += `<td>\${alist[i].name}<br>(\${alist[i].userNumber})</td>`;
+						 listcontent += `<td>\${alist[i].regDate.substr(0, 10).replaceAll("-", ".")}</td>`;
+						 listcontent += `<td><button class="btn btn-small btn-primary">선택</button></td>`;
+						 listcontent += `</tr>`;
+					 }
+					 
+					 listcontent += 
+						 `</tbody>
+					 	</table>`;
+					 	
+					 // 3. paging 설정
+					 const listUrl = "${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do";
+					 const queryParam = "keyword=${pm.scri.keyword}&searchType=${pm.scri.searchType}";
+					 
+					 let pagecontent = `<ul class="paging flex w-270 justify-center">`;
+					 
+					 if(Boolean(pm.prev)) {
+						 pagecontent += 
+							 `<li>
+				          		<a href="\${listUrl}?page=\${pm.startPage - 1}&\${queryParam}" aria-label="Previous">◀</a>
+				        	  </li>`;
+					 }
+					 
+					 for(var i = Number(pm.startPage); i < Number(pm.endPage); i++){
+						 alert(333);
+						 pagecontent += 
+							 `<li>
+						 		<a class="`;
+						 
+						 if(i == Number(pm.scri.page)) {
+							pagecontent += `on`;
+						 }
+						 
+						 pagecontent += 
+							 `" href="\${listUrl}?page=${i}&\${queryParam}">\${i}</a>
+						 	</li>`;
+					 }
+					 
+					 if(Boolean(pm.next) && Number(pm.endPage) > 0) {
+						 pagecontent += 
+							 `<li class="page-item">
+				          		<a href="\${listUrl}?page=\${Number(pm.endPage) + 1}&\${queryParam}" aria-label="Next">▶</a>
+				        	  </li>`;
+					 }
+
+					 pagecontent += `</ul>`;
+					 
+					 // 4. html 생성
+					 const html = listcontent + pagecontent;
+					 $('.modal .table').html(html);
+					 
+				   },
+			 error: function(xhr, status, error) {  // 결과가 실패했을 때 받는 영역
+			 	alert("전송실패 테스트");
+			    /* console.log("Error Status: " + status);
+			    console.log("Error Detail: " + error);
+			    console.log("Response: " + xhr.responseText); */
+			 }
+		});
+		
+		// 모달 열기
+	    document.querySelector(".modal").style.display = "flex";
+
+	    // 모달 닫기 이벤트 추가
+	    const closeModalBtn = document.querySelector("#closeModal");
+	    function closeModalClick() {
+		    document.querySelector(".modal").style.display = "none";
+		    
+		    // select 초기화
+		    $('.modal .select').val('title').trigger('change');
+	    }
+	    closeModalBtn.addEventListener("click", closeModalClick);
+    }
+    openModalBtns.forEach((e) => e.addEventListener("click", openModalClick));
+    
+    
+	  
+	  // 팝업 검색
+	  function search() {
+		  
+	  }
 	</script>
 </body>
 </html>

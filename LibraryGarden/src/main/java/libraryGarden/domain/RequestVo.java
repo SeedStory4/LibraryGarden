@@ -1,0 +1,63 @@
+package libraryGarden.domain;
+
+public class RequestVo {
+	
+	private int rqidx;
+	private int uidx;
+	private int bidx;
+	private String status;
+	private String rejectionReason;
+	private String regDate;
+	private String modify;
+	private String delyn;
+
+	public int getRqidx() {
+		return rqidx;
+	}
+	public void setRqidx(int rqidx) {
+		this.rqidx = rqidx;
+	}
+	public int getUidx() {
+		return uidx;
+	}
+	public void setUidx(int uidx) {
+		this.uidx = uidx;
+	}
+	public int getBidx() {
+		return bidx;
+	}
+	public void setBidx(int bidx) {
+		this.bidx = bidx;
+	}
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
+	}
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
+	public String getModify() {
+		return modify;
+	}
+	public void setModify(String modify) {
+		this.modify = modify;
+	}
+	public String getIpdelyn() {
+		return delyn;
+	}
+	public void setIpdelyn(String ipdelyn) {
+		this.delyn = ipdelyn;
+	}
+	
+}
