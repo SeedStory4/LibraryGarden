@@ -9,6 +9,7 @@ public class RequestDto {
 	private String publisher;
 	private String name;
 	private String userNumber;
+	private String regDate;
 
 	public int getRqidx() {
 		return rqidx;
@@ -51,6 +52,12 @@ public class RequestDto {
 	}
 	public void setUserNumber(String userNumber) {
 		this.userNumber = userNumber;
+	}
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 	
 }

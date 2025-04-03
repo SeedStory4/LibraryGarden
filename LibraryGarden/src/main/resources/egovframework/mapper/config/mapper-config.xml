@@ -21,6 +21,7 @@
 		<typeAlias alias="av"				type="libraryGarden.domain.ApprovalVo"/>
 		<typeAlias alias="ad"				type="libraryGarden.domain.ApprovalDto"/>
 		<typeAlias alias="lbd"				type="libraryGarden.domain.LibraryBookDto"/>
+		<typeAlias alias="rd"				type="libraryGarden.domain.RequestDto"/>
 	</typeAliases>
     
 </configuration>
