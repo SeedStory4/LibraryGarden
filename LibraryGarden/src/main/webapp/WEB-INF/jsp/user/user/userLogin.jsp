@@ -12,6 +12,27 @@
 
 	<!-- 헤더가 로드될 부분 -->
 	<jsp:include page="/user/userHeader.do" />
+	
+	<!-- 회원가입 완료 혹은 오류시 메세지 -->
+		<script>
+		  <%-- Flash attribute로 전달된 메시지 받기 --%>
+		  const joinSuccessMessage = "${joinSuccessMessage}";
+		  const errorMessage = "${errorMessage}";
+		  const loginFailMessage = "${loginFailMessage}";
+		
+		  if (joinSuccessMessage && joinSuccessMessage.trim() !== "") {
+		    alert(joinSuccessMessage);
+		  }
+		
+		  if (errorMessage && errorMessage.trim() !== "") {
+		    alert(errorMessage);
+		  }
+		  
+		  if (loginFailMessage && loginFailMessage.trim() !== "") {
+			    alert(loginFailMessage);
+		  }
+		</script>
+
 
 	<div class="wrapper">
 		<div class="inner">
