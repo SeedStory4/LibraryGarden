@@ -2,6 +2,7 @@ package libraryGarden.admin.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -79,6 +80,11 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	public boolean hasOverdue(String userNumber) {
 	    int count = rm.checkOverdue(userNumber);
 	    return count > 0;
+	}
+	
+	@Override
+	public List<String> getReservedDatesByLbidx(int lbidx) {
+	    return rm.getReservedDatesByLbidx(lbidx); // 예약된 날짜만 가져오는 쿼리
 	}
 
 }
