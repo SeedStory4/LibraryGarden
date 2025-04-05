@@ -1,6 +1,7 @@
 package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -94,29 +95,13 @@ public class AdminBookReservationController {
 		return "admin/bookReservation/bookReservationWrite";
 	}
 	
-	
-	@GetMapping("/popBookReservationWrite.do")
-	public String popBookReservationWrite(
-	    @RequestParam("lbidx") int lbidx,
-	    @RequestParam("userNumber") String userNumber,
-	    Model model) {
-		
-	    // 도서 정보, 회원 정보 등 필요한 데이터 조회 후 model에 추가
-	    model.addAttribute("lbidx", lbidx);
-	    model.addAttribute("userNumber", userNumber);
-
-	    return "admin/bookReservation/popBookReservationWrite";
-	}
-
-	
-	// 회원 연체중인지 확인
-	@PostMapping("/checkOverdue.do")
+	// 해당 도서 예약현황 조회 
+	@GetMapping("/getReservedDates.do")
 	@ResponseBody
-	public String checkOverdue(@RequestParam("userNumber") String userNumber) {
-	    boolean hasOverdue = adminBookReservationService.hasOverdue(userNumber);
-	    return hasOverdue ? "Y" : "N";
+	public List<String> getReservedDates(@RequestParam("lbidx") int lbidx) {
+	    return adminBookReservationService.getReservedDatesByLbidx(lbidx); 
 	}
-	
+		
 	// 도서예약 수정 팝업
 	@GetMapping("/popBookReservationModify.do")
 	public String popBookReservationModify() {

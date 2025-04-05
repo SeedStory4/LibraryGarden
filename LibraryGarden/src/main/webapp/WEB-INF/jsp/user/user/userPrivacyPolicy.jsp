@@ -61,11 +61,38 @@
 
 				<!-- 회원가입 버튼 -->
 				<div class="draft-actions mb-37">
-					<button class="draft-btn-small btn-submit-140">회원가입</button>
+					<button id="agreeBtn" class="draft-btn-small btn-submit-140">회원가입</button>
 				</div>
 			</section>
 		</div>
 	</div>
+			
+			
+		<script>
+		
+				document.getElementById("agreeBtn").addEventListener("click", function () {
+				
+				const checkboxes = document.querySelectorAll(".terms-checkbox");
+				
+				const allChecked = Array.from(checkboxes).every(cb => cb.checked);
+				
+				
+				if (!allChecked) {
+				
+				alert("모든 약관에 동의해야 회원가입을 진행할 수 있습니다.");
+				
+				return;
+				
+				}
+				
+				
+				// 약관 동의 완료 → 실제 회원가입 페이지로 이동
+				
+				location.href = "<%=request.getContextPath()%>/user/user/userJoinForm.do";
+				
+				});
+		
+		</script>
 
 	<!-- 푸터 로드할 부분 -->
 	<div id="footer-container"></div>

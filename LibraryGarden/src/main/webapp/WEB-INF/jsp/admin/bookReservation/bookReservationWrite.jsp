@@ -79,7 +79,7 @@
                                         <td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
                                         <td><img src="${lbd.coverImg}" alt="${lbd.title}"></td>
                                         <!-- 제목 클릭 시 모달을 열도록 클래스 추가 -->
-                                        <td><a href="#" class="openReservationModal">${lbd.title}</a></td>
+                                        <td><a href="#" class="openReservationModal" data-lbidx="${lbd.lbidx}">${lbd.title}</a></td>
                                         <td>${lbd.author}</td>
                                         <td>${lbd.publisher}</td>
                                         <td>${lbd.callName}</td>
@@ -95,7 +95,7 @@
                                         </td>
                                         <td class="<c:if test='${lbd.status eq "대출중"}'>blue</c:if>
                                                    <c:if test='${lbd.status eq "대출가능"}'>green</c:if>
-                                                   <c:if test='${lbd.status eq "예약대기"}'>green</c:if>
+                                                   <c:if test='${lbd.status eq "예약대기"}'>orange</c:if>
                                                    <c:if test='${lbd.status eq "대출불가"}'>red</c:if>">
                                             ${lbd.status}
                                         </td>
@@ -175,14 +175,39 @@
         // select2 초기화
         $('.js-example-basic-single').select2();
 
-        // 제목 클릭 시 모달 표시 + 달력 크기 업데이트
         $('.openReservationModal').on('click', function(e) {
             e.preventDefault();
-            $('#reservationModal').show();
-            if (window.myCalendar) {
-                window.myCalendar.updateSize();
+            
+            const $row = $(this).closest('tr');
+            const statusText = $row.find('td').last().text().trim();
+
+            if (statusText === "대출불가") {
+                alert("예약이 불가한 도서입니다.");
+                return;
             }
+
+            const lbidx = $(this).data('lbidx'); // <a data-lbidx="123">
+
+            // ✅ 예약 현황 비동기 호출
+            $.ajax({
+                url: '${pageContext.request.contextPath}/admin/bookReservation/getReservedDates.do',
+                type: 'GET',
+                data: { lbidx: lbidx },
+                success: function(data) {
+                    window.disabledDates = data; // ['2025.04.01', '2025.04.02', ...]
+                    $('#reservationModal').show();
+                    if (window.myCalendar) {
+                        window.myCalendar.refetchEvents?.(); // 선택사항
+                        window.myCalendar.updateSize();
+                    }
+                },
+                error: function() {
+                    alert("예약 현황을 불러오지 못했습니다.");
+                }
+            });
         });
+
+
         // 모달의 취소 버튼 클릭 시 상태 초기화 후 모달 숨기기
         $('#closeModal').on('click', function() {
             // 전역 변수 초기화

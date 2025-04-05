@@ -31,16 +31,32 @@ public class UserController {
 	
 	
 	
-	@GetMapping("/userPrivacyPolicy.do")
-	public String userPrivacyPolicy() {
-		logger.info("userPrivacyPolicy enter");
-		return "user/user/userPrivacyPolicy";
+//	@GetMapping("/userPrivacyPolicy.do")
+//	public String userPrivacyPolicy() {
+//		logger.info("userPrivacyPolicy enter");
+//		return "user/user/userPrivacyPolicy";
+//	}
+//	
+	@GetMapping("/userJoinForm.do")
+
+	public String userJoinForm() {
+
+	logger.info("약관 동의 완료 → 회원가입 입력 페이지로 이동");
+
+	return "user/user/userJoin"; // 실제 회원가입 입력 form
+
 	}
-	
+
+
+	// 회원가입페이지로 이동전 반드시 약관동의로 가야하기 때문에 경로 변경
+
 	@GetMapping("/userJoin.do")
-    public String userJoin() {
-        return "user/user/userJoin";
-    }
+
+	public String userJoin() {
+
+	return "user/user/userPrivacyPolicy";
+
+	}
 
     @GetMapping("/userLogin.do")
     public String userLogin() {

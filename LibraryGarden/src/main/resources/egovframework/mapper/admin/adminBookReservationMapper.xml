@@ -75,5 +75,11 @@
 	WHERE u.userNumber = #{userNumber}
 	  AND o.status = 'Y'
 	</select>
+	
+	<select id="getReservedDatesByLbidx" parameterType="int" resultType="String">
+    SELECT DATE_FORMAT(pickupDate, '%Y.%m.%d') 
+    FROM RESERVATION
+    WHERE lbidx = #{lbidx} AND status IN ('예약대기') AND delyn = 'N'
+	</select>
 
 </mapper>
