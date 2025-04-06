@@ -10,7 +10,7 @@ public class BookVo {
     private String author;
     private String translator;
     private String publisher;
-    private int publishedYear;
+    private String publishedYear;
     private int totalPages;
     private String isbn;
     private String sizeWidth;
@@ -70,10 +70,10 @@ public class BookVo {
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
 	}
-	public int getPublishedYear() {
+	public String getPublishedYear() {
 		return publishedYear;
 	}
-	public void setPublishedYear(int publishedYear) {
+	public void setPublishedYear(String publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 	public int getTotalPages() {
