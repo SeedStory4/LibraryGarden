@@ -35,5 +35,15 @@
 	  SELECT * FROM USER WHERE ID = #{id}
 	</select>
 	
+	<update id="updateUser" parameterType="libraryGarden.domain.UserVo">
+	    UPDATE USER
+	    SET password = #{password},
+	        phone = #{phone},
+	        email = #{email},
+	        address = #{address}
+	    WHERE id = #{id}
+	</update>
+	
+	
 
 </mapper>

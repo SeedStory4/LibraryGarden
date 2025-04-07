@@ -10,5 +10,8 @@ public interface UserMapper {
     String getLastUserNumber();
     
     UserVo selectUserById(String id);
+    
+    void updateUser(UserVo user);
+
 
 }
