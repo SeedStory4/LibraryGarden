@@ -24,54 +24,63 @@
 				<!-- 선 추가 -->
 
 				<!-- 회원 정보 수정 -->
+				<form action="<%= request.getContextPath() %>/user/myPage/userUpdate.do" method="post">
 				<div class="draft-content">
 					<div class="mb-21">
 						<p class="font-767678-18">이름</p>
-						<p class="font-000-20">김이슬</p>
+						<p class="font-000-20">${user.name}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">회원번호</p>
-						<p class="font-000-20">032709</p>
+						<p class="font-000-20">${user.userNumber}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">아이디</p>
-						<p class="font-000-20">dltmf1045</p>
+						<p class="font-000-20">${user.id}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">비밀번호</p>
-						<input type="password" class="user-A-input"  placeholder="비밀번호">
+						<input type="password" name="password" class="user-A-input"  placeholder="비밀번호">
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">비밀번호 확인</p>
-						<input type="password" class="user-A-input" placeholder="비밀번호 확인" >
+						<input type="password" name="passwordConfirm" class="user-A-input" placeholder="비밀번호 확인" >
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">휴대전화번호</p>
-						<input type="tel" class="user-A-input" value="01099171192" placeholder="휴대전화번호 ( 예> 01012345678 )" >
+						<input type="tel" name="phone" class="user-A-input" value="${user.phone}" placeholder="휴대전화번호 ( 예> 01012345678 )" >
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">이메일</p>
-						<input type="email" class="user-A-input" value="dltmf1045@gmail.com" placeholder="이메일">
+						<input type="email" name="email" class="user-A-input" value="${user.email}" placeholder="이메일">
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">주소</p>
-						<input type="text" class="user-A-input"  value="대전 광역시 서구 갈마동 333-33 222호" placeholder="주소">
+						<input type="text" name="address" class="user-A-input"  value="${user.address}" placeholder="주소">
 					</div>
+					
+					<div class="mb-21">
+						<p class="font-767678-18">현재 비밀번호</p>
+						<input type="password" name="NowPassword" class="user-A-input"  placeholder="현재 비밀번호" required>
+					</div>
+					
 					<div class="mb-33">
 						<p class="font-767678-18">가입일</p>
-						<p class="font-000-20">2025.03.05</p>
+						<p class="font-000-20">${user.date}</p>
 					</div>
 				</div>
 
 	
 				<!-- 등록/취소 버튼 -->
 				<div class="draft-actions mb-37">
-					<button class="draft-btn-small btn-submit-140">확인</button>
-					<button class="draft-btn-small btn-cancel-140">취소</button>
+					<button type="submit" class="draft-btn-small btn-submit-140">확인</button>
+    				<button type="reset" class="draft-btn-small btn-cancel-140">취소</button>
 				</div>
+			</form>
 			</section>
 		</div>
 	</div>
+
 
 	<!-- 푸터 로드할 부분 -->
 	<jsp:include page="/common/footer.jsp" /> 

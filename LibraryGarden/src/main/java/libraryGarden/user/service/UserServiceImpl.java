@@ -55,5 +55,18 @@ public class UserServiceImpl implements UserService {
     public int countUserById(String id) {
         return userMapper.countUserById(id);
     }
+    
+    @Override
+    @Transactional(readOnly = true)
+    public UserVo selectUserById(String id) {
+        return userMapper.selectUserById(id);
+    }
+    
+    @Override
+    public void updateUser(UserVo user) {
+        userMapper.updateUser(user);
+    }
+
+
 
 }

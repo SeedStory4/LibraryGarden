@@ -18,16 +18,15 @@ public class LibraryBookDto {
     private String originalTitle; // 책 원제
 	private String subtitle; // 책 부제
 	private String author; // 책 저자 
-	private String translator; // 책 번역가
 	private String publisher; // 책 출판사
-	private String publishedYear; // 책 출판사
+	private String publishedYear; // 책 출판일
 	private String totalPages; // 책 쪽수
-	private String isbn; // 책 출판사
+	private String isbn; // 책 isbn
     private String sizeWidth; // 책 넓이
     private String sizeHeight;// 책 높이
     private String weight;// 책 무게
 	private String category; // 책 카테고리(분류)
-	private String introduction; // 책 소개
+	private String introduction; // 책 한줄요약
 	private String price; // 책 정가
 	
 	private int lbidx; // 도서관 책 인덱스
@@ -78,12 +77,6 @@ public class LibraryBookDto {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
-	}
-	public String getTranslator() {
-		return translator;
-	}
-	public void setTranslator(String translator) {
-		this.translator = translator;
 	}
 	public String getPublisher() {
 		return publisher;
