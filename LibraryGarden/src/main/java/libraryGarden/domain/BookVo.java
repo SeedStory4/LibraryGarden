@@ -8,7 +8,6 @@ public class BookVo {
     private String originalTitle;
     private String subtitle;
     private String author;
-    private String translator;
     private String publisher;
     private String publishedYear;
     private int totalPages;
@@ -57,12 +56,6 @@ public class BookVo {
 	}
 	public void setAuthor(String author) {
 		this.author = author;
-	}
-	public String getTranslator() {
-		return translator;
-	}
-	public void setTranslator(String translator) {
-		this.translator = translator;
 	}
 	public String getPublisher() {
 		return publisher;
