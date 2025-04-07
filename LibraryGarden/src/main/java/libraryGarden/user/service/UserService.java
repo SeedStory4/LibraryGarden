@@ -17,5 +17,10 @@ public interface UserService {
     
     // 아이디 유효성검사
     int countUserById(String id);
+    
+    UserVo selectUserById(String id);
+    
+    void updateUser(UserVo user);
+
 
 }
