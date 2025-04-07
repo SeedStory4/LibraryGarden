@@ -16,6 +16,6 @@ public interface AdminLibrarianApprovalMapper {
 
 	public int librarianApprovalDelete(int aidx);
 	
-	public int approvalInsert(HashMap<String,Object> hm);
+	public int librarianApprovalInsert(HashMap<String,Object> hm);
 	
 }

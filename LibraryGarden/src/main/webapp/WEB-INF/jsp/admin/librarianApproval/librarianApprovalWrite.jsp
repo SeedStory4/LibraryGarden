@@ -40,6 +40,7 @@
 
 				<!-- 도서 정보 -->
 				<form name="frm">
+					<input type="hidden" name="rqidx">
 					<div class="draft-content">
 						<img src="https://placehold.co/141x213?text=BOOK" alt="Book Sample Image" class="draft-book-img coverImg">
 						<div class="draft-info">
@@ -78,7 +79,7 @@
 				</form>
 			</section>
 			
-			<!-- 희망도서선택 모달 -->
+			<!-- 모달 -->
 		    <div class="modal" style="display: none">
 		      <div class="modal-content w-1000">
 		        <div class="title-container">
@@ -117,15 +118,16 @@
 	<script>
 	// 게시글 등록
 	function check() {
-		// bidx나 rqidx 확인으로 수정 예정
-		const title = document.querySelector(".title");
-		if (title.innerText == "") {
+
+        let fm = document.frm;
+        
+		// 도서 선택했는지 확인
+		if (fm.rqidx.value == "") {
 			alert("도서를 선택해주세요");
 			window.scrollTo({top: 0, behavior: 'smooth'});
 			return;
 		}
 		
-        let fm = document.frm;
 		let ans = confirm("등록하시겠습니까?");
 	  	  if (ans == true) {
 			  fm.action="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalWriteAction.do";
@@ -326,6 +328,9 @@
 			         document.querySelector(".totalPages").innerText = bv.totalPages + "쪽";
 			         document.querySelector(".isbn").innerText = bv.isbn;
 			         document.querySelector(".info").innerText = bv.info;
+			         
+			         // controller에 보내기 위해 희망도서 idx 저장하기
+					 document.frm.rqidx.value = rqidx;
 			         
 					 // 모달 닫기
 			    	 closeModalClick();

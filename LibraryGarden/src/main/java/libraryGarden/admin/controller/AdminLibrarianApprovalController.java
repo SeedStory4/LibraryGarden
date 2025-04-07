@@ -136,15 +136,16 @@ public class AdminLibrarianApprovalController {
 //		int uidx_int = Integer.parseInt(uidx);
 //		av.setUidx(uidx_int);
 		
-		
 		av.setUidx(1);
-		av.setRqidx(1);
 		
 		// 게시글 등록 쿼리가 성공했는지 확인하기 위해 aidx의 초기값을 세팅.
 		int aidx = 0;
 		
-		// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
-		aidx = librarianApprovalService.approvalInsert(av);
+		if(av.getRqidx() > 0) {
+			// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
+			av.setBidx(0);
+			aidx = librarianApprovalService.librarianApprovalInsert(av);
+		}
 		
 		// 이동할 주소 초기화
 		String path = "";

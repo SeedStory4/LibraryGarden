@@ -67,7 +67,7 @@
 					<div class="draft-actions">
 						<button class="draft-btn-small btn-submit">수정</button>
 						<button type="button" class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
-						<button type="button" class="draft-btn-small btn-list" onClick="history.back()">목록</button>
+						<a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do" class="draft-btn-small btn-list flex align-center justify-center">목록</a>
 					</div>
 				</form>
 			</section>

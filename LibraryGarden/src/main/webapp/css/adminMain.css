@@ -599,6 +599,7 @@ ul, li { list-style: none; }
 .flex { display: flex; }
 .justify-center { justify-content: center; }
 .justify-spacebtween { justify-content: space-between; }
+.align-center { align-items : center; }
 .gap-20 { gap: 20px; }
 .w-270 { width: 270px; }
 .w-290 { width: 290px; }
