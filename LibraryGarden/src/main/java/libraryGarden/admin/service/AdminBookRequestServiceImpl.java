@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminBookRequestMapper;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
 
@@ -42,5 +43,13 @@ public class AdminBookRequestServiceImpl implements AdminBookRequestService{
 		
 		return rlist;
 	}
-	
+
+	@Override
+	public BookVo bookRequestSelectOne(int rqidx) {
+
+		BookVo bv = brm.bookRequestSelectOne(rqidx);
+		
+		return bv;
+	};
+
 }

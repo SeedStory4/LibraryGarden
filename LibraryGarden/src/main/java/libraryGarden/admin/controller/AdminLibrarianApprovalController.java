@@ -1,6 +1,7 @@
 package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -12,6 +13,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.domain.ApprovalDto;
@@ -19,6 +23,7 @@ import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
+import libraryGarden.admin.service.AdminBookRequestService;
 import libraryGarden.admin.service.AdminLibrarianApprovalService;
 import libraryGarden.cmm.util.UrlEncoder;
 
@@ -30,6 +35,9 @@ public class AdminLibrarianApprovalController {
 	
 	@Autowired(required=false)
 	private AdminLibrarianApprovalService librarianApprovalService;
+	
+	@Autowired(required=false)
+	private AdminBookRequestService bookRequestService;
 	
 	@Autowired(required=false)
 	private PageMaker pm;
@@ -154,6 +162,28 @@ public class AdminLibrarianApprovalController {
 		
 		return path;
 	}
+	
+	// 희망 도서 목록 페이지 팝업
+	@ResponseBody
+	@RequestMapping(value="/librarianApprovalSelect.do", method = RequestMethod.POST)
+	public HashMap<String, Object> librarianApprovalSelect(
+			@RequestParam(value = "rqidx") int rqidx
+		 ) {
+		
+		logger.info("librarianApprovalSelect 들어옴");
+		 
+		// 도서 정보 DB에서 가져오기
+		BookVo bv = bookRequestService.bookRequestSelectOne(rqidx);
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("rqidx", rqidx);
+		hm.put("bv", bv);
+		
+		return hm;
+		
+	}
+	
+	
 //
 //	@RequestMapping(value="/{bidx}/boardModify.do")
 //	public String boardModify(

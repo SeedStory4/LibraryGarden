@@ -38,4 +38,11 @@
 		ORDER BY RQ.rqidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
+	<select id="bookRequestSelectOne" parameterType="int" resultType="bv">
+		SELECT B.* 
+		FROM REQUEST AS R 
+		JOIN BOOKS AS B ON B.bidx = R.bidx 
+		WHERE R.delyn = 'N' and rqidx = #{rqidx} 
+	</select>
+	
 </mapper>
