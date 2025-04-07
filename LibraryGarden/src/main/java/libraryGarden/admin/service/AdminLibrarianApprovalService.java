@@ -17,6 +17,6 @@ public interface AdminLibrarianApprovalService {
 	
 	public int librarianApprovalDelete(int aidx);
 
-	public int approvalInsert(ApprovalVo av);
+	public int librarianApprovalInsert(ApprovalVo av);
 	
 }

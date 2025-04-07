@@ -65,7 +65,7 @@ public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApproval
 	}
 	
 	@Override
-	public int approvalInsert(ApprovalVo av) {
+	public int librarianApprovalInsert(ApprovalVo av) {
 
 		// 희망도서선택으로 기안 등록하는 경우와 도서선택으로 기안 등록하는 경우 데이터가 다르므로 HashMap 사용
 		HashMap<String,Object> hm = new HashMap<String,Object>();
@@ -84,7 +84,7 @@ public class AdminLibrarianApprovalServiceImpl implements AdminLibrarianApproval
 			hm.put("bidx", av.getBidx());
 		}
 		
-		int value = lm.approvalInsert(hm);
+		int value = lm.librarianApprovalInsert(hm);
 		
 		// 쿼리 반환값이 BigInteger 형식이므로 int 형식으로 변환 필요
 		int maxAidx = ((Number) hm.get("maxAidx")).intValue();
