@@ -8,9 +8,8 @@ public class BookVo {
     private String originalTitle;
     private String subtitle;
     private String author;
-    private String translator;
     private String publisher;
-    private int publishedYear;
+    private String publishedYear;
     private int totalPages;
     private String isbn;
     private String sizeWidth;
@@ -58,22 +57,16 @@ public class BookVo {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
-	public String getTranslator() {
-		return translator;
-	}
-	public void setTranslator(String translator) {
-		this.translator = translator;
-	}
 	public String getPublisher() {
 		return publisher;
 	}
 	public void setPublisher(String publisher) {
 		this.publisher = publisher;
 	}
-	public int getPublishedYear() {
+	public String getPublishedYear() {
 		return publishedYear;
 	}
-	public void setPublishedYear(int publishedYear) {
+	public void setPublishedYear(String publishedYear) {
 		this.publishedYear = publishedYear;
 	}
 	public int getTotalPages() {

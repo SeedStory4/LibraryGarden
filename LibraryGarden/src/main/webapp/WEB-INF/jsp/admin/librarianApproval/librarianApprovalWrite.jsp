@@ -24,8 +24,8 @@
 				<div class="draft-header">
 					<div class="section-title draft-title">기안 등록</div>
 					<div class="draft-buttons">
-						<button class="draft-btn btn-green openModal" data-modalType="bookRequestSelect">희망도서선택</button>
-						<button class="draft-btn btn-green small openModal" data-modalType="bookSelect">도서선택</button>
+						<button class="draft-btn btn-green openModal">희망도서선택</button>
+						<button class="draft-btn btn-green small openModal">도서선택</button>
 					</div>
 				</div>
 				<hr class="draft-divider">
@@ -80,18 +80,16 @@
 		        </div>
 		
 		        <!-- 컨텐츠 영역 -->
-		        <%-- <c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set> --%>
-				
 		        <div class="book-list">
-		          <form name="frm">
+		          <form name="modal-frm" onsubmit="return false;">
 			          <div class="search flex gap-20 justify-center">
-			            <select class="js-example-basic-single select shadow" name="state" name="searchType">
+			            <select class="js-example-basic-single select shadow" name="searchType">
 			              <option value="title" selected>제목</option>
 			              <option value="author">저자</option>
 			              <option value="name">신청자</option>
 			            </select>
-			            <input type="text" class="shadow w-520" name="keyword">						
-			            <button type="button" class="btn btn-primary btn-small" onClick="search()">검색</button>
+			            <input type="text" class="shadow w-520 input" name="keyword">						
+			            <button type="button" class="btn btn-primary btn-small" onClick="loadList(1)">검색</button>
 			          </div>
 		          </form>
 		          <div class="table"></div>
@@ -144,33 +142,25 @@
 	
     let selectedDate = null;
 
-    // 모달 열기
-    const openModalBtns = document.querySelectorAll(".openModal");
-    function openModalClick(e) {
+    // 모달 내 list 불러오기
+    function loadList(i) {
+
+    	// scri 설정
+        const searchType = document.querySelector(".modal .select").value;
+        const keyword = document.querySelector(".modal .input").value;
+        const page = i;
 	    
-	    const scri = {
-   			"searchType" : "${requestScope.pm.scri.searchType}",
-   			"keyword" : "${requestScope.pm.scri.keyword}",
-   			"page" : "${requestScope.pm.endPage + 1}"
-        };
-    	
-		$.ajax({
-			 type: "post",  // 전송방식
-			 //url: "${pageContext.request.contextPath}/admin/librarianApproval/bookRequestList.do?page=${requestScope.pm.endPage + 1}&keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}",
+    	$.ajax({
+			 type: "post",
 			 url: "${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do",
-			 dataType: "json",  // 받는 형식. json 타입은 문서에서 {"key값": "value값", "key값" : "value값"} 형식으로 구성
-			 data: JSON.stringify(scri),
-			       contentType: 'application/json',
-			       success: function(result) {  // 결과가 넘어와서 성공했을 때 받는 영역
-					 // alert("전송성공 테스트");
-					 console.dir(result);
+			 dataType: "json",
+			 data: {"searchType": searchType, "keyword" : keyword, "page" : page },
+			       contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			       success: function(result) {  // 성공
+					 // alert("전송성공");
 					 
 					 // html 만들기
-					 // 1. 제목 설정
-					 // const modalType = e.target.attributes["data-modalType"].value;
-					 document.querySelector(".modal .title").innerText = e.target.innerText;
-					 
-					 // 2. table 설정
+					 // 1. table 설정
 					 const alist = result.alist;
 					 const pm = result.pm;
 					 
@@ -217,7 +207,7 @@
 						 `</tbody>
 					 	</table>`;
 					 	
-					 // 3. paging 설정
+					 // 2. paging 설정
 					 const listUrl = "${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do";
 					 const queryParam = "keyword=${pm.scri.keyword}&searchType=${pm.scri.searchType}";
 					 
@@ -230,18 +220,18 @@
 				        	  </li>`;
 					 }
 					 
-					 for(var i = Number(pm.startPage); i < Number(pm.endPage); i++){
-						 alert(333);
+					 for(var i = Number(pm.startPage); i <= Number(pm.endPage); i++){
 						 pagecontent += 
 							 `<li>
-						 		<a class="`;
+						 		<a class="pointer`;
 						 
 						 if(i == Number(pm.scri.page)) {
-							pagecontent += `on`;
+							pagecontent += ` on`;
 						 }
 						 
 						 pagecontent += 
-							 `" href="\${listUrl}?page=${i}&\${queryParam}">\${i}</a>
+							 //`" href="\${listUrl}?page=${i}&\${queryParam}">\${i}</a>
+							 `" onClick="loadList(\${i})">\${i}</a>
 						 	</li>`;
 					 }
 					 
@@ -254,40 +244,47 @@
 
 					 pagecontent += `</ul>`;
 					 
-					 // 4. html 생성
+					 // 3. html 생성
 					 const html = listcontent + pagecontent;
 					 $('.modal .table').html(html);
 					 
 				   },
-			 error: function(xhr, status, error) {  // 결과가 실패했을 때 받는 영역
-			 	alert("전송실패 테스트");
+			 error: function(xhr, status, error) {  // 실패
+			 	alert("전송실패");
 			    /* console.log("Error Status: " + status);
 			    console.log("Error Detail: " + error);
 			    console.log("Response: " + xhr.responseText); */
 			 }
 		});
+    }
+    
+    // 모달 열기
+    const openModalBtns = document.querySelectorAll(".openModal");
+    function openModalClick(e) {
+
+		// 1. 제목 설정
+		document.querySelector(".modal .title").innerText = e.target.innerText;
 		
-		// 모달 열기
+		// 2. list 불러오기(기본 1페이지)
+	    loadList(1);
+		
+		// 3. 모달 열기
 	    document.querySelector(".modal").style.display = "flex";
 
-	    // 모달 닫기 이벤트 추가
+	    // 4. 모달 닫기 이벤트 추가
 	    const closeModalBtn = document.querySelector("#closeModal");
 	    function closeModalClick() {
 		    document.querySelector(".modal").style.display = "none";
 		    
 		    // select 초기화
 		    $('.modal .select').val('title').trigger('change');
+	        document.querySelector(".modal .select").value = "";
+	        document.querySelector(".modal .input").value = "";
 	    }
 	    closeModalBtn.addEventListener("click", closeModalClick);
     }
     openModalBtns.forEach((e) => e.addEventListener("click", openModalClick));
     
-    
-	  
-	  // 팝업 검색
-	  function search() {
-		  
-	  }
 	</script>
 </body>
 </html>
