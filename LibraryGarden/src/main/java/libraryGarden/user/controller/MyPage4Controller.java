@@ -40,54 +40,65 @@ public class MyPage4Controller {
 				return "user/myPage/myPageModify";
 		}
 		
-	  @PostMapping("/userUpdate.do")
-	    public String updateUser(
-	        @RequestParam("NowPassword") String nowPassword,
-	        @RequestParam(value = "password", required = false) String password,
-	        @RequestParam(value = "passwordConfirm", required = false) String passwordConfirm,
-	        @RequestParam("phone") String phone,
-	        @RequestParam("email") String email,
-	        @RequestParam("address") String address,
-	        HttpSession session,
-	        RedirectAttributes redirectAttrs
-	    ) {
-	        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		@PostMapping("/userUpdate.do")
+		public String updateUser(
+		    @RequestParam("NowPassword") String nowPassword,
+		    @RequestParam(value = "password", required = false) String password,
+		    @RequestParam(value = "passwordConfirm", required = false) String passwordConfirm,
+		    @RequestParam("phone") String phone,
+		    @RequestParam("email") String email,
+		    @RequestParam("address") String address,
+		    HttpSession session,
+		    RedirectAttributes rttr
+		) {
+		    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 
-	        // 현재 비밀번호 확인
-	        if (!passwordEncoder.matches(nowPassword, loginUser.getPassword())) {
-	            redirectAttrs.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
-	            return "redirect:/user/myPage/myPageModify.do";
-	        }
+		    // 현재 비밀번호 확인
+		    if (!passwordEncoder.matches(nowPassword, loginUser.getPassword())) {
+		        rttr.addFlashAttribute("error", "현재 비밀번호가 일치하지 않습니다.");
+		        return "redirect:/user/myPage/myPageModify.do";
+		    }
 
-	        // 비밀번호가 입력된 경우 → 유효성 검사 + 업데이트
-	        String newPassword = loginUser.getPassword(); // 기본값: 기존 비밀번호
+		    // 기본값: 기존 비밀번호
+		    String newPassword = loginUser.getPassword();		
 
-	        if (password != null && !password.isEmpty()) {
-	            if (!password.equals(passwordConfirm)) {
-	                redirectAttrs.addFlashAttribute("error", "새 비밀번호가 일치하지 않습니다.");
-	                return "redirect:/user/myPage/myPageModify.do";
-	            }
-	            newPassword = passwordEncoder.encode(password);
-	        }
+		    // 새 비밀번호 입력된 경우에만 변경
+		    if (password != null && !password.trim().isEmpty()) {
+		        if (!password.equals(passwordConfirm)) {
+		            rttr.addFlashAttribute("error", "새 비밀번호가 일치하지 않습니다.");
+		            return "redirect:/user/myPage/myPageModify.do";
+		        }
+		        newPassword = passwordEncoder.encode(password);
+		    }
 
-	        // 업데이트할 정보 구성
-	        UserVo updateUser = new UserVo();
-	        updateUser.setId(loginUser.getId());
-	        updateUser.setPassword(newPassword);
-	        updateUser.setPhone(phone);
-	        updateUser.setEmail(email);
-	        updateUser.setAddress(address);
+		    // 업데이트할 정보 구성
+		    UserVo updateUser = new UserVo();
+		    updateUser.setId(loginUser.getId());
+		    updateUser.setPassword(newPassword);
+		    updateUser.setPhone(phone);
+		    updateUser.setEmail(email);
+		    updateUser.setAddress(address);
 
-	        userService.updateUser(updateUser);
+		    userService.updateUser(updateUser);
 
-	        // 세션 정보도 최신화
-	        loginUser.setPhone(phone);
-	        loginUser.setEmail(email);
-	        loginUser.setAddress(address);
-	        loginUser.setPassword(newPassword); // 비번도 갱신 (보안 강화)
+		    // 세션 정보도 최신화
+		    loginUser.setPassword(newPassword);
+		    loginUser.setPhone(phone);
+		    loginUser.setEmail(email);
+		    loginUser.setAddress(address);
+		    
+		    
 
-	        redirectAttrs.addFlashAttribute("msg", "회원정보가 성공적으로 수정되었습니다.");
-	        return "redirect:/user/user/userLogin.do";
-	    }
+		    if (password != null && !password.trim().isEmpty()) {
+		        // 비밀번호 변경 처리...
+		        rttr.addFlashAttribute("logoutMsg", "비밀번호가 변경되었습니다. 변경된 비밀번호로 다시 로그인해주세요.");
+		    } else {
+		        rttr.addFlashAttribute("logoutMsg", "회원정보가 성공적으로 수정되었습니다.");
+		    }
+		    // 로그아웃: 세션 초기화
+		    session.invalidate();
+
+		    return "redirect:/user/user/userLogin.do";
+		}
 
 }
