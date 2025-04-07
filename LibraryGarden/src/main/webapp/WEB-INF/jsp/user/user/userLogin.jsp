@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -19,6 +21,7 @@
 		  const joinSuccessMessage = "${joinSuccessMessage}";
 		  const errorMessage = "${errorMessage}";
 		  const loginFailMessage = "${loginFailMessage}";
+		  const logoutMsg = "${logoutMsg}";
 		
 		  if (joinSuccessMessage && joinSuccessMessage.trim() !== "") {
 		    alert(joinSuccessMessage);
@@ -31,6 +34,10 @@
 		  if (loginFailMessage && loginFailMessage.trim() !== "") {
 			    alert(loginFailMessage);
 		  }
+		  if (logoutMsg && logoutMsg.trim() !== "") {
+			  console.log("로그아웃 메시지:", logoutMsg);  // 디버깅을 위한 콘솔 로그 추가
+			  alert(logoutMsg);
+			}
 		</script>
 
 

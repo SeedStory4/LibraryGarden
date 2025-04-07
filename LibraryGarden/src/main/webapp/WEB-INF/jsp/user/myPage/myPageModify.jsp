@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+    
 <!DOCTYPE html>
 <html>
 <head>
@@ -12,6 +15,8 @@
 
 	<!-- 헤더가 로드될 부분 -->
 	<jsp:include page="/user/userHeader.do" />
+	
+	
 
 	<div class="wrapper">
 		<div class="inner">
@@ -24,7 +29,7 @@
 				<!-- 선 추가 -->
 
 				<!-- 회원 정보 수정 -->
-				<form action="<%= request.getContextPath() %>/user/myPage/userUpdate.do" method="post">
+				<form action="<%= request.getContextPath() %>/user/myPage/userUpdate.do" method="post" id="modifyForm" novalidate>
 				<div class="draft-content">
 					<div class="mb-21">
 						<p class="font-767678-18">이름</p>
@@ -80,6 +85,95 @@
 			</section>
 		</div>
 	</div>
+	
+				<script>
+					
+					// 전화번호 오직 숫자만와 +만 허용 
+					  document.querySelector("input[name='phone']").addEventListener("input", function () {
+			        	  // 입력값 중 숫자와 +만 허용
+			        	  this.value = this.value.replace(/[^0-9+]/g, "");
+		
+			        	  // "+"가 맨 앞에 1번만 오도록 제한
+			        	  if (this.value.indexOf('+') > 0) {
+			        	    this.value = this.value.replace(/\+/g, ''); // 맨 앞이 아닌 "+"는 제거
+			        	  }
+			        	  if ((this.value.match(/\+/g) || []).length > 1) {
+			        	    this.value = this.value.replace(/\+/g, '+'); // "+"가 2개 이상이면 하나만 남기기
+			        	  }
+			        	});
+				    
+				    
+				    
+				    document.getElementById("modifyForm").addEventListener("submit", function (e) {
+				        const form = e.target;
+				        const pw = form.password.value.trim();
+				        const pwConfirm = form.passwordConfirm.value.trim();
+				        const phone = form.phone.value.trim();
+				        const email = form.email.value.trim();
+				        const address = form.address.value.trim();
+				        const nowPassword = form.NowPassword.value.trim();
+		
+				        if (pw !== "") {
+				            const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+]{8,}$/;
+				            if (!pwRegex.test(pw)) {
+				                alert("비밀번호는 8자 이상, 영문/숫자/특수문자 조합이어야 합니다.");
+				                form.password.focus();
+				                e.preventDefault();
+				                return;
+				            }
+
+				            if (pwConfirm === "") {
+				                alert("비밀번호 확인을 입력해주세요.");
+				                form.passwordConfirm.focus();
+				                e.preventDefault();
+				                return;
+				            }
+
+				            if (pw !== pwConfirm) {
+				                alert("비밀번호가 서로 일치하지 않습니다.");
+				                form.passwordConfirm.focus();
+				                e.preventDefault();
+				                return;
+				            }
+				        }  
+				        
+				        if (phone === "") {
+				          alert("휴대전화번호를 입력해주세요.");
+				          form.phone.focus();
+				          e.preventDefault();
+				          return;
+				        }
+				        if (email === "") {
+				          alert("이메일을 입력해주세요.");
+				          form.email.focus();
+				          e.preventDefault();
+				          return;
+				        }
+				        
+				        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+				        if (!emailRegex.test(email)) {
+				          alert("올바른 이메일 형식이 아닙니다.");
+				          form.email.focus();
+				          e.preventDefault();
+				          return;
+				        }
+				        
+				        if (address === "") {
+				          alert("주소를 입력해주세요.");
+				          form.address.focus();
+				          e.preventDefault();
+				          return;
+				        }
+				  
+				     
+				    });
+				</script>
+
+			<c:if test="${not empty error and fn:length(error) > 0}">
+			    <script>
+			        alert("${error}");
+			    </script>
+			</c:if>
 
 
 	<!-- 푸터 로드할 부분 -->
