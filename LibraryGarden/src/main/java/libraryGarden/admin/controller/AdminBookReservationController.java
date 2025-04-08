@@ -2,6 +2,7 @@ package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -95,13 +96,24 @@ public class AdminBookReservationController {
 		return "admin/bookReservation/bookReservationWrite";
 	}
 	
-	// 해당 도서 예약현황 조회 
-	@GetMapping("/getReservedDates.do")
+    // AJAX로 도서의 대출/예약 정보를 조회하여 예약불가 날짜 목록 반환
 	@ResponseBody
-	public List<String> getReservedDates(@RequestParam("lbidx") int lbidx) {
-	    return adminBookReservationService.getReservedDatesByLbidx(lbidx); 
+	@GetMapping("/getReservedDates.do")
+	public List<Map<String, String>> getReservedDates(
+	        @RequestParam("lbidx") int lbidx,
+	        @RequestParam("userNumber") String userNumber) {
+	    return adminBookReservationService.getUnavailableDatesWithReasons(lbidx, userNumber);
 	}
-		
+
+    
+    
+	// 도서예약 수정 팝업
+	@GetMapping("/popBookReservationWrite.do")
+	public String popBookReservationWrite() {
+		return "admin/bookReservation/popBookReservationWrite";
+	}
+	
+
 	// 도서예약 수정 팝업
 	@GetMapping("/popBookReservationModify.do")
 	public String popBookReservationModify() {

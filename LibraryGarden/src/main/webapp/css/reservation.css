@@ -197,7 +197,7 @@ background-color: #673D31;
 .fc-col-header-cell {
   background-color: none; /* 요일 배경색 */
   color: #333; /* 글자색 */
-  font-size: 11.5px;
+  font-size: 11.5px !important;
   font-weight: bold;
   height: 53px !important;
   width: 53px;
@@ -336,12 +336,17 @@ background-color: #673D31;
 }
 
 /* 예약 불가능한 날짜 */
-.fc-daygrid-day[data-date="2025-03-01"],
-.fc-daygrid-day[data-date="2025-03-02"],
-.fc-daygrid-day[data-date="2025-03-18"] {
-  background-color: #d94436 !important; /* 빨간색 */
-  color: #fff;
-  pointer-events: none; /* 클릭 방지 */
+/* 동적으로 불러온 예약 불가 날짜에 적용할 스타일 */
+/* 예약 불가능한 날짜 스타일 */
+.disabled-date {
+  background-color: #d94436 !important;  /* 빨간색 배경 */
+  color: #fff !important;                /* 흰색 글씨 */
+  pointer-events: none !important;       /* 클릭 불가 */
+}
+
+/* 예약 불가능한 날짜의 날짜 숫자 스타일 */
+.disabled-date .fc-daygrid-day-number {
+  color: #fff !important;                /* 숫자도 흰색으로 */
 }
 
 /* 선택된 날짜 스타일 */

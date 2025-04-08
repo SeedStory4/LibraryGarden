@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reservation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/main.min.css" />
-
+    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -21,8 +21,10 @@
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
 </head>
 <body class="custom-page">
-    <jsp:include page="/user/userHeader.do" />
 
+<!-- 헤더가 로드될 부분 -->   
+<jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
+    
     <div class="wrapper">
         <section class="section p-0">
             <h2 class="section-title m-0 normal">도서예약 등록</h2>
@@ -126,8 +128,8 @@
             </div>
         </section>
     </div>
-
-    <!-- 예약 모달 (기본적으로 숨김 처리) -->
+    
+    <!-- 예약 모달 -->
     <div id="reservationModal" class="modal" style="display: none;">
         <div class="modal-content">
             <div class="title-container">
@@ -166,73 +168,84 @@
             </div>
         </div>
     </div>
+    
+    <!-- 푸터가 로드될 부분 -->
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
+    <!-- reservation.js 불러오기 -->
+    <script src="${pageContext.request.contextPath}/js/reservation.js"></script>
+<script>
+$(document).ready(function() {
+    // select2 초기화
+    $('.js-example-basic-single').select2();
 
-	<jsp:include page="/cmm/footer.do" />
-	<!-- reservation.js를 먼저 불러온 후에 아래 스크립트 추가 -->
-	<script src="${pageContext.request.contextPath}/js/reservation.js"></script>
-	<script>
-    $(document).ready(function() {
-        // select2 초기화
-        $('.js-example-basic-single').select2();
+    // 제목 클릭 시 모달 열기 + 예약현황 AJAX 호출
+	$('.openReservationModal').on('click', function (e) {
+	  e.preventDefault();
+	
+	  const $row = $(this).closest('tr');
+	  const statusText = $row.find('td').last().text().trim();
+	  if (statusText === "대출불가") {
+	    alert("예약이 불가한 도서입니다.");
+	    return;
+	  }
+	
+	  const lbidx = $(this).data('lbidx');
+	  const userNumber = $('#userNumber').val();
+	
+	  $.ajax({
+	    url: '${pageContext.request.contextPath}/admin/bookReservation/getReservedDates.do',
+	    type: 'GET',
+	    data: {
+	      lbidx: lbidx,
+	      userNumber: userNumber
+	    },
+	    success: function (data) {
+	      window.disabledDates = data.map(d => d.date);
+	      window.disabledReasons = {};
+	      data.forEach(d => {
+	        window.disabledReasons[d.date] = d.reason;
+	      });
+	
+	      $('#reservationModal').show();
+	
+	      setTimeout(() => {
+	        if (window.myCalendar) {
+	          if (!window.isCalendarRendered) {
+	            window.myCalendar.render(); // ✅ 최초 1회만 render
+	            window.isCalendarRendered = true;
+	          }
+	          window.myCalendar.updateSize();
+	          window.myCalendar.refetchEvents();
+	        }
+	      }, 200);
+	    },
+	    error: function () {
+	      alert("예약 현황을 불러오지 못했습니다.");
+	    }
+	  });
+	});
 
-        $('.openReservationModal').on('click', function(e) {
-            e.preventDefault();
-            
-            const $row = $(this).closest('tr');
-            const statusText = $row.find('td').last().text().trim();
 
-            if (statusText === "대출불가") {
-                alert("예약이 불가한 도서입니다.");
-                return;
-            }
-
-            const lbidx = $(this).data('lbidx'); // <a data-lbidx="123">
-
-            // ✅ 예약 현황 비동기 호출
-            $.ajax({
-                url: '${pageContext.request.contextPath}/admin/bookReservation/getReservedDates.do',
-                type: 'GET',
-                data: { lbidx: lbidx },
-                success: function(data) {
-                    window.disabledDates = data; // ['2025.04.01', '2025.04.02', ...]
-                    $('#reservationModal').show();
-                    if (window.myCalendar) {
-                        window.myCalendar.refetchEvents?.(); // 선택사항
-                        window.myCalendar.updateSize();
-                    }
-                },
-                error: function() {
-                    alert("예약 현황을 불러오지 못했습니다.");
-                }
-            });
+    $('#closeModal').on('click', function() {
+        window.selectedDate = null;
+        document.getElementById("selectedDate").textContent = "선택 없음";
+        document.querySelectorAll(".fc-day-selected").forEach((el) => {
+            el.classList.remove("fc-day-selected");
         });
-
-
-        // 모달의 취소 버튼 클릭 시 상태 초기화 후 모달 숨기기
-        $('#closeModal').on('click', function() {
-            // 전역 변수 초기화
-            window.selectedDate = null;
-            // 선택된 날짜 표시 영역을 초기 상태로 변경
-            document.getElementById("selectedDate").textContent = "선택 없음";
-            // 달력의 선택된 스타일 제거
-            document.querySelectorAll(".fc-day-selected").forEach((el) => {
-                el.classList.remove("fc-day-selected");
-            });
-            $('#reservationModal').hide();
-        });
+        $('#reservationModal').hide();
     });
+});
 
-    // 회원번호 확인 함수
-    function numberCheck() {
-        let userNumber = $("#userNumber").val();
-        if (!userNumber) {
-            alert("회원번호를 입력해주세요.");
-            return;
-        }
-        // 연체 확인 없이 바로 도서 목록 페이지로 이동
-        location.href = "${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do?userNumber=" + userNumber;
+// 회원번호 확인 함수
+function numberCheck() {
+    let userNumber = $("#userNumber").val();
+    if (!userNumber) {
+        alert("회원번호를 입력해주세요.");
+        return;
     }
-	</script>
+    location.href = "${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do?userNumber=" + userNumber;
+}
+</script>
 
 </body>
 </html>
