@@ -241,6 +241,21 @@
 		    <artifactId>spring-security-core</artifactId>
 		    <version>5.5.7</version> <!-- Java 8 호환 가능한 안정 버전 -->
 		</dependency>
+		
+		<!-- Java Mail API -->
+		<dependency>
+		    <groupId>com.sun.mail</groupId>
+		    <artifactId>javax.mail</artifactId>
+		    <version>1.6.2</version>
+		</dependency>
+		
+		<!-- Spring Email Support -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context-support</artifactId>
+		     <version>${spring.maven.artifact.version}</version>
+		</dependency>
+
 
 	</dependencies>
 

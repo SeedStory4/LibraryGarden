@@ -51,6 +51,17 @@
 	    AND phone = #{phone}
 	</select>
 	
+	<update id="updatePasswordByPhone" parameterType="map">
+	    UPDATE user
+	    SET password = #{password}
+	    WHERE id = #{id} AND phone = #{phone}
+	</update>
+	
+	<select id="findEmailByIdAndPhone" resultType="String">
+	    SELECT email FROM user WHERE id = #{id} AND phone = #{phone}
+	</select>
+		
+	
 	
 
 </mapper>
