@@ -11,7 +11,7 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/user/userHeader.do" />
+	<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
 
 	<div class="wrapper">
 		<div class="inner-find">
@@ -39,6 +39,6 @@
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" /> 
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/> 
 </body>
 </html>

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>    
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +12,14 @@
 </head>
 <body>
 
+			<c:if test="${not empty errorMessage}">
+			  <script>
+			    alert("${errorMessage}");
+			  </script>
+			</c:if>
+
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/user/userHeader.do" />
+	<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
 
 	<div class="wrapper">
 		<div class="inner">
@@ -22,10 +30,10 @@
 				</div>
 
 				<!-- 아이디 찾기 입력 -->
+				<form action="<%= request.getContextPath() %>/user/user/findIdAction.do" method="post" id="findIdForm">
 				<div class="draft-content ml-mr-50">
-					<input type="text" class="user-A-input mb-40" placeholder="이름" >
-					
-					<input type="tel" class="user-A-input mb-17" placeholder="휴대전화번호 ( 예> 01012345678 )" >
+					<input type="text" class="user-A-input mb-40" name="name" placeholder="이름" required>
+					<input type="tel" class="user-A-input mb-17" name="phone" placeholder="휴대전화번호 (예> 01012345678)" required>
 
 					<div class="font-D94436-18 mb-45">
 						<p> • 가입시 등록한 이름과 휴대폰 번호를 입력해 주세요.</p>
@@ -38,12 +46,13 @@
 					<button class="draft-btn-small btn-submit-600-65 mb-15">아이디 찾기</button>
 					<button class="draft-btn-small btn-cancel-600-65" >취소</button>
 				</div>
+				</form>
 		</section>
 		</div>
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
 	<div id="footer-container"></div>
-	<jsp:include page="/common/footer.jsp" /> 
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 </body>
 </html>

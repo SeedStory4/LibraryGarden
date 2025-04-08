@@ -1,5 +1,7 @@
 package libraryGarden.user.mapper;
 
+import org.apache.ibatis.annotations.Param;
+
 import libraryGarden.domain.UserVo;
 
 public interface UserMapper {
@@ -12,6 +14,10 @@ public interface UserMapper {
     UserVo selectUserById(String id);
     
     void updateUser(UserVo user);
+    
+    String findIdByNameAndPhone(String name, String phone);
+    
+    String selectIdByNameAndPhone(@Param("name") String name, @Param("phone") String phone);
 
 
 }

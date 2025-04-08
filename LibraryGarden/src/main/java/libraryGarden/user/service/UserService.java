@@ -21,6 +21,9 @@ public interface UserService {
     UserVo selectUserById(String id);
     
     void updateUser(UserVo user);
+    
+    String findIdByNameAndPhone(String name, String phone);
+
 
 
 }
