@@ -35,7 +35,7 @@
 						class="draft-book-img">
 					<div class="draft-info">
 						<p>
-							<span class="info-title">● 제목<c:choose><c:when test="${not empty lbd.originalTitle}"> / 원제</c:when><c:otherwise> </c:otherwise></c:choose></span> <span class="info-content">${lbd.title}<c:choose><c:when test="${not empty lbd.originalTitle}"> / ${lbd.originalTitle}</c:when><c:otherwise> </c:otherwise></c:choose></span>
+							<span class="info-title self-start">● 제목<c:choose><c:when test="${not empty lbd.originalTitle}"> / 원제</c:when><c:otherwise> </c:otherwise></c:choose></span> <span class="info-content max-w-600">${lbd.title}<c:choose><c:when test="${not empty lbd.originalTitle}"> / ${lbd.originalTitle}</c:when><c:otherwise> </c:otherwise></c:choose></span>
 						</p>
 						<p>
 							<span class="info-title">● 부제</span> 
@@ -51,13 +51,13 @@
 							</span>
 						</p>
 						<p>
-							<span class="info-title">● 저자 / 번역</span> <span class="info-content">${lbd.author}<c:choose><c:when test="${not empty lbd.translator}"> / ${lbd.translator}</c:when><c:otherwise> </c:otherwise></c:choose></span>
+							<span class="info-title">● 저자</span> <span class="info-content">${lbd.author}</span>
 						</p>
 						<p>
 							<span class="info-title">● 출판사</span> <span class="info-content">${lbd.publisher}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판일</span> <span class="info-content">${fn:replace(lbd.dueDate, '-', '.')}</span>
+							<span class="info-title">● 출판일</span> <span class="info-content">${fn:replace(lbd.publishedYear, '-', '.')}</span>
 						</p>
 						<p>
 							<span class="info-title">● 전체쪽수</span> <span class="info-content">${lbd.totalPages}쪽</span>
@@ -72,7 +72,7 @@
 					
 					<c:choose>
 					  <c:when test="${lbd.status eq '대출중'}">
-					    <button class="request-status-btn status-btn-ing" >대출중(~${lbd.dueDate})</button>
+					    <button class="request-status-btn status-btn-ing" >대출중(~${fn:replace(lbd.dueDate, '-', '.')})</button>
 					  </c:when>
 					  <c:when test="${lbd.status eq '대출가능'}">
 					    <button class="request-status-btn status-btn-ok">대출가능</button>
@@ -81,7 +81,7 @@
 					    <button class="request-status-btn status-btn-wating">예약대기</button>
 					  </c:when>
 					  <c:when test="${lbd.status eq '대출불가'}">
-					    <button class="request-status-btn status-btn-wating">대출불가</button>
+					    <button class="request-status-btn status-btn-no">대출불가</button>
 					  </c:when>
 					</c:choose>
 				</div>

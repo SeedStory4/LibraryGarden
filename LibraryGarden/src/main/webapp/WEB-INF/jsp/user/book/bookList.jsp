@@ -18,6 +18,7 @@
     </div>
 
 	<div class="wrapper">
+		<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
 		<section class="section p-0">
 			<h2 class="section-title m-0 normal relative">도서조회 목록</h2>
 			
@@ -71,7 +72,7 @@
 									<td>${lbd.location}</td>
 									<td><c:choose>
 										  <c:when test="${not empty lbd.dueDate}">
-										    <c:if test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">${lbd.dueDate}</c:if>
+										    <c:if test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">${fn:replace(lbd.dueDate, '-', '.')}</c:if>
 										    <c:if test="${lbd.status ne '대출중' and lbd.status ne '예약대기'}">-</c:if>	
 										  </c:when>
 										  <c:otherwise>
@@ -87,6 +88,11 @@
 									>${lbd.status}</td>
 								</tr>
 								</c:forEach>
+								<c:if test="${empty lblist}">
+									<tr>
+										<td colspan="9" style="text-align:center;">예약된 도서가 없습니다.</td>
+									</tr>
+								</c:if>
 							</tbody>
 						</table>
 						<ul class="paging flex w-270 justify-center">
