@@ -68,18 +68,30 @@
 		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
-	<select id="checkOverdue" parameterType="String" resultType="int">
-	SELECT COUNT(*) 
-	FROM OVERDUE o
-	JOIN USER u ON o.uidx = u.uidx
-	WHERE u.userNumber = #{userNumber}
-	  AND o.status = 'Y'
-	</select>
+	    <!-- 신규 쿼리: 예약 테이블에서 pickupDate 조회 -->
+    <select id="getReservationsByBook" parameterType="int" resultType="libraryGarden.domain.ReservationDto">
+        SELECT pickupDate 
+        FROM RESERVATION 
+        WHERE lbidx = #{lbidx}
+          AND delyn = 'N'
+    </select>
+    
+    <!-- 신규 쿼리: 대출 테이블에서 loanDate와 dueDate 조회 (LoanVo 사용) -->
+    <select id="getLoansByBook" parameterType="int" resultType="libraryGarden.domain.LoanVo">
+        SELECT loanDate, dueDate 
+        FROM LOAN 
+        WHERE lbidx = #{lbidx}
+    </select>
 	
-	<select id="getReservedDatesByLbidx" parameterType="int" resultType="String">
-    SELECT DATE_FORMAT(pickupDate, '%Y.%m.%d') 
-    FROM RESERVATION
-    WHERE lbidx = #{lbidx} AND status IN ('예약대기') AND delyn = 'N'
+	<!-- 연체 기간 조회 -->
+	<select id="getOverduePeriodsByUser" parameterType="String" resultType="map">
+	    SELECT DATE(startDate) AS startDate, DATE(endDate) AS endDate
+	    FROM OVERDUE o
+	    JOIN USER u ON o.uidx = u.uidx
+	    WHERE u.userNumber = #{userNumber}
+	      AND o.status = 'Y'
 	</select>
+
+	
 
 </mapper>

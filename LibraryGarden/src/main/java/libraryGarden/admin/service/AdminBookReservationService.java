@@ -2,6 +2,7 @@ package libraryGarden.admin.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.ReservationDto;
@@ -13,6 +14,7 @@ public interface AdminBookReservationService {
 	public ArrayList<ReservationDto> bookReservationSelectAll(SearchCriteria scri, String filter); // 예약 모든 리스트 가져오기
 	public int bookTotalCount(SearchCriteria scri, String filter); // 책 총 갯수
 	public ArrayList<LibraryBookDto> bookSelectAll(SearchCriteria scri, String filter); // 책 모든 리스트 가져오기
-	public boolean hasOverdue(String userNumber);
-	List<String> getReservedDatesByLbidx(int lbidx); 
+    // 신규 추가 메소드: 해당 도서(lbidx)의 예약/대출 정보를 기반으로 예약 불가능한 날짜 목록 반환
+    List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber);
+
 }
