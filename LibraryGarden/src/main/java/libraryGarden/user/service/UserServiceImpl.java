@@ -66,6 +66,12 @@ public class UserServiceImpl implements UserService {
     public void updateUser(UserVo user) {
         userMapper.updateUser(user);
     }
+    
+    @Override
+    public String findIdByNameAndPhone(String name, String phone) {
+        return userMapper.selectIdByNameAndPhone(name, phone);
+    }
+
 
 
 

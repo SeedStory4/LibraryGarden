@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +12,10 @@
 </head>
 <body>
 
+
+
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/user/userHeader.do" />
+	<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
 
 	<div class="wrapper">
 		<div class="inner-find">
@@ -29,20 +33,23 @@
 						<hr class="draft-divider-find">
 					</div>
 					<div class ="font-1D6093-B25">
-						dltmf1045
+						${foundId} 
 					</div>
 				</div>
 
 				<!-- 아이디 찾기 / 취소 버튼 -->
 				<div class="draft-actions mb-37">
-					<button class="draft-btn-small  btn-submit-160">로그인</button>
-					<button class="draft-btn-small  btn-list-160">비밀번호 찾기</button>
+					<button class="draft-btn-small  btn-submit-160" onclick="location.href='<%= request.getContextPath() %>/user/user/userLogin.do' ">로그인</button>
+					<button class="draft-btn-small  btn-list-160" onclick="location.href='<%= request.getContextPath() %>/user/user/userSearchPassword.do' ">비밀번호 찾기</button>
 				</div>
 		</section>
 		</div>
 	</div>
+	
+
+			
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" /> 
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 </body>
 </html>

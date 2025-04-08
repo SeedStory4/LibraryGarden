@@ -12,7 +12,7 @@
 		
 
 		<!-- 헤더 로드 -->
-		<jsp:include page="/user/userHeader.do" />
+		<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
 		
 		<div class="wrapper">
 		  <div class="inner">
@@ -219,7 +219,7 @@
 		</script>
 
 		<!-- 푸터 로드 -->
-		<jsp:include page="/common/footer.jsp" /> 
+		<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 		
 		</body>
 </html>

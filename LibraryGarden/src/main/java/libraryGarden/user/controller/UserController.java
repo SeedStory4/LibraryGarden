@@ -136,6 +136,25 @@ public class UserController {
         return (count == 0) ? "OK" : "DUPLICATE";
     }
     
+    
+    @PostMapping("/findIdAction.do")
+    public String findIdAction(
+        @RequestParam("name") String name,
+        @RequestParam("phone") String phone,
+        Model model,
+        RedirectAttributes rttr
+    ) {
+        String foundId = userService.findIdByNameAndPhone(name, phone);
+
+        if (foundId != null) {
+        	rttr.addFlashAttribute("foundId", foundId); // 결과 페이지에서 사용
+            return "redirect:/user/user/userFoundId.do"; // 아이디 찾기 결과 페이지로 이동
+        } else {
+            rttr.addFlashAttribute("errorMessage", "일치하는 회원 정보가 없습니다.");
+            return "redirect:/user/user/userSearchId.do";
+        }
+    }
+
   
 
 
