@@ -15,9 +15,8 @@
 </head>
 <body class="custom-page">
 
-    <div id="header-container">
-    	<%@ include file="/WEB-INF/jsp/user/userHeader.jsp" %>
-    </div>
+	<!-- 헤더가 로드될 부분 -->	
+    <%@ include file="/WEB-INF/jsp/admin/adminHeader.jsp" %>
 
 	<div class="wrapper">
 		<section class="section p-0">
@@ -84,6 +83,12 @@
 									>${ad.status}</td>
 								</tr>
 								</c:forEach>
+								
+								<c:if test="${empty alist}">
+									<tr>
+										<td colspan="8" class="center">검색된 도서가 없습니다.</td>
+									</tr>
+								</c:if>
 							</tbody>
 						</table>						
       

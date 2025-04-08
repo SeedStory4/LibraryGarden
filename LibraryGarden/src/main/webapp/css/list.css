@@ -65,6 +65,7 @@ a { text-decoration: none; color: inherit; }
 .red { color: var(--color-red); }
 .bold { font-weight: bold; }
 .normal { font-weight: normal; }
+.center { text-align: cetner; }
 
 .wrapper { margin: 0 auto; max-width: 1200px; width: 100%; padding: 60px 0 90px; }
 .section { background: var(--bg-section); border-radius: 20px; width: 100%; min-width: 1200px; }
