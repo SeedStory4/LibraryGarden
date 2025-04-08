@@ -21,9 +21,9 @@
 </head>
 <body>
 
-	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/admin/adminHeader.do" />
-
+	<!-- 헤더가 로드될 부분 -->	
+    <%@ include file="/WEB-INF/jsp/admin/adminHeader.jsp" %>
+    
 	<div class="wrapper">
 		<div class="inner p-0">
 			<!-- 메인 콘텐츠 -->
@@ -166,7 +166,7 @@
 			       contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 			       success: function(result) {  // 성공
 					 // alert("전송성공");
-					 
+			       
 					 // html 만들기
 					 // 1. table 설정
 					 const alist = result.alist;
@@ -198,19 +198,24 @@
 				                </tr>
 				              </thead>
 				              <tbody>`;
-				              
-					 for(var i = 0; i < alist.length; i++){
-						 listcontent += `<tr>`;
-						 listcontent += `<td>\${(pm.scri.page - 1) * pm.scri.perPageNum + i + 1}</td>`;
-						 listcontent += `<td><img src=\${alist[i].coverImg} alt=\${alist[i].title}></td>`;
-						 listcontent += `<td>\${alist[i].title}</td>`;
-						 listcontent += `<td>\${alist[i].author}</td>`;
-						 listcontent += `<td>\${alist[i].publisher}</td>`;
-						 listcontent += `<td>\${alist[i].name}<br>(\${alist[i].userNumber})</td>`;
-						 listcontent += `<td>\${alist[i].regDate.substr(0, 10).replaceAll("-", ".")}</td>`;
-						 listcontent += `<td><button class="btn btn-small btn-primary" onClick="select(\${alist[i].rqidx})">선택</button></td>`;
-						 listcontent += `</tr>`;
-					 }
+				     if(alist.length == 0) {
+				    	 listcontent += `<tr>
+								<td colspan="8" class="center">검색된 도서가 없습니다.</td>
+							</tr>`;
+				     } else {
+						 for(var i = 0; i < alist.length; i++){
+							 listcontent += `<tr>`;
+							 listcontent += `<td>\${(pm.scri.page - 1) * pm.scri.perPageNum + i + 1}</td>`;
+							 listcontent += `<td><img src=\${alist[i].coverImg} alt=\${alist[i].title}></td>`;
+							 listcontent += `<td>\${alist[i].title}</td>`;
+							 listcontent += `<td>\${alist[i].author}</td>`;
+							 listcontent += `<td>\${alist[i].publisher}</td>`;
+							 listcontent += `<td>\${alist[i].name}<br>(\${alist[i].userNumber})</td>`;
+							 listcontent += `<td>\${alist[i].regDate.substr(0, 10).replaceAll("-", ".")}</td>`;
+							 listcontent += `<td><button class="btn btn-small btn-primary" onClick="select(\${alist[i].rqidx})">선택</button></td>`;
+							 listcontent += `</tr>`;
+						 }
+				     }
 					 
 					 listcontent += 
 						 `</tbody>
