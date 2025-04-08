@@ -154,6 +154,35 @@ public class UserController {
             return "redirect:/user/user/userSearchId.do";
         }
     }
+    
+    
+    @PostMapping("/findPasswordAction.do")
+    public String findPasswordAction(
+        @RequestParam("id") String id,
+        @RequestParam("phone") String phone,
+        RedirectAttributes rttr
+    ) {
+        // 1. 이메일 조회
+        String email = userService.findEmailByIdAndPhone(id, phone);
+
+        if (email == null) {
+            rttr.addFlashAttribute("errorMessage", "일치하는 회원 정보가 없습니다.");
+            return "redirect:/user/user/userSearchPassword.do";
+        }
+
+        // 2. 임시 비밀번호 생성
+        String tempPassword = userService.generateTempPassword();
+
+        // 3. DB에 암호화된 임시 비밀번호 저장
+        userService.updatePasswordByPhone(id, phone, tempPassword); // ← phone + id 기준
+
+        // 4. 이메일로 전송
+        userService.sendTempPassword(email, tempPassword);
+
+        // 5. 결과 페이지로 이동
+        return "redirect:/user/user/userFoundPassword.do";
+    }
+
 
   
 

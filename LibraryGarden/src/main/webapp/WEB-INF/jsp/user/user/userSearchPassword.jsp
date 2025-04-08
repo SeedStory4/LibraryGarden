@@ -22,10 +22,11 @@
 				</div>
 
 				<!-- 비밀번호호 찾기 입력 -->
+				<form action="<%= request.getContextPath() %>/user/user/findPasswordAction.do" method="post">
 				<div class="draft-content ml-mr-50">
-					<input type="text" class="user-A-input mb-40" placeholder="아이디" >
+					<input type="text" name="id" class="user-A-input mb-40" placeholder="아이디" >
 					
-					<input type="tel" class="user-A-input mb-17" placeholder="휴대전화번호 ( 예> 01012345678 )" >
+					<input type="tel" name="phone" class="user-A-input mb-17" placeholder="휴대전화번호 ( 예> 01012345678 )" >
 
 					<div class="font-D94436-18 mb-45">
 						<p> • 가입시 등록한 아이디와 휴대폰 번호를 입력해 주세요.</p>
@@ -35,9 +36,10 @@
 
 				<!-- 비밀번호 찾기 / 취소 버튼 -->
 				<div class="text-center mb-37">
-					<button class="draft-btn-small btn-submit-600-65 mb-15">비밀번호 이메일 발송</button>
-					<button class="draft-btn-small btn-cancel-600-65" >취소</button>
+					<button type="submit" class="draft-btn-small btn-submit-600-65 mb-15">비밀번호 이메일 발송</button>
+					<button type="button" class="draft-btn-small btn-cancel-600-65" >취소</button>
 				</div>
+			</form>
 		</section>
 		</div>
 	</div>

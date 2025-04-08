@@ -1,8 +1,12 @@
 package libraryGarden.user.service;
 
+import java.security.SecureRandom;
+
 import javax.annotation.Resource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +19,9 @@ public class UserServiceImpl implements UserService {
 
 	@Resource(name = "userMapper")
     private UserMapper userMapper;
+	
+	@Autowired
+	private JavaMailSender mailSender;
 	
 	@Autowired
 	private BCryptPasswordEncoder passwordEncoder;
@@ -71,6 +78,43 @@ public class UserServiceImpl implements UserService {
     public String findIdByNameAndPhone(String name, String phone) {
         return userMapper.selectIdByNameAndPhone(name, phone);
     }
+    
+    @Override
+    public void sendTempPassword(String toEmail, String tempPassword) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("LibraryGarden 임시 비밀번호 안내");
+        message.setText("임시 비밀번호: " + tempPassword + "\n로그인 후 반드시 비밀번호를 변경해 주세요.");
+
+        mailSender.send(message);
+    }
+    
+    @Override
+    public String generateTempPassword() {
+        int length = 10;
+        String charSet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder password = new StringBuilder();
+        SecureRandom random = new SecureRandom();
+
+        for (int i = 0; i < length; i++) {
+            int randomIndex = random.nextInt(charSet.length());
+            password.append(charSet.charAt(randomIndex));
+        }
+
+        return password.toString();
+    }
+    
+    @Override
+    public void updatePasswordByPhone(String id, String phone, String rawPassword) {
+        String encodedPassword = passwordEncoder.encode(rawPassword);
+        userMapper.updatePasswordByPhone(id, phone, encodedPassword);
+    }
+    
+    @Override
+    public String findEmailByIdAndPhone(String id, String phone) {
+        return userMapper.findEmailByIdAndPhone(id, phone);
+    }
+
 
 
 
