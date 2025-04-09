@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
@@ -16,7 +17,7 @@
 <body class="custom-page">
 
 	<!-- 헤더가 로드될 부분 -->	
-    <%@ include file="/WEB-INF/jsp/admin/adminHeader.jsp" %>
+    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
 	<div class="wrapper">
 		<section class="section p-0">
@@ -29,7 +30,7 @@
 					<div class="search flex gap-20 justify-center">
 						<select class="js-example-basic-single select shadow" name="searchType">
 							<option value="title" selected>제목</option>
-							<option value="author">저자</option>
+							<option value="author">서명/저자사항</option>
 							<option value="name">신청자</option>
 						</select>
 						<input type="text" class="shadow w-720" name="keyword" value="">
@@ -59,7 +60,7 @@
 									<th>번호</th>
 									<th>표지</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>출판사</th>
 									<th>신청자</th>
 									<th>신청날짜</th>
@@ -75,7 +76,7 @@
 									<td>${ad.author}</td>
 									<td>${ad.publisher}</td>
 									<td>${ad.name}<br>(${ad.userNumber})</td>
-									<td>${fn:substringBefore(ad.regDate, ' ')}</td>
+									<td>${fn:replace(fn:substringBefore(ad.regDate, ' '), '-', '.')}</td>
 									<td class=
 										<c:if test="${ad.status eq '대기'}">"blue"</c:if>
 										<c:if test="${ad.status eq '승인'}">"green"</c:if>
@@ -133,9 +134,8 @@
 	    </div>
 	</div>
 	
-    <div id="footer-container">
-    	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
-    </div>
+	<!-- 푸터가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 
     <script src="${pageContext.request.contextPath}/js/rejection.js"></script>
     <script>
