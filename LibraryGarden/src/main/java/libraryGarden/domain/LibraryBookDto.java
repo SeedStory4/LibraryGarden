@@ -20,14 +20,14 @@ public class LibraryBookDto {
 	private String author; // 책 저자 
 	private String publisher; // 책 출판사
 	private String publishedYear; // 책 출판일
-	private String totalPages; // 책 쪽수
+	private int totalPages; // 책 쪽수
 	private String isbn; // 책 isbn
     private String sizeWidth; // 책 넓이
     private String sizeHeight;// 책 높이
     private String weight;// 책 무게
 	private String category; // 책 카테고리(분류)
 	private String introduction; // 책 한줄요약
-	private String price; // 책 정가
+	private int price; // 책 정가
 	
 	private int lbidx; // 도서관 책 인덱스
 	private String code; // 도서관 책 구분	
@@ -90,10 +90,10 @@ public class LibraryBookDto {
 	public void setPublishedYear(String publishedYear) {
 		this.publishedYear = publishedYear;
 	}
-	public String getTotalPages() {
+	public int getTotalPages() {
 		return totalPages;
 	}
-	public void setTotalPages(String totalPages) {
+	public void setTotalPages(int totalPages) {
 		this.totalPages = totalPages;
 	}
 	public String getIsbn() {
@@ -132,10 +132,10 @@ public class LibraryBookDto {
 	public void setIntroduction(String introduction) {
 		this.introduction = introduction;
 	}
-	public String getPrice() {
+	public int getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(int price) {
 		this.price = price;
 	}
 	public int getLbidx() {
