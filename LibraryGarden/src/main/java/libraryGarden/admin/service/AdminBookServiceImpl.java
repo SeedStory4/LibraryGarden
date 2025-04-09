@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import libraryGarden.admin.mapper.AdminBookMapper;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.mapper.Book1Mapper;
+import libraryGarden.user.mapper.LibraryBookMapper;
 
 /** [설명] AdminBookService 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
  * 
