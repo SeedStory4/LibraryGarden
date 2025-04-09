@@ -126,18 +126,18 @@ public class BookRequestController {
 	    // 로그인한 사용자 정보 - 회원 고유 번호 뽑아오기
 	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
 	    int uidx = loginUser.getUidx();  // 회원 고유 번호
-	    System.out.println("BookRequestController bookRequestWriteAction uidx"+uidx);
+	    logger.debug("BookRequestController bookRequestWriteAction uidx"+uidx);
 	    
 	    // 넘어온 isbn
 	    String isbn =  String.valueOf(requestData.get("isbn"));
-	    System.out.println("BookRequestController bookRequestWriteAction isbn "+isbn);
+	    logger.debug("BookRequestController bookRequestWriteAction isbn "+isbn);
 		
 	    // 도서 상세 조회
 	    BookVo bv = aladdinOpenAPI.lookUpBookDetail(isbn);
 	    
 	    // isbn으로 책 여부 확인
 	    int cnt = bookService.findBookByIsbnToCount(isbn);
-	    System.out.println("BookRequestController bookRequestWriteAction cnt "+cnt);
+	    logger.debug("BookRequestController bookRequestWriteAction cnt "+cnt);
 	    
 	    // db Book 테이블에 책이 없고 새로 등록할때
 	    if (cnt == 0) {
@@ -145,22 +145,22 @@ public class BookRequestController {
 	    	bookInsertValue = bookService.insertBook(bv);
 	    	
 	    	if(bookInsertValue != 0) { // 책 등록 성공
-	    		System.out.println("책 등록 성공");
+	    		logger.debug("책 등록 성공");
 	    		
 		        // 새로 등록한 책의 bidx 가져오기
 		        bidx = bookService.findBookByIsbnToBidx(isbn);
-		        System.out.println("BookRequestController 책 없을 때 책 등록 성공 bidx "+bidx);
+		        logger.debug("BookRequestController 책 없을 때 책 등록 성공 bidx "+bidx);
 		        
 		        // REQUEST 테이블에 희망도서 신청 등록
 		        requestInsertValue = bookRequestService.insertRequest(uidx, bidx);
 		    	
 		        if(requestInsertValue != 0) { // 희망도서 신청 성공
-		    		System.out.println("책 없을 때 희망도서 신청 성공");
+		        	logger.debug("책 없을 때 희망도서 신청 성공");
 		    	}else {
-		    		System.out.println("책 없을 때 희망도서 신청 실패");
+		    		logger.debug("책 없을 때 희망도서 신청 실패");
 		    	}
 	    	}else {
-	    		System.out.println("책 등록 실패");
+	    		logger.debug("책 등록 실패");
 	    	}
 
 	    }
@@ -168,14 +168,14 @@ public class BookRequestController {
 	    else {
 	    	// 신청한 책의 bidx 가져오기
 	        bidx = bookService.findBookByIsbnToBidx(isbn);
-	        System.out.println("BookRequestController db Book 테이블에 책이 있을 때 bidx "+bidx);
+	        logger.debug("BookRequestController db Book 테이블에 책이 있을 때 bidx "+bidx);
 
 	        // REQUEST 테이블에 희망도서 신청 등록
 	        requestInsertValue = bookRequestService.insertRequest(uidx, bidx);
 	    	if(requestInsertValue != 0) { // 희망도서 신청 성공
-	    		System.out.println("db Book 테이블에 책이 있을 때 희망도서 신청 성공");
+	    		logger.debug("db Book 테이블에 책이 있을 때 희망도서 신청 성공");
 	    	}else {
-	    		System.out.println("db Book 테이블에 책이 있을 때 희망도서 신청 실패");
+	    		logger.debug("db Book 테이블에 책이 있을 때 희망도서 신청 실패");
 	    	}
 	    }
 
