@@ -260,6 +260,14 @@
 	</dependencies>
 
 	<build>
+		<resources>
+	      <resource>
+	        <directory>src/main/resources</directory>
+		    <includes>
+		      <include>**/*.properties</include>
+		    </includes>
+	      </resource>
+	    </resources>
 		<defaultGoal>install</defaultGoal>
 		<directory>${basedir}/target</directory>
 		<finalName>sht_webapp</finalName>
