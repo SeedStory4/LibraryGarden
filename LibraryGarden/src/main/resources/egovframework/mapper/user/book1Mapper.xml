@@ -4,40 +4,20 @@
 
 <mapper namespace="libraryGarden.user.mapper.Book1Mapper">
 	
-	<!-- 도서관 책 검색(제목과 저자로 검색) -->
-	<sql id="search">
-		<if test="searchType != null and searchType eq 'title'">
-			and B.title like concat('%',#{keyword},'%')
-		</if>
-		<if test="searchType != null and searchType eq 'author'">
-			and B.author like concat('%',#{keyword},'%')
-		</if>
-	</sql>
-
-    <!-- 도서관 책 전체/검색조건를 통해 책들을 조회 -->
- 	<select id="BookSelectAll" parameterType="HashMap" resultType="lbd">
-		SELECT B.coverImg, B.title, B.author, B.publisher, LB.lbidx, LB.code, LB.callName, LB.location, LB.dueDate, LB.status 
-		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
-		<include refid="search"/>
-		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
+	<!-- isbn 으로 책 데이터 여부 확인 -->
+	<select id="findBookByIsbnToCount" resultType="int">
+		SELECT COUNT(*) AS cnt FROM BOOKS WHERE isbn = #{isbn}
 	</select>
 	
-	<!-- 도서관 책 전체/검색조건를 통해 책의 갯수를 조회 -->
-	<select id="BookTotalCount" resultType="int">
-		SELECT COUNT(*) AS cnt  
-		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
-		<include refid="search"/>
-	</select>
-	
-	<!-- 도서관 책 중 인덱스 번호와 일치하는 책 조회 -->
-	<select id="BookSelectOne" parameterType="int" resultType="lbd">
-		SELECT *
-		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx
-		JOIN CATEGORY AS C ON LB.cidx = C.cidx
-		WHERE B.delyn = 'N' AND LB.delyn = 'N'  AND lbidx = #{lbidx};
+	<!-- 도서 데이터 삽입 -->
+    <insert id="insertBook" parameterType="bv">
+	    INSERT INTO BOOKS(coverImg, title, originalTitle, subtitle, author, publisher, publishedYear, totalPages, isbn, sizeWidth, sizeHeight, weight, category, introduction, price) 
+		VALUES(#{coverImg}, #{title}, #{originalTitle}, #{subtitle}, #{author}, #{publisher}, #{publishedYear}, #{totalPages}, #{isbn}, #{sizeWidth}, #{sizeHeight}, #{weight}, #{category}, #{introduction}, #{price})
+    </insert>
+    
+	<!-- isbn 으로 책 데이터 중 bidx 가지고 옴 -->
+	<select id="findBookByIsbnToBidx" resultType="int">
+		SELECT bidx FROM BOOKS WHERE isbn = #{isbn}
 	</select>
 	
 </mapper>
