@@ -1,6 +1,7 @@
 package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -13,8 +14,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import libraryGarden.admin.service.AdminBookRequestService;
 import libraryGarden.admin.service.AdminDirectorApprovalService;
 import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.ApprovalDto;
@@ -31,6 +36,9 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 	
 	@Autowired(required=false)
 	private AdminDirectorApprovalService directorApprovalService;
+
+	@Autowired(required=false)
+	private AdminBookRequestService bookRequestService;
 	
 	@Autowired(required=false)
 	private PageMaker pm;
@@ -88,7 +96,7 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 			@PathVariable("aidx") int aidx,
 			RedirectAttributes rttr) {
 		
-		logger.info("directorApprovalDeleteAction 들어옴");		
+		logger.info("📝 directorApprovalDeleteAction 들어옴");		
 		
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
 		int value = directorApprovalService.directorApprovalDelete(aidx);
@@ -109,7 +117,7 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 	@RequestMapping(value="/directorApprovalWrite.do")
 	public String boardWrite() {
 		
-		logger.info("directorApprovalWrite 들어옴");
+		logger.info("📝 directorApprovalWrite 들어옴");
 
 		return "admin/directorApproval/directorApprovalWrite";
 	}
@@ -122,22 +130,23 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 			Model model
 			) {
 		
-		logger.info("directorApprovalWriteAction 들어옴");
+		logger.info("📝 directorApprovalWriteAction 들어옴");
 		
 		// DB에 작성자 정보를 저장하기 위해 session에 저장된 uidx를 av 안에 세팅
 //		String uidx = request.getSession().getAttribute("uidx").toString();
 //		int uidx_int = Integer.parseInt(uidx);
 //		av.setUidx(uidx_int);
 		
-		
 		av.setUidx(1);
-		av.setRqidx(1);
 		
 		// 게시글 등록 쿼리가 성공했는지 확인하기 위해 aidx의 초기값을 세팅.
 		int aidx = 0;
 		
-		// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
-		aidx = directorApprovalService.approvalInsert(av);
+		if(av.getRqidx() > 0) {
+			// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
+			av.setBidx(0);
+			aidx = directorApprovalService.directorApprovalInsert(av);
+		}
 		
 		// 이동할 주소 초기화
 		String path = "";
@@ -156,7 +165,44 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 		return path;
 	}
 	
-    @GetMapping("/popDirectorApprovalRejectionWrite.do")
+	// 희망 도서 목록 페이지 팝업
+	@ResponseBody
+	@RequestMapping(value="/directorApprovalSelect.do", method = RequestMethod.POST)
+	public HashMap<String, Object> directorApprovalSelect(
+			@RequestParam(value = "rqidx") int rqidx
+		 ) {
+		
+		logger.info("directorApprovalSelect 들어옴");
+		 
+		// 도서 정보 DB에서 가져오기
+		BookVo bv = bookRequestService.bookRequestSelectOne(rqidx);
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("rqidx", rqidx);
+		hm.put("bv", bv);
+		
+		return hm;
+		
+	}
+	
+	@RequestMapping(value="/{aidx}/directorApprovalModify.do")
+	public String boardModify(
+			@PathVariable("aidx") int aidx,
+			Model model) {
+		
+		logger.debug("📝 directorApprovalModify 들어옴");
+		
+		// 도서 정보 DB에서 가져오기
+		BookVo bv = directorApprovalService.directorApprovalSelectOne(aidx);
+		
+		model.addAttribute("bv", bv);
+		model.addAttribute("aidx", aidx);
+		
+		return "admin/directorApproval/directorApprovalModify";
+		
+	}
+	
+	@GetMapping("/popDirectorApprovalRejectionWrite.do")
     public String popDirectorApprovalRejectionWrite() {
         return "admin/directorApproval/popDirectorApprovalRejectionWrite";
     }

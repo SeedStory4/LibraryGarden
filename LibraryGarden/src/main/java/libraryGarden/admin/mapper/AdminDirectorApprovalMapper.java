@@ -16,6 +16,6 @@ public interface AdminDirectorApprovalMapper {
 
 	public int directorApprovalDelete(int aidx);
 	
-	public int approvalInsert(HashMap<String,Object> hm);
+	public int directorApprovalInsert(HashMap<String,Object> hm);
 	
 }
