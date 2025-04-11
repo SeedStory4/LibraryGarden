@@ -33,7 +33,7 @@
 					<div class="search flex gap-20 justify-center">
 						<select class="js-example-basic-single select shadow" name="searchType">
 							<option value="title" selected>제목</option>
-							<option value="author">저자</option>
+							<option value="author">서명/저자사항</option>
 						</select>
 						<input type="text" class="shadow w-720"  name="keyword" value="">						
 						<button class="btn btn-primary btn-small">검색</button>
@@ -122,9 +122,8 @@
 		</section>
 	</div>
 	
-    <div id="footer-container">
-    	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
-    </div>
+	<!-- 푸터가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 	<script>
 	$(document).ready(function() {
 	    // 신청 버튼 클릭

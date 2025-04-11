@@ -142,9 +142,8 @@
 		</section>
 	</div>
 	
-    <div id="footer-container">
-    	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
-    </div>
+	<!-- 푸터가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 
     <script src="${pageContext.request.contextPath}/js/rejection.js"></script>
     <script>

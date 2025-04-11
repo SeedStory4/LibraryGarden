@@ -14,19 +14,26 @@
 	<!-- 헤더가 로드될 부분 -->
 	<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
 
+	<c:if test="${not empty msg}">
+	    <script>
+	        alert("${msg}");
+	    </script>
+	</c:if>
 	<div class="wrapper">
 		<section class="section p-0">
 			<h2 class="section-title m-0 normal">내 도서</h2>
 			
 			<div class="contents">
-				<p class="loan-info">김시연(017147)님의 현재 대출가능여부는 <span class="green bold">"이용가능"</span>입니다.</p>
+				<p class="loan-info">${uv.name}(${uv.userNumber})님의 현재 대출가능여부는 <span
+						class="${loanStatus == '이용가능' ? 'green' : 'red'} bold">"${loanStatus}"</span>입니다.</p>
 				<div class="list">
 					<ul class="tab flex gap-3">
-						<li class="shadow"><a href="#">대출이력</a></li>
-						<li class="shadow"><a href="#">예약관리</a></li>
-						<li class="on shadow"><a href="#">도서신청관리</a></li>
+						<li class="shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageLoanList.do">대출이력</a></li>
+						<li class="shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageReservationList.do">예약관리</a></li>
+						<li class="on shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageRequestList.do">도서신청관리</a></li>
 					</ul>
 					<div class="table">
+					<form name="frm">
 						<table>
 							<colgroup>
 								<col width="8%">
@@ -49,52 +56,64 @@
 								</tr>
 							</thead>
 							<tbody>
+								<c:forEach var="request" items="${requestList}" varStatus="status">
 								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td class="orange">신청대기</td>
-									<td><button class="btn btn-small btn-red">취소</button></td>
+									<td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
+									<td>${request.title}</td>
+									<td>${request.author}</td>
+									<td>${request.publisher}</td>
+									<td>${request.regDate}</td>
+									<c:choose>
+									  <c:when test="${request.status eq '신청중'}">
+									    <td class="blue">${request.status}</td>
+									  </c:when>
+									  <c:when test="${request.status eq '신청완료'}">
+									    <td class="green">${request.status}</td>
+									  </c:when>
+									  <c:when test="${request.status eq '신청대기'}">
+									    <td class="orange">${request.status}</td>
+									  </c:when>
+									  <c:when test="${request.status eq '신청반려'}">
+									    <td class="red pointer" id="openRejectionModal">${request.status}</td>
+									  </c:when>
+									  <c:otherwise>
+									    <td>${request.status}</td> 
+									  </c:otherwise>
+									</c:choose>
+									<td><c:choose>
+										<c:when test='${request.status eq "신청대기"}'>
+											<button type="button" onclick="confirmDelete(${pm.scri.page},${request.bidx},${request.rqidx})" class="btn btn-small btn-red">취소</button>
+										</c:when>
+										<c:otherwise>
+										</c:otherwise>
+										</c:choose>
+									</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td class="blue">신청중</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td class="green">신청완료</td>
-									<td></td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>채식주의자</td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>2025.03.14</td>
-									<td class="red pointer" id="openRejectionModal">신청반려</td>
-									<td></td>
-								</tr>
+								</c:forEach>
+								<c:if test="${empty requestList}">
+									<tr>
+										<td colspan="9" style="text-align:center;">신청한 희망도서가 없습니다.</td>
+									</tr>
+								</c:if>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
+						</form>
+						<ul class="paging flex w-270 justify-center">
+							<c:if test="${requestScope.pm.prev == true}">
+							<li>
+					          <a href="${pageContext.request.contextPath}/user/myPage/myPageRequestList.do?page=${requestScope.pm.startPage - 1}" aria-label="Previous">◀</a>
+					        </li>
+							</c:if> 
+							
+					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/user/myPage/myPageRequestList.do?page=${i}">${i}</a></li>
+					        </c:forEach>
+					        
+					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
+							<li class="page-item">
+					          <a href="${pageContext.request.contextPath}/user/myPage/myPageRequestList.do?page=${requestScope.pm.endPage + 1}" aria-label="Next">▶</a>
+					        </li>
+							</c:if>
 						</ul>	
 					</div>
 				</div>
@@ -122,10 +141,23 @@
 	    </div>
 	</div>
 	
-    <div id="footer-container">
-    	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
-    </div>
+	<!-- 푸터 로드할 부분 -->
+	<jsp:include page="/common/footer.jsp" />
 	
     <script src="${pageContext.request.contextPath}/js/rejection.js"></script>
+    
+    <script>
+    
+	function confirmDelete(page, bidx, rqidx) {
+		
+		var fm = document.frm;	
+		var ans = confirm("저장하시겠습니까?");
+		if (ans == true) {
+			fm.action='${pageContext.request.contextPath}/user/myPage/deleteRequest.do?page='+ page +'&bidx='+ bidx +'&rqidx='+ rqidx;
+			fm.method="post"; 
+			fm.submit();
+		 }
+	}
+	</script>
 </body>
 </html>
