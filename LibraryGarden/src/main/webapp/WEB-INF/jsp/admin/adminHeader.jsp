@@ -16,7 +16,7 @@
 				<li><a href="#">도서예약</a></li>
 				<li><a href="#">희망도서</a></li>
 				<li><a href="<%= request.getContextPath() %>/admin/approval/approvalList.do">결재관리</a></li>
-				<li><a href="#">회원관리</a></li>
+				<li><a href="<%= request.getContextPath() %>/admin/user/userList.do">회원관리</a></li>
 			</ul>
 			<ul class="admin-nav-auth">
 	            <li><a href="<%= request.getContextPath() %>/user/myPage/myPageModify.do">마이페이지</a></li>
