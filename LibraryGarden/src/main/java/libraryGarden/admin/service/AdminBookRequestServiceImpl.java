@@ -18,11 +18,12 @@ public class AdminBookRequestServiceImpl implements AdminBookRequestService{
 	private AdminBookRequestMapper brm;
 
 	@Override
-	public int bookRequestTotalCount(SearchCriteria scri) {
+	public int bookRequestTotalCount(SearchCriteria scri, String filter) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		hm.put("searchType", scri.getSearchType());
 		hm.put("keyword", scri.getKeyword());
+		hm.put("filter", filter);
 		
 		int cnt = brm.bookRequestTotalCount(hm);
 		
@@ -30,7 +31,7 @@ public class AdminBookRequestServiceImpl implements AdminBookRequestService{
 	}
 	
 	@Override
-	public ArrayList<RequestDto> bookRequestSelectAll(SearchCriteria scri) {
+	public ArrayList<RequestDto> bookRequestSelectAll(SearchCriteria scri, String filter) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -38,6 +39,7 @@ public class AdminBookRequestServiceImpl implements AdminBookRequestService{
 		hm.put("perPageNum", scri.getPerPageNum());
 		hm.put("searchType", scri.getSearchType());
 		hm.put("keyword", scri.getKeyword());
+		hm.put("filter", filter);
 		
 		ArrayList<RequestDto> rlist = brm.bookRequestSelectAll(hm);
 		
@@ -50,6 +52,20 @@ public class AdminBookRequestServiceImpl implements AdminBookRequestService{
 		BookVo bv = brm.bookRequestSelectOne(rqidx);
 		
 		return bv;
+	};
+	
+	@Override
+	public int statusUpdate(int rqidx, String status) {
+
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		hm.put("rqidx", rqidx);
+		hm.put("status", status);
+		
+		int value = brm.statusUpdate(hm);
+		
+		return value;
+		
 	};
 
 }

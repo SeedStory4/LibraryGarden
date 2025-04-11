@@ -12,6 +12,8 @@ public interface AdminBookRequestMapper {
 	
 	public ArrayList<RequestDto> bookRequestSelectAll(HashMap<String,Object> hm);
 
-	public BookVo bookRequestSelectOne(int reqidx);
+	public BookVo bookRequestSelectOne(int rqidx);
+
+	public int statusUpdate(HashMap<String,Object> hm);
 	
 }
