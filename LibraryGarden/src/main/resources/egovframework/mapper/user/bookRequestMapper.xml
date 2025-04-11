@@ -6,8 +6,35 @@
 	
 	<!-- 희망 도서 신청 (등록) -->
     <insert id="insertRequest">
-		INSERT INTO REQUEST(uidx,bidx) 
-		VALUES (#{uidx}, #{bidx})
+		INSERT INTO REQUEST(uidx,bidx, status) 
+		VALUES (#{uidx}, #{bidx}, "신청대기")
     </insert>
 	
+	<!-- 사용자 희망 도서 신청을 조회하는 메서드 -->
+    <select id="getUserRequestInfo" resultType="map">
+		SELECT b.bidx, b.title, b.author, b.publisher, r.status, DATE_FORMAT(r.regDate, '%Y.%m.%d') AS regDate, r.rqidx
+		FROM request r
+		JOIN books b ON r.bidx = b.bidx
+		JOIN `user` u ON r.uidx = u.uidx
+		WHERE u.uidx = #{uidx} and u.delyn = "N" and b.delyn = "N" and r.delyn = "N"
+		ORDER BY r.regDate DESC;
+    </select>
+    
+    <!-- 사용자 희망 도서 신청한 수를 조회하는 메서드 -->
+    <select id="getUserRequestInfoTotalCount" >
+		SELECT COUNT(*) AS cnt
+		FROM request r
+		JOIN books b ON r.bidx = b.bidx
+		JOIN `user` u ON r.uidx = u.uidx
+		WHERE u.uidx = #{uidx} and u.delyn = "N" and b.delyn = "N" and r.delyn = "N" 
+    </select>
+    
+    <!-- 사용자 희망 도서 신청을 삭제하는 메서드 -->
+    <update id="deleteRequest" >
+	    UPDATE request r
+	    JOIN books b ON r.bidx = b.bidx
+	    JOIN `user` u ON r.uidx = u.uidx
+	    SET r.delyn = 'Y'
+	    WHERE u.uidx = #{uidx} AND b.bidx = #{bidx} AND r.delyn = 'N' AND b.delyn = 'N' AND u.delyn = 'N'
+    </update>
 </mapper>
