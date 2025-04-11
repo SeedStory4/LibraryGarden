@@ -23,6 +23,7 @@ import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
+import libraryGarden.domain.UserVo;
 import libraryGarden.admin.service.AdminBookRequestService;
 import libraryGarden.admin.service.AdminLibrarianApprovalService;
 import libraryGarden.cmm.util.UrlEncoder;
@@ -83,19 +84,22 @@ public class AdminLibrarianApprovalController {
 		
 		// 도서 정보 DB에서 가져오기
 		BookVo bv = librarianApprovalService.librarianApprovalSelectOne(aidx);
+
+		// 본인이 작성한 기안인지 확인 및 기안의 상태값 확인하기 위해 DB에서 av 정보 가져오기
+		ApprovalVo av = librarianApprovalService.librarianApprovalSelectAv(aidx);	
 		
 		model.addAttribute("bv", bv);
-		model.addAttribute("aidx", aidx);
+		model.addAttribute("av", av);
 		
 		return "admin/librarianApproval/librarianApprovalDetail";
 	}
 
 	@PostMapping(value="/{aidx}/librarianApprovalDeleteAction.do")
-	public String boardDeleteAction(
+	public String librarianApprovalDeleteAction(
 			@PathVariable("aidx") int aidx,
 			RedirectAttributes rttr) {
 		
-		logger.info("librarianApprovalDeleteAction 들어옴");		
+		logger.info("📝 librarianApprovalDeleteAction 들어옴");		
 		
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
 		int value = librarianApprovalService.librarianApprovalDelete(aidx);
@@ -114,9 +118,9 @@ public class AdminLibrarianApprovalController {
 	}
 
 	@RequestMapping(value="/librarianApprovalWrite.do")
-	public String boardWrite() {
+	public String librarianApprovalWrite() {
 		
-		logger.info("librarianApprovalWrite 들어옴");
+		logger.info("📝 librarianApprovalWrite 들어옴");
 
 		return "admin/librarianApproval/librarianApprovalWrite";
 	}
@@ -129,34 +133,35 @@ public class AdminLibrarianApprovalController {
 			Model model
 			) {
 		
-		logger.info("librarianApprovalWriteAction 들어옴");
+		logger.info("📝 librarianApprovalWriteAction 들어옴");
 		
 		// DB에 작성자 정보를 저장하기 위해 session에 저장된 uidx를 av 안에 세팅
-//		String uidx = request.getSession().getAttribute("uidx").toString();
-//		int uidx_int = Integer.parseInt(uidx);
-//		av.setUidx(uidx_int);
-		
-		av.setUidx(1);
-		
+		UserVo user = (UserVo) request.getSession().getAttribute("loginUser");
+		int uidx = user.getUidx();
+		av.setUidx(uidx);
+
 		// 게시글 등록 쿼리가 성공했는지 확인하기 위해 aidx의 초기값을 세팅.
 		int aidx = 0;
 		
+		// 작성한 게시글 정보를 DB에 저장. 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
 		if(av.getRqidx() > 0) {
-			// 작성한 게시글 정보를 DB에 저장(게시글 등록). 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
 			av.setBidx(0);
+			aidx = librarianApprovalService.librarianApprovalInsert(av);
+		} else {
+			av.setRqidx(0);
 			aidx = librarianApprovalService.librarianApprovalInsert(av);
 		}
 		
 		// 이동할 주소 초기화
 		String path = "";
 		
-		// 게시글 등록 후 이동할 url 및 메세지 설정
 		if(aidx != 0) {
+			// 게시글 등록 후 이동할 url 및 메세지 설정
 			rttr.addFlashAttribute("msg", "글쓰기가 성공했습니다.");
 			path = "redirect:/admin/librarianApproval/" + aidx + "/librarianApprovalDetail.do";
-			
-		// 게시글 등록 실패시 이동할 url 및 메세지 설정
+		
 		} else {
+			// 게시글 등록 실패시 이동할 url 및 메세지 설정
 			rttr.addFlashAttribute("msg", "글쓰기가 실패했습니다.");
 			path = "redirect:/admin/librarianApproval/librarianApprovalWrite.do";
 		}
@@ -171,8 +176,8 @@ public class AdminLibrarianApprovalController {
 			@RequestParam(value = "rqidx") int rqidx
 		 ) {
 		
-		logger.info("librarianApprovalSelect 들어옴");
-		 
+		logger.info("📝 librarianApprovalSelect 들어옴");
+		
 		// 도서 정보 DB에서 가져오기
 		BookVo bv = bookRequestService.bookRequestSelectOne(rqidx);
 		
@@ -184,94 +189,58 @@ public class AdminLibrarianApprovalController {
 		
 	}
 	
+	@RequestMapping(value="/{aidx}/librarianApprovalModify.do")
+	public String librarianApprovalModify(
+			@PathVariable("aidx") int aidx,
+			Model model) {
+		
+		logger.debug("📝 librarianApprovalModify 들어옴");
+		
+		// 도서 정보 DB에서 가져오기
+		BookVo bv = librarianApprovalService.librarianApprovalSelectOne(aidx);	
+		
+		model.addAttribute("bv", bv);
+		model.addAttribute("aidx", aidx);
+		
+		return "admin/librarianApproval/librarianApprovalModify";
+		
+	}
 	
-//
-//	@RequestMapping(value="/{bidx}/boardModify.do")
-//	public String boardModify(
-//			@PathVariable("bidx") int bidx,
-//			Model model) {
-//		
-//		logger.info("boardModify����");
-//				
-//		BoardVo bv = boardService.boardSelectOne(bidx);		
-//		model.addAttribute("bv", bv);
-//		
-//		String menu = "";
-//		String path = "";
-//		if(bv.getBoardcode().equals("travel")) {
-//			if(bv.getPeriod() == 1) {
-//				menu = "����ġ��";
-//			} else if(bv.getPeriod() == 2) {
-//				menu = "1��2��";
-//			} else if(bv.getPeriod() == 3) {
-//				menu = "2��3��";
-//			} else if(bv.getPeriod() == 4) {
-//				menu = "3��4��";
-//			}
-//			path = "WEB-INF/board/travelModify";
-//		} else if(bv.getBoardcode().equals("free")) {
-//			menu = "�����Խ���";
-//			path = "WEB-INF/board/boardModify";
-//		} else if(bv.getBoardcode().equals("notice")){
-//			menu = "��������";
-//			path = "WEB-INF/board/boardModify";
-//		}
-//		
-//		model.addAttribute("bv", bv);
-//		model.addAttribute("menu", menu);
-//		
-//		return path;
-//		
-//	}
-//	
-//	@RequestMapping(value="/{bidx}/boardModifyAction.do", method=RequestMethod.POST)
-//	public String boardModifyAction(
-//			BoardVo bv,
-//			@RequestParam("attachfile") MultipartFile filename,
-//			HttpServletRequest request,
-//			RedirectAttributes rttr,
-//			@RequestParam("isFileChange") String isFileChange
-//			) throws Exception {
-//		
-//		
-//		logger.info("boardModifyAction����");
-//
-//		String uploadedFileName = "";
-//		if(isFileChange.equals("true")) {
-//			// ����÷��(�����)
-//			MultipartFile file = filename;
-//			
-//			if(!file.getOriginalFilename().equals("")) {
-//				String uploadPath = "D:\\dev\\myprj\\myprjSpring\\myprj\\src\\main\\webapp\\resources\\boardImages\\";
-//				uploadedFileName = UploadFileUtiles.uploadFile(uploadPath, file.getOriginalFilename(), file.getBytes());
-//			}
-//		} else {
-//			
-//			BoardVo bvOrigin = boardService.boardSelectOne(bv.getBidx());
-//			uploadedFileName = bvOrigin.getThumbnail();
-//		}
-//		
-//		String ip = userip.getUserIp(request);
-//		bv.setIp(ip);
-//		
-//		bv.setThumbnail(uploadedFileName);
-//        
-//		// ���� ���ε��ϰ� upadte�� �ϱ� ���� service�� �����
-//		int value = boardService.boardUpdate(bv);
-//		
-//		String path = "";
-//		if(value == 1) {
-//			rttr.addFlashAttribute("msg", "�ۼ��� ����");
-//			path = "redirect:/board/" + bv.getBidx() + "/boardContents.do";
-//		} else {
-//			rttr.addFlashAttribute("msg", "�Է��� �߸��Ǿ����ϴ�.");
-//			path = "redirect:/board/" + bv.getBidx() + "/boardModify.do";
-//		}
-//			
-//		return path;
-//	}
-//		
-//	
-//	
-//	
+	@RequestMapping(value="/{aidx}/librarianApprovalModifyAction.do", method=RequestMethod.POST)
+	public String librarianApprovalModifyAction(
+			ApprovalVo av,
+			HttpServletRequest request,
+			RedirectAttributes rttr
+			) {
+		
+		logger.info("📝 librarianApprovalModifyAction 들어옴");
+		
+		// 게시글 등록 쿼리가 성공했는지 확인하기 위해 value의 초기값을 세팅.
+		int value = 0;
+		
+		// 수정한 게시글 정보를 DB에 반영. 저장이 성공하면 value가 변경됨.
+		if(av.getRqidx() > 0) {
+			av.setBidx(0);
+			value = librarianApprovalService.librarianApprovalUpdate(av);
+		} else {
+			av.setRqidx(0);
+			value = librarianApprovalService.librarianApprovalUpdate(av);
+		}
+
+		// 이동할 주소 초기화
+		String path = "";
+		
+		if(value != 0) {
+			// 게시글 등록 후 이동할 url 및 메세지 설정
+			rttr.addFlashAttribute("msg", "글수정이 성공했습니다.");
+			path = "redirect:/admin/librarianApproval/" + av.getAidx() + "/librarianApprovalDetail.do";
+		
+		} else {
+			// 게시글 등록 실패시 이동할 url 및 메세지 설정
+			rttr.addFlashAttribute("msg", "글수정이 실패했습니다.");
+			path = "redirect:/admin/librarianApproval/" + av.getAidx() + "/librarianApprovalModify.do";
+		}
+		
+		return path;
+	}
 }
