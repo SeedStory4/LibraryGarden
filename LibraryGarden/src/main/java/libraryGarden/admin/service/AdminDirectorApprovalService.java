@@ -17,6 +17,6 @@ public interface AdminDirectorApprovalService {
 
 	public int directorApprovalDelete(int aidx);
 
-	public int approvalInsert(ApprovalVo av);
+	public int directorApprovalInsert(ApprovalVo av);
 	
 }

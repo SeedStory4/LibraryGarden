@@ -31,8 +31,16 @@
 
 				<!-- 아이디 찾기 / 취소 버튼 -->
 				<div class="draft-actions mb-37">
-					<button class="draft-btn-small draft-btn-small-n btn-submit-140">로그인</button>
-					<button class="draft-btn-small draft-btn-small-n btn-list-140">메인</button>
+					<button 
+						class="draft-btn-small draft-btn-small-n btn-submit-140"
+						onclick="location.href='<%= request.getContextPath() %>/user/user/userLogin.do'">
+						로그인
+					</button>
+					<button 
+						class="draft-btn-small draft-btn-small-n btn-list-140"
+						onclick="location.href='<%= request.getContextPath() %>/main.do'">
+						메인
+					</button>
 				</div>
 		</section>
 		</div>

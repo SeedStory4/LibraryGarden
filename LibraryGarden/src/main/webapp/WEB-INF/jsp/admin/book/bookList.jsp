@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,9 +14,8 @@
 </head>
 <body class="custom-page">
 
-    <div id="header-container">
-    	<%@ include file="/WEB-INF/jsp/admin/adminHeader.jsp" %>
-    </div>
+	<!-- 헤더가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
 	<div class="wrapper">
 		<section class="section p-0">

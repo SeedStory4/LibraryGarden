@@ -112,7 +112,7 @@ table td { padding: 5px; }
 
 /* select */
 .select.shadow ~ .select2-container { box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); }
-.select2-container { width: 100px!important; border-radius: 5px; }
+.select2-container { width: 130px!important; border-radius: 5px; }
 .select2-container--default .select2-selection--single .select2-selection__arrow b { margin-left: -8px; margin-top: -3px; 
     border-color: var(--color-secondary) transparent transparent transparent; border-width: 8px 5px 0 5px; }
 .select2-container--default.select2-container--open .select2-selection--single .select2-selection__arrow b {

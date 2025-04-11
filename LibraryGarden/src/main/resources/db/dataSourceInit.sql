@@ -190,7 +190,7 @@ CREATE TABLE APPROVAL (
 INSERT INTO USER(id, password, name, phone, email, address, userNumber, role) 
 VALUES ('director','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','도서관장','01012345678','director@aaa.ccc','대한민국','00000000','도서관장'), 
  ('librarian','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','사서','01012566211','librarian@aaa.ccc','대한민국','00000010','사서'), 
- ('user1','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','홍길동','0101112223','user1@aaa.ccc','대한민국','12344444','일반회원'),
+ ('user1','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','홍길동','0101112223','ktiun9630@naver.com','대한민국','12344444','일반회원'),
  ('user2','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','이순신','0101112224','user2@aaa.ccc','대한민국','12344445','일반회원');
 
 -- BOOKS 샘플 데이터 생성
@@ -382,20 +382,20 @@ INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
 VALUES (10, 4, 'Y', '2025-03-23', '2025-03-27');
 
 -- REQUEST 샘플 데이터 생성
-INSERT INTO REQUEST(uidx,bidx) 
-VALUES (3,1), 
-(4,2), 
-(4,3), 
-(3,4), 
-(3,5), 
-(3,6), 
-(4,7), 
-(4,8), 
-(3,9), 
-(3,10), 
-(3,11), 
-(4,12), 
-(4,13);
+INSERT INTO REQUEST(uidx,bidx,status) 
+VALUES (3, 1, "신청중"),
+(4, 2, "신청중"),
+(4, 3, "신청중"),
+(3, 4, "신청대기"),
+(3, 5, "신청완료"),
+(3, 6, "신청반려"),
+(4, 7, "신청중"),
+(4, 8, "신청중"),
+(3, 9, "신청중"),
+(3, 10, "신청중"),
+(3, 11, "신청중"),
+(4, 12, "신청중"),
+(4, 13, "신청중");
 
 
 INSERT INTO RESERVATION (lbidx, uidx, reservationDate, pickupDate, status, dueDate, modify)

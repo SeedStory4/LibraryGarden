@@ -17,7 +17,7 @@ import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.controller.Book1Controller;
-import libraryGarden.user.service.Book1Service;
+import libraryGarden.user.service.LibraryBookService;
 
 /**
  * [설명] 관리자의 도서 관리 페이지

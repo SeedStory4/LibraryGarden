@@ -1,5 +1,7 @@
 package libraryGarden.user.service;
 
+import org.apache.ibatis.annotations.Param;
+
 import libraryGarden.domain.UserVo;
 
 public interface UserService {
@@ -24,6 +26,11 @@ public interface UserService {
     
     String findIdByNameAndPhone(String name, String phone);
 
+    void sendTempPassword(String toEmail, String tempPassword);
+    
+    String generateTempPassword();
+    
+    void updatePasswordByPhone(@Param("id") String id, @Param("phone") String phone, @Param("password") String password);
 
-
+    String findEmailByIdAndPhone(String id, String phone);
 }

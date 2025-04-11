@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -13,9 +14,8 @@
 </head>
 <body class="custom-page">
 
-    <div id="header-container">
-    	<%@ include file="/WEB-INF/jsp/user/userHeader.jsp" %>
-    </div>
+	<!-- 헤더가 로드될 부분 -->
+	<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
 
 	<div class="wrapper">
 		<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>

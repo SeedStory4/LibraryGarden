@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,7 +12,7 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/admin/adminHeader.do" />
+    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
 	<div class="wrapper">
 		<div class="inner">
@@ -28,25 +30,33 @@
 						class="draft-book-img">
 					<div class="draft-info">
 						<p>
-							<span class="info-title">● 제목</span> <span class="info-content">${requestScope.bv.title}</span>
+							<span class="info-title">● 제목<c:if test="${not empty requestScope.bv.originalTitle}"> / 원제</c:if></span>
+							<span class="info-content">${requestScope.bv.title}<c:if test="${not empty requestScope.bv.originalTitle}"> / ${requestScope.bv.originalTitle}</c:if></span>
 						</p>
 						<p>
-							<span class="info-title">● 부제</span> <span class="info-content">${requestScope.bv.subtitle}</span>
+							<span class="info-title">● 부제</span>
+							<span class="info-content">
+								<c:choose>
+									<c:when test="${not empty requestScope.bv.subtitle}">${requestScope.bv.subtitle}</c:when>
+									<c:otherwise>-</c:otherwise>
+								</c:choose>
+							</span>
 						</p>
 						<p>
 							<span class="info-title">● 서명/저자사항</span> <span class="info-content">${requestScope.bv.author}</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판사(출판년도)</span> <span class="info-content">${requestScope.bv.publisher}(${requestScope.bv.publishedYear})</span>
+							<span class="info-title">● 출판사(출판일)</span> <span class="info-content">${requestScope.bv.publisher}(${fn:replace(requestScope.bv.publishedYear, '-', '.')})</span>
 						</p>
 						<p>
 							<span class="info-title">● 전체쪽수</span> <span class="info-content">${requestScope.bv.totalPages}쪽</span>
 						</p>
 						<p>
-							<span class="info-title">● 서적정보</span> <span class="info-content">${requestScope.bv.info}/${requestScope.bv.category}</span>
+							<span class="info-title">● ISBN</span> <span class="info-content">${requestScope.bv.isbn}</span>
 						</p>
 						<p>
-							<span class="info-title">● ISBN</span> <span class="info-content">${requestScope.bv.isbn}</span>
+							<span class="info-title">● 서적정보</span>
+							<span class="info-content">${requestScope.bv.sizeWidth}mm * ${requestScope.bv.sizeHeight}mm / ${requestScope.bv.weight}g / ${requestScope.bv.category}</span>
 						</p>
 						<p>
 							<span class="info-title">● 정가</span> <span class="info-content price"></span>
@@ -65,7 +75,7 @@
 				<!-- 버튼 -->
 				<form name="frm">
 					<div class="draft-actions">
-						<button class="draft-btn-small btn-submit">수정</button>
+						<a href="${pageContext.request.contextPath}/admin/librarianApproval/${aidx}/librarianApprovalModify.do" class="draft-btn-small btn-submit flex align-center justify-center">수정</a>
 						<button type="button" class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
 						<a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do" class="draft-btn-small btn-list flex align-center justify-center">목록</a>
 					</div>
@@ -74,8 +84,8 @@
 		</div>
 	</div>
 
-	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" />
+	<!-- 푸터가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 	
 	<script>
 		// 3자리마다 콤마(,)를 입력

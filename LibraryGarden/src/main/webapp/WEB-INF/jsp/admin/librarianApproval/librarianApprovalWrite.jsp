@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -22,7 +23,7 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->	
-    <%@ include file="/WEB-INF/jsp/admin/adminHeader.jsp" %>
+    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
     
 	<div class="wrapper">
 		<div class="inner p-0">
@@ -45,7 +46,7 @@
 						<img src="https://placehold.co/141x213?text=BOOK" alt="Book Sample Image" class="draft-book-img coverImg">
 						<div class="draft-info">
 							<p>
-								<span class="info-title">● 제목</span> <span class="info-content title p-0 m-0">도서를 선택해주세요.</span>
+								<span class="info-title label-title">● 제목</span> <span class="info-content title m-0 p-0">도서를 선택해주세요.</span>
 							</p>
 							<p>
 								<span class="info-title">● 부제</span> <span class="info-content subtitle">도서를 선택해주세요.</span>
@@ -54,10 +55,7 @@
 								<span class="info-title">● 서명/저자사항</span> <span class="info-content author">도서를 선택해주세요.</span>
 							</p>
 							<p>
-								<span class="info-title">● 출판사</span> <span class="info-content publisher">도서를 선택해주세요.</span>
-							</p>
-							<p>
-								<span class="info-title">● 출판년도</span> <span class="info-content publishedYear">도서를 선택해주세요.</span>
+								<span class="info-title">● 출판사(출판일)</span> <span class="info-content publisher">도서를 선택해주세요.</span>
 							</p>
 							<p>
 								<span class="info-title">● 전체쪽수</span> <span class="info-content totalPages">도서를 선택해주세요.</span>
@@ -67,6 +65,9 @@
 							</p>
 							<p>
 								<span class="info-title">● 서적정보</span> <span class="info-content info">도서를 선택해주세요.</span>
+							</p>
+							<p>
+								<span class="info-title">● 정가</span> <span class="info-content price">도서를 선택해주세요.</span>
 							</p>
 						</div>
 					</div>
@@ -112,8 +113,8 @@
 		</div>
 	</div>
 
-	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" />
+	<!-- 푸터가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 	
 	<script>
 	// 게시글 등록
@@ -322,18 +323,36 @@
 					 
 					 // 도서 정보 보여주기
 		 			 const bv = result.bv;
-					 console.log(bv.coverImg)
+					 let labelTitle = "● 제목";
+					 let title = bv.title;
+					 let subtitle = "-";
+					 
 			         document.querySelector(".coverImg").src = bv.coverImg;
 			         document.querySelector(".coverImg").alt = bv.title;
-			         document.querySelector(".title").innerText = bv.title;
-			         document.querySelector(".subtitle").innerText = bv.subtitle;
+			         
+			         if(bv.originalTitle != undefined) {
+				         title = bv.title + " / " + bv.originalTitle;
+				         labelTitle = "● 제목 / 원제";				         
+			         }
+			         document.querySelector(".label-title").innerText = labelTitle;
+			         document.querySelector(".title").innerText = title;
+			         
+			         if(bv.subtitle != undefined) {
+			        	 subtitle = bv.subtitle;
+			         }
+			         document.querySelector(".subtitle").innerText = subtitle;
+			         
 			         document.querySelector(".author").innerText = bv.author;
-			         document.querySelector(".publisher").innerText = bv.publisher;
-			         document.querySelector(".publishedYear").innerText = bv.publishedYear;
+			         document.querySelector(".publisher").innerText = bv.publisher + "(" + bv.publishedYear.replaceAll('-', '.') + ")";
 			         document.querySelector(".totalPages").innerText = bv.totalPages + "쪽";
 			         document.querySelector(".isbn").innerText = bv.isbn;
-			         document.querySelector(".info").innerText = bv.info;
-			         
+			         document.querySelector(".info").innerText = bv.sizeWidth + "mm * " + bv.sizeHeight + "mm / " + bv.weight + "g / " + bv.category;
+			         			 		 
+			 		 function addComma(str) {  // 3자리마다 콤마(,)를 입력
+			 		   return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
+			 		 }
+			         document.querySelector(".price").innerText = addComma(String(bv.price)) + "원";
+			         			         
 			         // controller에 보내기 위해 희망도서 idx 저장하기
 					 document.frm.rqidx.value = rqidx;
 			         

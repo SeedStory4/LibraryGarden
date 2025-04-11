@@ -13,15 +13,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import libraryGarden.admin.controller.AdminLibrarianApprovalController;
-import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.service.Book1Service;
+import libraryGarden.user.service.LibraryBookService;
 
 /**
- * [설명] 사용자의 도서 조회 관련 요청을 처리하는 컨트롤러
+ * [설명] 사용자의 도서 조회 관련 요청을 처리하는 컨트롤러 / webapp - user - book
  * 
  * [주요기능]
  * - 도서 조회 목록 페이지 
@@ -45,7 +43,7 @@ public class Book1Controller {
 	
 	// book1Service 주입
 	@Autowired(required=false)
-	Book1Service book1Service;
+	LibraryBookService libraryBookService;
 	
 	// PageMaker 주입 (페이징 기능)
 	@Autowired(required=false)
@@ -68,7 +66,7 @@ public class Book1Controller {
 		  * [input]	 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri) 
 		  * [output] 조건에 따른 잭 전체 개수 cnt
 		  */ 
-		 int cnt = book1Service.BookTotalCount(scri);
+		 int cnt = libraryBookService.BookTotalCount(scri);
 		 
 		 /* 페이지 기능
 		  * [input] 조건에 따른 책 전체 개수 cnt
@@ -79,7 +77,7 @@ public class Book1Controller {
 		 * [input]	검색조건 외 페이지 기능 (scri)
 		 * [output] 책 목록(alist)
 		 */ 
-		ArrayList<LibraryBookDto> lblist = book1Service.BookSelectAll(scri);
+		ArrayList<LibraryBookDto> lblist = libraryBookService.BookSelectAll(scri);
 		
 		/* Model를 통해 jsp로 이동
 		 * - lblist : 책 목록 리스트
@@ -104,7 +102,7 @@ public class Book1Controller {
 		 * [input] 	도서관 책 인덱스(lbidx)
 		 * [output] 책 상세(lbd)
 		 */ 
-		LibraryBookDto lbd = book1Service.BookSelectOne(lbidx);
+		LibraryBookDto lbd = libraryBookService.BookSelectOne(lbidx);
 		model.addAttribute("lbd", lbd);
 		return "user/book/bookDetail";
 	}

@@ -13,13 +13,6 @@ public class AdminMainController {
 	        return "admin/main";
 	    }
 
-	    @GetMapping("/cmm/footer.do")
-	    public String footer() {
-	        return "cmm/footer";
-	    }
-	    @GetMapping("/adminHeader.do")
-	    public String adminHeader() {
-	        return "admin/adminHeader";
-	    }
+	   
 
 }
