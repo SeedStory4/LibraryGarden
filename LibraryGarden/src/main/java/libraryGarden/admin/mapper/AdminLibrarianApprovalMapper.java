@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import libraryGarden.domain.ApprovalDto;
+import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BookVo;
 
 public interface AdminLibrarianApprovalMapper {
@@ -18,4 +19,7 @@ public interface AdminLibrarianApprovalMapper {
 	
 	public int librarianApprovalInsert(HashMap<String,Object> hm);
 	
+	public ApprovalVo librarianApprovalSelectAv(int aidx);
+	
+	public int librarianApprovalUpdate(HashMap<String,Object> hm);
 }
