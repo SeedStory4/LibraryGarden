@@ -14,9 +14,9 @@
 </head>
 <body class="custom-page">
 
-    <div id="header-container">
-    	<%@ include file="/WEB-INF/jsp/user/userHeader.jsp" %>
-    </div>
+	<!-- 헤더가 로드될 부분 -->
+    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
+
 
 	<div class="wrapper">
 		<section class="section p-0">

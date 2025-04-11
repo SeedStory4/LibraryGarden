@@ -15,7 +15,7 @@
 <body>
 
 	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/admin/adminHeader.do" />
+    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
 	<div class="wrapper">
 		<div class="inner">
