@@ -73,10 +73,12 @@
 				</div>
 
 				<!-- 버튼 -->
-				<form name="frm">
+				<form name="frm" method="post">
 					<div class="draft-actions">
-						<a href="${pageContext.request.contextPath}/admin/librarianApproval/${aidx}/librarianApprovalModify.do" class="draft-btn-small btn-submit flex align-center justify-center">수정</a>
+						<c:if test="${requestScope.av.status eq \"대기\" && sessionScope.loginUser.uidx == requestScope.av.uidx}">
+						<a href="${pageContext.request.contextPath}/admin/librarianApproval/${requestScope.av.aidx}/librarianApprovalModify.do" class="draft-btn-small btn-submit flex justify-center align-center">수정</a>
 						<button type="button" class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
+						</c:if>
 						<a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do" class="draft-btn-small btn-list flex align-center justify-center">목록</a>
 					</div>
 				</form>
@@ -97,11 +99,11 @@
 		
 		// 게시글 삭제
 		function del() {
-			
+	    	
 	        let fm = document.frm;
 			let ans = confirm("삭제하시겠습니까?");
 		  	  if (ans == true) {
-				  fm.action="${pageContext.request.contextPath}/admin/librarianApproval/${requestScope.aidx}/librarianApprovalDeleteAction.do";
+				  fm.action="${pageContext.request.contextPath}/admin/librarianApproval/${requestScope.av.aidx}/librarianApprovalDeleteAction.do";
 				  fm.method="post";
 				  fm.submit();
 			}
