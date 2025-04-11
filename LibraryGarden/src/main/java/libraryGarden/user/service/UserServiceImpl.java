@@ -1,6 +1,7 @@
 package libraryGarden.user.service;
 
 import java.security.SecureRandom;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -10,6 +11,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
 import libraryGarden.user.mapper.UserMapper;
 
@@ -114,6 +117,17 @@ public class UserServiceImpl implements UserService {
     public String findEmailByIdAndPhone(String id, String phone) {
         return userMapper.findEmailByIdAndPhone(id, phone);
     }
+    
+    @Override
+    public List<UserVo> selectAllUsers() {
+        return userMapper.selectAllUsers();
+    }
+    
+    @Override
+    public List<UserVo> searchUsersByCriteria(SearchCriteria cri) {
+        return userMapper.searchUsersByCriteria(cri);
+    }
+
 
 
 

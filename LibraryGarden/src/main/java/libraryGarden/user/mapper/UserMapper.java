@@ -1,7 +1,10 @@
 package libraryGarden.user.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
 
 public interface UserMapper {
@@ -24,6 +27,10 @@ public interface UserMapper {
     void updatePasswordByPhone(@Param("id") String id, @Param("phone") String phone, @Param("password") String password);
     
     String findEmailByIdAndPhone(@Param("id") String id, @Param("phone") String phone);
+    
+    List<UserVo> selectAllUsers();
+    
+    List<UserVo> searchUsersByCriteria(SearchCriteria cri);
 
 
 }

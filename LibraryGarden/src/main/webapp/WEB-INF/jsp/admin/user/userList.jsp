@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -15,7 +17,15 @@
 <body class="custom-page">
 
     <div id="header-container">
-    	<%@ include file="/WEB-INF/jsp/user/userHeader.jsp" %>
+    	<!-- 헤더가 로드될 부분 역활(role)에 따른 헤더 변경 -->
+	<c:choose>
+	  <c:when test="${sessionScope.loginUser.role == '도서관장' || sessionScope.loginUser.role == '사서'}">
+	    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
+	  </c:when>
+	  <c:otherwise>
+	    <jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
+	  </c:otherwise>
+	</c:choose>
     </div>
 
 	<div class="wrapper">
@@ -24,15 +34,18 @@
 			
 			<div class="contents">
 				<div class="list pt-0">
+				<form action = "${pageContext.request.contextPath}/admin/user/userList.do" method ="get">
 					<div class="search flex gap-20 justify-center">
-						<select class="js-example-basic-single select shadow" name="state">
-							<option value="name">이름</option>
-							<option value="id">아이디</option>
-							<option value="role">권한</option>
+						<select class="js-example-basic-single select shadow" name="searchType">
+							<option value="name" ${cri.searchType == 'name' ? 'selected' : ''}>이름</option>
+							<option value="id" ${cri.searchType == 'id' ? 'selected' : ''}>아이디</option>
+							<option value="role" ${cri.searchType == 'role' ? 'selected' : ''}>권한</option>
 						</select>
-						<input type="text" class="shadow w-720">						
-						<button class="btn btn-primary btn-small">검색</button>
+						<input type="text" name = "keyword" class="shadow w-720" value="${param.keyword}">						
+						<button type="submit" class="btn btn-primary btn-small">검색</button>
 					</div>
+					</form>
+					
 					<div class="table">
 						<table>
 							<colgroup>
@@ -54,30 +67,16 @@
 								</tr>
 							</thead>
 							<tbody>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-									<td>salfhkwehru2423</td>
-									<td>010-4413-1345</td>
-									<td>도서관장</td>
-									<td>2025.03.14</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-									<td>salfhkwehru2423</td>
-									<td>010-4413-1345</td>
-									<td>사서서</td>
-									<td>2025.03.14</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td>홍길동</td>
-									<td>salfhkwehru2423</td>
-									<td>010-4413-1345</td>
-									<td>일반 회원</td>
-									<td>2025.03.14</td>
-								</tr>
+							  <c:forEach var = "user" items = "${userList}" varStatus = "status">
+							    <tr>
+							      <td>${totalCount - status.index}</td> <!-- 역순으로 번호 출력 -->
+							      <td>${user.name}</td>
+							      <td>${user.id}</td>
+							      <td>${user.phone}</td>
+							      <td>${user.role}</td>
+							      <td>${user.date}</td>
+							    </tr>
+							  </c:forEach>
 							</tbody>
 						</table>
 						<ul class="paging flex w-270 justify-spacebtween">
@@ -96,7 +95,8 @@
 	</div>
 	
     <div id="footer-container">
-    	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
+    	<!-- 푸터 로드할 부분 -->
+		<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
     </div>
 
     <script>

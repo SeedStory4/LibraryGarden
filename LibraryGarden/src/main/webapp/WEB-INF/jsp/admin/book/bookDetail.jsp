@@ -53,7 +53,7 @@
 							</span>
 						</p>
 						<p>
-							<span class="info-title">● 저자</span> <span class="info-content">${lbd.author}</span>
+							<span class="info-title">● 서명/저자사항</span> <span class="info-content">${lbd.author}</span>
 						</p>
 						<p>
 							<span class="info-title">● 출판사</span> <span class="info-content">${lbd.publisher}</span>

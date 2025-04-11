@@ -60,6 +60,47 @@
 	<select id="findEmailByIdAndPhone" resultType="String">
 	    SELECT email FROM user WHERE id = #{id} AND phone = #{phone}
 	</select>
+	
+	<select id="selectAllUsers" resultType="libraryGarden.domain.UserVo">
+	    SELECT 
+	        userNumber,
+	        name,
+	        id,
+	        phone,
+	        role,
+	        DATE_FORMAT(date, '%Y.%m.%d') AS date
+	    FROM user
+	    ORDER BY userNumber DESC
+	</select>
+	
+	
+	<select id="searchUsersByCriteria" resultType="libraryGarden.domain.UserVo" parameterType="libraryGarden.domain.SearchCriteria">
+	    SELECT 
+	        userNumber,
+	        name,
+	        id,
+	        phone,
+	        role,
+	        DATE_FORMAT(date, '%Y.%m.%d') AS date
+	    FROM user
+	    <where>
+	        <if test="searchType != null and keyword != null and keyword != ''">
+	            <choose>
+	                <when test="searchType == 'name'">
+	                    name LIKE CONCAT('%', #{keyword}, '%')
+	                </when>
+	                <when test="searchType == 'id'">
+	                    id LIKE CONCAT('%', #{keyword}, '%')
+	                </when>
+	                <when test="searchType == 'role'">
+	                    role LIKE CONCAT('%', #{keyword}, '%')
+	                </when>
+	            </choose>
+	        </if>
+	    </where>
+	    ORDER BY date DESC
+	</select>
+	
 		
 	
 	

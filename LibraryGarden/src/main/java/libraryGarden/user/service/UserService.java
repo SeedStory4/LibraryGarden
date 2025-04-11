@@ -1,7 +1,10 @@
 package libraryGarden.user.service;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
+import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
 
 public interface UserService {
@@ -33,4 +36,9 @@ public interface UserService {
     void updatePasswordByPhone(@Param("id") String id, @Param("phone") String phone, @Param("password") String password);
 
     String findEmailByIdAndPhone(String id, String phone);
+    
+    List<UserVo> selectAllUsers();
+    
+    List<UserVo> searchUsersByCriteria(SearchCriteria cri);
+
 }
