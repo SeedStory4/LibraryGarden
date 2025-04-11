@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
 import libraryGarden.user.controller.UserController;
@@ -27,8 +28,16 @@ public class AdminUserController {
 	@GetMapping("/userList.do")
 	public String userList(Model model, SearchCriteria cri) {
 	    List<UserVo> userList = userService.searchUsersByCriteria(cri);
+	    int totalCount = userService.countUsers(cri);
+	    
+	    PageMaker pageMaker = new PageMaker();
+	    pageMaker.setScri(cri);
+	    pageMaker.setTotalCount(totalCount);
+	    
 	    model.addAttribute("userList", userList);
 	    model.addAttribute("totalCount", userList.size()); // 총 개수 전달
+	    model.addAttribute("cri", cri);
+	    model.addAttribute("pageMaker", pageMaker);
 	    return "admin/user/userList"; // JSP 경로
 	}
 
