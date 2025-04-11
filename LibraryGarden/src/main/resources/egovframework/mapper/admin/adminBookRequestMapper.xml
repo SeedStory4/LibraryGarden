@@ -15,6 +15,10 @@
 		<if test="searchType != null and searchType.equals('name')">
 			AND U.name LIKE CONCAT('%',#{keyword},'%')
 		</if>
+		
+		<if test="filter != null">
+			AND RQ.status = #{filter} 
+		</if>
 	</sql>
 	
   	<select id="bookRequestTotalCount" parameterType="HashMap" resultType="int">
@@ -34,15 +38,19 @@
 		<!-- REQUEST 테이블의 bidx와 BOOKS 테이블의 bidx를 JOIN하여 BOOK 정보를 가져온다. -->
 		JOIN BOOKS AS B ON RQ.bidx = B.bidx 
 		WHERE RQ.delyn = 'N' 
-		<include refid="search"/>
+		<include refid="search"/> 
 		ORDER BY RQ.rqidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
-	<select id="bookRequestSelectOne" parameterType="int" resultType="bv">
+	<select id="bookRequestSelectOne" parameterType="HashMap" resultType="bv">
 		SELECT B.* 
-		FROM REQUEST AS R 
-		JOIN BOOKS AS B ON B.bidx = R.bidx 
-		WHERE R.delyn = 'N' and rqidx = #{rqidx} 
+		FROM REQUEST AS RQ 
+		JOIN BOOKS AS B ON B.bidx = RQ.bidx 
+		WHERE RQ.delyn = 'N' and RQ.rqidx = #{rqidx} 
 	</select>
+	
+	<update id="statusUpdate" parameterType="HashMap">
+  		UPDATE REQUEST SET status = #{status}, modify = now() WHERE rqidx = #{rqidx}
+	</update>
 	
 </mapper>
