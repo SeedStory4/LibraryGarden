@@ -68,4 +68,14 @@
 		VALUES(#{uidx}, #{rqidx}, #{bidx})
 	</insert>
 	
+	<select id="librarianApprovalSelectAv" parameterType="int" resultType="av">
+		SELECT * 
+		FROM APPROVAL 
+		WHERE delyn = 'N' and aidx = #{aidx}
+	</select>
+	
+	<update id="librarianApprovalUpdate" parameterType="HashMap">
+  		UPDATE APPROVAL SET rqidx = #{rqidx}, bidx = #{bidx} WHERE aidx = #{aidx}
+	</update>
+	
 </mapper>
