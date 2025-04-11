@@ -116,7 +116,15 @@ public class UserController {
 
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
-            return "redirect:/user/main.do"; // 로그인 성공 시 메인 페이지로
+            
+            String role = loginUser.getRole();
+            
+            if("도서관장".equals(role) || "사서".equals(role)) {
+            	return "redirect:/admin/main.do";
+            }
+            else {
+            	return "redirect:/user/main.do"; // 로그인 성공 시 메인 페이지로
+           }
         } else {
         	rttr.addFlashAttribute("loginFailMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
         	return "redirect:/user/user/userLogin.do"; // 다시 로그인 페이지로
