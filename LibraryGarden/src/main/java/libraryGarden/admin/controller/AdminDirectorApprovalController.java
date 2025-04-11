@@ -92,7 +92,7 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 	}
 	
 	@PostMapping(value="/{aidx}/directorApprovalDeleteAction.do")
-	public String boardDeleteAction(
+	public String directorApprovalDeleteAction(
 			@PathVariable("aidx") int aidx,
 			RedirectAttributes rttr) {
 		
@@ -115,7 +115,7 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 	}
 
 	@RequestMapping(value="/directorApprovalWrite.do")
-	public String boardWrite() {
+	public String directorApprovalWrite() {
 		
 		logger.info("📝 directorApprovalWrite 들어옴");
 
@@ -186,7 +186,7 @@ private static final Logger logger = LoggerFactory.getLogger(AdminDirectorApprov
 	}
 	
 	@RequestMapping(value="/{aidx}/directorApprovalModify.do")
-	public String boardModify(
+	public String directorApprovalModify(
 			@PathVariable("aidx") int aidx,
 			Model model) {
 		

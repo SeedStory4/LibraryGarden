@@ -11,8 +11,15 @@
 </head>
 <body class="custom-page">
 
-	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
+	<!-- 헤더가 로드될 부분 역활(role)에 따른 헤더 변경 -->
+	<c:choose>
+	  <c:when test="${sessionScope.loginUser.role == '도서관장' || sessionScope.loginUser.role == '사서'}">
+	    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
+	  </c:when>
+	  <c:otherwise>
+	    <jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
+	  </c:otherwise>
+	</c:choose>
 
 	<div class="wrapper">
 		<section class="section p-0">

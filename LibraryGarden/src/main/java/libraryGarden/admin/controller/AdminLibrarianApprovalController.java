@@ -95,7 +95,7 @@ public class AdminLibrarianApprovalController {
 	}
 
 	@PostMapping(value="/{aidx}/librarianApprovalDeleteAction.do")
-	public String boardDeleteAction(
+	public String librarianApprovalDeleteAction(
 			@PathVariable("aidx") int aidx,
 			RedirectAttributes rttr) {
 		
@@ -118,7 +118,7 @@ public class AdminLibrarianApprovalController {
 	}
 
 	@RequestMapping(value="/librarianApprovalWrite.do")
-	public String boardWrite() {
+	public String librarianApprovalWrite() {
 		
 		logger.info("📝 librarianApprovalWrite 들어옴");
 
@@ -190,7 +190,7 @@ public class AdminLibrarianApprovalController {
 	}
 	
 	@RequestMapping(value="/{aidx}/librarianApprovalModify.do")
-	public String boardModify(
+	public String librarianApprovalModify(
 			@PathVariable("aidx") int aidx,
 			Model model) {
 		
@@ -207,7 +207,7 @@ public class AdminLibrarianApprovalController {
 	}
 	
 	@RequestMapping(value="/{aidx}/librarianApprovalModifyAction.do", method=RequestMethod.POST)
-	public String boardModifyAction(
+	public String librarianApprovalModifyAction(
 			ApprovalVo av,
 			HttpServletRequest request,
 			RedirectAttributes rttr
