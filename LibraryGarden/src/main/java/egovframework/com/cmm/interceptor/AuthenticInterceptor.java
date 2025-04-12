@@ -1,11 +1,11 @@
 package egovframework.com.cmm.interceptor;
 
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import libraryGarden.domain.UserVo;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
@@ -38,13 +38,50 @@ public class AuthenticInterceptor extends WebContentInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
 
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		if (loginVO.getId() != null) {
-			return true;
-		} else {
-			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
+//		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+//
+//		if (loginVO.getId() != null) {
+//			return true;
+//		} else {
+//			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
+//			throw new ModelAndViewDefiningException(modelAndView);
+//		}
+		
+		
+		// 세션에 저장된 UserVo를 가져오기
+		UserVo loginUser = (UserVo)request.getSession().getAttribute("loginUser");
+		
+		if(loginUser == null) {
+			// 이동할 경로를 저장
+			saveUrl(request);
+			
+			// 로그인 페이지로 이동
+			ModelAndView modelAndView = new ModelAndView("redirect:/user/user/userLogin.do");
 			throw new ModelAndViewDefiningException(modelAndView);
+			
+		} else {
+			// 세션에 저장된 UserVo가 있으면 요청 진행
+			return true;
+		}
+	}
+	
+	public void saveUrl(HttpServletRequest request) {
+		
+		String uri = request.getRequestURI();  // 전체경로주소
+		String param = request.getQueryString();  // 파라미터를 가져온다
+		
+		if(param == null || param.equals("null") || param.equals("")) {
+			param = "";
+		} else {
+			param = "?" + param;
+		}
+		
+		// 이동할 페이지
+		String locationUrl = uri + param; 
+		
+		HttpSession session = request.getSession();
+		if(request.getMethod().equals("GET")) {  // 대문자 GET
+			session.setAttribute("saveUrl", locationUrl);
 		}
 	}
 

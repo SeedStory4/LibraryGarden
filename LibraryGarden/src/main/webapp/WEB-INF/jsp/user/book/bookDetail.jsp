@@ -7,10 +7,17 @@
 <head>
 <meta charset="UTF-8">
 <title>도서상세</title>
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/font.css">
-<link rel="stylesheet"
-	href="<%=request.getContextPath()%>/css/adminMain.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/font.css">
+<link rel="stylesheet" href="<%=request.getContextPath()%>/css/adminMain.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reservation.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/main.min.css" />
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/main.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/locales/ko.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
+        
 </head>
 <body>
 
@@ -138,14 +145,118 @@
 				</table>
 
 				<div class="draft-actions mg-top">
-					<button class="draft-btn-small btn-submit">예약</button>
+					<button class="draft-btn-small btn-submit" id="openReservationModal">예약</button>
 					<button class="draft-btn-small btn-list"  onclick="location.href='${pageContext.request.contextPath}/user/book/bookList.do'">목록</button>
 				</div>
 			</section>
 		</div>
 	</div>
+	
+<input type="hidden" id="userNumber" value="${userNumber}" />	
+
+	    <!-- 예약 모달 -->
+    <div id="reservationModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="title-container">
+                <div class="title">도서예약</div>
+                <div class="title-line"></div>
+            </div>
+            <p class="notice">※ 예약일 전 도서가 미반납 될 경우 대출이 불가할 수 있습니다.</p>
+            <label class="custom-checkbox flex-end-center font-673D31-13">
+                <input type="checkbox" id="agreeCheck" class="terms-checkbox">
+                <span class="checkmark"></span> 동의합니다.
+            </label>
+            <!-- 캘린더 영역 -->
+            <div class="calendar-container">
+                <div id="calendar"></div>
+                <!-- 예약 상태 표시 -->
+                <div class="reservation-status">
+                    <div class="status">
+                        <span class="status-box available"></span> 예약가능
+                    </div>
+                    <div class="status">
+                        <span class="status-box unavailable"></span> 예약불가
+                    </div>
+                    <div class="status">
+                        <span class="status-box selected"></span> 예약선택
+                    </div>
+                </div>
+            </div>
+            <!-- 선택한 예약 날짜 표시 -->
+            <p class="reservationDate">
+                예약날짜: <span id="selectedDate">선택 없음</span>
+            </p>
+            <!-- 버튼 영역 -->
+            <div class="button-group">
+                <button id="reserveBtn" disabled>예약</button>
+                <button id="closeModal">취소</button>
+            </div>
+        </div>
+    </div>
 
 	<!-- 푸터 로드할 부분 -->
 	<jsp:include page="/common/footer.jsp" />
+	<script>
+  		var contextPath = '${pageContext.request.contextPath}';
+	</script>
+    <!-- reservation.js 불러오기 -->
+    <script src="${pageContext.request.contextPath}/js/reservation.js"></script>
+  <script>
+    $(document).ready(function() {
+      // 예약 버튼 클릭 시 예약 팝업(모달) 열기
+      $("#openReservationModal").on("click", function(e) {
+          e.preventDefault();
+          // 직접 EL을 통해 도서 번호(lbidx) 가져오기
+          var lbidx = "${lbd.lbidx}";
+          if (!lbidx) {
+              alert("도서 번호(lbidx)가 올바르지 않습니다.");
+              return;
+          }
+          if ("${lbd.status}" === "대출불가") {
+              alert("예약이 불가한 도서입니다.");
+              return;
+          }
+          // 전역 변수에 도서 번호 저장
+          window.lbidx = lbidx;
+          // 사용자 번호가 필요한 경우 hidden input이나 EL로 처리 (여기서는 생략)
+          var userNumber = $("#userNumber").val() || "";
+          
+          // AJAX로 예약 관련 데이터를 가져와서 달력에 반영
+          $.ajax({
+              url: contextPath + '/admin/bookReservation/getReservedDates.do',
+              type: 'GET',
+              data: { lbidx: lbidx, userNumber: userNumber },
+              success: function(data) {
+                  window.disabledDates = data.map(function(d) { return d.date; });
+                  window.disabledReasons = {};
+                  data.forEach(function(d) { window.disabledReasons[d.date] = d.reason; });
+                  
+                  // 모달을 먼저 보이게 함
+                  $("#reservationModal").show();
+                  // 모달이 보인 후, 달력을 재렌더링하기 위해 약간의 딜레이를 줍니다.
+                  setTimeout(function() {
+                      if (window.myCalendar) {
+                          window.myCalendar.removeAllEvents();
+                          window.myCalendar.gotoDate(new Date());
+                          window.myCalendar.render();
+                          window.myCalendar.refetchEvents();
+                      }
+                  }, 100);
+              },
+              error: function() {
+                  alert("예약 현황을 불러오지 못했습니다.");
+              }
+          });
+      });
+      
+      // 예약 모달 닫기 이벤트
+      $("#closeModal").on("click", function() {
+          window.selectedDate = null;
+          $("#selectedDate").text("선택 없음");
+          $(".fc-day-selected").removeClass("fc-day-selected");
+          $("#reservationModal").hide();
+      });
+    });
+  </script>
 </body>
 </html>

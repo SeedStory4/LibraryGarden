@@ -13,7 +13,8 @@
 </head>
 <body class="custom-page">
 
-	<jsp:include page="/admin/adminHeader.do" />
+	<!-- 헤더가 로드될 부분 -->   
+	<jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
 	<div class="wrapper">
 		<section class="section p-0">
@@ -79,7 +80,8 @@
 		</section>
 	</div>
 	
-    <%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
+    <!-- 푸터가 로드될 부분 -->
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 
     <!-- 외부 JS 파일 링크 -->
     <script src="${pageContext.request.contextPath}/js/bookLoanWrite.js"></script>

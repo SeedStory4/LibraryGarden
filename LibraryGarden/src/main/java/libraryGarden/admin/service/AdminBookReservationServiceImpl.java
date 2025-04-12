@@ -85,6 +85,27 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 		return lblist;
 	}
 	
+    @Override
+    public int cancelReservation(int ridx) {
+        // 1. 예약 취소 (RESERVATION 업데이트)
+        int updatedCount = rm.cancelReservation(ridx);
+        
+        if (updatedCount > 0) {
+            // 2. 취소된 예약의 도서 번호(lbidx) 조회
+            Integer lbidx = rm.findLbidxByReservation(ridx);
+            if (lbidx != null) {
+                // 3. LOAN 테이블에서, 해당 도서의 대출 기록 중 오늘 기준 dueDate가 미래인 건수 조회
+                int activeLoanCount = rm.getActiveLoanCountByDueDate(lbidx);
+                // 4. 대출중 기록이 없다면 (activeLoanCount == 0)
+                if (activeLoanCount == 0) {
+                    // LIBRARYBOOKS 테이블의 도서 상태를 "대출가능"으로 업데이트
+                    rm.updateBookStatus(lbidx, "대출가능");
+                }
+            }
+        }
+        return updatedCount;
+    }
+	
 	
 	@Override
 	public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber) {
@@ -155,6 +176,11 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 
 	    return result;
 	}
+	
+    @Override
+    public int registerReservation(ReservationDto reservation) {
+        return rm.insertReservation(reservation);
+    }
 
 
 }

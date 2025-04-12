@@ -66,6 +66,7 @@
 		<!-- 예약 목록 조회 -->
 	<select id="selectUserReservationList" parameterType="map" resultType="map">
 		SELECT
+			r.ridx,
 			@rownum := @rownum + 1 AS rownum,  <!-- 순번 생성 -->
 			b.title,
 			b.author,

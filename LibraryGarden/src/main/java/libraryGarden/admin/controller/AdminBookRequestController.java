@@ -7,7 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,21 +18,9 @@ import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
 
-
 @Controller
 @RequestMapping("/admin/bookRequest")
 public class AdminBookRequestController {
-	
-
-
-/*
- * [추가] 관리자 희망 도서 목록 페이지 이동(팝업)
- * 
- *  
- * @author JiHye
- * @write 2024.04.03
- * 
- */
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminBookRequestController.class);
 
@@ -61,14 +48,15 @@ public class AdminBookRequestController {
 		 scri.setPage(page);
 		 pm.setScri(scri);
 		 
-		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
-		 int cnt = bookRequestService.bookRequestTotalCount(scri);
-		 pm.setTotalCount(cnt);
+		 // 희망도서 목록 중 "신청대기" 상태의 데이터만 보여주기 위해서 filter 설정
+		 String filter = "신청대기";
 		 
-		 System.out.println("cnt : " + cnt);
+		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
+		 int cnt = bookRequestService.bookRequestTotalCount(scri, filter);
+		 pm.setTotalCount(cnt);
 		
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
-		 ArrayList<RequestDto> alist = bookRequestService.bookRequestSelectAll(scri);
+		 ArrayList<RequestDto> alist = bookRequestService.bookRequestSelectAll(scri, filter);
 		 
 		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
 		 UrlEncoder encoder = new UrlEncoder();

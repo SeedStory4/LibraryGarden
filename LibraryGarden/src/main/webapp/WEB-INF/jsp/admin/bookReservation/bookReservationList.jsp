@@ -14,7 +14,8 @@
 </head>
 <body class="custom-page">
 
-    <jsp:include page="/admin/adminHeader.do" />
+    <!-- 헤더가 로드될 부분 -->   
+	<jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
 	<div class="wrapper">
 		<section class="section p-0">
@@ -83,7 +84,8 @@
 										<c:if test="${r.status eq '예약취소'}">"red"</c:if>
 									>${r.status}
 										<c:if test="${r.status eq '예약중'}">
-											<button class="btn btn-small btn-red mt-5">취소</button>
+											    <button class="btn btn-small btn-red mt-5" 
+            										onclick="cancelReservation(${r.ridx})">취소</button>
 										</c:if>									
 									</td>
 								</tr>
@@ -118,13 +120,36 @@
 		</section>
 	</div>
 	
-    <%@ include file="/WEB-INF/jsp/cmm/footer.jsp" %>
+    <!-- 푸터가 로드될 부분 -->
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 
     <script>
 	// select2
 	$(document).ready(function() {
 		$('.js-example-basic-single').select2();
 	});
+	
+	function cancelReservation(ridx) {
+	    if (!confirm("정말로 예약을 취소하시겠습니까?")) {
+	        return;
+	    }
+	    $.ajax({
+	        url: '${pageContext.request.contextPath}/admin/bookReservation/cancelReservation.do',
+	        type: 'POST',
+	        data: { ridx: ridx },
+	        success: function(response) {
+	            if (response.success) {
+	                alert(response.message);
+	                location.reload(); // 페이지 새로고침으로 목록 갱신
+	            } else {
+	                alert(response.message);
+	            }
+	        },
+	        error: function() {
+	            alert("예약 취소 중 오류가 발생했습니다.");
+	        }
+	    });
+	}
     </script>
 	
 </body>
