@@ -1,6 +1,10 @@
 package libraryGarden.admin.controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -62,6 +66,27 @@ public class AdminBookReservationController {
 		return "admin/bookReservation/bookReservationList";
 	}
 	
+	@ResponseBody
+	@PostMapping("/cancelReservation.do")
+	public Map<String, Object> cancelReservation(@RequestParam("ridx") int ridx) {
+	    Map<String, Object> result = new HashMap<>();
+	    try {
+	        int updateCount = adminBookReservationService.cancelReservation(ridx);
+	        if(updateCount > 0) {
+	            result.put("success", true);
+	            result.put("message", "예약이 취소되었습니다.");
+	        } else {
+	            result.put("success", false);
+	            result.put("message", "해당 예약을 취소할 수 없습니다.");
+	        }
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        result.put("success", false);
+	        result.put("message", "처리 중 오류가 발생했습니다.");
+	    }
+	    return result;
+	}
+	
 	
 	// 도서예약 등록
 	@GetMapping("/bookReservationWrite.do")
@@ -104,10 +129,59 @@ public class AdminBookReservationController {
 	        @RequestParam("userNumber") String userNumber) {
 	    return adminBookReservationService.getUnavailableDatesWithReasons(lbidx, userNumber);
 	}
+	
+	
+	@ResponseBody
+	@PostMapping("/registerReservation.do")
+	public Map<String, Object> registerReservation(
+	        @RequestParam("lbidx") int lbidx,
+	        @RequestParam("userNumber") String userNumber,
+	        @RequestParam("pickupDate") String pickupDate) {
+	    
+	    Map<String, Object> response = new HashMap<>();
+	    try {
+	        // 날짜 포맷 설정 (yyyy-MM-dd)
+	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+	        // 현재 날짜를 예약 신청일로 사용
+	        Date reservationDate = new Date();
+	        // 사용자가 선택한 픽업 날짜 (문자열로 받은 값을 Date 객체로 변환)
+	        Date pickup = dateFormat.parse(pickupDate);
+	        // 반납예정일은 픽업 날짜에서 7일 후로 계산
+	        Calendar cal = Calendar.getInstance();
+	        cal.setTime(pickup);
+	        cal.add(Calendar.DATE, 7);
+	        Date dueDate = cal.getTime();
+	        
+	        // ReservationDto 객체 생성 및 값 설정
+	        ReservationDto dto = new ReservationDto();
+	        dto.setLbidx(lbidx);
+	        dto.setUserNumber(userNumber);
+	        dto.setReservationDate(dateFormat.format(reservationDate));
+	        dto.setPickupDate(pickupDate);  // "yyyy-MM-dd" 형식이어야 함.
+	        dto.setDueDate(dateFormat.format(dueDate));
+	        dto.setStatus("예약중");
+	        
+	        // 예약 등록 (INSERT)
+	        int result = adminBookReservationService.registerReservation(dto);
+	        if(result > 0) {
+	            response.put("success", true);
+	            response.put("message", "예약 등록에 성공했습니다.");
+	        } else {
+	            response.put("success", false);
+	            response.put("message", "예약 등록에 실패했습니다.");
+	        }
+	    } catch(Exception e) {
+	        e.printStackTrace();
+	        response.put("success", false);
+	        response.put("message", "예약 등록 중 예외가 발생했습니다.");
+	    }
+	    return response;
+	}
+
 
     
     
-	// 도서예약 수정 팝업
+	// 도서예약 등록 팝업
 	@GetMapping("/popBookReservationWrite.do")
 	public String popBookReservationWrite() {
 		return "admin/bookReservation/popBookReservationWrite";

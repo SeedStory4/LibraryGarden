@@ -7,6 +7,7 @@
 <meta charset="UTF-8">
 <title>내 도서</title>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </head>
 <body class="custom-page">
 
@@ -76,9 +77,11 @@
 										<td
 											class="${reservation.status == '예약중' ? 'blue' : reservation.status == '예약취소' ? 'red' : 'green'}">
 											${reservation.status}</td>
-										<td><c:if test="${reservation.status == '예약중'}">
-												<button class="btn btn-small btn-red">취소</button>
-											</c:if></td>
+										<td>
+											<c:if test="${reservation.status == '예약중'}">
+    											<button class="btn btn-small btn-red" onclick="cancelReservation(${reservation.ridx})">취소</button>
+											</c:if>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -106,7 +109,32 @@
 		</section>
 	</div>
 	
-    <%@ include file="/WEB-INF/jsp/cmm/footer.jsp"%>
+<!-- 푸터가 로드될 부분 -->
+<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
+    
+    <script>
+		function cancelReservation(ridx) {
+		    if (!confirm("정말로 예약을 취소하시겠습니까?")) {
+		        return;
+		    }
+		    $.ajax({
+		        url: "${pageContext.request.contextPath}/admin/bookReservation/cancelReservation.do",
+		        type: "POST",
+		        data: { ridx: ridx },
+		        success: function(response) {
+		            if (response.success) {
+		                alert(response.message);
+		                location.reload(); // 취소 처리 후 페이지 새로고침
+		            } else {
+		                alert(response.message);
+		            }
+		        },
+		        error: function() {
+		            alert("예약 취소 중 오류가 발생했습니다.");
+		        }
+		    });
+		}
+</script>
 	
 </body>
 </html>
