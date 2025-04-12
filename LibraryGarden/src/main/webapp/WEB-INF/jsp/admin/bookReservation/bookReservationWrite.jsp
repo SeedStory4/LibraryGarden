@@ -12,7 +12,6 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/reservation.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/main.min.css" />
-    
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"
         integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
@@ -103,6 +102,11 @@
                                         </td>
                                     </tr>
                                 </c:forEach>
+							<c:if test="${empty lblist}">
+								<tr>
+									<td colspan="9" style="text-align:center;">없는 도서입니다.</td>
+								</tr>
+							</c:if>
                             </tbody>
                         </table>
                         <ul class="paging flex w-270 justify-center">
@@ -171,6 +175,9 @@
     
     <!-- 푸터가 로드될 부분 -->
 	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
+	<script>
+  		var contextPath = '${pageContext.request.contextPath}';
+	</script>
     <!-- reservation.js 불러오기 -->
     <script src="${pageContext.request.contextPath}/js/reservation.js"></script>
 <script>
@@ -181,7 +188,15 @@ $(document).ready(function() {
     // 제목 클릭 시 모달 열기 + 예약현황 AJAX 호출
 	$('.openReservationModal').on('click', function (e) {
 	  e.preventDefault();
+	  
+	  // 1) 이전 예약 데이터 제거
+	  if (window.myCalendar) {
+	    window.myCalendar.removeAllEvents(); // 이전 이벤트 제거
+	  }
+	  window.disabledDates = [];
+	  window.disabledReasons = {};
 	
+	  // 도서 상태 체크
 	  const $row = $(this).closest('tr');
 	  const statusText = $row.find('td').last().text().trim();
 	  if (statusText === "대출불가") {
@@ -190,6 +205,8 @@ $(document).ready(function() {
 	  }
 	
 	  const lbidx = $(this).data('lbidx');
+	  // 전역 변수에 저장! (이 코드가 없으면 registerReservation.do로 post하지 않음)
+	  window.lbidx = lbidx;
 	  const userNumber = $('#userNumber').val();
 	
 	  $.ajax({
@@ -206,24 +223,24 @@ $(document).ready(function() {
 	        window.disabledReasons[d.date] = d.reason;
 	      });
 	
+	      // 모달을 보여주기 전에 달력을 현재 날짜로 초기화
+	      if (window.myCalendar) {
+	        window.myCalendar.gotoDate(new Date());
+	      }
 	      $('#reservationModal').show();
 	
-	      setTimeout(() => {
-	        if (window.myCalendar) {
-	          if (!window.isCalendarRendered) {
-	            window.myCalendar.render(); // ✅ 최초 1회만 render
-	            window.isCalendarRendered = true;
-	          }
-	          window.myCalendar.updateSize();
-	          window.myCalendar.refetchEvents();
-	        }
-	      }, 200);
-	    },
-	    error: function () {
-	      alert("예약 현황을 불러오지 못했습니다.");
-	    }
-	  });
-	});
+          // 강제 재렌더링
+          if (window.myCalendar) {
+            window.myCalendar.removeAllEvents();
+            window.myCalendar.render();
+            window.myCalendar.refetchEvents();
+          }
+        },
+        error: function () {
+          alert("예약 현황을 불러오지 못했습니다.");
+        }
+      });
+    });
 
 
     $('#closeModal').on('click', function() {

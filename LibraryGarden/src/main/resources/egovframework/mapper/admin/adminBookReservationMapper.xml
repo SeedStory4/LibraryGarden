@@ -68,7 +68,7 @@
 		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
-	    <!-- 신규 쿼리: 예약 테이블에서 pickupDate 조회 -->
+	    <!-- 예약 테이블에서 pickupDate 조회 -->
     <select id="getReservationsByBook" parameterType="int" resultType="libraryGarden.domain.ReservationDto">
         SELECT pickupDate 
         FROM RESERVATION 
@@ -76,7 +76,36 @@
           AND delyn = 'N'
     </select>
     
-    <!-- 신규 쿼리: 대출 테이블에서 loanDate와 dueDate 조회 (LoanVo 사용) -->
+    <update id="cancelReservation" parameterType="int">
+    UPDATE RESERVATION
+    SET status = '예약취소',
+        delyn = 'Y'
+    WHERE ridx = #{ridx}
+	</update>
+	
+	<!-- 취소된 예약에서 도서 번호(lbidx) 조회 -->
+    <select id="findLbidxByReservation" parameterType="int" resultType="java.lang.Integer">
+        SELECT lbidx
+          FROM RESERVATION
+         WHERE ridx = #{ridx}
+    </select>
+    
+    <!-- 대출중 여부 확인: 오늘 기준 dueDate가 미래인(또는 오늘 이상) 대출 건 수 -->
+    <select id="getActiveLoanCountByDueDate" parameterType="int" resultType="int">
+        SELECT COUNT(*) 
+          FROM LOAN
+         WHERE lbidx = #{lbidx}
+           AND dueDate >= CURDATE()
+    </select>
+    
+    <!-- 도서 상태 업데이트: LIBRARYBOOKS 테이블 -->
+    <update id="updateBookStatus" parameterType="map">
+        UPDATE LIBRARYBOOKS 
+           SET status = #{status}
+        WHERE lbidx = #{lbidx}
+    </update>
+    
+    <!-- 대출 테이블에서 loanDate와 dueDate 조회 (LoanVo 사용) -->
     <select id="getLoansByBook" parameterType="int" resultType="libraryGarden.domain.LoanVo">
         SELECT loanDate, dueDate 
         FROM LOAN 
@@ -85,12 +114,40 @@
 	
 	<!-- 연체 기간 조회 -->
 	<select id="getOverduePeriodsByUser" parameterType="String" resultType="map">
-	    SELECT DATE(startDate) AS startDate, DATE(endDate) AS endDate
+	    SELECT DATE_FORMAT(o.startDate, '%Y-%m-%d') AS startDate,
+	           DATE_FORMAT(o.endDate, '%Y-%m-%d') AS endDate
 	    FROM OVERDUE o
-	    JOIN USER u ON o.uidx = u.uidx
+	    JOIN `USER` u ON o.uidx = u.uidx
 	    WHERE u.userNumber = #{userNumber}
 	      AND o.status = 'Y'
 	</select>
+	
+	    <!-- 예약 등록 -->
+	<insert id="insertReservation" parameterType="libraryGarden.domain.ReservationDto">
+	    INSERT INTO RESERVATION 
+	        (lbidx, uidx, reservationDate, pickupDate, dueDate, status)
+	    VALUES 
+	        (
+	          #{lbidx}, 
+	          (SELECT uidx FROM `USER` WHERE userNumber = #{userNumber}), 
+	          #{reservationDate}, 
+	          #{pickupDate}, 
+	          #{dueDate}, 
+	          #{status}
+	        )
+	</insert>
+	
+	<!-- AdminBookReservationMapper.xml -->
+	<!-- 필요에 따라 현재 status가 '대출가능'인 도서만 변경하겠다면 추가 조건도 가능: AND status = '대출가능' -->
+	<update id="updateBooksToWaitStatus">
+	    UPDATE LIBRARYBOOKS 
+	    SET status = '예약대기'
+	    WHERE lbidx IN (
+	        SELECT lbidx
+	        FROM RESERVATION
+	        WHERE DATEDIFF(pickupDate, CURDATE()) BETWEEN 1 AND 7
+	    )
+	</update>
 
 	
 

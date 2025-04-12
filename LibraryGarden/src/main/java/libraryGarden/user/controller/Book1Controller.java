@@ -3,6 +3,9 @@ package libraryGarden.user.controller;
 
 
 import java.util.ArrayList;
+import java.util.Map;
+
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,10 +15,12 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
+import libraryGarden.domain.UserVo;
 import libraryGarden.user.service.LibraryBookService;
 
 /**
@@ -95,8 +100,16 @@ public class Book1Controller {
 	@GetMapping("/{lbidx}/bookDetail.do")
 	public String bookDetail(
 			@PathVariable("lbidx") int lbidx,
+			HttpSession session,
 			Model model) {
 		logger.debug("bookDetail 들어옴");
+		
+	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+	    if (loginUser == null) {
+	        return "redirect:/user/user/userLogin.do";
+	    }
+	    
+	    String userNumber = loginUser.getUserNumber();
 		
 		/* 도서관 책 상세 조회
 		 * [input] 	도서관 책 인덱스(lbidx)
@@ -104,7 +117,8 @@ public class Book1Controller {
 		 */ 
 		LibraryBookDto lbd = libraryBookService.BookSelectOne(lbidx);
 		model.addAttribute("lbd", lbd);
+		model.addAttribute("userNumber", userNumber);
 		return "user/book/bookDetail";
 	}
-	
+
 }
