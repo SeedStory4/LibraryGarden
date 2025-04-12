@@ -143,7 +143,7 @@
       <!-- 관리자 -->
       <!-- 메인 -->
       <tr>
-        <td rowspan="27">admin</td>
+        <td rowspan="23">admin</td>
         <td></td>
         <td></td>
         <td><a href="<%= request.getContextPath() %>/admin/main.do">main</a></td>
@@ -210,44 +210,48 @@
         <td>목록</td>
         <td rowspan="2">김시연</td>
         <td><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestList.do">bookRequestList</a></td>
-        <td rowspan="2">BookRequestController</td>
+        <td rowspan="2">BookRequest2Controller</td>
       </tr>
       <tr>
         <td>상세</td>
         <td><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestDetail.do">bookRequestDetail</a></td>
       </tr>
      
-      <!-- 결재관리(사서) -->
+      <!-- 결재관리 -->
       <tr>
-        <td rowspan="6">librarianApproval</td>
+        <td rowspan="7">approval</td>
         <td>기안 목록</td>
-        <td rowspan="11">노지혜</td>
-        <td><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalList.do">librarianApprovalList</a></td>
-        <td rowspan="6">LibrarianApprovalController</td>
+        <td rowspan="7">노지혜</td>
+        <td><a href="${pageContext.request.contextPath}/admin/approval/approvalList.do">approvalList</a></td>
+        <td rowspan="7">ApprovalController, <br>BookRequestController</td>
       </tr>
       <tr>
         <td>기안 등록</td>
-        <td><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalWrite.do">librarianApprovalWrite</a></td>
+        <td><a href="${pageContext.request.contextPath}/admin/approval/approvalWrite.do">approvalWrite</a></td>
       </tr>
       <tr>
         <td>희망도서선택 팝업</td>
-        <td><a href="">popLibrarianApprovalBookRequestSelect</a></td>
+        <td><a href="">popApprovalBookRequestSelect</a></td>
       </tr>
       <tr>
         <td>도서선택 팝업</td>
-        <td><a href="">popLibrarianApprovalBookSelect</a></td>
+        <td><a href="">popApprovalBookSelect</a></td>
       </tr>
       <tr>
         <td>기안 상세</td>
-        <td><a href="${pageContext.request.contextPath}/admin/librarianApproval/librarianApprovalDetail.do">librarianApprovalDetail</a></td>
+        <td><a href="">approvalDetail</a></td>
       </tr>
       <tr>
         <td>기안 수정</td>
-        <td><a href="">librarianApprovalModify</a></td>
+        <td><a href="">approvalModify</a></td>
+      </tr>
+      <tr>
+        <td>반려사유 팝업</td>
+        <td><a href="">popApprovalRejectionWrite</a></td>
       </tr>
      
       <!-- 결재관리(도서관장) -->
-      <tr>
+      <%-- <tr>
         <td rowspan="5">directorApproval</td>
         <td>기안 목록</td>
         <td><a href="${pageContext.request.contextPath}/admin/directorApproval/directorApprovalList.do">directorApprovalList</a></td>
@@ -268,7 +272,7 @@
       <tr>
         <td>반려사유 팝업</td>
         <td><a href="<%= request.getContextPath() %>/admin/directorApproval/popDirectorApprovalRejectionWrite.do">popDirectorApprovalRejectionWrite</a></td>
-      </tr>
+      </tr> --%>
   
       <!-- 회원관리 -->
       <tr>

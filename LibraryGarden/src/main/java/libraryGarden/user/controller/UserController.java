@@ -120,10 +120,25 @@ public class UserController {
             String role = loginUser.getRole();
             
             if("도서관장".equals(role) || "사서".equals(role)) {
-            	return "redirect:/admin/main.do";
+            	
+            	if(session.getAttribute("saveUrl") != null) {
+            		// 인터셉터로 이동되었다면 요청한 페이지로 이동
+            		return "redirect:" + session.getAttribute("saveUrl").toString();
+				} else {
+					// 인터셉터로 이동되지 않았다면 메인으로 이동
+					return "redirect:/admin/main.do";
+				}
+            	
             }
             else {
-            	return "redirect:/user/main.do"; // 로그인 성공 시 메인 페이지로
+            	
+            	if(session.getAttribute("saveUrl") != null) {
+            		// 인터셉터로 이동되었다면 요청한 페이지로 이동
+            		return "redirect:" + session.getAttribute("saveUrl").toString();
+				} else {
+					// 인터셉터로 이동되지 않았다면 메인으로 이동
+					return "redirect:/user/main.do";
+				}
            }
         } else {
         	rttr.addFlashAttribute("loginFailMessage", "아이디 또는 비밀번호가 일치하지 않습니다.");
