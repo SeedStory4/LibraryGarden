@@ -10,6 +10,8 @@ public class RequestDto {
 	private String name;
 	private String userNumber;
 	private String regDate;
+	private String status; 
+	private String rejectionReason;
 
 	public int getRqidx() {
 		return rqidx;
@@ -59,5 +61,16 @@ public class RequestDto {
 	public void setRegDate(String regDate) {
 		this.regDate = regDate;
 	}
-	
+	public String getStatus() {
+		return status;
+	}
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	public String getRejectionReason() {
+		return rejectionReason;
+	}
+	public void setRejectionReason(String rejectionReason) {
+		this.rejectionReason = rejectionReason;
+	}
 }

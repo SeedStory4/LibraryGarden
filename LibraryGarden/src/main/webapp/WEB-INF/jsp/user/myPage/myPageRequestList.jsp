@@ -70,23 +70,12 @@
 									<td>${request.author}</td>
 									<td>${request.publisher}</td>
 									<td>${request.regDate}</td>
-									<c:choose>
-									  <c:when test="${request.status eq '신청중'}">
-									    <td class="blue">${request.status}</td>
-									  </c:when>
-									  <c:when test="${request.status eq '신청완료'}">
-									    <td class="green">${request.status}</td>
-									  </c:when>
-									  <c:when test="${request.status eq '신청대기'}">
-									    <td class="orange">${request.status}</td>
-									  </c:when>
-									  <c:when test="${request.status eq '신청반려'}">
-									    <td class="red pointer" id="openRejectionModal">${request.status}</td>
-									  </c:when>
-									  <c:otherwise>
-									    <td>${request.status}</td> 
-									  </c:otherwise>
-									</c:choose>
+									<td class=
+										<c:if test="${request.status eq '신청중'}">"blue"</c:if>
+										<c:if test="${request.status eq '신청완료'}">"green"</c:if>
+										<c:if test="${request.status eq '신청대기'}">"orange"</c:if>
+										<c:if test="${request.status eq '신청반려'}">"red pointer openRejectionModal" data-reason="${ad.rejectionReason}"</c:if>
+									>${request.status}</td>
 									<td><c:choose>
 										<c:when test='${request.status eq "신청대기"}'>
 											<button type="button" onclick="confirmDelete(${pm.scri.page},${request.bidx},${request.rqidx})" class="btn btn-small btn-red">취소</button>
