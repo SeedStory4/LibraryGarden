@@ -74,7 +74,7 @@
 	</select>
 	
 	
-	<select id="searchUsersByCriteria" resultType="libraryGarden.domain.UserVo" parameterType="libraryGarden.domain.SearchCriteria">
+	<!-- <select id="searchUsersByCriteria" resultType="libraryGarden.domain.UserVo" parameterType="libraryGarden.domain.SearchCriteria">
 	    SELECT 
 	        userNumber,
 	        name,
@@ -99,7 +99,54 @@
 	        </if>
 	    </where>
 	    ORDER BY date DESC
+	    LIMIT #{startRow}, #{perPageNum}
+	</select> -->
+	
+	
+	<select id="countUsers" resultType="int" parameterType="libraryGarden.domain.SearchCriteria">
+		SELECT COUNT(*) 
+		FROM user 
+		WHERE 
+			<choose>
+				<when test="searchType == 'name'">
+					name LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<when test="searchType == 'id'">
+					id LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<when test="searchType == 'role'">
+					role LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<otherwise>
+					1 = 1
+				</otherwise>
+			</choose>
 	</select>
+	
+	
+	<select id="searchUsersByCriteria" resultType="libraryGarden.domain.UserVo" parameterType="libraryGarden.domain.SearchCriteria">
+		SELECT 
+		    userNumber, name, id, phone, role, DATE_FORMAT(date, '%Y.%m.%d') AS date
+		FROM user
+		WHERE 
+			<choose>
+				<when test="searchType == 'name'">
+					name LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<when test="searchType == 'id'">
+					id LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<when test="searchType == 'role'">
+					role LIKE CONCAT('%', #{keyword}, '%')
+				</when>
+				<otherwise>
+					1 = 1
+				</otherwise>
+			</choose>
+		ORDER BY date DESC, userNumber DESC
+		LIMIT #{startRow}, #{perPageNum}
+	</select>
+	
 	
 		
 	

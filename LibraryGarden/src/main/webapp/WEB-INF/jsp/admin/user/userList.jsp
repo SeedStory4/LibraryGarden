@@ -37,9 +37,9 @@
 				<form action = "${pageContext.request.contextPath}/admin/user/userList.do" method ="get">
 					<div class="search flex gap-20 justify-center">
 						<select class="js-example-basic-single select shadow" name="searchType">
-							<option value="name" ${cri.searchType == 'name' ? 'selected' : ''}>이름</option>
-							<option value="id" ${cri.searchType == 'id' ? 'selected' : ''}>아이디</option>
-							<option value="role" ${cri.searchType == 'role' ? 'selected' : ''}>권한</option>
+							<option value="name" ${param.searchType == 'name' ? 'selected' : ''}>이름</option>
+							<option value="id" ${param.searchType == 'id' ? 'selected' : ''}>아이디</option>
+							<option value="role" ${param.searchType == 'role' ? 'selected' : ''}>권한</option>
 						</select>
 						<input type="text" name = "keyword" class="shadow w-720" value="${param.keyword}">						
 						<button type="submit" class="btn btn-primary btn-small">검색</button>
@@ -69,7 +69,7 @@
 							<tbody>
 							  <c:forEach var = "user" items = "${userList}" varStatus = "status">
 							    <tr>
-							      <td>${totalCount - status.index}</td> <!-- 역순으로 번호 출력 -->
+							      <td>${pageMaker.totalCount - ((cri.page - 1) * cri.perPageNum) - status.index}</td> <!-- 역순으로 번호 출력 -->
 							      <td>${user.name}</td>
 							      <td>${user.id}</td>
 							      <td>${user.phone}</td>
@@ -79,14 +79,30 @@
 							  </c:forEach>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
+						<ul class="paging flex w-270 justify-center">
+							<!-- 이전 페이지 링크 -->
+						    <c:if test="${pageMaker.prev}">
+						        <li>
+						            <a href="?page=${pageMaker.startPage - 1}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}">◀</a>
+						        </li>
+						    </c:if>
+						
+						    <!-- 페이지 번호 목록 -->
+						    <c:forEach begin="${pageMaker.startPage}" end="${pageMaker.endPage}" var="pageNum">
+						        <li>
+						            <a href="?page=${pageNum}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}"
+						               class="${cri.page == pageNum ? 'on' : ''}">
+						                ${pageNum}
+						            </a>
+						        </li>
+						    </c:forEach>
+						
+						    <!-- 다음 페이지 링크 -->
+						    <c:if test="${pageMaker.next}">
+						        <li>
+						            <a href="?page=${pageMaker.endPage + 1}&perPageNum=${cri.perPageNum}&searchType=${cri.searchType}&keyword=${cri.keyword}">▶</a>
+						        </li>
+						    </c:if>
 						</ul>	
 					</div>
 				</div>

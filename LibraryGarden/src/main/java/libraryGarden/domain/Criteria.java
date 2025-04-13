@@ -17,5 +17,8 @@ public class Criteria {
 	public void setPerPageNum(int perPageNum) {
 		this.perPageNum = perPageNum;
 	}
+	public int getStartRow() {
+	    return (this.page - 1) * this.perPageNum;
+	}
 	
 }
