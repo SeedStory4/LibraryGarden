@@ -35,7 +35,7 @@ public class AdminUserController {
 	    pageMaker.setTotalCount(totalCount);
 	    
 	    model.addAttribute("userList", userList);
-	    model.addAttribute("totalCount", userList.size()); // 총 개수 전달
+	    model.addAttribute("totalCount", totalCount); // 총 개수 전달
 	    model.addAttribute("cri", cri);
 	    model.addAttribute("pageMaker", pageMaker);
 	    return "admin/user/userList"; // JSP 경로

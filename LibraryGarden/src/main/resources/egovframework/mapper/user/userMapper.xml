@@ -143,7 +143,7 @@
 					1 = 1
 				</otherwise>
 			</choose>
-		ORDER BY date DESC
+		ORDER BY date DESC, userNumber DESC
 		LIMIT #{startRow}, #{perPageNum}
 	</select>
 	
