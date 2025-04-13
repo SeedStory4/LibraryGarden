@@ -173,7 +173,8 @@
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" /> 
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
+
 	<script>
 	    function UnableToModify() { 
 			alert("'대출중', '예약대기' 상태 일때는 수정할 수 없습니다")
