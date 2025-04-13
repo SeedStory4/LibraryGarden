@@ -385,20 +385,20 @@ INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
 VALUES (10, 4, 'Y', '2025-03-23', '2025-03-27');
 
 -- REQUEST 샘플 데이터 생성
-INSERT INTO REQUEST(uidx,bidx,status) 
-VALUES (3, 1, "신청중"),
-(4, 2, "신청중"),
-(4, 3, "신청중"),
-(3, 4, "신청대기"),
-(3, 5, "신청완료"),
-(3, 6, "신청반려"),
-(4, 7, "신청중"),
-(4, 8, "신청중"),
-(3, 9, "신청중"),
-(3, 10, "신청중"),
-(3, 11, "신청중"),
-(4, 12, "신청중"),
-(4, 13, "신청중");
+INSERT INTO REQUEST(uidx,bidx,status,rejectionReason) 
+VALUES (3, 1, '신청중', null),
+(4, 2, '신청중', null),
+(4, 3, '신청중', null),
+(3, 4, '신청대기', null),
+(3, 5, '신청완료', null),
+(3, 6, '신청반려', '불필요한 도서'),
+(4, 7, '신청중', null),
+(4, 8, '신청중', null),
+(3, 9, '신청중', null),
+(3, 10, '신청중', null),
+(3, 11, '신청중', null),
+(4, 12, '신청중', null),
+(4, 13, '신청중', null);
 
 
 INSERT INTO RESERVATION (lbidx, uidx, reservationDate, pickupDate, status, dueDate, modify)

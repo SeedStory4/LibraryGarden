@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -23,22 +24,25 @@
 			<h2 class="section-title m-0 normal relative">희망도서 목록<button class="btn btn-primary absolute">도서등록</button></h2>
 			
 			<div class="contents">
+				<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
 				<div class="book-list pt-0">
 					<div class="search flex gap-20 justify-center">
-						<select class="js-example-basic-single select shadow" name="state">
-							<option value="title">제목</option>
-							<option value="author">저자</option>
+					<form action="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do">
+						<select class="js-example-basic-single select shadow" name="searchType">
+							<option value="title" selected>제목</option>
+							<option value="author">서명/저자사항</option>
 							<option value="name">신청자</option>
 						</select>
-						<input type="text" class="shadow w-720">						
-						<button class="btn btn-primary btn-small">검색</button>
+						<input type="text" class="shadow w-720" name="keyword" value="">						
+						<button class="btn btn-primary btn-small" >검색</button>
+					</form>
 					</div>
 					<ul class="tab flex gap-3">
-						<li class="on shadow"><a href="#">전체</a></li>
-						<li class="shadow"><a href="#">신청대기</a></li>
-						<li class="shadow"><a href="#">신청완료</a></li>
-						<li class="shadow"><a href="#">신청중</a></li>
-						<li class="shadow"><a href="#">신청반려</a></li>
+						<li class="shadow <c:if test="${empty filter}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?${queryParam}">전체</a></li>
+						<li class="shadow <c:if test="${filter eq '신청대기'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?status=신청대기&${queryParam}">신청대기</a></li>
+						<li class="shadow <c:if test="${filter eq '신청완료'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?status=신청완료&${queryParam}">신청완료</a></li>
+						<li class="shadow <c:if test="${filter eq '신청중'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?status=신청중&${queryParam}">신청중</a></li>
+						<li class="shadow <c:if test="${filter eq '신청반려'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?status=신청반려&${queryParam}">신청반려</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -65,56 +69,47 @@
 								</tr>
 							</thead>
 							<tbody>
+							<c:forEach items="${rlist}" var="rd" varStatus="status">
 								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="blue">신청중</td>
+									<td>${(pm.scri.page - 1) * pm.scri.perPageNum + status.index + 1}</td>
+									<td><img src="${rd.coverImg}" alt="${rd.title}"></td>
+									<td><a href="${pageContext.request.contextPath}/admin/bookRequest/${rd.rqidx}/bookRequestDetail.do">${rd.title}</a></td>
+									<td>${rd.author}</td>
+									<td>${rd.publisher}</td>
+									<td>${rd.name}<br>(${rd.userNumber})</td>
+									<td>${fn:replace(fn:substringBefore(rd.regDate, ' '), '-', '.')}</td>
+									<td class=
+										<c:if test="${rd.status eq '신청중'}">"blue"</c:if>
+										<c:if test="${rd.status eq '신청완료'}">"green"</c:if>
+										<c:if test="${rd.status eq '신청대기'}">"orange"</c:if>
+										<c:if test="${rd.status eq '신청반려'}">"red pointer openRejectionModal" data-reason="${rd.rejectionReason}"</c:if>
+									>${rd.status}</td>
 								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="green">신청완료</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="orange">신청대기</td>
-								</tr>
-								<tr>
-									<td>1</td>
-									<td><img src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg" alt="채식주의자"></td>
-									<td><a href="#">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>노지혜<br>(030709)</td>
-									<td>2025.03.14</td>
-									<td class="red pointer" id="openRejectionModal">신청반려</td>
-								</tr>
+								</c:forEach>
+								
+								<c:if test="${empty rlist}">
+									<tr>
+										<td colspan="8" class="center">검색된 도서가 없습니다.</td>
+									</tr>
+								</c:if>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-spacebtween">
-							<li><a href="#">◀</a></li>
-							<li><a href="#" class="on">1</a></li>
-							<li><a href="#">2</a></li>
-							<li><a href="#">3</a></li>
-							<li><a href="#">4</a></li>
-							<li><a href="#">5</a></li>
-							<li><a href="#">▶</a></li>
+						<ul class="paging flex w-270 justify-center">
+							<c:if test="${requestScope.pm.prev == true}">
+							<li>
+					          <a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					        </li>
+							</c:if> 
+							
+					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${i}&${queryParam}">${i}</a></li>
+					        </c:forEach>
+					        
+					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
+							<li class="page-item">
+					          <a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					        </li>
+							</c:if>
 						</ul>
 					</div>
 				</div>
