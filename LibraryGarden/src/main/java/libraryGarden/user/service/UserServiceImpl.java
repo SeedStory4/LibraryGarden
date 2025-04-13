@@ -128,6 +128,10 @@ public class UserServiceImpl implements UserService {
         return userMapper.searchUsersByCriteria(cri);
     }
 
+    @Override
+    public int countUsers(SearchCriteria cri) {
+        return userMapper.countUsers(cri);
+    }
 
 
 

@@ -191,7 +191,10 @@ INSERT INTO USER(id, password, name, phone, email, address, userNumber, role)
 VALUES ('director','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','도서관장','01012345678','director@aaa.ccc','대한민국','00000000','도서관장'), 
  ('librarian','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','사서','01012566211','librarian@aaa.ccc','대한민국','00000010','사서'), 
  ('user1','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','홍길동','0101112223','ktiun9630@naver.com','대한민국','12344444','일반회원'),
- ('user2','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','이순신','0101112224','user2@aaa.ccc','대한민국','12344445','일반회원');
+ ('user2','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','이순신','0101112224','user2@aaa.ccs','대한민국','12344645','일반회원');
+
+
+ 
 
 -- BOOKS 샘플 데이터 생성
 INSERT INTO BOOKS(coverImg, title, originalTitle, subtitle, author, publisher, publishedYear, totalPages, isbn, sizeWidth, sizeHeight, weight, category, introduction, price, regdate, modify, delyn) 

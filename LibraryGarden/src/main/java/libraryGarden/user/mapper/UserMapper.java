@@ -31,6 +31,9 @@ public interface UserMapper {
     List<UserVo> selectAllUsers();
     
     List<UserVo> searchUsersByCriteria(SearchCriteria cri);
+    
+    int countUsers(SearchCriteria cri);
+
 
 
 }
