@@ -12,6 +12,7 @@ public class ApprovalVo {
 	private String regDate;
 	private String modify;
 	private String delyn;
+	private String regyn;
 	
 	public int getAidx() {
 		return aidx;
@@ -67,11 +68,17 @@ public class ApprovalVo {
 	public void setModify(String modify) {
 		this.modify = modify;
 	}
-	public String getIpdelyn() {
+	public String getDelyn() {
 		return delyn;
 	}
-	public void setIpdelyn(String ipdelyn) {
-		this.delyn = ipdelyn;
+	public void setDelyn(String delyn) {
+		this.delyn = delyn;
+	}
+	public String getRegyn() {
+		return regyn;
+	}
+	public void setRegyn(String regyn) {
+		this.regyn = regyn;
 	}
 	
 }

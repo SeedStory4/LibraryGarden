@@ -12,6 +12,7 @@ public class ApprovalDto {
 	private String regDate;
 	private String status;
 	private String rejectionReason;
+	private String regyn;
 
 	public int getAidx() {
 		return aidx;
@@ -72,6 +73,12 @@ public class ApprovalDto {
 	}
 	public void setRejectionReason(String rejectionReason) {
 		this.rejectionReason = rejectionReason;
+	}
+	public String getRegyn() {
+		return regyn;
+	}
+	public void setRegyn(String regyn) {
+		this.regyn = regyn;
 	}
 	
 	
