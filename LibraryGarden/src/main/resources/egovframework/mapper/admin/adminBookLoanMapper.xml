@@ -112,7 +112,7 @@
 		(SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
 		NOW(),
 		DATE_ADD(NOW(), INTERVAL 7 DAY),
-		'대여중'
+		'대출중'
 		)
 	</insert>
 
