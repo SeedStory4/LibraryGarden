@@ -6,8 +6,10 @@
 <head>
 <meta charset="UTF-8">
 <title>내 도서</title>
-<link rel="stylesheet"
-	href="${pageContext.request.contextPath}/css/list.css">
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"
+        integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous">
+</script>
 </head>
 <body class="custom-page">
 
@@ -76,11 +78,13 @@
 										<td>${loan.dueDate}</td>
 										<td>${loan.returnDate}</td>
 										<td
-											class="${loan.status == '대여중' ? 'blue' : loan.status == '연체반납' ? 'red' : 'green'}">
+											class="${loan.status == '대출중' ? 'blue' : loan.status == '연체반납' ? 'red' : 'green'}">
 											${loan.status}</td>
-										<td><c:if test="${loan.status == '대여중'}">
-												<button class="btn btn-small btn-secondary1">연장</button>
-											</c:if></td>
+										<td>
+										  	<c:if test="${loan.status == '대출중' && loan.extended != 'Y'}">
+    											<button class="btn btn-small btn-secondary1" onclick="extendLoan(${loan.lidx})">연장</button>
+  											</c:if>
+										</td>
 									</tr>
 								</c:forEach>
 							</tbody>
@@ -108,7 +112,30 @@
 		</section>
 	</div>
 
-	<%@ include file="/WEB-INF/jsp/cmm/footer.jsp"%>
-
+	<!-- 푸터 로드할 부분 -->
+	<jsp:include page="/common/footer.jsp" />
+<script>
+function extendLoan(lidx) {
+    if (!confirm("해당 대출의 반납예정일을 7일 연장하시겠습니까?")) {
+        return;
+    }
+    $.ajax({
+        url: "${pageContext.request.contextPath}/user/myPage/extendLoan.do",
+        type: "POST",
+        data: { lidx: lidx },
+        success: function(response) {
+            if (response.success) {
+                alert(response.message);
+                location.reload();
+            } else {
+                alert(response.message);
+            }
+        },
+        error: function() {
+            alert("연장 처리 중 오류가 발생했습니다.");
+        }
+    });
+}
+</script>
 </body>
 </html>

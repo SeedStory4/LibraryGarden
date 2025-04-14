@@ -58,11 +58,11 @@ function numberCheck(page = currentPage, perPageNum = currentPerPageNum) {
                             <td>${item.loanDate}</td>
                             <td>${item.dueDate}</td>
                             <td>${item.returnDate || "-"}</td>
-                            <td class="${item.status === '대여중' ? 'blue' : item.status === '연체반납' ? 'red' : 'green'}">
+                            <td class="${item.status === '대출중' ? 'blue' : item.status === '연체반납' ? 'red' : 'green'}">
                                 ${item.status}
                             </td>
                             <td>
-                                ${item.status === '대여중' ? `
+                                ${item.status === '대출중' ? `
                                     <button class="btn btn-small btn-red mb-5" onClick="deleteLoan(${item.lidx})">삭제</button>
                                     <button class="btn btn-small btn-primary" onClick="returnLoan(${item.lidx})">반납</button>
                                 ` : ''}
