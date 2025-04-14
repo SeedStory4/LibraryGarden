@@ -72,7 +72,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 
 		if(av.getBidx() == 0) {
 			// 삭제한 기안이 희망도서로 등록한 경우 희망도서의 상태를 신청대기로 변경
-			int value = bookRequestService.statusUpdate(av.getRqidx(), "신청대기");
+			int value = bookRequestService.statusUpdate(av.getRqidx(), status);
 		}
 		
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
