@@ -1,5 +1,6 @@
 package libraryGarden.user.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpSession;
@@ -8,8 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.UserVo;
@@ -93,7 +96,38 @@ public class MyPage1Controller {
 	    return "user/myPage/myPageReservationList";
 	}
 	
+    // 연장 요청 처리 (대출 연장)
+    @ResponseBody
+    @PostMapping("/extendLoan.do")
+    public Map<String, Object> extendLoan(
+            @RequestParam("lidx") int lidx,
+            HttpSession session) {
+        Map<String, Object> result = new HashMap<>();
+        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+        if (loginUser == null) {
+            result.put("success", false);
+            result.put("message", "로그인 후 이용해주세요.");
+            return result;
+        }
+        String userNumber = loginUser.getUserNumber();
+        try {
+            boolean success = myPage1Service.extendLoan(lidx, userNumber);
+            if (success) {
+                result.put("success", true);
+                result.put("message", "연장이 완료되었습니다.");
+            } else {
+                result.put("success", false);
+                result.put("message", "연장이 불가능합니다. 대출현황 또는 예약현황을 확인해주세요.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.put("success", false);
+            result.put("message", "연장 처리 중 오류가 발생했습니다.");
+        }
+        return result;
+    }
+}
+	
 	
 	
 
-}
