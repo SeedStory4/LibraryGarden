@@ -294,7 +294,7 @@
 		if(modalType == "bookRequestSelect") {
 			listUrl = "${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do"
 		} else {
-			listUrl = ""  // api 상
+			listUrl = "${pageContext.request.contextPath}/admin/book/bookList.do"
 		}
 	    loadList(1, listUrl);
 
