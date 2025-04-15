@@ -1,5 +1,6 @@
 package libraryGarden.admin.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,7 +25,6 @@ public class AdminBookController2 {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminBookController2.class);
 
-	// AladdinOpenAPI 주입
 	@Autowired(required = false)
 	AladdinOpenAPI aladdinOpenAPI;
 	
@@ -41,60 +41,42 @@ public class AdminBookController2 {
 		 ) {
 					
 		 logger.info("bookList 들어옴");
+
+		// 현재 페이지 저장
+	     SearchCriteria scri = new SearchCriteria();
+	     scri.setPage(page);
+		 pm.setScri(scri);
+
+	     // API를 위해 사용자가 입력한 검색조건과 검색어 및 현재 페이지 세팅
+	     int start = page;
+	     String searchWord = keyword;
+	     String queryType = searchType;
+	     
+	 	 HashMap<String, Object> hm = new HashMap<String, Object>();
+	 	 List<BookVo> alist = new ArrayList<>();  // List는 인터페이스이기 때문에 객체 생성을 못함 -> List<>()가 아닌 ArrayList<>()로 초기화
+	 	int totalCount = 0;
+	 	
+	     try {
+	    	ApiBookPageDto abpd = aladdinOpenAPI.searchBooksList(searchWord, queryType, start);
+
+	        if (abpd != null && !abpd.getBlist().isEmpty()) {
+
+	            alist = abpd.getBlist();
+	            totalCount = abpd.getTotalCount();
+	            
+	        }
+
+	     } catch (Exception e) {
+	        e.printStackTrace();
+	     }
+	     
+         // 페이징을 위한 전체 데이터 갯수 저장
+		 pm.setTotalCount(totalCount);
+			
+		 hm.put("alist", alist);  // 책 리스트
+		 hm.put("pm", pm);  // 페이징 정보
 		 
-
-		 
-
-
-		    // 페이징 처리 준비
-		    int start = page; // API 요청 시작 인덱스
-		    String searchWord = keyword;
-		    String queryType = searchType;
-
-
-			HashMap<String, Object> hm = new HashMap<String, Object>();
-
-//			// 검색어 필수 검증
-//		    if(searchWord == null){
-//		    	return "admin/book/bookList";
-//		    }
-//		    
-//		    if (searchWord.trim().isEmpty()) {
-//		    	hm.put("msg", "검색어를 입력해주세요.");
-//		        return "user/bookRequest/bookRequestWrite";
-//		    }
-
-		    ApiBookPageDto abpd = null;
-		    try {
-		    	abpd = aladdinOpenAPI.searchBooksList(searchWord, queryType, start);
-
-		        if (abpd != null && !abpd.getBlist().isEmpty()) {
-		            
-		            List<BookVo> blist = abpd.getBlist();
-		            int totalCount = abpd.getTotalCount();
-
-			   		// 사용자가 입력한 검색조건과 검색어 저장
-			   		SearchCriteria scri = new SearchCriteria();
-			   		scri.setSearchType(searchType);
-			   		scri.setKeyword(keyword);
-			   		scri.setPage(page);
-			   		pm.setScri(scri);
-					pm.setTotalCount(totalCount);
-					
-//					 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
-//					 UrlEncoder encoder = new UrlEncoder();
-//					 scri.setKeyword(encoder.encoding(scri.getKeyword()));
-//					 
-					 hm.put("blist", blist);  // 책 리스트
-					 hm.put("pm", pm);  // 페이징 정보
-					 
-		        }
-
-		    } catch (Exception e) {
-		        e.printStackTrace(); // 개발자용 로그
-		    }
-
-			 return hm;
+		 return hm;
 		
 	}
    

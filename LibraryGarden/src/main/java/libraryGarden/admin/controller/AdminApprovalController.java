@@ -26,6 +26,7 @@ import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
 import libraryGarden.admin.service.AdminApprovalService;
 import libraryGarden.admin.service.AdminBookRequestService;
+import libraryGarden.cmm.util.AladdinOpenAPI;
 import libraryGarden.cmm.util.UrlEncoder;
 
 @Controller
@@ -42,6 +43,9 @@ public class AdminApprovalController {
 	
 	@Autowired(required=false)
 	private PageMaker pm;
+	
+	@Autowired(required = false)
+	AladdinOpenAPI aladdinOpenAPI;
 	
 	@RequestMapping(value="/approvalList.do")
 	public String approvalList(
@@ -134,13 +138,17 @@ public class AdminApprovalController {
 		
 	@PostMapping(value="/approvalWriteAction.do")
 	public String approvalWriteAction(
-			ApprovalVo av,
+			@RequestParam(value = "type") String type,
+			@RequestParam(value = "num") String num,
 			HttpServletRequest request,
 			RedirectAttributes rttr,
 			Model model
 			) {
 		
 		logger.info("📝 approvalWriteAction 들어옴");
+		
+		ApprovalVo av = new ApprovalVo();
+		BookVo bv = new BookVo();
 		
 		// DB에 작성자 정보를 저장하기 위해 session에 저장된 uidx를 av 안에 세팅
 		UserVo user = (UserVo) request.getSession().getAttribute("loginUser");
@@ -150,9 +158,16 @@ public class AdminApprovalController {
 		// 이동할 주소 초기화
 		String path = "";
 		
+		if(type.equals("rqidx")) {
+			av.setRqidx(Integer.parseInt(num));
+		} else {
+			bv.setIsbn(num);
+		}
+
 		try {
+
 			// 작성한 게시글 정보를 DB에 저장 및 희망도서로 등록한 경우 희망도서의 상태를 "신청중"으로 변경. 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
-			int aidx = approvalService.approvalInsert(av, "신청중");
+			int aidx = approvalService.approvalInsert(av, bv, "신청중");
 			
 			// 게시글 등록 후 이동할 url 및 메세지 설정
 			rttr.addFlashAttribute("msg", "글쓰기가 성공했습니다.");
@@ -171,16 +186,28 @@ public class AdminApprovalController {
 	@ResponseBody
 	@RequestMapping(value="/approvalSelect.do", method = RequestMethod.POST)
 	public HashMap<String, Object> approvalSelect(
-			@RequestParam(value = "rqidx") int rqidx
+			@RequestParam(value = "type") String type,
+			@RequestParam(value = "num") String num
 		 ) {
 		
 		logger.info("📝 approvalSelect 들어옴");
 		
-		// 도서 정보 DB에서 가져오기
-		BookVo bv = bookRequestService.bookRequestSelectOne(rqidx);
+		BookVo bv = null;
+		
+		if(type.equals("rqidx")) {
+			// 도서 정보 DB에서 가져오기
+			bv = bookRequestService.bookRequestSelectOne(Integer.parseInt(num));
+		} else {
+			// 도서 정보 알라딘 API에서 가져오기
+		    try {
+				bv = aladdinOpenAPI.lookUpBookDetail(num);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
-		hm.put("rqidx", rqidx);
+		hm.put("num", num);
 		hm.put("bv", bv);
 		
 		return hm;
@@ -195,7 +222,7 @@ public class AdminApprovalController {
 		logger.debug("📝 approvalModify 들어옴");
 		
 		// 도서 정보 DB에서 가져오기
-		BookVo bv = approvalService.approvalSelectOne(aidx);	
+		BookVo bv = approvalService.approvalSelectOne(aidx);
 		
 		model.addAttribute("bv", bv);
 		model.addAttribute("aidx", aidx);

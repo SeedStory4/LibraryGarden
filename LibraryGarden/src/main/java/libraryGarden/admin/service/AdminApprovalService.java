@@ -17,7 +17,7 @@ public interface AdminApprovalService {
 	
 	public int approvalDelete(ApprovalVo av, String status) throws Exception;
 
-	public int approvalInsert(ApprovalVo av, String status) throws Exception;
+	public int approvalInsert(ApprovalVo av, BookVo bv, String status) throws Exception;
 
 	public ApprovalVo approvalSelectAv(int aidx);
 
