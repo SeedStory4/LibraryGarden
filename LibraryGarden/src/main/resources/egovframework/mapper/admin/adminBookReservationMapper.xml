@@ -33,6 +33,7 @@
 	<select id="bookReservationSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.ReservationDto">
 	    SELECT 
 	        R.ridx,
+	        R.lbidx,
 	        B.coverImg,
 	        B.title,
 	        B.author,
@@ -148,7 +149,23 @@
 	        WHERE DATEDIFF(pickupDate, CURDATE()) BETWEEN 1 AND 7
 	    )
 	</update>
-
+	
+	<select id="getReservationsForModify" parameterType="map" resultType="libraryGarden.domain.ReservationDto">
+  SELECT ridx, pickupDate
+  FROM RESERVATION
+  WHERE lbidx = #{lbidx}
+    AND delyn = 'N'
+    AND ridx != #{ridx}    <!-- 내 예약은 제외 -->
+	</select>
+	
+	<update id="updateReservation" parameterType="libraryGarden.domain.ReservationDto">
+	  UPDATE RESERVATION
+	    SET pickupDate = #{pickupDate},
+	        dueDate    = #{dueDate}
+	  WHERE ridx = #{ridx}
+	</update>
+	
+	
 	
 
 </mapper>

@@ -187,13 +187,52 @@ public class AdminBookReservationController {
 		return "admin/bookReservation/popBookReservationWrite";
 	}
 	
-
-	// 도서예약 수정 팝업
-	@GetMapping("/popBookReservationModify.do")
-	public String popBookReservationModify() {
-		return "admin/bookReservation/popBookReservationModify";
-	}
 	
+	  // 수정 팝업에서 비활성화 날짜 조회
+	  @ResponseBody
+	  @GetMapping("/getReservedDatesForModify.do")
+	  public List<Map<String, String>> getReservedDatesForModify(
+	      @RequestParam int lbidx,
+	      @RequestParam String userNumber,
+	      @RequestParam int ridx) {
+	    return adminBookReservationService
+	             .getUnavailableDatesForModify(lbidx, userNumber, ridx);
+	  }
+
+	  // 실제 예약 수정 처리
+	  @ResponseBody
+	  @PostMapping("/modifyReservation.do")
+	  public Map<String, Object> modifyReservation(
+	      @RequestParam int ridx,
+	      @RequestParam String pickupDate) {
+	    Map<String,Object> resp = new HashMap<>();
+	    try {
+	      SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
+	      Date pick = fmt.parse(pickupDate);
+	      Calendar cal = Calendar.getInstance(); cal.setTime(pick);
+	      cal.add(Calendar.DATE, 7);
+	      String due = fmt.format(cal.getTime());
+
+	      ReservationDto dto = new ReservationDto();
+	      dto.setRidx(ridx);
+	      dto.setPickupDate(pickupDate);
+	      dto.setDueDate(due);
+
+	      int updated = adminBookReservationService.updateReservation(dto);
+	      if (updated>0) {
+	        resp.put("success", true);
+	        resp.put("message", "예약이 성공적으로 수정되었습니다.");
+	      } else {
+	        resp.put("success", false);
+	        resp.put("message", "예약 수정에 실패했습니다.");
+	      }
+	    } catch(Exception e) {
+	      e.printStackTrace();
+	      resp.put("success", false);
+	      resp.put("message", "서버 오류가 발생했습니다.");
+	    }
+	    return resp;
+	  }
 
 
 }

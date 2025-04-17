@@ -10,7 +10,11 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/reservation.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/main.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/6.1.8/locales/ko.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.14/index.global.min.js"></script>
 </head>
 <body class="custom-page">
 
@@ -72,7 +76,16 @@
 								<tr>
 									<td>${(requestScope.pm.scri.page - 1) * requestScope.pm.scri.perPageNum + status.index + 1}</td>
 									<td><img src="${r.coverImg}" alt="${r.title}"></td>
-									<td><a href="#">${r.title}</a></td>
+									    <td>
+									      <a href="#"
+									         class="openReservationModifyModal"
+									         data-ridx="${r.ridx}"
+									         data-lbidx="${r.lbidx}"
+									         data-usernumber="${r.userNumber}"
+									         data-pickupdate="${r.pickupDate}">
+									        ${r.title}
+									      </a>
+									    </td>
 									<td>${r.author}</td>
 									<td>${r.publisher}</td>
 									<td>${r.callName}</td>
@@ -120,37 +133,101 @@
 		</section>
 	</div>
 	
+	
+    <!-- 수정 모달 -->
+    <div id="modifyModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="title-container">
+                <div class="title">도서예약</div>
+                <div class="title-line"></div>
+            </div>
+            <p class="notice">※ 예약일 전 도서가 미반납 될 경우 대출이 불가할 수 있습니다.</p>
+            <label class="custom-checkbox flex-end-center font-673D31-13">
+                <input type="checkbox" id="agreeCheck" class="terms-checkbox">
+                <span class="checkmark"></span> 동의합니다.
+            </label>
+            <!-- 캘린더 영역 -->
+            <div class="calendar-container">
+                <div id="calendar"></div>
+                <!-- 예약 상태 표시 -->
+                <div class="reservation-status">
+                    <div class="status">
+                        <span class="status-box available"></span> 예약가능
+                    </div>
+                    <div class="status">
+                        <span class="status-box unavailable"></span> 예약불가
+                    </div>
+                    <div class="status">
+                        <span class="status-box selected"></span> 예약선택
+                    </div>
+                </div>
+            </div>
+            <!-- 선택한 예약 날짜 표시 -->
+            <p class="reservationDate">
+                예약날짜: <span id="selectedDate">선택 없음</span>
+            </p>
+            <!-- 버튼 영역 -->
+            <div class="button-group">
+                <button id="modifyBtn" disabled>수정</button>
+                <button id="closeModal">취소</button>
+            </div>
+        </div>
+    </div>
+	
     <!-- 푸터가 로드될 부분 -->
 	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 
-    <script>
-	// select2
-	$(document).ready(function() {
-		$('.js-example-basic-single').select2();
-	});
+	<script>
+	  $(document).ready(function() {
+		    // select2 초기화
+		    $('.js-example-basic-single').select2();
+
+		    // 모달 표시 버튼
+		    $('.openReservationModifyModal').on('click', function(e) {
+		      e.preventDefault();
+		      $('#modifyModal').show();
+		      if (window.myCalendar) {
+		        window.myCalendar.updateSize();
+		      }
+		    });
+
+		    // 모달 닫기 버튼
+		    $('#closeModal').on('click', function() {
+		      window.selectedDate = null;
+		      $('#selectedDate').text('선택 없음');
+		      $('.fc-day-selected').removeClass('fc-day-selected');
+		      $('#modifyModal').hide();
+		    });
+		  });
+	  
+		function cancelReservation(ridx) {
+		    if (!confirm("정말로 예약을 취소하시겠습니까?")) {
+		        return;
+		    }
+		    $.ajax({
+		        url: '${pageContext.request.contextPath}/admin/bookReservation/cancelReservation.do',
+		        type: 'POST',
+		        data: { ridx: ridx },
+		        success: function(response) {
+		            if (response.success) {
+		                alert(response.message);
+		                location.reload(); // 페이지 새로고침으로 목록 갱신
+		            } else {
+		                alert(response.message);
+		            }
+		        },
+		        error: function() {
+		            alert("예약 취소 중 오류가 발생했습니다.");
+		        }
+		    });
+		}
+	</script>
 	
-	function cancelReservation(ridx) {
-	    if (!confirm("정말로 예약을 취소하시겠습니까?")) {
-	        return;
-	    }
-	    $.ajax({
-	        url: '${pageContext.request.contextPath}/admin/bookReservation/cancelReservation.do',
-	        type: 'POST',
-	        data: { ridx: ridx },
-	        success: function(response) {
-	            if (response.success) {
-	                alert(response.message);
-	                location.reload(); // 페이지 새로고침으로 목록 갱신
-	            } else {
-	                alert(response.message);
-	            }
-	        },
-	        error: function() {
-	            alert("예약 취소 중 오류가 발생했습니다.");
-	        }
-	    });
-	}
+	<script>
+      var contextPath = '${pageContext.request.contextPath}';
     </script>
+	
+	<script src="${pageContext.request.contextPath}/js/reservationModify.js"></script>
 	
 </body>
 </html>

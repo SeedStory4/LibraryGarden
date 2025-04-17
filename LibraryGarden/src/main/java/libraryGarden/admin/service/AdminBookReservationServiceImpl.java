@@ -181,6 +181,65 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
     public int registerReservation(ReservationDto reservation) {
         return rm.insertReservation(reservation);
     }
+    
+    @Override
+    public List<Map<String, String>> getUnavailableDatesForModify(int lbidx, String userNumber, int ridx) {
+        // “수정”용: 내 예약(ridx)만 제외하고 동일 로직
+        Set<String> reservationDates = new HashSet<>();
+        Set<String> overdueDates = new HashSet<>();
+        SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd");
+
+        // 내 예약을 제외한 모든 예약 pickupDate (7일간)
+        for (ReservationDto res : rm.getReservationsForModify(lbidx, ridx)) {
+            try {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dbFormat.parse(res.getPickupDate()));
+                for (int i = 0; i < 7; i++) {
+                    reservationDates.add(outputFormat.format(cal.getTime()));
+                    cal.add(Calendar.DATE, 1);
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+
+        // 대출 날짜 (기존과 동일)
+        for (LoanVo loan : rm.getLoansByBook(lbidx)) {
+            try {
+                Calendar cal = Calendar.getInstance();
+                cal.setTime(dbFormat.parse(loan.getLoanDate()));
+                Date end = dbFormat.parse(loan.getDueDate());
+                while (!cal.getTime().after(end)) {
+                    reservationDates.add(outputFormat.format(cal.getTime()));
+                    cal.add(Calendar.DATE, 1);
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+
+        // 연체 기간 (내 연체 포함)
+        for (Map<String, String> od : rm.getOverduePeriodsByUser(userNumber)) {
+            try {
+                Calendar cal = Calendar.getInstance();
+                Date start = dbFormat.parse(od.get("startDate"));
+                Date end   = dbFormat.parse(od.get("endDate"));
+                cal.setTime(start);
+                while (cal.getTime().before(end)) {
+                    overdueDates.add(outputFormat.format(cal.getTime()));
+                    cal.add(Calendar.DATE, 1);
+                }
+            } catch (Exception e) { e.printStackTrace(); }
+        }
+
+        List<Map<String, String>> result = new ArrayList<>();
+        reservationDates.forEach(d -> result.add(Map.of("date", d, "reason", "예약")));
+        overdueDates    .forEach(d -> result.add(Map.of("date", d, "reason", "연체")));
+        return result;
+    }
+    
+    @Override
+    public int updateReservation(ReservationDto reservation) {
+        return rm.updateReservation(reservation);
+    }
+
 
 
 }

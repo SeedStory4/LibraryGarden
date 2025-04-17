@@ -32,5 +32,8 @@ public interface AdminBookReservationMapper {
     int getActiveLoanCountByDueDate(int lbidx);
     // 도서 상태 업데이트: LIBRARYBOOKS 테이블에서 lbidx로 상태 변경
     int updateBookStatus(@Param("lbidx") int lbidx, @Param("status") String status);
-    
+    /** 내 예약(ridx)만 제외하고 해당 도서(lbidx)의 예약만 조회 */
+    List<ReservationDto> getReservationsForModify(@Param("lbidx") int lbidx,@Param("ridx") int ridx);
+    /** 실제 예약 수정(UPDATE) */
+    int updateReservation(ReservationDto reservation);
 }
