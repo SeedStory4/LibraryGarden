@@ -42,7 +42,8 @@
 
 				<!-- 도서 정보 -->
 				<form name="frm">
-					<input type="hidden" name="rqidx">
+					<input type="hidden" name="type">
+					<input type="hidden" name="num">
 					<div class="draft-content">
 						<img src="${requestScope.bv.coverImg}" alt="${requestScope.bv.title}" class="draft-book-img coverImg">
 						<div class="draft-info">
@@ -131,7 +132,7 @@
         let fm = document.frm;
         
 		// 수정하기 전 도서와 같은 도서인지 확인
-    	if (fm.rqidx.value == "") {
+    	if (fm.num.value == "") {
     		alert("변경된 내용이 없습니다.");
     		return;
     	}
@@ -188,9 +189,14 @@
 				                <col width="9%">
 				                <col>
 				                <col width="16%">
-				                <col width="15%">
-				                <col width="11%">
-				                <col width="11%">
+				                <col width="15%">`;
+
+	                if(modalType == "bookRequestSelect") { 
+						 listcontent += `<col width="11%">`;
+	                }
+
+	                listcontent += 
+	                		   `<col width="11%">
 				                <col width="10%">
 				              </colgroup>
 				              <thead>
@@ -199,29 +205,55 @@
 				                  <th>표지</th>
 				                  <th>제목</th>
 				                  <th>저자</th>
-				                  <th>출판사</th>
-				                  <th>신청자</th>
-				                  <th>신청일</th>
-				                  <th>선택</th>
+				                  <th>출판사</th>`;
+				                  
+					 if(modalType == "bookRequestSelect") { 
+						 listcontent += 
+							 	 `<th>신청자</th>
+				                  <th>신청일</th>`;
+					 } else {
+						 listcontent += 
+						 	 	 `<th>출판년도</th>`;
+					 }
+	                  
+					 listcontent += 
+						 		 `<th>선택</th>
 				                </tr>
 				              </thead>
 				              <tbody>`;
-					 if(alist.length == 0) {
-				    	 listcontent += `<tr>
-								<td colspan="8" class="center">도서가 없습니다.</td>
-							</tr>`;
+				              
+				     if(alist.length == 0 && modalType == "bookRequestSelect") {
+				    	 listcontent += 
+				    		   `<tr>
+								  <td colspan="8" class="center">도서가 없습니다.</td>
+								</tr>`;
+			    	 } else if(alist.length == 0 && modalType == "bookSelect") {
+				    	 listcontent += 
+				    		   `<tr>
+								  <td colspan="7" class="center">도서가 없습니다.</td>
+								</tr>`;
 				     } else {
-				    	 for(var i = 0; i < alist.length; i++){
-							 listcontent += `<tr>`;
-							 listcontent += `<td>\${(pm.scri.page - 1) * pm.scri.perPageNum + i + 1}</td>`;
-							 listcontent += `<td><img src=\${alist[i].coverImg} alt=\${alist[i].title}></td>`;
-							 listcontent += `<td>\${alist[i].title}</td>`;
-							 listcontent += `<td>\${alist[i].author}</td>`;
-							 listcontent += `<td>\${alist[i].publisher}</td>`;
-							 listcontent += `<td>\${alist[i].name}<br>(\${alist[i].userNumber})</td>`;
-							 listcontent += `<td>\${alist[i].regDate.substr(0, 10).replaceAll("-", ".")}</td>`;
-							 listcontent += `<td><button class="btn btn-small btn-primary" onClick="select(\${alist[i].rqidx})">선택</button></td>`;
-							 listcontent += `</tr>`;
+						 for(var i = 0; i < alist.length; i++){
+							 listcontent += 
+							   `<tr>
+							 	  <td>\${(pm.scri.page - 1) * pm.scri.perPageNum + i + 1}</td>
+								  <td><img src=\${alist[i].coverImg} alt=\${alist[i].title}></td>
+							      <td>\${alist[i].title}</td>
+							 	  <td>\${alist[i].author}</td>
+							 	  <td>\${alist[i].publisher}</td>`;
+							 
+							 if(modalType == "bookRequestSelect") { 
+								 listcontent += 
+								 `<td>\${alist[i].name}<br>(\${alist[i].userNumber})</td>
+							 	  <td>\${alist[i].regDate.substr(0, 10).replaceAll("-", ".")}</td>
+							 	  <td><button class="btn btn-small btn-primary" onClick="select('rqidx', \${alist[i].rqidx})">선택</button></td>
+								</tr>`;
+							 } else {
+								 listcontent += 
+								 `<td>\${alist[i].publishedYear.replaceAll("-", ".")}</td>
+								  <td><button class="btn btn-small btn-primary" onClick="select('isbn', \${alist[i].isbn})">선택</button></td>
+								</tr>`;
+							 }
 						 }
 				     }
 					 
@@ -291,17 +323,18 @@
     // 모달 열기
     const openModalBtns = document.querySelectorAll(".openModal");
     let listUrl = "";
+    let modalType = "";
     function openModalClick(e) {
 
 		// 1. 제목 설정
 		document.querySelector(".modal .title").innerText = e.target.innerText;
 		
 		// 2. list 불러오기(기본 1페이지)		
-		const modalType = e.target.attributes["data-modalType"].value;
+		modalType = e.target.attributes["data-modalType"].value;
 		if(modalType == "bookRequestSelect") {
 			listUrl = "${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do"
 		} else {
-			listUrl = ""  // api 상
+			listUrl = "${pageContext.request.contextPath}/admin/book/bookList.do"
 		}
 	    loadList(1, listUrl);
 
@@ -315,20 +348,18 @@
     openModalBtns.forEach((e) => e.addEventListener("click", openModalClick));
     
     // 도서 선택
-    function select(rqidx) {
+    function select(type, num) {
     	// 수정하기 전 도서와 같은 도서인지 확인
-    	if ("${requestScope.bv.bidx}" == rqidx) {
+    	if (modalType == "bookSelect" && "${requestScope.bv.isbn}" == num) {
     		alert("기등록된 도서와 같은 도서입니다. 다른 도서를 선택해주세요.");
     		return;
     	}
     	
-		if(rqidx != undefined) {
-		 
-		  	$.ajax({
+	  	$.ajax({
 			 type: "post",
 			 url: "${pageContext.request.contextPath}/admin/approval/approvalSelect.do",
 			 dataType: "json",
-			 data: {"rqidx" : rqidx},
+			 data: {"type" : type, "num" : num},
 			       contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
 			       success: function(result) {  // 성공
 					 // alert("전송성공");
@@ -365,8 +396,9 @@
 			 		 }
 			         document.querySelector(".price").innerText = addComma(String(bv.price)) + "원";
 			         
-			         // controller에 보내기 위해 희망도서 idx 저장하기
-					 document.frm.rqidx.value = rqidx;
+			         // controller에 보내기 위해 희망도서 type과 num 저장하기
+					 document.frm.type.value = type;
+					 document.frm.num.value = num;
 			         
 					 // 모달 닫기
 			    	 closeModalClick();
@@ -377,9 +409,8 @@
 				 	console.log("Error Status: " + status);
 				    console.log("Error Detail: " + error);
 				    console.log("Response: " + xhr.responseText);
-				   }
-  			})
-  		}
+			   }
+		})
 	}
 	</script>
 </body>
