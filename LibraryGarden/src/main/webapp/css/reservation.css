@@ -60,13 +60,25 @@ button {
   border-radius: 20px;
 }
 
+#modifyBtn {
+  background: #2da679;
+  color: white;
+  border-radius: 20px;
+}
+
 #reserveBtn:disabled {
+  background: gray;
+  cursor: not-allowed;
+}
+
+#modifyBtn:disabled {
   background: gray;
   cursor: not-allowed;
 }
 
 /* 예약 및 취소 버튼 크기 고정 */
 #reserveBtn,
+#modifyBtn,
 #closeModal {
   width: 100px;
   height: 45px;
