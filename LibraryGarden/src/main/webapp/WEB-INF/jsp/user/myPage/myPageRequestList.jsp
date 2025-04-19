@@ -74,7 +74,7 @@
 										<c:if test="${request.status eq '신청중'}">"blue"</c:if>
 										<c:if test="${request.status eq '신청완료'}">"green"</c:if>
 										<c:if test="${request.status eq '신청대기'}">"orange"</c:if>
-										<c:if test="${request.status eq '신청반려'}">"red pointer openRejectionModal" data-reason="${ad.rejectionReason}"</c:if>
+										<c:if test="${request.status eq '신청반려'}">"red pointer openRejectionModal" data-reason="${request.rejectionReason}"</c:if>
 									>${request.status}</td>
 									<td><c:choose>
 										<c:when test='${request.status eq "신청대기"}'>
@@ -153,6 +153,17 @@
 			fm.method="post"; 
 			fm.submit();
 		 }
+	}
+	
+	// 반려사유 팝업
+	const openRejectionModal = document.querySelectorAll(".openRejectionModal");
+	if(openRejectionModal != null) {
+		function openRejectionModalClick(e) {
+			const rejectionReason = e.target.attributes["data-reason"].value;
+			const rejectionDetail = document.querySelector(".rejection-detail");
+			rejectionDetail.textContent = rejectionReason;
+		}
+		openRejectionModal.forEach((e) => e.addEventListener("click", openRejectionModalClick));
 	}
 	</script>
 </body>
