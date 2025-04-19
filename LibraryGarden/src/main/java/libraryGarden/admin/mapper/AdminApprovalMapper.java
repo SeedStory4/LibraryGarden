@@ -22,4 +22,7 @@ public interface AdminApprovalMapper {
 	public ApprovalVo approvalSelectAv(int aidx);
 	
 	public int approvalUpdate(HashMap<String,Object> hm);
+
+	public int processingUpdate(ApprovalVo av);
+	
 }

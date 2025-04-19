@@ -47,7 +47,7 @@
 		LEFT JOIN BOOKS AS B ON B.bidx = COALESCE(A.bidx, RQ.bidx) 
 		WHERE A.delyn = 'N' 
 		<include refid="search"/>
-		ORDER BY A.aidx LIMIT #{startPageNum}, #{perPageNum};
+		ORDER BY A.aidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
 	<select id="approvalSelectOne" parameterType="int" resultType="bv">
@@ -69,13 +69,14 @@
 	</insert>
 	
 	<select id="approvalSelectAv" parameterType="int" resultType="av">
-		SELECT * 
-		FROM APPROVAL 
-		WHERE delyn = 'N' and aidx = #{aidx}
+		SELECT * FROM APPROVAL WHERE delyn = 'N' and aidx = #{aidx}
 	</select>
 	
 	<update id="approvalUpdate" parameterType="HashMap">
   		UPDATE APPROVAL SET rqidx = #{rqidx}, bidx = #{bidx}, modify = now() WHERE aidx = #{aidx}
 	</update>
 	
+	<update id="processingUpdate" parameterType="av">
+  		UPDATE APPROVAL SET status = #{status}, rejectionReason = #{rejectionReason}, approvalDate = now() WHERE aidx = #{aidx}
+	</update>
 </mapper>

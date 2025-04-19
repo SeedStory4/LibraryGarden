@@ -7,6 +7,8 @@
 <head>
 <meta charset="UTF-8">
 <title>사서 기안 상세</title>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/rejection.css">
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 </head>
 <body>
@@ -81,12 +83,37 @@
 						</c:if>
 						<a href="${pageContext.request.contextPath}/admin/approval/approvalList.do" class="draft-btn-small btn-list flex align-center justify-center">목록</a>
 						<c:if test="${sessionScope.loginUser.role eq \"도서관장\"}">
-							<button class="draft-btn-small btn-submit">승인</button>
-							<button class="draft-btn-small btn-cancel">반려</button>
+							<c:if test="${requestScope.av.status ne \"승인\"}">
+								<button type="button" class="draft-btn-small btn-submit" onClick="approval()">승인</button>
+							</c:if>
+							<button type="button" class="draft-btn-small btn-cancel openRejectionModal"
+								<c:if test="${requestScope.av.status eq \"반려\"}"> style="width: 190px"</c:if>>
+								반려
+								<c:if test="${requestScope.av.status eq \"반려\"}"> 사유 변경</c:if>
+							</button>
 						</c:if>
 					</div>
 				</form>
 			</section>
+			
+			<!-- 반려사유 모달 -->
+		    <div id="rejectionModal" class="modal" style="display: none">
+		      <div class="modal-content">
+		        <div class="title-container">
+		          <div class="title">반려사유</div>
+		          <div class="title-line"></div>
+		        </div>
+		
+		        <!-- 반려사유 -->
+		        <textarea id="rejectionReason" placeholder="반려 사유를 입력해주세요.">${requestScope.av.rejectionReason}</textarea>
+		
+		        <!-- 버튼 영역 -->
+		        <div class="button-group">
+		        	<button type="button" class="btn btn-primary" id="confirmRejection">확인</button>
+		        	<button type="button" class="btn btn-cancel" id="closeRejectionModal">취소</button>
+		        </div>
+		      </div>
+		    </div>
 		</div>
 	</div>
 
@@ -119,6 +146,103 @@
 		const msg = "${requestScope.msg}";
 		if (msg != null && msg != "") {
 			alert(msg);
+		}
+		
+		// 모달 열기
+		const openRejectionModal = document.querySelector(".openRejectionModal");
+		const rejectionTextarea = document.getElementById("rejectionReason");
+		if(openRejectionModal != null) {
+			const modal = document.getElementById("rejectionModal");
+			openRejectionModal.addEventListener("click", function () {
+				modal.style.display = "flex";
+			});
+			
+			// 모달 닫기
+			const closeBtn = document.getElementById("closeRejectionModal");
+			closeBtn.addEventListener("click", function () {
+				modal.style.display = "none";
+			});
+			
+			// 확인 버튼 클릭 시 입력값 출력
+			const confirmBtn = document.getElementById("confirmRejection");
+			confirmBtn.addEventListener("click", function () {
+				const rejectionReason = rejectionTextarea.value;
+				if (rejectionReason.trim() === "") {
+			    	alert("반려 사유를 입력해주세요.");
+			      	return;
+			    }
+				
+				$.ajax({
+					 type: "post",
+					 url: "${pageContext.request.contextPath}/admin/approval/${requestScope.av.aidx}/approvalProcessingAction.do",
+					 dataType: "json",
+					 data: {"rejectionReason" : rejectionReason},
+			         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+			         success: function(result) {  // 성공
+						// alert("전송성공");
+				        	
+				       	// 모달 닫기
+						modal.style.display = "none";
+						alert("반려되었습니다.");
+						
+						// 반려 사유 변경
+						rejectionTextarea.value = result.rejectionReason;
+
+					 	// 반려 버튼 변경
+						const rejectionBtn = document.querySelector(".draft-actions .btn-cancel");
+						rejectionBtn.style.width = "190px";
+						rejectionBtn.innerText = "반려 사유 변경";
+						
+						// 반려 버튼 앞에 승인 버튼 생성(insertAdjacentHTML(position, htmlString)은 문자열을 그대로 DOM에 삽입해 줌. ``가 Node가 아닌 문자열이므로 insertBefore 사용 불가)
+						if(document.querySelector(".draft-actions .btn-submit") == null) {
+							rejectionBtn.insertAdjacentHTML("beforebegin", `<button type="button" class="draft-btn-small btn-submit" onclick="approval()">승인</button>`);
+						}
+						
+					 },
+					 error: function(xhr, status, error) {  // 실패
+					 	alert("전송실패");
+					    /* console.log("Error Status: " + status);
+					    console.log("Error Detail: " + error);
+					    console.log("Response: " + xhr.responseText); */
+					 }
+				});
+			});
+		}
+		
+		// 승인
+		function approval() {
+			let ans = confirm("승인하시겠습니까?");
+			if (ans == true) {
+				$.ajax({
+					 type: "post",
+					 url: "${pageContext.request.contextPath}/admin/approval/${requestScope.av.aidx}/approvalProcessingAction.do",
+					 dataType: "json",
+			         contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+				         success: function(result) {  // 성공
+						 // alert("전송성공");
+				        
+					 	 alert("승인되었습니다.");
+					 	 
+					 	 // 반려 사유 삭제
+						 rejectionTextarea.value = "";
+
+						 // 반려 버튼 변경
+						 const rejectionBtn = document.querySelector(".draft-actions .btn-cancel");
+						 rejectionBtn.style.width = "100px";
+						 rejectionBtn.innerText = "반려";
+						 
+					 	 // 승인 버튼 삭제
+						 const acceptionBtn = document.querySelector(".draft-actions .btn-submit");
+						 acceptionBtn.remove();
+					 },
+					 error: function(xhr, status, error) {  // 실패
+					 	alert("전송실패");
+					    /* console.log("Error Status: " + status);
+					    console.log("Error Detail: " + error);
+					    console.log("Response: " + xhr.responseText); */
+					 }
+				});
+			}
 		}
 	</script>
 </body>

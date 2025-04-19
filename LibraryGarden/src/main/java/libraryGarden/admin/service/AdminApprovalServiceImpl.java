@@ -22,7 +22,7 @@ import libraryGarden.user.service.Book1Service;
 public class AdminApprovalServiceImpl implements AdminApprovalService{
 
 	@Autowired
-	private AdminApprovalMapper lm;
+	private AdminApprovalMapper am;
 
 	@Autowired(required=false)
 	private AdminBookRequestService bookRequestService;
@@ -41,7 +41,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		hm.put("keyword", scri.getKeyword());
 		hm.put("filter", filter);
 		
-		int cnt = lm.approvalTotalCount(hm);
+		int cnt = am.approvalTotalCount(hm);
 		
 		return cnt;
 	}
@@ -57,7 +57,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		hm.put("keyword", scri.getKeyword());
 		hm.put("filter", filter);
 		
-		ArrayList<ApprovalDto> alist = lm.approvalSelectAll(hm);
+		ArrayList<ApprovalDto> alist = am.approvalSelectAll(hm);
 		
 		return alist;
 	}
@@ -65,7 +65,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	public BookVo approvalSelectOne(int aidx) {
 		
-		BookVo bv = lm.approvalSelectOne(aidx);
+		BookVo bv = am.approvalSelectOne(aidx);
 		
 		return bv;
 	};
@@ -81,7 +81,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		}
 		
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
-		int cnt = lm.approvalDelete(av.getAidx());
+		int cnt = am.approvalDelete(av.getAidx());
 		
 		return cnt;
 		
@@ -120,14 +120,13 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 
 	        // isbn으로 도서 bidx를 찾아서 av에 저장
 	        int bidx = bookService.findBookByIsbnToBidx(isbn);
-		    av.setBidx(bidx);
 		    
 			// 도서선택으로 기안 등록시 rqidx는 null로 저장
 			hm.put("rqidx", null);
-			hm.put("bidx", av.getBidx());
+			hm.put("bidx", bidx);
 		}
 
-		int value = lm.approvalInsert(hm);
+		int value = am.approvalInsert(hm);
 	    
 		// 쿼리 반환값이 BigInteger 형식이므로 int 형식으로 변환 필요
 		int maxAidx = ((Number) hm.get("maxAidx")).intValue();
@@ -140,7 +139,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	public ApprovalVo approvalSelectAv(int aidx) {
 		
-		ApprovalVo av = lm.approvalSelectAv(aidx);
+		ApprovalVo av = am.approvalSelectAv(aidx);
 		
 		return av;
 		
@@ -149,7 +148,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	// 게시글 수정과 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	public int approvalUpdate(ApprovalVo av) throws Exception{
+	public int approvalUpdate(ApprovalVo av, BookVo bv) throws Exception{
 		
 		// 희망도서선택으로 기안 등록하는 경우와 도서선택으로 기안 등록하는 경우 데이터가 다르므로 HashMap 사용
 		HashMap<String,Object> hm = new HashMap<String,Object>();
@@ -175,10 +174,30 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 			// 도서선택으로 기안 등록시 rqidx는 null로 저장
 			hm.put("rqidx", null);
 			hm.put("bidx", av.getBidx());
+			
+			
+			// 도서선택으로 기안 수정하는 경우 도서 DB에 도서 정보 저장 필요(단, 이미 등록된 경우 생략)
+		    // isbn으로 Book 테이블에 책이 저장되어있는지 확인
+		    String isbn =  bv.getIsbn();
+		    int cnt = bookService.findBookByIsbnToCount(isbn);
+		    
+		    if(cnt == 0) {
+		    	// Book 테이블에 책이 없을 경우 알라딘 API에서 isbn으로 도서정보 가져와서 등록
+			    bv = aladdinOpenAPI.lookUpBookDetail(isbn);
+		    	int bookInsertValue = bookService.insertBook(bv);
+		    }
+
+	        // isbn으로 도서 bidx를 찾아서 av에 저장
+	        int bidx = bookService.findBookByIsbnToBidx(isbn);
+		    
+			// 도서선택으로 기안 등록시 rqidx는 null로 저장
+			hm.put("rqidx", null);
+			hm.put("bidx", bidx);
+			
 		}
 		
 		// 수정한 게시글 정보를 DB에 반영
-		int value = lm.approvalUpdate(hm);
+		int value = am.approvalUpdate(hm);
 
 //		if (true) {
 //	        // 예외 발생 → 트랜잭션 rollback 테스트
@@ -187,4 +206,23 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		
 		return value;
 	};
+	
+	public int approvalProcessing(ApprovalVo av) {
+		
+		if(av.getRejectionReason() != null) {
+			// 결재 반려
+			av.setStatus("반려");
+			
+		} else {
+			// 결재 승인
+			av.setStatus("승인");
+		}
+		
+		// 결재 정보를 DB에 반영
+		int value = am.processingUpdate(av);
+		
+		return value;
+		
+	};
+	
 }
