@@ -161,9 +161,17 @@
 	<update id="updateReservation" parameterType="libraryGarden.domain.ReservationDto">
 	  UPDATE RESERVATION
 	    SET pickupDate = #{pickupDate},
-	        dueDate    = #{dueDate}
+	        dueDate    = #{dueDate},
+	        `modify`   = NOW()
 	  WHERE ridx = #{ridx}
 	</update>
+	
+	  <!-- 사용자(user) 존재 여부 확인용 -->
+  <select id="countUserByNumber" parameterType="String" resultType="int">
+    SELECT COUNT(*) 
+      FROM `USER` 
+     WHERE userNumber = #{userNumber}
+  </select>
 	
 	
 	

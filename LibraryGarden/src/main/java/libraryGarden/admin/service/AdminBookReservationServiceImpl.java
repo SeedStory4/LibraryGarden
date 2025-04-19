@@ -239,6 +239,11 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
     public int updateReservation(ReservationDto reservation) {
         return rm.updateReservation(reservation);
     }
+    
+    @Override
+    public int countUserByNumber(String userNumber) {
+        return rm.countUserByNumber(userNumber);
+    }
 
 
 

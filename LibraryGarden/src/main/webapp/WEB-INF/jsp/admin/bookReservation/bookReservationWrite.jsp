@@ -184,84 +184,9 @@
 $(document).ready(function() {
     // select2 초기화
     $('.js-example-basic-single').select2();
-
-    // 제목 클릭 시 모달 열기 + 예약현황 AJAX 호출
-	$('.openReservationModal').on('click', function (e) {
-	  e.preventDefault();
-	  
-	  // 1) 이전 예약 데이터 제거
-	  if (window.myCalendar) {
-	    window.myCalendar.removeAllEvents(); // 이전 이벤트 제거
-	  }
-	  window.disabledDates = [];
-	  window.disabledReasons = {};
-	
-	  // 도서 상태 체크
-	  const $row = $(this).closest('tr');
-	  const statusText = $row.find('td').last().text().trim();
-	  if (statusText === "대출불가") {
-	    alert("예약이 불가한 도서입니다.");
-	    return;
-	  }
-	
-	  const lbidx = $(this).data('lbidx');
-	  // 전역 변수에 저장! (이 코드가 없으면 registerReservation.do로 post하지 않음)
-	  window.lbidx = lbidx;
-	  const userNumber = $('#userNumber').val();
-	
-	  $.ajax({
-	    url: '${pageContext.request.contextPath}/admin/bookReservation/getReservedDates.do',
-	    type: 'GET',
-	    data: {
-	      lbidx: lbidx,
-	      userNumber: userNumber
-	    },
-	    success: function (data) {
-	      window.disabledDates = data.map(d => d.date);
-	      window.disabledReasons = {};
-	      data.forEach(d => {
-	        window.disabledReasons[d.date] = d.reason;
-	      });
-	
-	      // 모달을 보여주기 전에 달력을 현재 날짜로 초기화
-	      if (window.myCalendar) {
-	        window.myCalendar.gotoDate(new Date());
-	      }
-	      $('#reservationModal').show();
-	
-          // 강제 재렌더링
-          if (window.myCalendar) {
-            window.myCalendar.removeAllEvents();
-            window.myCalendar.render();
-            window.myCalendar.refetchEvents();
-          }
-        },
-        error: function () {
-          alert("예약 현황을 불러오지 못했습니다.");
-        }
-      });
-    });
-
-
-    $('#closeModal').on('click', function() {
-        window.selectedDate = null;
-        document.getElementById("selectedDate").textContent = "선택 없음";
-        document.querySelectorAll(".fc-day-selected").forEach((el) => {
-            el.classList.remove("fc-day-selected");
-        });
-        $('#reservationModal').hide();
-    });
 });
 
-// 회원번호 확인 함수
-function numberCheck() {
-    let userNumber = $("#userNumber").val();
-    if (!userNumber) {
-        alert("회원번호를 입력해주세요.");
-        return;
-    }
-    location.href = "${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do?userNumber=" + userNumber;
-}
+
 </script>
 
 </body>
