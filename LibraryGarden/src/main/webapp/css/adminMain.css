@@ -648,3 +648,6 @@ table td { padding: 5px; }
 
 .max-w-600{max-width: 600px;}
 .self-start{align-self: flex-start;}
+
+/* modal */
+#closeRejectionModal.btn-primary { background: var(--btn-primary); }

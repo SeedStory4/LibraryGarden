@@ -105,7 +105,7 @@ public class AdminApprovalController {
 		
 		logger.info("📝 approvalDeleteAction 들어옴");		
 		
-		// 희망도서로 등록된 기안 삭제시 희망도서 상태를 신청대기로 변경
+		// aidx로 ApprovalVo 가져오기
 		ApprovalVo av = approvalService.approvalSelectAv(aidx);
 
 		// 이동할 주소 초기화
@@ -233,20 +233,34 @@ public class AdminApprovalController {
 	
 	@RequestMapping(value="/{aidx}/approvalModifyAction.do", method=RequestMethod.POST)
 	public String approvalModifyAction(
-			ApprovalVo av,
+			@RequestParam(value = "type") String type,
+			@RequestParam(value = "num") String num,
+			@PathVariable("aidx") int aidx,
 			HttpServletRequest request,
 			RedirectAttributes rttr
 			) {
 		
 		logger.info("📝 approvalModifyAction 들어옴");
 
+		ApprovalVo av = new ApprovalVo();
+		BookVo bv = new BookVo();
+		
+		// 해당 기안 수정을 위해 aidx를 av 안에 세팅
+		av.setAidx(aidx);
+
 		// 이동할 주소 초기화
 		String path = "";
+		
+		if(type.equals("rqidx")) {
+			av.setRqidx(Integer.parseInt(num));
+		} else {
+			bv.setIsbn(num);
+		}
 		
 		try {
 			// 수정한 게시글 정보를 DB에 저장 및 기존에 등록된 도서가 희망도서로 등록한 경우 희망도서의 상태를 "신청대기"로 변경.
 			// 변경한 도서가 희망도서로 등록한 경우 희망도서의 상태를 "신청중"으로 변경.
-			int value = approvalService.approvalUpdate(av);
+			int value = approvalService.approvalUpdate(av, bv);
 			
 			// 게시글 수정 후 이동할 url 및 메세지 설정
 			rttr.addFlashAttribute("msg", "글수정이 성공했습니다.");
@@ -259,5 +273,27 @@ public class AdminApprovalController {
 		}
 				
 		return path;
+	}
+	
+	// 기안 반려/승인
+	@ResponseBody
+	@RequestMapping(value="/{aidx}/approvalProcessingAction.do", method=RequestMethod.POST)
+	public HashMap<String, Object> approvalProcessingAction(
+			ApprovalVo av,
+			@PathVariable("aidx") int aidx
+			) {
+		
+		logger.info("📝 approvalProcessingAction 들어옴");
+		
+		// 해당 기안 반려를 위해 aidx를 av 안에 세팅
+		av.setAidx(aidx);
+		
+		// 기안 반려시 기안 상태를 "신청반려"로 변경 및 반려 사유 등록, 기안 승인시 기안 상태를 "신청완료"로 변경
+		int value = approvalService.approvalProcessing(av);
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("rejectionReason", av.getRejectionReason());
+		
+		return hm;
 	}
 }

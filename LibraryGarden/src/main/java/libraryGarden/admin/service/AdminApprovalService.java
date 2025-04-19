@@ -22,4 +22,7 @@ public interface AdminApprovalService {
 	public ApprovalVo approvalSelectAv(int aidx);
 
 	public int approvalUpdate(ApprovalVo av, BookVo bv) throws Exception;
+	
+	public int approvalProcessing(ApprovalVo av);
+	
 }
