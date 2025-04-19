@@ -25,6 +25,8 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 
 /**
@@ -58,11 +60,14 @@ public class AladdinOpenAPI {
 	// 알라딘 상품 검색 API 메서드
 	public ApiBookPageDto searchBooksList(String searchWord, String queryType , int start) throws Exception {
 		
+		String query = searchWord;
+		String encodedQuery = URLEncoder.encode(query, StandardCharsets.UTF_8);
+		
 		//logger.debug("🔍 AladdinOpenAPI searchBooksList 들어옴");
 		// URL 파라미터 구성
 		Map<String,Object> hm = new HashMap<String,Object>();
 		hm.put("ttbkey", aladinKey);
-		hm.put("Query", searchWord);
+		hm.put("Query", encodedQuery);
 		hm.put("QueryType", queryType);
 		hm.put("MaxResults", "12");
 		hm.put("start", start);
@@ -81,7 +86,7 @@ public class AladdinOpenAPI {
 		}
 
 		String booksSearchListUrl = BOOKS_SEARCH_LIST + sb.toString();
-		//logger.debug("AladdinOpenAPI searchBooksList booksSearchListUrl : " + booksSearchListUrl);
+		logger.debug("AladdinOpenAPI searchBooksList booksSearchListUrl : " + booksSearchListUrl);
 		  
 		// HTTP 요청
 	    URL url = new URL(booksSearchListUrl);
@@ -103,7 +108,7 @@ public class AladdinOpenAPI {
 	    }
 	    rd.close();
 	    conn.disconnect();
-	    //logger.debug("AladdinOpenAPI searchBooksList Raw JSON 응답: " + response.toString());
+	    logger.debug("AladdinOpenAPI searchBooksList Raw JSON 응답: " + response.toString());
 	    
 	    // JSON 파싱
 	    ObjectMapper mapper = new ObjectMapper();
@@ -145,10 +150,10 @@ public class AladdinOpenAPI {
 	    	// 책 정가
 	    	bv.setPrice(Integer.valueOf(node.path("priceStandard").asText()));
 	    	
-	    	// logger.debug("AladdinOpenAPI searchBooksList bv 확인 "+" 표지/coverImg: "+bv.getCoverImg()
-	    	// +" \n체목/title: "+bv.getTitle()+" 저자/author: "+bv.getAuthor()
-	    	// +" \n출판사/publisher: "+bv.getPublisher()+" 출판일/publishedYear: "+bv.getPublishedYear()+" isbn/isbn: "+bv.getIsbn()
-	    	// +" \n카테고리/category: "+bv.getCategory()+" 한줄요약/introduction: "+bv.getIntroduction()+" 정가/price: "+bv.getPrice());
+	    	logger.debug("AladdinOpenAPI searchBooksList bv 확인 "+" 표지/coverImg: "+bv.getCoverImg()
+	    	+" \n체목/title: "+bv.getTitle()+" 저자/author: "+bv.getAuthor()
+	    	+" \n출판사/publisher: "+bv.getPublisher()+" 출판일/publishedYear: "+bv.getPublishedYear()+" isbn/isbn: "+bv.getIsbn()
+	    	+" \n카테고리/category: "+bv.getCategory()+" 한줄요약/introduction: "+bv.getIntroduction()+" 정가/price: "+bv.getPrice());
 	        
 	    	blist.add(bv);
 	    }
