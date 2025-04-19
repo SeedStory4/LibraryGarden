@@ -132,8 +132,11 @@ public class UserServiceImpl implements UserService {
     public int countUsers(SearchCriteria cri) {
         return userMapper.countUsers(cri);
     }
-
-
+    
+    @Override
+    public void updateAdminUser(UserVo user) {
+        userMapper.updateAdminUser(user);  // Mapper 호출
+    }
 
 
 

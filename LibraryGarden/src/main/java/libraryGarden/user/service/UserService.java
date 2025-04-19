@@ -42,6 +42,9 @@ public interface UserService {
     List<UserVo> searchUsersByCriteria(SearchCriteria cri);
     
     int countUsers(SearchCriteria cri);
+    
+    void updateAdminUser(UserVo user);
+
 
 
 }
