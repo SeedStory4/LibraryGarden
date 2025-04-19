@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -10,8 +12,18 @@
 </head>
 <body>
 
-	<!-- 헤더가 로드될 부분 -->
-	<jsp:include page="/admin/adminHeader.do" />
+	
+		<!-- 헤더가 로드될 부분 역활(role)에 따른 헤더 변경 -->
+		 <div id="header-container">
+			<c:choose>
+			  <c:when test="${sessionScope.loginUser.role == '도서관장' || sessionScope.loginUser.role == '사서'}">
+			    <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
+			  </c:when>
+			  <c:otherwise>
+			    <jsp:include page="/WEB-INF/jsp/user/userHeader.jsp"/>
+			  </c:otherwise>
+			</c:choose>
+		  </div>
 
 	<div class="wrapper">
 		<div class="inner">
@@ -27,43 +39,51 @@
 				<div class="draft-content">
 					<div class="mb-21">
 						<p class="font-767678-18">이름</p>
-						<p class="font-000-20">김이슬</p>
+						<p class="font-000-20">${user.name}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">회원번호</p>
-						<p class="font-000-20">032709</p>
+						<p class="font-000-20">${user.userNumber}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">아이디</p>
-						<p class="font-000-20">dltmf1045</p>
+						<p class="font-000-20">${user.id}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">휴대전화번호</p>
-						<p class="font-000-20">0109171192</p>
+						<p class="font-000-20">${user.phone}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">이메일</p>
-						<p class="font-000-20">dltmf1045@gmail.com</p>
+						<p class="font-000-20">${user.email}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">주소</p>
-						<p class="font-000-20">대전 광역시 서구 갈마동 333-33 222호</p>
+						<p class="font-000-20">${user.address}</p>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">권한</p>
-						<p class="font-000-20">일반 회원</p>
+						<p class="font-000-20">${user.role}</p>
 					</div>
 					<div class="mb-42">
 						<p class="font-767678-18">가입일</p>
-						<p class="font-000-20">2025.03.05</p>
+						<p class="font-000-20">${user.date}</p>
 					</div>
 				</div>
 
 	
+				
 				<!-- 등록/취소 버튼 -->
 				<div class="draft-actions mb-37">
-					<button class="draft-btn-small btn-submit-140">수정</button>
-					<button class="draft-btn-small btn-cancel-140">취소</button>
+					<c:if test="${sessionScope.loginUser.role == '도서관장' || sessionScope.loginUser.role == '사서'}">
+						<form action="${pageContext.request.contextPath}/admin/user/userModify.do" method="get" style="display:inline;">
+							<input type="hidden" name="id" value="${user.id}" />
+							<button type="submit" class="draft-btn-small btn-submit-140">수정</button>
+						</form>
+					</c:if>
+					<a href="${pageContext.request.contextPath}/admin/user/userList.do">
+						<button class="draft-btn-small btn-cancel-140">취소</button>
+					</a>
 				</div>
 			</section>
 		</div>
@@ -71,6 +91,8 @@
 
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" />
+	<div id="footer-container">
+		<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
+    </div>
 </body>
 </html>
