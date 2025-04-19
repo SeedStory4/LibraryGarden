@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,7 +37,7 @@
 					<ul class="tab flex gap-3">
 						<li class="on shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageLoanList.do">대출이력</a></li>
 						<li class="shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageReservationList.do">예약관리</a></li>
-						<li class="shadow"><a href="#">도서신청관리</a></li>
+						<li class="shadow"><a href="${pageContext.request.contextPath}/user/myPage/myPageRequestList.do">도서신청관리</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -64,9 +65,13 @@
 									<th>연장</th>
 								</tr>
 							</thead>
+							
+							  <jsp:useBean id="now" class="java.util.Date" scope="page"/>
+							
 							<tbody>
-								<c:forEach var="loan" items="${loanList['loanList']}"
-									varStatus="status">
+								<c:forEach var="loan" items="${loanList['loanList']}" varStatus="status">
+								  <!-- 문자열 "yyyy-MM-dd" → Date -->
+  								  <fmt:parseDate value="${loan.dueDate}" pattern="yyyy.MM.dd" var="dueObj"/>
 									<tr>
 										<td>${status.index + 1}</td>
 										<!-- 순차적인 번호 출력 -->
@@ -81,9 +86,9 @@
 											class="${loan.status == '대출중' ? 'blue' : loan.status == '연체반납' ? 'red' : 'green'}">
 											${loan.status}</td>
 										<td>
-										  	<c:if test="${loan.status == '대출중' && loan.extended != 'Y'}">
-    											<button class="btn btn-small btn-secondary1" onclick="extendLoan(${loan.lidx})">연장</button>
-  											</c:if>
+										  <c:if test="${loan.status == '대출중' and loan.extended != 'Y' and dueObj >= now}">
+  											<button class="btn btn-small btn-secondary1" onclick="extendLoan(${loan.lidx})">연장</button>
+										  </c:if>
 										</td>
 									</tr>
 								</c:forEach>

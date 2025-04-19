@@ -146,10 +146,16 @@
 		ORDER BY date DESC, userNumber DESC
 		LIMIT #{startRow}, #{perPageNum}
 	</select>
-	
-	
-		
-	
+
+	<update id="updateAdminUser" parameterType="libraryGarden.domain.UserVo">
+	    UPDATE user
+	    SET phone = #{phone},
+	        email = #{email},
+	        address = #{address},
+	        role = #{role}
+	    WHERE id = #{id}
+	</update>
+
 	
 
 </mapper>

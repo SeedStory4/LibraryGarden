@@ -33,6 +33,9 @@ public interface UserMapper {
     List<UserVo> searchUsersByCriteria(SearchCriteria cri);
     
     int countUsers(SearchCriteria cri);
+    
+    void updateAdminUser(UserVo user);
+
 
 
 

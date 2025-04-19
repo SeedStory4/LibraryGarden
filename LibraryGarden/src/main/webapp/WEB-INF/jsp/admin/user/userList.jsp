@@ -71,7 +71,9 @@
 							    <tr>
 							      <td>${pageMaker.totalCount - ((cri.page - 1) * cri.perPageNum) - status.index}</td> <!-- 역순으로 번호 출력 -->
 							      <td>${user.name}</td>
-							      <td>${user.id}</td>
+							      <td><a href="${pageContext.request.contextPath}/admin/user/userDetail.do?id=${user.id}" class="link">
+								    ${user.id}
+								  </a></td>
 							      <td>${user.phone}</td>
 							      <td>${user.role}</td>
 							      <td>${user.date}</td>

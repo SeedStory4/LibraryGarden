@@ -233,6 +233,20 @@ public class AdminBookReservationController {
 	    }
 	    return resp;
 	  }
+	  
+	  //예약 등록 회원 존재 여부 체크
+	  @ResponseBody
+	  @GetMapping("/checkUser.do")
+	  public Map<String, Object> checkUser(@RequestParam String userNumber) {
+	      Map<String, Object> resp = new HashMap<>();
+	      // adminBookReservationService 쪽으로 위 count를 호출
+	      boolean exists = adminBookReservationService.countUserByNumber(userNumber) > 0;
+	      resp.put("exists", exists);
+	      if (!exists) {
+	        resp.put("message", "회원번호가 존재하지 않습니다.");
+	      }
+	      return resp;
+	  }
 
 
 }

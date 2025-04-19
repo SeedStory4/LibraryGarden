@@ -23,6 +23,7 @@ public interface AdminBookReservationService {
     List<Map<String,String>> getUnavailableDatesForModify(int lbidx, String userNumber, int ridx);
     // 실제 수정
     int updateReservation(ReservationDto reservation);
+    int countUserByNumber(String userNumber);
 
     
 
