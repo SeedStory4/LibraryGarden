@@ -118,7 +118,7 @@
 	</div>
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" />
+	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 <script>
 function extendLoan(lidx) {
     if (!confirm("해당 대출의 반납예정일을 7일 연장하시겠습니까?")) {
