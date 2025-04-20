@@ -15,7 +15,7 @@ function numberCheck(page = currentPage, perPageNum = currentPerPageNum) {
     var userNumber = $('#userNumber').val();
 
     $.ajax({
-        url: '/sht_webapp/admin/bookLoan/checkUserLoanStatus.do',
+        url: '/admin/bookLoan/checkUserLoanStatus.do',
         type: 'GET',
         data: { userNumber: userNumber, page: page, perPageNum: perPageNum },
         dataType: 'json',
@@ -118,7 +118,7 @@ function addBook() {
     }
 
     $.ajax({
-        url: '/sht_webapp/admin/bookLoan/checkBookStatus.do',
+        url: '/admin/bookLoan/checkBookStatus.do',
         type: 'POST',
         data: { code: code },
         success: function (response) {
@@ -133,7 +133,7 @@ function addBook() {
             }
 
             $.ajax({
-                url: '/sht_webapp/admin/bookLoan/addBookLoan.do',
+                url: '/admin/bookLoan/addBookLoan.do',
                 type: 'POST',
                 data: { userNumber: userNumber, code: code },
                 success: function (response) {
@@ -159,7 +159,7 @@ function deleteLoan(lidx) {
     if (!confirm("정말로 삭제하시겠습니까?")) return;
 
     $.ajax({
-        url: '/sht_webapp/admin/bookLoan/deleteLoan.do',
+        url: '/admin/bookLoan/deleteLoan.do',
         type: 'POST',
         data: { lidx: lidx },
         success: function (response) {
@@ -177,7 +177,7 @@ function returnLoan(lidx) {
     if (!confirm("반납 처리하시겠습니까?")) return;
 
     $.ajax({
-        url: '/sht_webapp/admin/bookLoan/returnLoan.do',
+        url: '/admin/bookLoan/returnLoan.do',
         type: 'POST',
         data: { lidx: lidx },
         success: function (response) {
