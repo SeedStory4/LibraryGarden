@@ -1,6 +1,9 @@
 package libraryGarden.admin.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -9,12 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.admin.service.AdminBookService;
+import libraryGarden.cmm.util.UrlEncoder;
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
+import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.controller.Book1Controller;
 import libraryGarden.user.service.LibraryBookService;
@@ -171,5 +180,61 @@ public class AdminBookController {
 	@GetMapping("/popBookSelect.do")
 	public String popBookSelect() {
 		return "admin/book/popBookSelect";
+	}
+	
+	// 도서 선택 팝업 페이지 이동 ajax
+	@PostMapping("/bookSelectList.do")
+	@ResponseBody
+	public HashMap<String, Object> bookSelectList(
+			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
+			@RequestParam(value = "keyword", defaultValue = "") String keyword,
+			@RequestParam(value = "page", defaultValue = "1") int page,
+			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx
+	) {
+		
+		logger.info("bookList 들어옴");
+		
+		 // 사용자가 입력한 검색조건과 검색어 저장
+		 SearchCriteria scri = new SearchCriteria();
+		 scri.setSearchType(searchType);
+		 scri.setKeyword(keyword);
+		 scri.setPage(page);
+		 pm.setScri(scri);
+		 
+		 // 결재도서 중 "승인" 상태의 데이터만 보여주기 위해서 filter 설정
+		 String filter = "승인";
+		 
+		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
+		 int cnt = adminBookService.bookApprovalTotalCount(scri, filter, selectedAidx);
+		 pm.setTotalCount(cnt);
+		 
+		 
+		 // 목록에서 보여줄 데이터 DB에서 가져오기
+		 List<Map<String, Object>> blist = adminBookService.bookApprovalSelectAll(scri, filter, selectedAidx);
+		 
+		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
+		 UrlEncoder encoder = new UrlEncoder();
+		 scri.setKeyword(encoder.encoding(scri.getKeyword()));
+		 
+		 HashMap<String, Object> hm = new HashMap<String, Object>();
+		 hm.put("blist", blist);
+		 hm.put("pm", pm);
+		 
+		 return hm;
+	}
+	
+	// 도서 선택 팝업에서 선택한 책 정보 가지고오기 ajax
+	@PostMapping("/bookSelectOne")
+	@ResponseBody
+	public BookVo bookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
+		
+		logger.info("bookList 들어옴");
+		
+		 // 동록에서 보여줄 데이터 DB에서 가져오기
+		 BookVo vo = adminBookService.bookApprovalSelectOne(aidx);
+		 
+		 
+
+		 return vo;
 	}
 }
