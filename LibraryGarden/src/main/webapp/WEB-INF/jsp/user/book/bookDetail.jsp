@@ -195,7 +195,7 @@
     </div>
 
 	<!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" />
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 	<script>
   		var contextPath = '${pageContext.request.contextPath}';
 	</script>
