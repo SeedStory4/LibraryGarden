@@ -16,11 +16,48 @@
 			AND U.name LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		
-		<if test="filter != null">
+		<if test="filter != null and filter != ''">
 			AND RQ.status = #{filter} 
 		</if>
 	</sql>
 	
+	<!-- 신청한 희망 도서 책의 갯수(필터 포함) -->
+  	<select id="getBookRequestTotalCount" parameterType="HashMap" resultType="int" >
+		SELECT COUNT(*) 
+		FROM REQUEST AS RQ
+		JOIN USER AS U ON RQ.uidx = U.uidx 
+		JOIN BOOKS AS B ON RQ.bidx = B.bidx 
+		WHERE RQ.delyn = 'N' 
+		<include refid="search"/>
+	</select>
+	
+	<!-- 신청한 희망 도서 책의 리스트(필터 포함) -->
+ 	<select id="getBookRequestSelectAll" parameterType="HashMap" resultType="rd">
+		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, RQ.rqidx, RQ.regDate, RQ.status, RQ.rejectionReason
+		FROM REQUEST AS RQ
+		JOIN USER AS U ON RQ.uidx = U.uidx 
+		JOIN BOOKS AS B ON RQ.bidx = B.bidx 
+		WHERE RQ.delyn = 'N' 
+		<include refid="search"/>
+		ORDER BY RQ.rqidx DESC LIMIT #{startPageNum}, #{perPageNum};
+	</select>
+	
+	<!-- 신청한 희망 도서 책 상세 -->
+	<select id="getBookRequestSelectone" resultType="map">
+		SELECT B.coverImg, B.title, B.originalTitle, B.subtitle, B.author, B.publisher, B.publishedYear, B.isbn, B.totalPages, B.sizeWidth, B.sizeHeight, B.weight, B.category, B.introduction, B.price, U.name, U.userNumber, RQ.rqidx, RQ.status, DATE_FORMAT(RQ.regDate, '%Y.%m.%d') AS regDate, RQ.rejectionReason
+		FROM request RQ
+		JOIN books B ON RQ.bidx = B.bidx
+		JOIN `user` U ON RQ.uidx = U.uidx
+		WHERE RQ.rqidx = #{rqidx} AND U.delyn = "N" AND B.delyn = "N" AND RQ.delyn = "N"
+	</select>
+	
+	<!-- 희망 도서 상세 페이지에서 상태 및 반려 사유 수정 -->
+    <update id="modifyBookRequest" >
+	    UPDATE request
+	    SET status = #{status}, rejectionReason = #{rejectionReason}
+	    WHERE rqidx = #{rqidx} 
+    </update>
+    
   	<select id="bookRequestTotalCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*) AS cnt 
 		FROM REQUEST AS RQ 
