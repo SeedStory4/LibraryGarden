@@ -21,7 +21,9 @@ public class BookVo {
     private String regdate;
     private String modify;
     private String delyn;
-	public int getBidx() {
+   
+	
+    public int getBidx() {
 		return bidx;
 	}
 	public void setBidx(int bidx) {
@@ -136,8 +138,6 @@ public class BookVo {
 		this.delyn = delyn;
 	}
 	
-    
-    
     
 
 
