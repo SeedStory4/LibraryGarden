@@ -276,7 +276,7 @@
 						 }
 						 
 						 pagecontent += 
-							 `" onClick="loadList(\${i+1}, '\${listUrl}')">\${i}</a>
+							 `" onClick="loadList(\${i}, '\${listUrl}')">\${i}</a>
 						 	</li>`;
 					 }
 					 
@@ -383,8 +383,8 @@
 		 		   return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
 		 		 }
 		         document.querySelector(".price").innerText = addComma(String(bv.price)) + "원";
-		         
-		         // controller에 보내기 위해 희망도서 idx 저장하기
+
+		         // controller에 보내기 위해 희망도서 type과 num 저장하기
 				 document.frm.type.value = type;
 				 document.frm.num.value = num;
 		         

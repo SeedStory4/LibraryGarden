@@ -23,7 +23,7 @@
 
 	<div class="wrapper">
 		<section class="section p-0">
-			<h2 class="section-title m-0 normal relative">도서예약 목록<button class="btn btn-primary absolute">도서예약등록</button></h2>
+			<h2 class="section-title m-0 normal relative">도서예약 목록<button class="btn btn-primary absolute" onclick="location.href = contextPath + '/admin/bookReservation/bookReservationWrite.do'">도서예약등록</button></h2>
 			
 			<div class="contents">
 			<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}" />
@@ -82,7 +82,8 @@
 									         data-ridx="${r.ridx}"
 									         data-lbidx="${r.lbidx}"
 									         data-usernumber="${r.userNumber}"
-									         data-pickupdate="${r.pickupDate}">
+									         data-pickupdate="${r.pickupDate}"
+									         data-status="${r.status}">
 									        ${r.title}
 									      </a>
 									    </td>
@@ -181,23 +182,6 @@
 	  $(document).ready(function() {
 		    // select2 초기화
 		    $('.js-example-basic-single').select2();
-
-		    // 모달 표시 버튼
-		    $('.openReservationModifyModal').on('click', function(e) {
-		      e.preventDefault();
-		      $('#modifyModal').show();
-		      if (window.myCalendar) {
-		        window.myCalendar.updateSize();
-		      }
-		    });
-
-		    // 모달 닫기 버튼
-		    $('#closeModal').on('click', function() {
-		      window.selectedDate = null;
-		      $('#selectedDate').text('선택 없음');
-		      $('.fc-day-selected').removeClass('fc-day-selected');
-		      $('#modifyModal').hide();
-		    });
 		  });
 	  
 		function cancelReservation(ridx) {
