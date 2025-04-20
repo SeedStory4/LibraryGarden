@@ -1,7 +1,10 @@
 package libraryGarden.admin.service;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import libraryGarden.domain.BookVo;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.SearchCriteria;
 
@@ -12,7 +15,12 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
- * 
+ *  - 관리자가 승인한 도서 책 갯수 조회 메서드
+ *  - 관리자가 승인한 도서 책 리스트 조회 메서드
+ *  - 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
+ *  
+ *  
+ *  
  * @author SiYeon
  *
  */
@@ -29,4 +37,14 @@ public interface AdminBookService {
 	
 	// 관리자 도서관 책 삭제 매서드
 	public int BookDeleteOne(int lbidx);
+	
+	// 관리자가 승인한 도서 책 갯수 조회 메서드
+	public int bookApprovalTotalCount(SearchCriteria scri, String filter, int selectedAidx);
+	
+	// 관리자가 승인한 도서 책 리스트 조회 메서드
+	public List<Map<String, Object>> bookApprovalSelectAll(SearchCriteria scri, String filter, int selectedAidx);
+
+	// 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
+	public BookVo bookApprovalSelectOne(int aidx);
+
 }

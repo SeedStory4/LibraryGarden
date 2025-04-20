@@ -6,7 +6,7 @@
 	
 	<sql id="search">
 		<if test="searchType != null and searchType.equals('title')">
-			AND  b.title LIKE CONCAT('%',#{keyword},'%')
+			AND b.title LIKE CONCAT('%',#{keyword},'%')
 		</if>
 		<if test="searchType != null and searchType.equals('author')">
 			AND b.author LIKE CONCAT('%',#{keyword},'%')
