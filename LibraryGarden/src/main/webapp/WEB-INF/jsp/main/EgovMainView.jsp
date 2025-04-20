@@ -210,7 +210,7 @@
         <td>목록</td>
         <td rowspan="2">김시연</td>
         <td><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestList.do">bookRequestList</a></td>
-        <td rowspan="2">BookRequest2Controller</td>
+        <td rowspan="2">BookRequestController</td>
       </tr>
       <tr>
         <td>상세</td>
