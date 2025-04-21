@@ -81,8 +81,8 @@ CREATE TABLE LIBRARYBOOKS (
     lbidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bidx INT NOT NULL,
     cidx INT NOT NULL,
-    code VARCHAR(30) NOT NULL,
-    callName VARCHAR(30) NOT NULL,
+    code VARCHAR(30) NOT NULL UNIQUE ,
+    callName VARCHAR(30) NOT NULL UNIQUE ,
     location VARCHAR(50) NOT NULL DEFAULT '일반열람실',
     loanDate DATE,
     dueDate DATE,
@@ -365,8 +365,8 @@ VALUES
 (13, 3, 'SS000013', '020.113.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-15 16:30:00', NULL),
 (14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
 (15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL),
-(14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
-(15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
+(14, 4, 'SS000016', '030.114.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
+(15, 5, 'SS000017', '040.115.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
 -- LOAN 샘플 데이터 생성
 INSERT INTO LOAN (lbidx, uidx, loanDate, dueDate, returnDate, status, regdate, modify) 
 VALUES 
