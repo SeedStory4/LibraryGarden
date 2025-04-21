@@ -25,8 +25,8 @@ public class Book1ServiceImpl implements Book1Service{
 	
 	// isbn 으로 도서 데이터 여부 확인 메서드
 	@Override
-	public int findBookByIsbnToCount(String isbn) {
-		int cnt = bm.findBookByIsbnToCount(isbn);
+	public int getBookByIsbnToCount(String isbn) {
+		int cnt = bm.getBookByIsbnToCount(isbn);
 		return cnt;
 	}
 
@@ -39,8 +39,8 @@ public class Book1ServiceImpl implements Book1Service{
 
 	// isbn 으로 책 데이터 중 bidx 가지고 오는 메서드
 	@Override
-	public int findBookByIsbnToBidx(String isbn) {
-		int bidx = bm.findBookByIsbnToBidx(isbn);
+	public int getBookByIsbnToBidx(String isbn) {
+		int bidx = bm.getBookByIsbnToBidx(isbn);
 		return bidx;
 	}
 

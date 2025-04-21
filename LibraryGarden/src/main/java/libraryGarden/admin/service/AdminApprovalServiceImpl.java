@@ -110,7 +110,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 			// 도서선택으로 기안 등록하는 경우 도서 DB에 도서 정보 저장 필요(단, 이미 등록된 경우 생략)
 		    // isbn으로 Book 테이블에 책이 저장되어있는지 확인
 		    String isbn =  bv.getIsbn();
-		    int cnt = bookService.findBookByIsbnToCount(isbn);
+		    int cnt = bookService.getBookByIsbnToCount(isbn);
 		    
 		    if(cnt == 0) {
 		    	// Book 테이블에 책이 없을 경우 알라딘 API에서 isbn으로 도서정보 가져와서 등록
@@ -119,7 +119,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		    }
 
 	        // isbn으로 도서 bidx를 찾아서 av에 저장
-	        int bidx = bookService.findBookByIsbnToBidx(isbn);
+	        int bidx = bookService.getBookByIsbnToBidx(isbn);
 		    
 			// 도서선택으로 기안 등록시 rqidx는 null로 저장
 			hm.put("rqidx", null);
@@ -179,7 +179,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 			// 도서선택으로 기안 수정하는 경우 도서 DB에 도서 정보 저장 필요(단, 이미 등록된 경우 생략)
 		    // isbn으로 Book 테이블에 책이 저장되어있는지 확인
 		    String isbn =  bv.getIsbn();
-		    int cnt = bookService.findBookByIsbnToCount(isbn);
+		    int cnt = bookService.getBookByIsbnToCount(isbn);
 		    
 		    if(cnt == 0) {
 		    	// Book 테이블에 책이 없을 경우 알라딘 API에서 isbn으로 도서정보 가져와서 등록
@@ -188,7 +188,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		    }
 
 	        // isbn으로 도서 bidx를 찾아서 av에 저장
-	        int bidx = bookService.findBookByIsbnToBidx(isbn);
+	        int bidx = bookService.getBookByIsbnToBidx(isbn);
 		    
 			// 도서선택으로 기안 등록시 rqidx는 null로 저장
 			hm.put("rqidx", null);

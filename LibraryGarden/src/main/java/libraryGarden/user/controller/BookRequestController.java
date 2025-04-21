@@ -22,7 +22,7 @@ import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
-import libraryGarden.user.service.LibraryBookService;
+import libraryGarden.user.service.LibraryBooksService;
 import libraryGarden.user.service.Book1Service;
 import libraryGarden.user.service.BookRequestService;
 
@@ -54,11 +54,11 @@ public class BookRequestController {
 	
 	// BookRequestService 주입
 	@Autowired(required=false)
-	BookRequestService bookRequestService;
+	private BookRequestService bookRequestService;
 	
 	// BookRequestService 주입
 	@Autowired(required=false)
-	Book1Service bookService;
+	private Book1Service bookService;
 	
 	// 희망 도서 신청 목록 페이지 이동
 	@GetMapping("/bookRequestWrite.do")
@@ -136,7 +136,7 @@ public class BookRequestController {
 	    BookVo bv = aladdinOpenAPI.lookUpBookDetail(isbn);
 	    
 	    // isbn으로 책 여부 확인
-	    int cnt = bookService.findBookByIsbnToCount(isbn);
+	    int cnt = bookService.getBookByIsbnToCount(isbn);
 	    logger.debug("BookRequestController bookRequestWriteAction cnt "+cnt);
 	    
 	    // db Book 테이블에 책이 없고 새로 등록할때
@@ -148,7 +148,7 @@ public class BookRequestController {
 	    		logger.debug("책 등록 성공");
 	    		
 		        // 새로 등록한 책의 bidx 가져오기
-		        bidx = bookService.findBookByIsbnToBidx(isbn);
+		        bidx = bookService.getBookByIsbnToBidx(isbn);
 		        logger.debug("BookRequestController 책 없을 때 책 등록 성공 bidx "+bidx);
 		        
 		        // REQUEST 테이블에 희망도서 신청 등록
@@ -167,7 +167,7 @@ public class BookRequestController {
 	    // db Book 테이블에 책이 있을 때
 	    else {
 	    	// 신청한 책의 bidx 가져오기
-	        bidx = bookService.findBookByIsbnToBidx(isbn);
+	        bidx = bookService.getBookByIsbnToBidx(isbn);
 	        logger.debug("BookRequestController db Book 테이블에 책이 있을 때 bidx "+bidx);
 
 	        // REQUEST 테이블에 희망도서 신청 등록
