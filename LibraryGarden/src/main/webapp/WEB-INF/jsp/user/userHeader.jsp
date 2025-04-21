@@ -11,8 +11,8 @@
 		</a>
 		<nav class="nav">
 		<ul class="nav-menu">
-				<li><a href="#">도서조회</a></li>
-				<li><a href="#">희망도서신청</a></li>
+				<li><a href="<%= request.getContextPath() %>/user/book/bookList.do">도서조회</a></li>
+				<li><a href="<%= request.getContextPath() %>/user/bookRequest/bookRequestWrite.do">희망도서신청</a></li>
 				<li><a href="<%= request.getContextPath() %>/user/myPage/myPageLoanList.do">내 도서</a></li>
 		</ul>		
 			<ul class="nav-auth">	
