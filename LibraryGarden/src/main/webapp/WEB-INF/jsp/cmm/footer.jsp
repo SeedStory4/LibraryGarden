@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 
-	<footer class="admin-footer">
+	<footer class="footer">
 		<div class="footer-divider"></div>
 		<p>
 			© 2025 SeedStory. All rights reserved. 
