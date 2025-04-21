@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import libraryGarden.admin.service.AdminApproval2Service;
 import libraryGarden.admin.service.AdminBookService;
+import libraryGarden.admin.service.AdminLibraryBooksService;
 import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.LibraryBookDto;
@@ -26,7 +28,7 @@ import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.controller.Book1Controller;
-import libraryGarden.user.service.LibraryBookService;
+import libraryGarden.user.service.LibraryBooksService;
 
 /**
  * [설명] 관리자의 도서 관리 페이지
@@ -57,10 +59,14 @@ public class AdminBookController {
 
 	private static final Logger logger = LoggerFactory.getLogger(AdminBookController.class);
 
-	// AdminBookService 주입
+	// AdminApproval2Service 주입
 	@Autowired(required = false)
-	AdminBookService adminBookService;
-
+	private AdminApproval2Service adminApprovalService;
+	
+	// AdminLibraryBooksService 주입
+	@Autowired(required = false)
+	private AdminLibraryBooksService adminLibraryBooksService;
+	
 	// PageMaker 주입 (페이징 기능)
 	@Autowired(required = false)
 	private PageMaker pm;
@@ -80,7 +86,7 @@ public class AdminBookController {
 		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri)
 		 * [output] 조건에 따른 잭 전체 개수 cnt
 		 */
-		int cnt = adminBookService.BookTotalCount(scri);
+		int cnt = adminLibraryBooksService.getBookTotalCount(scri);
 
 		/*
 		 * 페이지 기능 
@@ -93,7 +99,7 @@ public class AdminBookController {
 		 * [input] 검색조건 외 페이지 기능 (scri) 
 		 * [output] 책 목록(alist)
 		 */
-		ArrayList<LibraryBookDto> lblist = adminBookService.BookSelectAll(scri);
+		ArrayList<LibraryBookDto> lblist = adminLibraryBooksService.getBookSelectAll(scri);
 
 		/*
 		 * Model를 통해 jsp로 이동 
@@ -115,7 +121,7 @@ public class AdminBookController {
 		 * [input] 도서관 책 인덱스(lbidx) 
 		 * [output] 책 상세(lbd)
 		 */
-		LibraryBookDto lbd = adminBookService.BookSelectOne(lbidx);
+		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
 		
 		/*
 		 * Model를 통해 jsp로 이동 
@@ -134,7 +140,7 @@ public class AdminBookController {
 		 * 도서관 책 삭제
 		 * [input] 도서관 책 인덱스(lbidx) 
 		 */
-		int value = adminBookService.BookDeleteOne(lbidx);
+		int value = adminLibraryBooksService.getBookDeleteOne(lbidx);
 		if (value==0) {
 			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
 			return "redirect:/admin/book/"+lbidx+"/bookDetail.do"; //삭제하지 못했을 때 삭제하려고 했던 페이지로 이동 
@@ -153,7 +159,7 @@ public class AdminBookController {
 		 * [input] 도서관 책 인덱스(lbidx) 
 		 * [output] 책 상세(lbd)
 		 */
-		LibraryBookDto lbd = adminBookService.BookSelectOne(lbidx);
+		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
 		
 		/*
 		 * Model를 통해 jsp로 이동 
@@ -205,12 +211,12 @@ public class AdminBookController {
 		 String filter = "승인";
 		 
 		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
-		 int cnt = adminBookService.bookApprovalTotalCount(scri, filter, selectedAidx);
+		 int cnt = adminApprovalService.getBookApprovalTotalCount(scri, filter, selectedAidx);
 		 pm.setTotalCount(cnt);
 		 
 		 
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
-		 List<Map<String, Object>> blist = adminBookService.bookApprovalSelectAll(scri, filter, selectedAidx);
+		 List<Map<String, Object>> blist = adminApprovalService.getBookApprovalSelectAll(scri, filter, selectedAidx);
 		 
 		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
 		 UrlEncoder encoder = new UrlEncoder();
@@ -228,13 +234,11 @@ public class AdminBookController {
 	@ResponseBody
 	public BookVo bookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
 		
-		logger.info("bookList 들어옴");
+		logger.info("bookSelectOne 들어옴");
 		
 		 // 동록에서 보여줄 데이터 DB에서 가져오기
-		 BookVo vo = adminBookService.bookApprovalSelectOne(aidx);
+		 BookVo bv = adminApprovalService.getBookApprovalSelectOne(aidx);
 		 
-		 
-
-		 return vo;
+		 return bv;
 	}
 }

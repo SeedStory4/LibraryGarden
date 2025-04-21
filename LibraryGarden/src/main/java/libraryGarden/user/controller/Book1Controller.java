@@ -21,7 +21,7 @@ import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
-import libraryGarden.user.service.LibraryBookService;
+import libraryGarden.user.service.LibraryBooksService;
 
 /**
  * [설명] 사용자의 도서 조회 관련 요청을 처리하는 컨트롤러 / webapp - user - book
@@ -48,7 +48,7 @@ public class Book1Controller {
 	
 	// book1Service 주입
 	@Autowired(required=false)
-	LibraryBookService libraryBookService;
+	LibraryBooksService libraryBookService;
 	
 	// PageMaker 주입 (페이징 기능)
 	@Autowired(required=false)
@@ -71,7 +71,7 @@ public class Book1Controller {
 		  * [input]	 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri) 
 		  * [output] 조건에 따른 잭 전체 개수 cnt
 		  */ 
-		 int cnt = libraryBookService.BookTotalCount(scri);
+		 int cnt = libraryBookService.getBookTotalCount(scri);
 		 
 		 /* 페이지 기능
 		  * [input] 조건에 따른 책 전체 개수 cnt
@@ -82,7 +82,7 @@ public class Book1Controller {
 		 * [input]	검색조건 외 페이지 기능 (scri)
 		 * [output] 책 목록(alist)
 		 */ 
-		ArrayList<LibraryBookDto> lblist = libraryBookService.BookSelectAll(scri);
+		ArrayList<LibraryBookDto> lblist = libraryBookService.getBookSelectAll(scri);
 		
 		/* Model를 통해 jsp로 이동
 		 * - lblist : 책 목록 리스트
@@ -104,18 +104,15 @@ public class Book1Controller {
 			Model model) {
 		logger.debug("bookDetail 들어옴");
 		
+	    // 로그인 유저가 없어도 상세보기는 가능해야 하니까 체크 안함 
 	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-	    if (loginUser == null) {
-	        return "redirect:/user/user/userLogin.do";
-	    }
-	    
-	    String userNumber = loginUser.getUserNumber();
+	    String userNumber = loginUser != null ? loginUser.getUserNumber() : "";
 		
 		/* 도서관 책 상세 조회
 		 * [input] 	도서관 책 인덱스(lbidx)
 		 * [output] 책 상세(lbd)
 		 */ 
-		LibraryBookDto lbd = libraryBookService.BookSelectOne(lbidx);
+		LibraryBookDto lbd = libraryBookService.getBookSelectOne(lbidx);
 		model.addAttribute("lbd", lbd);
 		model.addAttribute("userNumber", userNumber);
 		return "user/book/bookDetail";

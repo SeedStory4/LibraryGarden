@@ -52,9 +52,9 @@ public class AdminBookLoanController {
 
             // 대여 등록 로직
             adminBookLoanService.addBookLoan(userNumber, code);
-            return ResponseEntity.ok("대여 등록 성공");
+            return ResponseEntity.ok("대출 등록 성공");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대여 등록 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대출 등록 실패: " + e.getMessage());
         }
     }
 
@@ -74,9 +74,9 @@ public class AdminBookLoanController {
     public ResponseEntity<String> deleteLoan(@RequestParam int lidx) {
         try {
             adminBookLoanService.deleteLoan(lidx);
-            return ResponseEntity.ok("대여 삭제 성공");
+            return ResponseEntity.ok("대출 삭제 성공");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대여 삭제 실패: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대출 삭제 실패: " + e.getMessage());
         }
     }
     

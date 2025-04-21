@@ -73,7 +73,7 @@
 			b.title,
 			b.author,
 			b.publisher,
-			DATE_FORMAT(r.reservationDate, '%Y.%m.%d') AS reservationDate,
+			DATE_FORMAT(r.regDate, '%Y.%m.%d') AS regDate,
 			DATE_FORMAT(r.pickupDate, '%Y.%m.%d') AS pickupDate,
 			DATE_FORMAT(r.dueDate, '%Y.%m.%d') AS dueDate,
 			r.status
@@ -83,7 +83,7 @@
 		JOIN BOOKS b ON lb.bidx = b.bidx
 		CROSS JOIN (SELECT @rownum := 0) AS rnum
 		WHERE u.userNumber = #{userNumber}
-		ORDER BY r.reservationDate DESC
+		ORDER BY r.regDate DESC
 		LIMIT #{startPageNum}, #{perPageNum}
 	</select>
 

@@ -81,8 +81,8 @@ CREATE TABLE LIBRARYBOOKS (
     lbidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bidx INT NOT NULL,
     cidx INT NOT NULL,
-    code VARCHAR(30) NOT NULL,
-    callName VARCHAR(30) NOT NULL,
+    code VARCHAR(30) NOT NULL UNIQUE ,
+    callName VARCHAR(30) NOT NULL UNIQUE ,
     location VARCHAR(50) NOT NULL DEFAULT '일반열람실',
     loanDate DATE,
     dueDate DATE,
@@ -123,8 +123,8 @@ CREATE TABLE OVERDUE (
     lidx INT NOT NULL,
     uidx INT NOT NULL,
     status CHAR(1) NOT NULL DEFAULT 'Y',
-    startDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    endDate DATETIME,
+    startDate DATE NOT NULL,
+    endDate DATE,
     CONSTRAINT fk_overdue_loan FOREIGN KEY (lidx) REFERENCES LOAN(lidx) 
         ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_overdue_user FOREIGN KEY (uidx) REFERENCES USER(uidx) 
@@ -152,7 +152,7 @@ CREATE TABLE RESERVATION (
     ridx INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     lbidx INT NOT NULL,                           
     uidx INT NOT NULL,                            
-    reservationDate DATE NOT NULL,  
+    regDate DATE NOT NULL,  
     pickupDate DATE NOT NULL,                      
     status VARCHAR(50) NOT NULL DEFAULT '예약중',  
     dueDate DATE NOT NULL,                      
@@ -365,8 +365,8 @@ VALUES
 (13, 3, 'SS000013', '020.113.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-15 16:30:00', NULL),
 (14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
 (15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL),
-(14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
-(15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
+(14, 4, 'SS000016', '030.114.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
+(15, 5, 'SS000017', '040.115.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
 -- LOAN 샘플 데이터 생성
 INSERT INTO LOAN (lbidx, uidx, loanDate, dueDate, returnDate, status, regdate, modify) 
 VALUES 
@@ -402,7 +402,7 @@ VALUES (3, 1, '신청중', null),
 (4, 13, '신청중', null);
 
 
-INSERT INTO RESERVATION (lbidx, uidx, reservationDate, pickupDate, status, dueDate, modify)
+INSERT INTO RESERVATION (lbidx, uidx, regDate, pickupDate, status, dueDate, modify)
 VALUES
 (12, 3, '2025-03-24', '2025-03-25', '예약중', '2025-04-01', NULL),
 (13, 4, '2025-03-23', '2025-03-24', '예약취소', '2025-3-31', '2025-03-24 15:00:00'),
