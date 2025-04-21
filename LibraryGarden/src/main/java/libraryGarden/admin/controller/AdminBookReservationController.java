@@ -143,20 +143,20 @@ public class AdminBookReservationController {
 	        // 날짜 포맷 설정 (yyyy-MM-dd)
 	        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 	        // 현재 날짜를 예약 신청일로 사용
-	        Date reservationDate = new Date();
+	        Date regDate = new Date();
 	        // 사용자가 선택한 픽업 날짜 (문자열로 받은 값을 Date 객체로 변환)
 	        Date pickup = dateFormat.parse(pickupDate);
-	        // 반납예정일은 픽업 날짜에서 7일 후로 계산
+	        // 반납예정일은 픽업 날짜에서 6일 후로 계산
 	        Calendar cal = Calendar.getInstance();
 	        cal.setTime(pickup);
-	        cal.add(Calendar.DATE, 7);
+	        cal.add(Calendar.DATE, 6);
 	        Date dueDate = cal.getTime();
 	        
 	        // ReservationDto 객체 생성 및 값 설정
 	        ReservationDto dto = new ReservationDto();
 	        dto.setLbidx(lbidx);
 	        dto.setUserNumber(userNumber);
-	        dto.setReservationDate(dateFormat.format(reservationDate));
+	        dto.setRegDate(dateFormat.format(regDate));
 	        dto.setPickupDate(pickupDate);  // "yyyy-MM-dd" 형식이어야 함.
 	        dto.setDueDate(dateFormat.format(dueDate));
 	        dto.setStatus("예약중");
@@ -210,7 +210,7 @@ public class AdminBookReservationController {
 	      SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
 	      Date pick = fmt.parse(pickupDate);
 	      Calendar cal = Calendar.getInstance(); cal.setTime(pick);
-	      cal.add(Calendar.DATE, 7);
+	      cal.add(Calendar.DATE, 6);
 	      String due = fmt.format(cal.getTime());
 
 	      ReservationDto dto = new ReservationDto();

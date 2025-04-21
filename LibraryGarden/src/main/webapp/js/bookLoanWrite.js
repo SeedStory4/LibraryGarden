@@ -15,7 +15,7 @@ function numberCheck(page = currentPage, perPageNum = currentPerPageNum) {
     var userNumber = $('#userNumber').val();
 
     $.ajax({
-        url: '/admin/bookLoan/checkUserLoanStatus.do',
+        url: contextPath + '/admin/bookLoan/checkUserLoanStatus.do',
         type: 'GET',
         data: { userNumber: userNumber, page: page, perPageNum: perPageNum },
         dataType: 'json',
@@ -118,7 +118,7 @@ function addBook() {
     }
 
     $.ajax({
-        url: '/admin/bookLoan/checkBookStatus.do',
+        url: contextPath + '/admin/bookLoan/checkBookStatus.do',
         type: 'POST',
         data: { code: code },
         success: function (response) {
@@ -133,7 +133,7 @@ function addBook() {
             }
 
             $.ajax({
-                url: '/admin/bookLoan/addBookLoan.do',
+                url: contextPath + '/admin/bookLoan/addBookLoan.do',
                 type: 'POST',
                 data: { userNumber: userNumber, code: code },
                 success: function (response) {
@@ -142,7 +142,7 @@ function addBook() {
                     $('#bookCode').val('');
                 },
                 error: function (xhr, status, error) {
-                    alert("대여 등록 실패: " + xhr.responseText);
+                    alert("대출 등록 실패: " + xhr.responseText);
                     $('#bookCode').val('');
                 }
             });
@@ -159,7 +159,7 @@ function deleteLoan(lidx) {
     if (!confirm("정말로 삭제하시겠습니까?")) return;
 
     $.ajax({
-        url: '/admin/bookLoan/deleteLoan.do',
+        url: contextPath + '/admin/bookLoan/deleteLoan.do',
         type: 'POST',
         data: { lidx: lidx },
         success: function (response) {
@@ -167,7 +167,7 @@ function deleteLoan(lidx) {
             numberCheck();  // 현재 페이지 유지
         },
         error: function (xhr, status, error) {
-            alert("대여 삭제 실패: " + xhr.responseText);
+            alert("대출 삭제 실패: " + xhr.responseText);
         }
     });
 }
@@ -177,7 +177,7 @@ function returnLoan(lidx) {
     if (!confirm("반납 처리하시겠습니까?")) return;
 
     $.ajax({
-        url: '/admin/bookLoan/returnLoan.do',
+        url: contextPath + '/admin/bookLoan/returnLoan.do',
         type: 'POST',
         data: { lidx: lidx },
         success: function (response) {

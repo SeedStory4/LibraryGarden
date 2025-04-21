@@ -126,12 +126,12 @@
 	    <!-- 예약 등록 -->
 	<insert id="insertReservation" parameterType="libraryGarden.domain.ReservationDto">
 	    INSERT INTO RESERVATION 
-	        (lbidx, uidx, reservationDate, pickupDate, dueDate, status)
+	        (lbidx, uidx, regDate, pickupDate, dueDate, status)
 	    VALUES 
 	        (
 	          #{lbidx}, 
 	          (SELECT uidx FROM `USER` WHERE userNumber = #{userNumber}), 
-	          #{reservationDate}, 
+	          #{regDate}, 
 	          #{pickupDate}, 
 	          #{dueDate}, 
 	          #{status}
@@ -146,7 +146,7 @@
 	    WHERE lbidx IN (
 	        SELECT lbidx
 	        FROM RESERVATION
-	        WHERE DATEDIFF(pickupDate, CURDATE()) BETWEEN 1 AND 7
+	        WHERE DATEDIFF(pickupDate, CURDATE()) BETWEEN 0 AND 7
 	    )
 	</update>
 	

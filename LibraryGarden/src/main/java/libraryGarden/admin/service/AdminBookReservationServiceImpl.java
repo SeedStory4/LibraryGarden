@@ -109,7 +109,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	
 	@Override
 	public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber) {
-	    Set<String> reservationDates = new HashSet<>();
+	    Set<String> regDates = new HashSet<>();
 	    Set<String> overdueDates = new HashSet<>();
 	    SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -121,7 +121,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	            Calendar cal = Calendar.getInstance();
 	            cal.setTime(dbFormat.parse(res.getPickupDate()));
 	            for (int i = 0; i < 7; i++) {
-	                reservationDates.add(outputFormat.format(cal.getTime()));
+	            	regDates.add(outputFormat.format(cal.getTime()));
 	                cal.add(Calendar.DATE, 1);
 	            }
 	        } catch (Exception e) {
@@ -138,7 +138,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	            Date end = dbFormat.parse(loan.getDueDate());
 	            cal.setTime(start);
 	            while (!cal.getTime().after(end)) {
-	                reservationDates.add(outputFormat.format(cal.getTime()));
+	            	regDates.add(outputFormat.format(cal.getTime()));
 	                cal.add(Calendar.DATE, 1);
 	            }
 	        } catch (Exception e) {
@@ -167,7 +167,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 
 	    // 날짜 + 사유 분리해서 보내기
 	    List<Map<String, String>> result = new ArrayList<>();
-	    for (String date : reservationDates) {
+	    for (String date : regDates) {
 	        result.add(Map.of("date", date, "reason", "예약"));
 	    }
 	    for (String date : overdueDates) {
@@ -185,7 +185,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
     @Override
     public List<Map<String, String>> getUnavailableDatesForModify(int lbidx, String userNumber, int ridx) {
         // “수정”용: 내 예약(ridx)만 제외하고 동일 로직
-        Set<String> reservationDates = new HashSet<>();
+        Set<String> regDates = new HashSet<>();
         Set<String> overdueDates = new HashSet<>();
         SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -196,7 +196,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(dbFormat.parse(res.getPickupDate()));
                 for (int i = 0; i < 7; i++) {
-                    reservationDates.add(outputFormat.format(cal.getTime()));
+                	regDates.add(outputFormat.format(cal.getTime()));
                     cal.add(Calendar.DATE, 1);
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -209,7 +209,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
                 cal.setTime(dbFormat.parse(loan.getLoanDate()));
                 Date end = dbFormat.parse(loan.getDueDate());
                 while (!cal.getTime().after(end)) {
-                    reservationDates.add(outputFormat.format(cal.getTime()));
+                	regDates.add(outputFormat.format(cal.getTime()));
                     cal.add(Calendar.DATE, 1);
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -230,7 +230,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
         }
 
         List<Map<String, String>> result = new ArrayList<>();
-        reservationDates.forEach(d -> result.add(Map.of("date", d, "reason", "예약")));
+        regDates.forEach(d -> result.add(Map.of("date", d, "reason", "예약")));
         overdueDates    .forEach(d -> result.add(Map.of("date", d, "reason", "연체")));
         return result;
     }

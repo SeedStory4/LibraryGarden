@@ -5,7 +5,7 @@ public class ReservationDto {
     private int ridx;           // 예약 인덱스
     private int lbidx;          // 도서 번호
 	private String coverImg;
-	private String reservationDate;  // 예약 신청일 (현재 날짜)
+	private String regDate;  // 예약 신청일 (현재 날짜)
 	private String dueDate;          // 반납예정일 (픽업날짜로부터 7일 후)
 	private String title;
 	private String author;
@@ -17,18 +17,20 @@ public class ReservationDto {
 	private String status;        // 상태
 	
 	
+	
+	public String getRegDate() {
+		return regDate;
+	}
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
+	}
 	public int getLbidx() {
 		return lbidx;
 	}
 	public void setLbidx(int lbidx) {
 		this.lbidx = lbidx;
 	}
-	public String getReservationDate() {
-		return reservationDate;
-	}
-	public void setReservationDate(String reservationDate) {
-		this.reservationDate = reservationDate;
-	}
+
 	public String getDueDate() {
 		return dueDate;
 	}
