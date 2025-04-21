@@ -72,6 +72,6 @@
 
     <script src="<%= request.getContextPath() %>/js/reservation.js"></script>
     <!-- 푸터 로드할 부분 -->
-	<jsp:include page="/common/footer.jsp" /> 
+    <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
   </body>
 </html>
