@@ -85,6 +85,6 @@
 
     <!-- 외부 JS 파일 링크 -->
     <script src="${pageContext.request.contextPath}/js/bookLoanWrite.js"></script>
-	
+	<script>var contextPath = '${pageContext.request.contextPath}';</script>
 </body>
 </html>

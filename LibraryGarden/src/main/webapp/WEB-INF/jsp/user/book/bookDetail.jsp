@@ -145,7 +145,7 @@
 				</table>
 
 				<div class="draft-actions mg-top">
-					<button class="draft-btn-small btn-submit" id="openReservationModal">예약</button>
+					<button type="button" class="draft-btn-small btn-submit openReservationModal" data-lbidx="${lbd.lbidx}">예약</button>
 					<button class="draft-btn-small btn-list"  onclick="location.href='${pageContext.request.contextPath}/user/book/bookList.do'">목록</button>
 				</div>
 			</section>
@@ -201,62 +201,6 @@
 	</script>
     <!-- reservation.js 불러오기 -->
     <script src="${pageContext.request.contextPath}/js/reservation.js"></script>
-  <script>
-    $(document).ready(function() {
-      // 예약 버튼 클릭 시 예약 팝업(모달) 열기
-      $("#openReservationModal").on("click", function(e) {
-          e.preventDefault();
-          // 직접 EL을 통해 도서 번호(lbidx) 가져오기
-          var lbidx = "${lbd.lbidx}";
-          if (!lbidx) {
-              alert("도서 번호(lbidx)가 올바르지 않습니다.");
-              return;
-          }
-          if ("${lbd.status}" === "대출불가") {
-              alert("예약이 불가한 도서입니다.");
-              return;
-          }
-          // 전역 변수에 도서 번호 저장
-          window.lbidx = lbidx;
-          // 사용자 번호가 필요한 경우 hidden input이나 EL로 처리 (여기서는 생략)
-          var userNumber = $("#userNumber").val() || "";
-          
-          // AJAX로 예약 관련 데이터를 가져와서 달력에 반영
-          $.ajax({
-              url: contextPath + '/admin/bookReservation/getReservedDates.do',
-              type: 'GET',
-              data: { lbidx: lbidx, userNumber: userNumber },
-              success: function(data) {
-                  window.disabledDates = data.map(function(d) { return d.date; });
-                  window.disabledReasons = {};
-                  data.forEach(function(d) { window.disabledReasons[d.date] = d.reason; });
-                  
-                  // 모달을 먼저 보이게 함
-                  $("#reservationModal").show();
-                  // 모달이 보인 후, 달력을 재렌더링하기 위해 약간의 딜레이를 줍니다.
-                  setTimeout(function() {
-                      if (window.myCalendar) {
-                          window.myCalendar.removeAllEvents();
-                          window.myCalendar.gotoDate(new Date());
-                          window.myCalendar.render();
-                          window.myCalendar.refetchEvents();
-                      }
-                  }, 100);
-              },
-              error: function() {
-                  alert("예약 현황을 불러오지 못했습니다.");
-              }
-          });
-      });
-      
-      // 예약 모달 닫기 이벤트
-      $("#closeModal").on("click", function() {
-          window.selectedDate = null;
-          $("#selectedDate").text("선택 없음");
-          $(".fc-day-selected").removeClass("fc-day-selected");
-          $("#reservationModal").hide();
-      });
-    });
-  </script>
+
 </body>
 </html>

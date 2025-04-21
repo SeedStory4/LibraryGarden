@@ -104,12 +104,9 @@ public class Book1Controller {
 			Model model) {
 		logger.debug("bookDetail 들어옴");
 		
+	    // 로그인 유저가 없어도 상세보기는 가능해야 하니까 체크 안함 
 	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-	    if (loginUser == null) {
-	        return "redirect:/user/user/userLogin.do";
-	    }
-	    
-	    String userNumber = loginUser.getUserNumber();
+	    String userNumber = loginUser != null ? loginUser.getUserNumber() : "";
 		
 		/* 도서관 책 상세 조회
 		 * [input] 	도서관 책 인덱스(lbidx)
