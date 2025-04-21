@@ -15,11 +15,11 @@ import libraryGarden.domain.BookVo;
 public interface Book1Mapper {
 	
 	// isbn 으로 도서 데이터 여부 확인 메서드
-	public int findBookByIsbnToCount(String isbn);
+	public int getBookByIsbnToCount(String isbn);
 
 	// 도서 데이터 삽입 메서드
 	public int insertBook(BookVo bv);
 	
 	// isbn 으로 책 데이터 중 bidx 가지고 오는 메서드
-	public int findBookByIsbnToBidx(String isbn);
+	public int getBookByIsbnToBidx(String isbn);
 }

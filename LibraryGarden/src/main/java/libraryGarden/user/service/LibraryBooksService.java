@@ -15,14 +15,14 @@ import libraryGarden.domain.SearchCriteria;
  * @author SiYeon
  *
  */
-public interface LibraryBookService {
+public interface LibraryBooksService {
 	
 	// 도서관 책 전체 조회 목록 출력 메서드
-	public ArrayList<LibraryBookDto> BookSelectAll(SearchCriteria scri);
+	public ArrayList<LibraryBookDto> getBookSelectAll(SearchCriteria scri);
 
 	// 도서관 책 전체 갯수 매서드
-	int BookTotalCount(SearchCriteria scri);
+	int getBookTotalCount(SearchCriteria scri);
 	
 	// 도서관 책 상세 조회 매서드
-	public LibraryBookDto BookSelectOne(int lbidx);
+	public LibraryBookDto getBookSelectOne(int lbidx);
 }
