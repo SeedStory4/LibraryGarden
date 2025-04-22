@@ -257,7 +257,7 @@
 					 // 2. paging 설정=					 
 					 const queryParam = "keyword=${pm.scri.keyword}&searchType=${pm.scri.searchType}";
 					 
-					 let pagecontent = `<ul class="paging flex w-270 justify-center">`;
+					 let pagecontent = `<ul class="paging flex justify-center">`;
 					 
 					 if(Boolean(pm.prev)) {
 						 pagecontent += 
