@@ -51,7 +51,19 @@
               : '해당 날짜는 예약이 불가능합니다.'
           );
         }
-
+		
+		// 7일 전체 구간 겹침 검사 
+		//    클릭한 날짜 다음 날부터 6일 후까지 한번이라도 불가일 포함되면 차단
+		for (var offset = 1; offset < 8; offset++) {
+		  var d = new Date(info.date);
+		  d.setDate(d.getDate() + offset);
+		  var dayIso = d.toISOString().slice(0,10);       // "yyyy-mm-dd"
+		  var dayFmt = dayIso.replace(/-/g, '.');         // "yyyy.MM.dd"
+		  if ((window.disabledDates||[]).includes(dayFmt)) {
+		    return alert('선택하신 예약 기간이 기존 예약/대출·연체 기간과 겹칩니다.');
+		  }
+		}
+		
         // C) 선택 표시 갱신
         calendarEl.querySelectorAll('.fc-day-selected')
           .forEach(el => el.classList.remove('fc-day-selected'));

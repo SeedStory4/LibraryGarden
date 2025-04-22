@@ -87,12 +87,13 @@
                                         <td>${lbd.location}</td>
                                         <td>
                                             <c:choose>
-                                                <c:when test="${not empty lbd.dueDate}">
-                                                    <c:if test="${lbd.status eq '대출중'}">${lbd.dueDate}</c:if>
-                                                    <c:if test="${lbd.status ne '대출중'}">-</c:if>
-                                                </c:when>
-                                                <c:otherwise>-</c:otherwise>
-                                            </c:choose>
+											  <c:when test="${lbd.status ne '대출가능' && not empty lbd.dueDate}">
+											    ${lbd.dueDate}
+											  </c:when>
+											  <c:otherwise>
+											    -
+											  </c:otherwise>
+											</c:choose>
                                         </td>
                                         <td class="<c:if test='${lbd.status eq "대출중"}'>blue</c:if>
                                                    <c:if test='${lbd.status eq "대출가능"}'>green</c:if>
