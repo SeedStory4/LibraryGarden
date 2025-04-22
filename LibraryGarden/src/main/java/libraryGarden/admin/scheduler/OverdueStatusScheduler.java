@@ -24,7 +24,7 @@ public class OverdueStatusScheduler {
     }
     
     // 매일 자정에 예약 픽업일이 7일 남은 도서의 상태를 "예약대기"로 업데이트
-    @Scheduled(cron = "0 * * * * ?") // 1분 마다 일단 변경함
+    @Scheduled(cron = "0 0 0 * * ?")
     public void updateReservationWaitStatus() {
         int updatedCount = adminBookReservationMapper.updateBooksToWaitStatus();
         System.out.println("예약대기로 변경된 도서 수: " + updatedCount);
