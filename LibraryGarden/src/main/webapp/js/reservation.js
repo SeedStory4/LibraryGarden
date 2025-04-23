@@ -1,24 +1,23 @@
 // js/reservation.js
 (function($){
-  var calendar;
-  var calendarEl;
-  var selectedDate = null;
+  var calendar, calendarEl, selectedDate = null;
 
   function initCalendar() {
-    // 이전 달력 인스턴스 파기
+    // 1) 이전 인스턴스 파기
     if (calendar) {
       calendar.destroy();
     }
+    // 2) 컨테이너 요소 가져오기
     calendarEl = document.getElementById('calendar');
-
+    // 3) 새 FullCalendar 생성
     calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       locale: 'ko',
       selectable: true,
       headerToolbar: { left: 'prev', center: 'title', right: 'next' },
-      dayCellContent: function(arg){ return arg.date.getDate(); },
+      dayCellContent: arg => arg.date.getDate(),
 
-      // 예약불가일을 배경 이벤트로 표시
+      // 예약불가일 배경 이벤트
       events: function(fetchInfo, success) {
         var evs = (window.disabledDates||[]).map(function(ds){
           return {
@@ -32,66 +31,72 @@
 
       // 날짜 클릭 핸들러
       dateClick: function(info) {
-        // info.date는 로컬 타임존의 Date 객체
-        var clickedDate = new Date(info.date);
-        clickedDate.setHours(0,0,0,0);
+        var clicked = new Date(info.date);
+        clicked.setHours(0,0,0,0);
+        var today = new Date(); today.setHours(0,0,0,0);
 
-        var today = new Date();
-        today.setHours(0,0,0,0);
-
-        // 1) 과거 날짜 차단
-        if (clickedDate < today) {
-          alert('지난 날짜는 예약할 수 없습니다.');
-          return;
+        // A) 과거 차단
+        if (clicked < today) {
+          return alert('지난 날짜는 예약할 수 없습니다.');
         }
 
-        // 2) 예약불가일자 차단
-        var iso = info.dateStr;               // "yyyy-mm-dd"
-        var formatted = iso.replace(/-/g,'.'); // "yyyy.MM.dd"
-        if ((window.disabledDates||[]).indexOf(formatted) !== -1) {
+        // B) 예약불가일 차단
+        var iso       = info.dateStr;            // "yyyy-mm-dd"
+        var formatted = iso.replace(/-/g,'.');   // "yyyy.MM.dd"
+        if ((window.disabledDates||[]).includes(formatted)) {
           var reason = window.disabledReasons && window.disabledReasons[formatted];
-          if (reason === '연체') {
-            alert('연체기간동안 예약이 불가합니다.');
-          } else {
-            alert('해당 날짜는 예약이 불가능합니다.');
-          }
-          return;
+          return alert(
+            reason === '연체'
+              ? '연체기간동안 예약이 불가합니다.'
+              : '해당 날짜는 예약이 불가능합니다.'
+          );
         }
-
-        // 3) 선택 표시 갱신
-        calendarEl.querySelectorAll('.fc-day-selected').forEach(function(el){
-          el.classList.remove('fc-day-selected');
-        });
+		
+		// 7일 전체 구간 겹침 검사 
+		//    클릭한 날짜 다음 날부터 6일 후까지 한번이라도 불가일 포함되면 차단
+		for (var offset = 1; offset < 8; offset++) {
+		  var d = new Date(info.date);
+		  d.setDate(d.getDate() + offset);
+		  var dayIso = d.toISOString().slice(0,10);       // "yyyy-mm-dd"
+		  var dayFmt = dayIso.replace(/-/g, '.');         // "yyyy.MM.dd"
+		  if ((window.disabledDates||[]).includes(dayFmt)) {
+		    return alert('선택하신 예약 기간이 기존 예약/대출·연체 기간과 겹칩니다.');
+		  }
+		}
+		
+        // C) 선택 표시 갱신
+        calendarEl.querySelectorAll('.fc-day-selected')
+          .forEach(el => el.classList.remove('fc-day-selected'));
         var cell = calendarEl.querySelector('[data-date="'+iso+'"]');
         if (cell) cell.classList.add('fc-day-selected');
 
-        // 4) 전역 상태 저장 & 버튼 활성화
+        // D) 전역 저장 & 버튼 활성화
         selectedDate = formatted;
         window.selectedDate = formatted;
-        document.getElementById('selectedDate').textContent = formatted;
-        document.getElementById('reserveBtn').disabled = !$('#agreeCheck').is(':checked');
+        $('#selectedDate').text(formatted);
+        $('#reserveBtn').prop('disabled', !$('#agreeCheck').is(':checked'));
       },
 
-      // 렌더 완료나 월 이동 후 호출
+      // 렌더/월 이동 후
       datesSet: function() {
-        // 이전 선택 날짜 복원
+        // 지난 선택 복원
         if (selectedDate) {
           var hy = selectedDate.replace(/\./g,'-');
-          var sel = calendarEl.querySelector('[data-date="'+hy+'"]');
-          if (sel) sel.classList.add('fc-day-selected');
+          var el = calendarEl.querySelector('[data-date="'+hy+'"]');
+          if (el) el.classList.add('fc-day-selected');
         }
         // 예약불가일 표시
-        (window.disabledDates||[]).forEach(function(ds){
+        (window.disabledDates||[]).forEach(ds => {
           var el = calendarEl.querySelector('[data-date="'+ds.replace(/\./g,'-')+'"]');
           if (el) el.classList.add('disabled-date');
         });
-        // 비현월 날짜 스타일 고정
-        setTimeout(function(){
+        // 비현월 날짜 스타일
+        setTimeout(() => {
           calendarEl.querySelectorAll('.fc-day-other .fc-daygrid-day-number')
-            .forEach(function(el){
-              el.style.opacity = '1';
-              el.style.color = '#666';
-              el.style.fontWeight = 'bold';
+            .forEach(n => {
+              n.style.opacity = '1';
+              n.style.color = '#666';
+              n.style.fontWeight = 'bold';
             });
         }, 200);
       }
@@ -102,24 +107,36 @@
   }
 
   $(function(){
-    // 도서 제목 클릭 → 모달 표시 & AJAX로 disabledDates 로드
+    // — 모달 열기 & 예약 현황 로드
     $('.openReservationModal').on('click', function(e){
       e.preventDefault();
+
+      // 1) UI & 변수 초기화
+      selectedDate = null;
+      delete window.selectedDate;
+      $('#selectedDate').text('선택 없음');
+      $('#agreeCheck').prop('checked', false);
+      $('#reserveBtn').prop('disabled', true);
+
+      // 2) 도서 상태 체크
       var status = $(this).closest('tr').find('td').last().text().trim();
       if (status === '대출불가') {
         return alert('예약이 불가한 도서입니다.');
       }
+
+      // 3) 글로벌 lbidx 저장
       window.lbidx = $(this).data('lbidx');
       var userNumber = $('#userNumber').val();
 
+      // 4) AJAX로 disabledDates/Reasons 받아오기
       $.getJSON(contextPath + '/admin/bookReservation/getReservedDates.do', {
         lbidx: window.lbidx,
         userNumber: userNumber
       })
       .done(function(data){
-        window.disabledDates = data.map(function(d){ return d.date; });
+        window.disabledDates   = data.map(d => d.date);
         window.disabledReasons = {};
-        data.forEach(function(d){ window.disabledReasons[d.date] = d.reason; });
+        data.forEach(d => window.disabledReasons[d.date] = d.reason);
 
         $('#reservationModal').show();
         initCalendar();
@@ -129,7 +146,7 @@
       });
     });
 
-    // 모달 닫기
+    // — 모달 닫기
     $('#closeModal').on('click', function(){
       $('#reservationModal').hide();
       if (calendar) {
@@ -138,44 +155,43 @@
       }
       selectedDate = null;
       delete window.lbidx;
-      window.disabledDates = [];
+      window.disabledDates   = [];
       window.disabledReasons = {};
       $('#selectedDate').text('선택 없음');
       $('#agreeCheck').prop('checked', false);
       $('#reserveBtn').prop('disabled', true);
     });
 
-    // 약관 체크 → 예약 버튼 토글
+    // — 약관 체크 → 버튼 토글
     $('#agreeCheck').on('change', function(){
       $('#reserveBtn').prop('disabled', !(this.checked && selectedDate));
     });
 
-    // 예약 등록
-    $('#reserveBtn').on('click', function(){
+    // — 예약 등록
+    $('#reserveBtn').off('click').on('click', function(e){
+      e.preventDefault();
+
       if (!$('#agreeCheck').is(':checked')) {
         return alert('동의를 먼저 해주세요.');
       }
       if (!selectedDate || !window.lbidx || !$('#userNumber').val()) {
         return alert('예약에 필요한 정보를 확인해주세요.');
       }
+
       $.post(contextPath + '/admin/bookReservation/registerReservation.do', {
         lbidx: window.lbidx,
         userNumber: $('#userNumber').val(),
         pickupDate: selectedDate.replace(/\./g,'-')
-      }, function(res){
-        alert(res.message);
-        if (res.success) {
-          $('#reservationModal').hide();
-          initCalendar();
-        }
       })
-      .fail(function(){
-        alert('예약 등록을 실패했습니다.');
+      .always(function(res){
+        // 메시지 띄우고 반드시 전체 리로드
+        if (res && res.message) alert(res.message);
+        window.location.href = window.location.href;
       });
     });
 
-    // 회원번호 확인 함수 (JSP에서 호출)
-    window.numberCheck = function() {
+    // — 회원번호 확인
+    window.numberCheck = function(){
       var num = $('#userNumber').val().trim();
       if (!num) {
         return alert('회원번호를 입력해주세요.');

@@ -5,7 +5,7 @@
 <mapper namespace="libraryGarden.user.mapper.Book1Mapper">
 	
 	<!-- isbn 으로 책 데이터 여부 확인 -->
-	<select id="findBookByIsbnToCount" resultType="int">
+	<select id="getBookByIsbnToCount" resultType="int">
 		SELECT COUNT(*) AS cnt FROM BOOKS WHERE isbn = #{isbn}
 	</select>
 	
@@ -16,7 +16,7 @@
     </insert>
     
 	<!-- isbn 으로 책 데이터 중 bidx 가지고 옴 -->
-	<select id="findBookByIsbnToBidx" resultType="int">
+	<select id="getBookByIsbnToBidx" resultType="int">
 		SELECT bidx FROM BOOKS WHERE isbn = #{isbn}
 	</select>
 	

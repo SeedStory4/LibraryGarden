@@ -1,12 +1,13 @@
 package libraryGarden.user.controller;
 
+import java.io.PrintWriter;
+
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -111,9 +112,9 @@ public class UserController {
     }
     
     @PostMapping("/loginAction.do")
-    public String login(UserVo userVo, HttpSession session, RedirectAttributes rttr) {
+    public String login(UserVo userVo, HttpSession session, RedirectAttributes rttr, HttpServletResponse response) {
         UserVo loginUser = userService.login(userVo);
-
+        
         if (loginUser != null) {
             session.setAttribute("loginUser", loginUser);
             
@@ -129,12 +130,29 @@ public class UserController {
 					return "redirect:/admin/main.do";
 				}
             	
-            }
-            else {
+            } else {
             	
             	if(session.getAttribute("saveUrl") != null) {
-            		// 인터셉터로 이동되었다면 요청한 페이지로 이동
-            		return "redirect:" + session.getAttribute("saveUrl").toString();
+            		
+            		// 요청한 페이지가 관리자 페이지인지 확인
+            		if(session.getAttribute("saveUrl").toString().contains("/admin/")) {
+            			// 요청한 페이지가 관리자 페이지라면 "권한이 없습니다" alert창 발생 후 메인으로 이동
+            			try {
+            		        response.setContentType("text/html; charset=utf-8");
+            		        PrintWriter w = response.getWriter();
+            		        w.write("<script>alert('권한이 없습니다. 메인으로 이동합니다.');location.href='/user/main.do';</script>");
+            		        w.flush();
+            		        w.close();
+            		    } catch(Exception e) {
+            		        e.printStackTrace();
+            		    }
+        		        return "";
+            			
+            		} else {
+            			// 인터셉터로 이동되었다면 요청한 페이지로 이동
+            			return "redirect:" + session.getAttribute("saveUrl").toString();
+            		}
+            		
 				} else {
 					// 인터셉터로 이동되지 않았다면 메인으로 이동
 					return "redirect:/user/main.do";

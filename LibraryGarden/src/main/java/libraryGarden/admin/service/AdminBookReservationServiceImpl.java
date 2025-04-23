@@ -1,6 +1,8 @@
 package libraryGarden.admin.service;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -85,31 +87,28 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 		return lblist;
 	}
 	
-    @Override
-    public int cancelReservation(int ridx) {
-        // 1. 예약 취소 (RESERVATION 업데이트)
-        int updatedCount = rm.cancelReservation(ridx);
-        
-        if (updatedCount > 0) {
-            // 2. 취소된 예약의 도서 번호(lbidx) 조회
-            Integer lbidx = rm.findLbidxByReservation(ridx);
-            if (lbidx != null) {
-                // 3. LOAN 테이블에서, 해당 도서의 대출 기록 중 오늘 기준 dueDate가 미래인 건수 조회
-                int activeLoanCount = rm.getActiveLoanCountByDueDate(lbidx);
-                // 4. 대출중 기록이 없다면 (activeLoanCount == 0)
-                if (activeLoanCount == 0) {
-                    // LIBRARYBOOKS 테이블의 도서 상태를 "대출가능"으로 업데이트
-                    rm.updateBookStatus(lbidx, "대출가능");
-                }
-            }
-        }
-        return updatedCount;
-    }
+	@Override
+	public int cancelReservation(int ridx) {
+	    // 1) 예약 레코드만 취소 표시
+	    int updatedCount = rm.cancelReservation(ridx);
+	    if (updatedCount > 0) {
+	        // 2) 취소된 예약의 도서 번호(lbidx) 조회
+	        Integer lbidx = rm.findLbidxByReservation(ridx);
+	        if (lbidx != null) {
+	            // 3) 아직 반납되지 않은 대출이 있는지 확인
+	            int activeLoanCount = rm.getActiveLoanCountByDueDate(lbidx);
+	            // 4) 대출중이면 "대출중", 아니면 "대출가능"으로 복원
+	            String newStatus = (activeLoanCount > 0) ? "대출중" : "대출가능";
+	            rm.updateBookStatus(lbidx, newStatus);
+	        }
+	    }
+	    return updatedCount;
+	}
 	
 	
 	@Override
 	public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber) {
-	    Set<String> reservationDates = new HashSet<>();
+	    Set<String> regDates = new HashSet<>();
 	    Set<String> overdueDates = new HashSet<>();
 	    SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
 	    SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -121,7 +120,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	            Calendar cal = Calendar.getInstance();
 	            cal.setTime(dbFormat.parse(res.getPickupDate()));
 	            for (int i = 0; i < 7; i++) {
-	                reservationDates.add(outputFormat.format(cal.getTime()));
+	            	regDates.add(outputFormat.format(cal.getTime()));
 	                cal.add(Calendar.DATE, 1);
 	            }
 	        } catch (Exception e) {
@@ -138,7 +137,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	            Date end = dbFormat.parse(loan.getDueDate());
 	            cal.setTime(start);
 	            while (!cal.getTime().after(end)) {
-	                reservationDates.add(outputFormat.format(cal.getTime()));
+	            	regDates.add(outputFormat.format(cal.getTime()));
 	                cal.add(Calendar.DATE, 1);
 	            }
 	        } catch (Exception e) {
@@ -167,7 +166,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 
 	    // 날짜 + 사유 분리해서 보내기
 	    List<Map<String, String>> result = new ArrayList<>();
-	    for (String date : reservationDates) {
+	    for (String date : regDates) {
 	        result.add(Map.of("date", date, "reason", "예약"));
 	    }
 	    for (String date : overdueDates) {
@@ -177,15 +176,28 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
 	    return result;
 	}
 	
-    @Override
-    public int registerReservation(ReservationDto reservation) {
-        return rm.insertReservation(reservation);
-    }
+	@Override
+	public int registerReservation(ReservationDto reservation) {
+	    int inserted = rm.insertReservation(reservation);
+
+	    // → 전역 호출 제거 rm.updateBooksToWaitStatus();
+
+	    // 대신 방금 INSERT한 이 책만, 
+	    //  오늘부터 픽업일이 0~6일 이내면 바로 상태 바꿔 주기
+	    long days = ChronoUnit.DAYS.between(
+	        LocalDate.now(), 
+	        LocalDate.parse(reservation.getPickupDate())
+	    );
+	    if (days >= 0 && days <= 6) {
+	        rm.updateBookStatus(reservation.getLbidx(), "예약대기");
+	    }
+	    return inserted;
+	}
     
     @Override
     public List<Map<String, String>> getUnavailableDatesForModify(int lbidx, String userNumber, int ridx) {
         // “수정”용: 내 예약(ridx)만 제외하고 동일 로직
-        Set<String> reservationDates = new HashSet<>();
+        Set<String> regDates = new HashSet<>();
         Set<String> overdueDates = new HashSet<>();
         SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat outputFormat = new SimpleDateFormat("yyyy.MM.dd");
@@ -196,7 +208,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
                 Calendar cal = Calendar.getInstance();
                 cal.setTime(dbFormat.parse(res.getPickupDate()));
                 for (int i = 0; i < 7; i++) {
-                    reservationDates.add(outputFormat.format(cal.getTime()));
+                	regDates.add(outputFormat.format(cal.getTime()));
                     cal.add(Calendar.DATE, 1);
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -209,7 +221,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
                 cal.setTime(dbFormat.parse(loan.getLoanDate()));
                 Date end = dbFormat.parse(loan.getDueDate());
                 while (!cal.getTime().after(end)) {
-                    reservationDates.add(outputFormat.format(cal.getTime()));
+                	regDates.add(outputFormat.format(cal.getTime()));
                     cal.add(Calendar.DATE, 1);
                 }
             } catch (Exception e) { e.printStackTrace(); }
@@ -230,7 +242,7 @@ public class AdminBookReservationServiceImpl implements AdminBookReservationServ
         }
 
         List<Map<String, String>> result = new ArrayList<>();
-        reservationDates.forEach(d -> result.add(Map.of("date", d, "reason", "예약")));
+        regDates.forEach(d -> result.add(Map.of("date", d, "reason", "예약")));
         overdueDates    .forEach(d -> result.add(Map.of("date", d, "reason", "연체")));
         return result;
     }

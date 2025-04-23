@@ -96,7 +96,7 @@
         SELECT COUNT(*) 
           FROM LOAN
          WHERE lbidx = #{lbidx}
-           AND dueDate >= CURDATE()
+           AND returnDate IS NULL
     </select>
     
     <!-- 도서 상태 업데이트: LIBRARYBOOKS 테이블 -->
@@ -126,12 +126,12 @@
 	    <!-- 예약 등록 -->
 	<insert id="insertReservation" parameterType="libraryGarden.domain.ReservationDto">
 	    INSERT INTO RESERVATION 
-	        (lbidx, uidx, reservationDate, pickupDate, dueDate, status)
+	        (lbidx, uidx, regDate, pickupDate, dueDate, status)
 	    VALUES 
 	        (
 	          #{lbidx}, 
 	          (SELECT uidx FROM `USER` WHERE userNumber = #{userNumber}), 
-	          #{reservationDate}, 
+	          #{regDate}, 
 	          #{pickupDate}, 
 	          #{dueDate}, 
 	          #{status}
@@ -143,10 +143,12 @@
 	<update id="updateBooksToWaitStatus">
 	    UPDATE LIBRARYBOOKS 
 	    SET status = '예약대기'
-	    WHERE lbidx IN (
+	    WHERE status = '대출가능'
+	    AND lbidx IN (
 	        SELECT lbidx
 	        FROM RESERVATION
-	        WHERE DATEDIFF(pickupDate, CURDATE()) BETWEEN 1 AND 7
+	        WHERE delyn = 'N'
+	        AND DATEDIFF(pickupDate, CURDATE()) BETWEEN 0 AND 6
 	    )
 	</update>
 	

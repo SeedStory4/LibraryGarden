@@ -2,6 +2,8 @@ package egovframework.com.cmm.interceptor;
 
 import libraryGarden.domain.UserVo;
 
+import java.io.PrintWriter;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -59,8 +61,25 @@ public class AuthenticInterceptor extends WebContentInterceptor {
 			ModelAndView modelAndView = new ModelAndView("redirect:/user/user/userLogin.do");
 			throw new ModelAndViewDefiningException(modelAndView);
 			
-		} else {
-			// 세션에 저장된 UserVo가 있으면 요청 진행
+		} else {  // 세션에 저장된 UserVo가 있으면 요청 진행
+			
+			// 로그인한 사용자가 관리자가 아니고 이동할 경로가 관리자 페이지라면 "권한이 없습니다" alert창 발생 후 메인으로 이동
+			saveUrl(request);
+			HttpSession session = request.getSession();
+			String role = loginUser.getRole();
+			if(!role.equals("도서관장") && !role.equals("사서") && session.getAttribute("saveUrl").toString().contains("/admin/")) {
+
+    			try {
+    		        response.setContentType("text/html; charset=utf-8");
+    		        PrintWriter w = response.getWriter();
+    		        w.write("<script>alert('권한이 없습니다. 메인으로 이동합니다.');location.href='/user/main.do';</script>");
+    		        w.flush();
+    		        w.close();
+    		    } catch(Exception e) {
+    		        e.printStackTrace();
+    		    }
+			}
+			
 			return true;
 		}
 	}
