@@ -37,7 +37,7 @@
                 </div>
                 <c:set var="queryParam" value="userNumber=${userNumber}&keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}" />
                 <div class="book-list border-top-2 <c:if test='${empty userNumber}'>none</c:if>" id="bookListSection">
-                    <form action="${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do">
+                    <form action="${pageContext.request.contextPath}/user/bookReservation/bookReservationWrite.do">
                         <div class="search flex gap-20 justify-center">
                             <select class="js-example-basic-single select shadow" name="searchType">
                                 <option value="title">제목</option>
@@ -113,18 +113,18 @@
                         <ul class="paging flex w-270 justify-center">
                             <c:if test="${requestScope.pm.prev == true}">
                                 <li>
-                                    <a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+                                    <a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationWrite.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
                                 </li>
                             </c:if>
                             <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
                                 <li>
                                     <a class="<c:if test='${i == requestScope.pm.scri.page}'>on</c:if>"
-                                       href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do?page=${i}&${queryParam}">${i}</a>
+                                       href="${pageContext.request.contextPath}/user/bookReservation/bookReservationWrite.do?page=${i}&${queryParam}">${i}</a>
                                 </li>
                             </c:forEach>
                             <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
                                 <li class="page-item">
-                                    <a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationWrite.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+                                    <a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationWrite.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
                                 </li>
                             </c:if>
                         </ul>

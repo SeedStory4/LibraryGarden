@@ -1,5 +1,6 @@
 package libraryGarden.admin.service;
 
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminBookLoanMapper;
+import libraryGarden.domain.ReservationDto;
 
 @Service
 public class AdminBookLoanServiceImpl implements AdminBookLoanService{
@@ -47,19 +49,27 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     
     @Override
     public void addBookLoan(String userNumber, String code) throws Exception {
-        // 대여 정보 등록
-        adminBookLoanMapper.insertBookLoan(userNumber, code);
-        // 도서 상태 업데이트 (대출중으로)
-        adminBookLoanMapper.updateLibraryBookStatusToLoan(code);
-    }
-    
-    @Override
-    public String getBookStatus(String code) throws Exception {
-        String status = adminBookLoanMapper.selectBookStatus(code);
-        if (status == null) {
-            return "없는 도서";  // 도서 코드가 존재하지 않는 경우
+        // 1) code → lbidx
+        int lbidx = adminBookLoanMapper.selectLbidxByCode(code);
+
+        // 2) 예약대기 상태인 경우, 오늘 픽업예약자만 허용
+        String status = adminBookLoanMapper.selectBookStatusByLbidx(lbidx);
+        if ("예약대기".equals(status)) {
+            Map<String,Object> params = new HashMap<>();
+            params.put("lbidx", lbidx);
+            params.put("userNumber", userNumber);
+            ReservationDto res = adminBookLoanMapper.selectActiveReservation(params);
+            String today = LocalDate.now().toString();
+            if (res == null || !today.equals(res.getPickupDate())) {
+                throw new IllegalStateException("오늘 픽업 가능한 예약자가 아닙니다.");
+            }
         }
-        return status;
+        String today = LocalDate.now().toString();
+
+        // 3) 대출등록 & 도서상태 → 대출중
+        adminBookLoanMapper.insertBookLoan(userNumber, code);
+        adminBookLoanMapper.updateLibraryBookStatusToLoan(code);
+        adminBookLoanMapper.updateReservationToReceived(lbidx, userNumber, today);
     }
     
     @Override
@@ -102,6 +112,12 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
 
         adminBookLoanMapper.updateLoanStatusToReturned(lidx, status);
         adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+    }
+
+    @Override
+    public String getBookStatus(String code) throws Exception {
+        String status = adminBookLoanMapper.selectBookStatus(code);
+        return status == null ? "없는 도서" : status;
     }
 
 }

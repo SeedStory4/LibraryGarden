@@ -1,4 +1,4 @@
-package libraryGarden.admin.controller;
+package libraryGarden.user.controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -17,19 +17,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import libraryGarden.admin.service.AdminBookReservationService;
 import libraryGarden.cmm.util.UrlEncoder;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
+import libraryGarden.user.service.BookReservationService;
 
 @Controller
-@RequestMapping("/admin/bookReservation")
-public class AdminBookReservationController {
+@RequestMapping("/user/bookReservation")
+public class BookReservationController {
 	
 	@Autowired(required=false)
-	private AdminBookReservationService adminBookReservationService;
+	private BookReservationService adminBookReservationService;
 	
 	@Autowired(required=false)
 	private PageMaker pm;
@@ -184,7 +184,7 @@ public class AdminBookReservationController {
 	// 도서예약 등록 팝업
 	@GetMapping("/popBookReservationWrite.do")
 	public String popBookReservationWrite() {
-		return "admin/bookReservation/popBookReservationWrite";
+		return "user/bookReservation/popBookReservationWrite";
 	}
 	
 	
