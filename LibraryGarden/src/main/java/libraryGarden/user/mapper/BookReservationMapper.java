@@ -1,4 +1,4 @@
-package libraryGarden.admin.mapper;
+package libraryGarden.user.mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.domain.ReservationDto;
 
-public interface AdminBookReservationMapper {
+public interface BookReservationMapper {
 	
 	public int bookReservationTotalCount(HashMap<String,Object> hm);
 	public ArrayList<ReservationDto> bookReservationSelectAll(HashMap<String,Object> hm);

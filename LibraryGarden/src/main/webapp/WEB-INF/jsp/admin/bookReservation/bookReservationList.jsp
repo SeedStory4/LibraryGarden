@@ -23,12 +23,12 @@
 
 	<div class="wrapper">
 		<section class="section p-0">
-			<h2 class="section-title m-0 normal relative">도서예약 목록<button class="btn btn-primary absolute" onclick="location.href = contextPath + '/admin/bookReservation/bookReservationWrite.do'">도서예약등록</button></h2>
+			<h2 class="section-title m-0 normal relative">도서예약 목록<button class="btn btn-primary absolute" onclick="location.href = contextPath + '/user/bookReservation/bookReservationWrite.do'">도서예약등록</button></h2>
 			
 			<div class="contents">
 			<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}" />
 				<div class="book-list pt-0">
-				<form action="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do">
+				<form action="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do">
 					<div class="search flex gap-20 justify-center">
 						<select class="js-example-basic-single select shadow" name="searchType">
 							<option value="title">제목</option>
@@ -40,10 +40,10 @@
 					</div>
 				</form>
 					<ul class="tab flex gap-3">
-						<li class="shadow <c:if test="${empty requestScope.filter}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?${queryParam}">전체</a></li>
-						<li class="shadow <c:if test="${requestScope.filter eq '예약중'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?status=예약중&${queryParam}">예약중</a></li>
-						<li class="shadow <c:if test="${requestScope.filter eq '수령완료'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?status=수령완료&${queryParam}">수령완료</a></li>
-						<li class="shadow <c:if test="${requestScope.filter eq '예약취소'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?status=예약취소&${queryParam}">예약취소</a></li>
+						<li class="shadow <c:if test="${empty requestScope.filter}">on</c:if>"><a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?${queryParam}">전체</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '예약중'}">on</c:if>"><a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?status=예약중&${queryParam}">예약중</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '수령완료'}">on</c:if>"><a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?status=수령완료&${queryParam}">수령완료</a></li>
+						<li class="shadow <c:if test="${requestScope.filter eq '예약취소'}">on</c:if>"><a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?status=예약취소&${queryParam}">예약취소</a></li>
 					</ul>
 					<div class="table">
 						<table>
@@ -114,17 +114,17 @@
 						<ul class="paging flex w-270 justify-center">
 							<c:if test="${requestScope.pm.prev == true}">
 							<li>
-					          <a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					          <a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
 					        </li>
 							</c:if> 
 							
 					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
-					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?page=${i}&${queryParam}">${i}</a></li>
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?page=${i}&${queryParam}">${i}</a></li>
 					        </c:forEach>
 					        
 					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
 							<li class="page-item">
-					          <a href="${pageContext.request.contextPath}/admin/bookReservation/bookReservationList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					          <a href="${pageContext.request.contextPath}/user/bookReservation/bookReservationList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
 					        </li>
 							</c:if>
 						</ul>
@@ -189,7 +189,7 @@
 		        return;
 		    }
 		    $.ajax({
-		        url: '${pageContext.request.contextPath}/admin/bookReservation/cancelReservation.do',
+		        url: '${pageContext.request.contextPath}/user/bookReservation/cancelReservation.do',
 		        type: 'POST',
 		        data: { ridx: ridx },
 		        success: function(response) {

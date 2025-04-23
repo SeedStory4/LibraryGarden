@@ -6,6 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import libraryGarden.domain.ReservationDto;
+
 public interface AdminBookLoanMapper {
 
     public String selectUserLoanStatus(String userNumber);
@@ -22,5 +24,9 @@ public interface AdminBookLoanMapper {
     public void updateLibraryBookStatusToAvailable(@Param("lidx") int lidx);
     public Date selectDueDate(@Param("lidx") int lidx);
     public void insertOverdue(@Param("lidx") int lidx, @Param("overduePenaltyDays") int overduePenaltyDays);
+    int selectLbidxByCode(@Param("code") String code);
+    public String selectBookStatusByLbidx(@Param("lbidx") int lbidx);
+    ReservationDto selectActiveReservation(Map<String,Object> params);
+    void updateReservationToReceived(@Param("lbidx") int lbidx, @Param("userNumber") String userNumber, @Param("pickupDate") String pickupDate); // 수령완료로 변경
 
 }

@@ -82,7 +82,7 @@
       var orig = btn.dataset.pickupdate; // yyyy-mm-dd
 
       // 불가일 가져오기
-      $.getJSON(contextPath + '/admin/bookReservation/getReservedDatesForModify.do', {
+      $.getJSON(contextPath + '/user/bookReservation/getReservedDatesForModify.do', {
         lbidx: window.lbidx,
         userNumber: window.userNumber,
         ridx: window.ridx
@@ -134,7 +134,7 @@
         return alert('예약 날짜를 선택해주세요.');
       }
       var pd = selectedDate.replace(/\./g,'-');
-      $.post(contextPath + '/admin/bookReservation/modifyReservation.do', {
+      $.post(contextPath + '/user/bookReservation/modifyReservation.do', {
         ridx: window.ridx,
         pickupDate: pd
       }, function(resp){

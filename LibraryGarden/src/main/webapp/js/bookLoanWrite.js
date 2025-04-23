@@ -110,48 +110,46 @@ function numberCheck(page = currentPage, perPageNum = currentPerPageNum) {
 // 도서 등록
 function addBook() {
     var userNumber = $('#userNumber').val();
-    var code = $('#bookCode').val();
+    var code       = $('#bookCode').val();
 
     if (!userNumber || !code) {
-        alert("회원번호와 도서구분 코드를 모두 입력해주세요.");
-        return;
+        return alert("회원번호와 도서구분 코드를 모두 입력해주세요.");
     }
 
-    $.ajax({
-        url: contextPath + '/admin/bookLoan/checkBookStatus.do',
-        type: 'POST',
-        data: { code: code },
-        success: function (response) {
-            if (response === "대출중" || response === "예약대기") {
-                alert("현재 대출 중이거나 예약 대기 상태인 도서입니다.");
-                $('#bookCode').val('');
-                return;
-            } else if (response === "없는 도서") {
-                alert("없는 도서입니다.");
-                $('#bookCode').val('');
-                return;
-            }
-
-            $.ajax({
-                url: contextPath + '/admin/bookLoan/addBookLoan.do',
-                type: 'POST',
-                data: { userNumber: userNumber, code: code },
-                success: function (response) {
-                    alert(response);
-                    numberCheck();  // 현재 페이지 유지
-                    $('#bookCode').val('');
-                },
-                error: function (xhr, status, error) {
-                    alert("대출 등록 실패: " + xhr.responseText);
-                    $('#bookCode').val('');
-                }
-            });
-        },
-        error: function (xhr, status, error) {
-            alert("도서 상태 조회 오류: " + xhr.responseText);
+    // 1) status 조회
+    $.post(contextPath + '/admin/bookLoan/checkBookStatus.do', { code: code })
+     .done(function(response) {
+        // “대출중” 만 막고
+        if (response === "대출중") {
+            alert("현재 대출 중인 도서입니다.");
             $('#bookCode').val('');
+            return;
         }
-    });
+        // “없는 도서” 도 막고
+        if (response === "없는 도서") {
+            alert("없는 도서입니다.");
+            $('#bookCode').val('');
+            return;
+        }
+
+        // 그 외 (== "대출가능" or "예약대기") 모두 addBookLoan 호출
+        $.post(contextPath + '/admin/bookLoan/addBookLoan.do',
+               { userNumber: userNumber, code: code })
+         .done(function(msg) {
+            alert(msg);
+            numberCheck();  
+            $('#bookCode').val('');
+         })
+         .fail(function(xhr) {
+            // 400, 500 에러 메시지
+            alert(xhr.responseText);
+            $('#bookCode').val('');
+         });
+     })
+     .fail(function(xhr) {
+        alert("도서 상태 조회 오류: " + xhr.responseText);
+        $('#bookCode').val('');
+     });
 }
 
 // 대여 삭제
