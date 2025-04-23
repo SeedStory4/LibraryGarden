@@ -25,4 +25,6 @@ public interface LibraryBooksService {
 	
 	// 도서관 책 상세 조회 매서드
 	public LibraryBookDto getBookSelectOne(int lbidx);
+	
+	
 }

@@ -26,9 +26,7 @@ import libraryGarden.user.mapper.LibraryBooksMapper;
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
- *  - 관리자가 승인한 도서 책 갯수 조회 메서드
- *  - 관리자가 승인한 도서 책 리스트 조회 메서드
- *  - 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
+ *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
  *  
  * @author Siyeon
  */
@@ -95,6 +93,13 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		int value = albm.getBookDeleteOne(lbidx);
 		logger.debug("AdminBookServiceImpl BookDeleteOne value" + value);
 		return value;
+	}
+
+	// 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+	@Override
+	public String getLibraryBookLastCode() {
+		String lastCode = albm.getLibraryBookLastCode();
+		return lastCode;
 	}
 
 	

@@ -45,4 +45,11 @@
 	update LIBRARYBOOKS set delyn='Y', modify=now() where lbidx=#{lbidx} 
     </update>
  
+ 	<!-- 도서관 책 중 lbidx 마지막 번호 코드번호 가지고 오기 -->
+	<select id="getLibraryBookLastCode" resultType="String">
+	SELECT LB.code 
+	FROM LIBRARYBOOKS AS LB ORDER BY LB.lbidx DESC LIMIT 1
+	</select>
+	
+	
 </mapper>

@@ -73,7 +73,7 @@ public class AdminBookController {
 
 	// 도서 조회 목록 페이지 이동
 	@GetMapping("/bookList.do")
-	public String bookList(SearchCriteria scri, Model model) {
+	public String moveBookList(SearchCriteria scri, Model model) {
 		/*
 		 * 검색 기능 - 사용자가 입력한 검색조건과 검색어 저장 
 		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지기능 (scri)
@@ -113,8 +113,8 @@ public class AdminBookController {
 
 	// 도서 상세 페이지 이동
 	@GetMapping("/{lbidx}/bookDetail.do")
-	public String bookDetail(@PathVariable("lbidx") int lbidx, Model model) {
-		logger.debug("bookDetail 들어옴");
+	public String moveBookDetail(@PathVariable("lbidx") int lbidx, Model model) {
+		logger.debug("moveBookDetail 들어옴");
 
 		/*
 		 * 도서관 책 상세 조회 
@@ -133,8 +133,8 @@ public class AdminBookController {
 
 	// 관리자 도서관 도서 삭제 기능
 	@GetMapping("/{lbidx}/bookDelete.do")
-	public String bookDelete(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
-		logger.debug("bookDelete 들어옴");
+	public String moveBookDelete(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
+		logger.debug("moveBookDelete 들어옴");
 		
 		/*
 		 * 도서관 책 삭제
@@ -149,56 +149,44 @@ public class AdminBookController {
 
 	}
 
-	// 관리자 도서관 도서 수정 페이지 이동
-	@GetMapping("/{lbidx}/bookModify.do")
-	public String bookModify(@PathVariable("lbidx") int lbidx,Model model) {
-		logger.debug("bookModify 들어옴");
-		
-		/*
-		 * 도서관 책 상세 조회 
-		 * [input] 도서관 책 인덱스(lbidx) 
-		 * [output] 책 상세(lbd)
-		 */
-		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
-		
-		/*
-		 * Model를 통해 jsp로 이동 
-		 * - lbd : 책 상세 내용
-		 */
-		model.addAttribute("lbd", lbd);
-		return "admin/book/bookModify";
-
-	}
-	
-//	// 도서 수정 페이지 이동
-//	@GetMapping("/bookModify.do")
-//	public String bookModify() {
-//		return "admin/book/bookModify";
-//	}
 
 	// 도서 등록 페이지 이동
 	@GetMapping("/bookWrite.do")
-	public String bookWrite() {
+	public String getbookWrite(Model model) {
+		
+		// 등록된 도서관 책 중 마지막 구분을 가지고 옮
+		String lastCode = adminLibraryBooksService.getLibraryBookLastCode();
+		// ss분리 
+		String prefix = lastCode.replaceAll("[0-9]", "");
+	    // 숫자 분리
+	    String numberPart = lastCode.replaceAll("[^0-9]", ""); 
+	    // 숫자 변환 및 +1
+	    int number = Integer.parseInt(numberPart);
+	    number++;
+	    // 원래 자릿수에 맞춰 0 채우기
+	    lastCode = prefix + String.format("%06d", number);
+		
+		
+		
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("lastCode", lastCode);
+		
+		model.addAttribute("hm", hm);
+		
 		return "admin/book/bookWrite";
 	}
 
-	// 도서 선택 팝업 페이지 이동
-	@GetMapping("/popBookSelect.do")
-	public String popBookSelect() {
-		return "admin/book/popBookSelect";
-	}
-	
 	// 도서 선택 팝업 페이지 이동 ajax
 	@PostMapping("/bookSelectList.do")
 	@ResponseBody
-	public HashMap<String, Object> bookSelectList(
+	public HashMap<String, Object> moveBookSelectList(
 			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx
 	) {
 		
-		logger.info("bookList 들어옴");
+		logger.info("moveBookSelectList 들어옴");
 		
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 SearchCriteria scri = new SearchCriteria();
@@ -232,7 +220,7 @@ public class AdminBookController {
 	// 도서 선택 팝업에서 선택한 책 정보 가지고오기 ajax
 	@PostMapping("/bookSelectOne")
 	@ResponseBody
-	public BookVo bookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
+	public BookVo getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
 		
 		logger.info("bookSelectOne 들어옴");
 		
@@ -241,4 +229,26 @@ public class AdminBookController {
 		 
 		 return bv;
 	}
+	
+	// 관리자 도서관 도서 수정 페이지 이동
+	@GetMapping("/{lbidx}/bookModify.do")
+	public String moveBookModify(@PathVariable("lbidx") int lbidx,Model model) {
+		logger.debug("moveBookModify 들어옴");
+		
+		/*
+		 * 도서관 책 상세 조회 
+		 * [input] 도서관 책 인덱스(lbidx) 
+		 * [output] 책 상세(lbd)
+		 */
+		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
+		
+		/*
+		 * Model를 통해 jsp로 이동 
+		 * - lbd : 책 상세 내용
+		 */
+		model.addAttribute("lbd", lbd);
+		return "admin/book/bookModify";
+
+	}
+
 }

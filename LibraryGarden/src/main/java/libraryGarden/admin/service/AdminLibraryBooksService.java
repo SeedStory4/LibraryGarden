@@ -15,7 +15,7 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
- *  
+ *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
  *  
  *  
  * @author SiYeon
@@ -35,5 +35,6 @@ public interface AdminLibraryBooksService {
 	// 관리자 도서관 책 삭제 매서드
 	public int getBookDeleteOne(int lbidx);
 	
-
+	// 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+	public String getLibraryBookLastCode();
 }
