@@ -88,7 +88,7 @@
 					</thead>
 					<tbody>
 						<tr>
-							<td>DM000012</td>
+							<td>${hm.lastCode}</td>
 							<td class="call-number-container">
 							<span class="fixed-call-number">802.</span> 
 							<input type="text" class="input-call-number" value="123">
