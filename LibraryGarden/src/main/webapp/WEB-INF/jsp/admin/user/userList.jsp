@@ -81,7 +81,7 @@
 							  </c:forEach>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-center">
+						<ul class="paging flex justify-center">
 							<!-- 이전 페이지 링크 -->
 						    <c:if test="${pageMaker.prev}">
 						        <li>
