@@ -73,7 +73,7 @@
 										<td>${reservation.publisher}</td>
 										<td>${reservation.pickupDate}</td>
 										<td>${reservation.dueDate}</td>
-										<td>${reservation.reservationDate}</td>
+										<td>${reservation.regDate}</td>
 										<td
 											class="${reservation.status == '예약중' ? 'blue' : reservation.status == '예약취소' ? 'red' : 'green'}">
 											${reservation.status}</td>
@@ -118,7 +118,7 @@
 		        return;
 		    }
 		    $.ajax({
-		        url: "${pageContext.request.contextPath}/admin/bookReservation/cancelReservation.do",
+		        url: "${pageContext.request.contextPath}/user/bookReservation/cancelReservation.do",
 		        type: "POST",
 		        data: { ridx: ridx },
 		        success: function(response) {

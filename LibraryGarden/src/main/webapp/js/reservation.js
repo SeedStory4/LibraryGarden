@@ -129,7 +129,7 @@
       var userNumber = $('#userNumber').val();
 
       // 4) AJAX로 disabledDates/Reasons 받아오기
-      $.getJSON(contextPath + '/admin/bookReservation/getReservedDates.do', {
+      $.getJSON(contextPath + '/user/bookReservation/getReservedDates.do', {
         lbidx: window.lbidx,
         userNumber: userNumber
       })
@@ -178,7 +178,7 @@
         return alert('예약에 필요한 정보를 확인해주세요.');
       }
 
-      $.post(contextPath + '/admin/bookReservation/registerReservation.do', {
+      $.post(contextPath + '/user/bookReservation/registerReservation.do', {
         lbidx: window.lbidx,
         userNumber: $('#userNumber').val(),
         pickupDate: selectedDate.replace(/\./g,'-')
@@ -196,11 +196,11 @@
       if (!num) {
         return alert('회원번호를 입력해주세요.');
       }
-      $.getJSON(contextPath + '/admin/bookReservation/checkUser.do', { userNumber: num })
+      $.getJSON(contextPath + '/user/bookReservation/checkUser.do', { userNumber: num })
         .done(function(r){
           if (r.exists) {
             window.location.href = contextPath
-              + '/admin/bookReservation/bookReservationWrite.do?userNumber='
+              + '/user/bookReservation/bookReservationWrite.do?userNumber='
               + encodeURIComponent(num);
           } else {
             alert(r.message);

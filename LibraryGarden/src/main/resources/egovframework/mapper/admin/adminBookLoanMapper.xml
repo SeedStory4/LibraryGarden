@@ -101,27 +101,30 @@
 		FROM LIBRARYBOOKS
 		WHERE code = #{code}
 	</select>
+	
+	  <select id="selectBookStatusByLbidx" resultType="string" parameterType="int">
+	    SELECT status 
+	    FROM LIBRARYBOOKS 
+	    WHERE lbidx = #{lbidx}
+	  </select>
 
 	<!-- 도서 대여 등록 -->
-	<insert id="insertBookLoan">
-		INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate,
-		status)
-		VALUES (
-		(SELECT uidx FROM USER WHERE userNumber =
-		#{userNumber}),
-		(SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
-		NOW(),
-		DATE_ADD(NOW(), INTERVAL 6 DAY),
-		'대출중'
-		)
-	</insert>
+    <insert id="insertBookLoan">
+      INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate, status)
+      VALUES (
+        (SELECT uidx FROM `USER` WHERE userNumber = #{userNumber}),
+        (SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
+        NOW(),
+        DATE_ADD(NOW(), INTERVAL 6 DAY),
+        '대출중'
+      )
+    </insert>
 
 	<!-- 도서 상태 대출중으로 변경 -->
 	<update id="updateLibraryBookStatusToLoan">
 		UPDATE LIBRARYBOOKS
 		SET status = '대출중',
-		loanDate =
-		NOW(),
+		loanDate = NOW(),
 		dueDate = DATE_ADD(NOW(), INTERVAL 6 DAY),
 		returnDate = NULL,
 		modify = NOW()
@@ -181,5 +184,35 @@
 		) DAY)
 		)
 	</insert>
+	
+	<select id="selectLbidxByCode" parameterType="String" resultType="int">
+	  SELECT lbidx
+	    FROM LIBRARYBOOKS
+	   WHERE code = #{code}
+	</select>
+	
+	<!-- 해당 도서 예약한 건이 있는지? -->
+    <select id="selectActiveReservation" parameterType="map" resultType="libraryGarden.domain.ReservationDto">
+      SELECT ridx, lbidx, pickupDate, status
+        FROM RESERVATION r
+        JOIN `USER` u ON r.uidx = u.uidx
+       WHERE r.lbidx      = #{lbidx}
+         AND u.userNumber = #{userNumber}
+         AND r.status     = '예약중'
+         AND r.delyn      = 'N'
+    </select>
+    
+    <update id="updateReservationToReceived" parameterType="map">
+	  UPDATE RESERVATION R
+	    JOIN `USER` U ON R.uidx = U.uidx
+	  SET R.status = '수령완료',
+	      R.modify = NOW()
+	  WHERE R.lbidx      = #{lbidx}
+	    AND U.userNumber = #{userNumber}
+	    AND R.pickupDate = #{pickupDate}
+	    AND R.status     = '예약중'
+	    AND R.delyn      = 'N'
+	</update>
+	
 
 </mapper>

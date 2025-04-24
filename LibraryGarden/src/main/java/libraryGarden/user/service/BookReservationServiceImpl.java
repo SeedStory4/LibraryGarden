@@ -1,4 +1,4 @@
-package libraryGarden.admin.service;
+package libraryGarden.user.service;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -16,17 +16,18 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import libraryGarden.admin.mapper.AdminBookReservationMapper;
+
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
+import libraryGarden.user.mapper.BookReservationMapper;
 
 @Service
-public class AdminBookReservationServiceImpl implements AdminBookReservationService{
+public class BookReservationServiceImpl implements BookReservationService{
 	
 	@Autowired
-	private AdminBookReservationMapper rm;
+	private BookReservationMapper rm;
 	
 	
 	@Override

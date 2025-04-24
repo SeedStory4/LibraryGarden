@@ -13,7 +13,7 @@
 			<ul class="nav-menu">
 				<li><a href="<%= request.getContextPath() %>/admin/book/bookList.do">도서관리</a></li>
 				<li><a href="<%= request.getContextPath() %>/admin/bookLoan/bookLoanWrite.do">도서대출</a></li>
-				<li><a href="<%= request.getContextPath() %>/admin/bookReservation/bookReservationWrite.do">도서예약</a></li>
+				<li><a href="<%= request.getContextPath() %>/user/bookReservation/bookReservationList.do">도서예약</a></li>
 				<li><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestList.do">희망도서</a></li>
 				<li><a href="<%= request.getContextPath() %>/admin/approval/approvalList.do">결재관리</a></li>
 				<li><a href="<%= request.getContextPath() %>/admin/user/userList.do">회원관리</a></li>
