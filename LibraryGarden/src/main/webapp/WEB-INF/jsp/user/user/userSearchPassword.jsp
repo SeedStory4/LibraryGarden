@@ -37,7 +37,7 @@
 				<!-- 비밀번호 찾기 / 취소 버튼 -->
 				<div class="text-center mb-37">
 					<button type="submit" class="draft-btn-small btn-submit-600-65 mb-15">비밀번호 이메일 발송</button>
-					<button type="button" class="draft-btn-small btn-cancel-600-65" >취소</button>
+					<button type="button" class="draft-btn-small btn-cancel-600-65" onclick="history.back();">취소</button>
 				</div>
 			</form>
 		</section>

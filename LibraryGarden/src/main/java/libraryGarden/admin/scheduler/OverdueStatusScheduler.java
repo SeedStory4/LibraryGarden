@@ -5,7 +5,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import libraryGarden.admin.mapper.AdminBookLoanMapper;
-import libraryGarden.admin.mapper.AdminBookReservationMapper;
+import libraryGarden.user.mapper.BookReservationMapper;
 
 @Component
 public class OverdueStatusScheduler {
@@ -14,7 +14,7 @@ public class OverdueStatusScheduler {
     private AdminBookLoanMapper adminBookLoanMapper;
     
     @Autowired
-    private AdminBookReservationMapper adminBookReservationMapper;
+    private BookReservationMapper adminBookReservationMapper;
     
     // (cron 표현식은 필요에 따라 수정)
     @Scheduled(cron = "0 * * * * ?") // 1분마다 업데이트 되도록 설정

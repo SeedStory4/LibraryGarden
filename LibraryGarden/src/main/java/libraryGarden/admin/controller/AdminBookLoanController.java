@@ -41,20 +41,23 @@ public class AdminBookLoanController {
     }
     
     
-    // 도서 대여 등록
+    // 도서 대여 등록 (예약픽업 당일 허용)
     @PostMapping("/addBookLoan.do")
-    public ResponseEntity<String> addBookLoan(@RequestParam String userNumber, @RequestParam String code) {
+    public ResponseEntity<String> addBookLoan(
+            @RequestParam String userNumber,
+            @RequestParam String code) {
         try {
-            // 연체 상태 확인
-            if (adminBookLoanService.isUserOverdue(userNumber)) {
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("연체 중인 회원입니다. 대출할 수 없습니다.");
-            }
-
-            // 대여 등록 로직
             adminBookLoanService.addBookLoan(userNumber, code);
             return ResponseEntity.ok("대출 등록 성공");
+        } catch (IllegalStateException ise) {
+            // 픽업 불가 예외 메시지 그대로 전달
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(ise.getMessage());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("대출 등록 실패: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("대출 등록 실패: " + e.getMessage());
         }
     }
 

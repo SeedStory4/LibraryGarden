@@ -3,6 +3,7 @@ package libraryGarden.admin.controller;
 import java.util.List;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,22 +62,30 @@ public class AdminUserController {
     }
     
     @PostMapping("/userModifyAction.do")
-    public String userModifyAction(UserVo user, RedirectAttributes rttr) {
-        try {
-            // 기존 유저 정보 조회
-            UserVo original = userService.selectUserById(user.getId());
+    public String userModifyAction(UserVo user, RedirectAttributes rttr, HttpSession session) {
+    	 try {
+    	        // 기존 유저 정보 조회
+    	        UserVo original = userService.selectUserById(user.getId());
 
-            // 비밀번호는 기존 값으로 유지
-            user.setPassword(original.getPassword());
+    	        // 비밀번호는 기존 값으로 유지
+    	        user.setPassword(original.getPassword());
 
-            // 업데이트 실행 (password 포함된 쿼리라면)
-            userService.updateAdminUser(user);
-            rttr.addFlashAttribute("message", "회원 정보가 수정되었습니다.");
-        } catch (Exception e) {
-            rttr.addFlashAttribute("errorMessage", "수정 중 오류가 발생했습니다.");
-        }
-        return "redirect:/admin/user/userDetail.do?id=" + user.getId();
-    }
+    	        // 업데이트 실행
+    	        userService.updateAdminUser(user);
+
+    	        // ✅ 로그인한 유저가 수정 대상이면 세션 갱신
+    	        UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+    	        if (loginUser != null && loginUser.getId().equals(user.getId())) {
+    	            UserVo updatedUser = userService.selectUserById(user.getId());
+    	            session.setAttribute("loginUser", updatedUser);
+    	        }
+
+    	        rttr.addFlashAttribute("message", "회원 정보가 수정되었습니다.");
+    	    } catch (Exception e) {
+    	        rttr.addFlashAttribute("errorMessage", "수정 중 오류가 발생했습니다.");
+    	    }
+    	    return "redirect:/admin/user/userDetail.do?id=" + user.getId();
+    	}
 
 
 }

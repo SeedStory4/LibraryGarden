@@ -40,7 +40,7 @@
 		          <!-- 버튼들 form 안에 위치 -->
 		          <div class="draft-actions mb-37">
 		            <button type="submit" class="draft-btn-small btn-submit-140">회원가입</button>
-		            <button type="reset" class="draft-btn-small btn-cancel-140">취소</button>
+		            <button type="reset" class="draft-btn-small btn-cancel-140" onclick="location.href='<%= request.getContextPath() %>/user/main.do'" >취소</button>
 		          </div>
 		        </form>
 		      </div>

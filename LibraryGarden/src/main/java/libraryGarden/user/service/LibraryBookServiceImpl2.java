@@ -11,7 +11,7 @@ import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.LibraryBookDto2;
 import libraryGarden.domain.LibraryBooksVo2;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.mapper.LibraryBookMapper;
+import libraryGarden.user.mapper.LibraryBooksMapper;
 import libraryGarden.user.mapper.LibraryBookMapper2;
 
 @Service
