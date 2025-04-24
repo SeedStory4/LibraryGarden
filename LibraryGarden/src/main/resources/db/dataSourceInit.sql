@@ -1,11 +1,6 @@
--- APPROVAL 테이블 삭제 (가장 의존성이 높음)
-DROP TABLE IF EXISTS APPROVAL;
-
+-- 1차적 삭제
 -- RESERVATION 테이블 삭제
 DROP TABLE IF EXISTS RESERVATION;
-
--- REQUEST 테이블 삭제
-DROP TABLE IF EXISTS REQUEST;
 
 -- OVERDUE 테이블 삭제
 DROP TABLE IF EXISTS OVERDUE;
@@ -13,9 +8,17 @@ DROP TABLE IF EXISTS OVERDUE;
 -- LOAN 테이블 삭제
 DROP TABLE IF EXISTS LOAN;
 
--- LIBRARYBOOKS 테이블 삭제
+-- 2차적 삭제
+-- LIBRARYBOOKS 테이블 삭제 // 참조받는 테이블: LOAN, OVERDUE, RESERVATION :  LOAN, OVERDUE, RESERVATION 먼저 삭제돼야 LIBRARYBOOKS 지울 수 있음
 DROP TABLE IF EXISTS LIBRARYBOOKS;
 
+-- APPROVAL 테이블 삭제 (가장 의존성이 높음) // 참조받는 테이블: LIBRARYBOOKS : LIBRARYBOOKS 먼저 삭제돼야 APPROVAL 지울 수 있음
+DROP TABLE IF EXISTS APPROVAL;
+
+-- REQUEST 테이블 삭제 // 참조받는 테이블: APPROVAL : APPROVAL이 먼저 삭제돼야 REQUEST를 지울 수 있음
+DROP TABLE IF EXISTS REQUEST;
+
+-- 3차적 삭제
 -- CATEGORY 테이블 삭제
 DROP TABLE IF EXISTS CATEGORY;
 
@@ -64,6 +67,7 @@ CREATE TABLE BOOKS (
     delyn CHAR(1) NOT NULL DEFAULT 'N'
 );
 
+
 -- CATEGORY 테이블 생성
 CREATE TABLE CATEGORY (
     cidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -76,11 +80,50 @@ CREATE TABLE CATEGORY (
     delyn CHAR(1) NOT NULL DEFAULT 'N'
 );
 
+-- REQUEST 테이블 생성
+CREATE TABLE REQUEST (
+    rqidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uidx INT NOT NULL,
+    bidx INT NOT NULL,
+    status VARCHAR(50) NOT NULL DEFAULT '신청중',
+    rejectionReason VARCHAR(255),
+    regDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modify DATETIME,
+    delyn CHAR(1) NOT NULL DEFAULT 'N',
+    CONSTRAINT fk_request_user FOREIGN KEY (uidx) REFERENCES USER(uidx) 
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_request_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
+        ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+-- APPROVAL 테이블 생성
+CREATE TABLE APPROVAL (
+    aidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    uidx INT NOT NULL,
+    rqidx INT,
+    bidx INT,
+    status varchar(50) NOT NULL DEFAULT '대기',
+    rejectionReason VARCHAR(255),
+    approvalDate DATETIME,
+    regDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    modify DATETIME,
+    delyn CHAR(1) NOT NULL DEFAULT 'N',
+    regyn CHAR(1) NOT NULL DEFAULT 'N',
+    CONSTRAINT fk_approval_user FOREIGN KEY (uidx) REFERENCES USER(uidx) 
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_approval_request FOREIGN KEY (rqidx) REFERENCES REQUEST(rqidx) 
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_approval_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
+        ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
 -- LIBRARYBOOKS 테이블 생성
 CREATE TABLE LIBRARYBOOKS (
     lbidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     bidx INT NOT NULL,
     cidx INT NOT NULL,
+    aidx INT NOT NULL,
     code VARCHAR(30) NOT NULL UNIQUE ,
     callName VARCHAR(30) NOT NULL UNIQUE ,
     location VARCHAR(50) NOT NULL DEFAULT '일반열람실',
@@ -95,6 +138,8 @@ CREATE TABLE LIBRARYBOOKS (
     CONSTRAINT fk_librarybooks_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
         ON UPDATE CASCADE ON DELETE CASCADE,
     CONSTRAINT fk_librarybooks_category FOREIGN KEY (cidx) REFERENCES CATEGORY(cidx) 
+        ON UPDATE CASCADE ON DELETE CASCADE,
+    CONSTRAINT fk_librarybooks_approval FOREIGN KEY (aidx) REFERENCES APPROVAL(aidx) 
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -131,22 +176,6 @@ CREATE TABLE OVERDUE (
         ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- REQUEST 테이블 생성
-CREATE TABLE REQUEST (
-    rqidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    uidx INT NOT NULL,
-    bidx INT NOT NULL,
-    status VARCHAR(50) NOT NULL DEFAULT '신청중',
-    rejectionReason VARCHAR(255),
-    regDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    modify DATETIME,
-    delyn CHAR(1) NOT NULL DEFAULT 'N',
-    CONSTRAINT fk_request_user FOREIGN KEY (uidx) REFERENCES USER(uidx) 
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_request_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
-        ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 -- RESERVATION 테이블 생성 (예약 테이블)
 CREATE TABLE RESERVATION (
     ridx INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
@@ -164,26 +193,7 @@ CREATE TABLE RESERVATION (
         REFERENCES USER(uidx) ON UPDATE CASCADE ON DELETE CASCADE
 );
 
--- APPROVAL 테이블 생성
-CREATE TABLE APPROVAL (
-    aidx INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-    uidx INT NOT NULL,
-    rqidx INT,
-    bidx INT,
-    status varchar(50) NOT NULL DEFAULT '대기',
-    rejectionReason VARCHAR(255),
-    approvalDate DATETIME,
-    regDate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    modify DATETIME,
-    delyn CHAR(1) NOT NULL DEFAULT 'N',
-    regyn CHAR(1) NOT NULL DEFAULT 'N',
-    CONSTRAINT fk_approval_user FOREIGN KEY (uidx) REFERENCES USER(uidx) 
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_approval_request FOREIGN KEY (rqidx) REFERENCES REQUEST(rqidx) 
-        ON UPDATE CASCADE ON DELETE CASCADE,
-    CONSTRAINT fk_approval_books FOREIGN KEY (bidx) REFERENCES BOOKS(bidx) 
-        ON UPDATE CASCADE ON DELETE CASCADE
-);
+
 
 --------------------------------------------------------------------------------------------------------------------------------------
 
@@ -347,26 +357,78 @@ INSERT INTO CATEGORY (name, parentCode, childCode, level) VALUES
 ('지리', '900', '980', 2),
 ('전기', '900', '990', 2);
 
+-- REQUEST 샘플 데이터 생성
+INSERT INTO REQUEST(uidx,bidx,status,rejectionReason) 
+VALUES (3, 1, '신청중', null),
+(4, 2, '신청중', null),
+(4, 3, '신청중', null),
+(3, 4, '신청대기', null),
+(3, 5, '신청완료', null),
+(3, 6, '신청반려', '불필요한 도서'),
+(4, 7, '신청중', null),
+(4, 8, '신청중', null),
+(3, 9, '신청중', null),
+(3, 10, '신청중', null),
+(3, 11, '신청중', null),
+(4, 12, '신청중', null),
+(4, 13, '신청중', null);
+
+-- APPROVAL 샘플 데이터 생성
+INSERT INTO APPROVAL(uidx,rqidx,bidx,status,rejectionReason,regyn) 
+VALUES  
+(1,null,1,'승인','','Y'), 
+(1,null,2,'승인','','Y'),
+(1,null,3,'승인','','Y'), 
+(1,null,4,'승인','','Y'),
+(1,null,5,'승인','','Y'), 
+(1,null,6,'승인','','Y'),
+(1,null,7,'승인','','Y'), 
+(1,null,8,'승인','','Y'),
+(1,null,9,'승인','','Y'), 
+(1,null,10,'승인','','Y'),
+(1,null,11,'승인','','Y'), 
+(1,null,12,'승인','','Y'),
+(1,null,13,'승인','','Y'), 
+(1,null,14,'승인','','Y'),
+(1,null,15,'승인','','Y'), 
+(1,null,14,'승인','','Y'),
+(1,null,15,'승인','','Y'), 
+(2,1,null,'반려','예산부족','N'), 
+(2,2,null,'승인','','N'), 
+(2,3,null,'대기','','N'), 
+(1,5,null,'승인','','N'), 
+(1,6,null,'반려','불필요한 도서','N'), 
+(1,7,null,'대기','','N'), 
+(1,8,null,'승인','','N'), 
+(1,9,null,'승인','','N'), 
+(1,10,null,'대기','','N'), 
+(2,11,null,'대기','','N'), 
+(1,12,null,'승인','','N'), 
+(1,13,null,'승인','','N'), 
+(2,null,14,'대기','','N'), 
+(1,null,15,'승인','','N');
+
 -- LIBRARYBOOKS 샘플 데이터 생성
-INSERT INTO LIBRARYBOOKS (bidx, cidx, code, callName, location, loanDate, dueDate, returnDate, status, regdate, modify) 
+INSERT INTO LIBRARYBOOKS (bidx, cidx, aidx, code, callName, location, loanDate, dueDate, returnDate, status, regdate, modify) 
 VALUES
-(1, 81, 'SS000001', '800.161.01', '일반열람실', '2025-03-23', '2025-03-30', NULL, '대출중', '2025-03-23 10:00:00', NULL),
-(2, 82, 'SS000002', '810.162.01', '일반열람실', '2025-03-21', '2025-03-28', '2025-03-28', '대출가능', '2025-03-21 11:00:00', '2025-03-28 12:00:00'),
-(3, 83, 'SS000003', '820.163.01', '일반열람실', '2025-03-18', '2025-03-25', '2025-03-25', '대출가능', '2025-03-18 09:30:00', '2025-03-25 15:00:00'),
-(4, 14, 'SS000004', '130.101.01', '일반열람실', '2025-03-22', '2025-03-29', NULL, '대출중', '2025-03-22 13:00:00', NULL), -- 대여중
-(5, 15, 'SS000005', '140.102.01', '일반열람실', '2025-03-20', '2025-03-27', '2025-03-27', '대출가능', '2025-03-20 11:30:00', '2025-03-27 12:30:00'),
-(6, 36, 'SS000006', '350.201.01', '일반열람실', '2025-03-23', '2025-03-30', NULL, '대출중', '2025-03-23 09:00:00', NULL), -- 대여중
-(7, 37, 'SS000007', '360.202.01', '일반열람실', '2025-03-15', '2025-03-22', '2025-03-22', '대출가능', '2025-03-15 13:00:00', '2025-03-22 10:30:00'),
-(8, 58, 'SS000008', '700.301.01', '일반열람실', '2025-03-20', '2025-03-27', '2025-03-27', '대출가능', '2025-03-20 14:00:00', '2025-03-27 15:30:00'),
-(9, 69, 'SS000009', '680.401.01', '일반열람실', '2025-03-16', '2025-03-23', '2025-03-23', '대출가능', '2025-03-16 10:30:00', '2025-03-23 11:00:00'),
-(10, 80, 'SS000010', '790.501.01', '일반열람실', '2025-03-14', '2025-03-21', '2025-03-23', '대출가능', '2025-03-14 08:30:00', '2025-03-23 17:00:00'),
-(11, 1, 'SS000011', '000.111.01', '보전서고', NULL, NULL, NULL, '대출불가', '2025-03-14 15:30:00', NULL), -- 대출불가
-(12, 2, 'SS000012', '010.112.01', '일반열람실', NULL, NULL, NULL, '예약대기', '2025-03-12 12:30:00', NULL),-- 예약중
-(13, 3, 'SS000013', '020.113.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-15 16:30:00', NULL),
-(14, 4, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
-(15, 5, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL),
-(14, 4, 'SS000016', '030.114.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
-(15, 5, 'SS000017', '040.115.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
+(1, 81, 1, 'SS000001', '800.161.01', '일반열람실', '2025-03-23', '2025-03-30', NULL, '대출중', '2025-03-23 10:00:00', NULL),
+(2, 82, 2, 'SS000002', '810.162.01', '일반열람실', '2025-03-21', '2025-03-28', '2025-03-28', '대출가능', '2025-03-21 11:00:00', '2025-03-28 12:00:00'),
+(3, 83, 3, 'SS000003', '820.163.01', '일반열람실', '2025-03-18', '2025-03-25', '2025-03-25', '대출가능', '2025-03-18 09:30:00', '2025-03-25 15:00:00'),
+(4, 14, 4, 'SS000004', '130.101.01', '일반열람실', '2025-03-22', '2025-03-29', NULL, '대출중', '2025-03-22 13:00:00', NULL), -- 대여중
+(5, 15, 5, 'SS000005', '140.102.01', '일반열람실', '2025-03-20', '2025-03-27', '2025-03-27', '대출가능', '2025-03-20 11:30:00', '2025-03-27 12:30:00'),
+(6, 36, 6, 'SS000006', '350.201.01', '일반열람실', '2025-03-23', '2025-03-30', NULL, '대출중', '2025-03-23 09:00:00', NULL), -- 대여중
+(7, 37, 7, 'SS000007', '360.202.01', '일반열람실', '2025-03-15', '2025-03-22', '2025-03-22', '대출가능', '2025-03-15 13:00:00', '2025-03-22 10:30:00'),
+(8, 58, 8, 'SS000008', '700.301.01', '일반열람실', '2025-03-20', '2025-03-27', '2025-03-27', '대출가능', '2025-03-20 14:00:00', '2025-03-27 15:30:00'),
+(9, 69, 9, 'SS000009', '680.401.01', '일반열람실', '2025-03-16', '2025-03-23', '2025-03-23', '대출가능', '2025-03-16 10:30:00', '2025-03-23 11:00:00'),
+(10, 80, 10, 'SS000010', '790.501.01', '일반열람실', '2025-03-14', '2025-03-21', '2025-03-23', '대출가능', '2025-03-14 08:30:00', '2025-03-23 17:00:00'),
+(11, 1, 11, 'SS000011', '000.111.01', '보전서고', NULL, NULL, NULL, '대출불가', '2025-03-14 15:30:00', NULL), -- 대출불가
+(12, 2, 12, 'SS000012', '010.112.01', '일반열람실', NULL, NULL, NULL, '예약대기', '2025-03-12 12:30:00', NULL),-- 예약중
+(13, 3, 13, 'SS000013', '020.113.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-15 16:30:00', NULL),
+(14, 4, 14, 'SS000014', '030.114.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
+(15, 5, 15, 'SS000015', '040.115.01', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL),
+(14, 4, 16, 'SS000016', '030.114.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 10:30:00', NULL),
+(15, 5, 17, 'SS000017', '040.115.02', '일반열람실', NULL, NULL, NULL, '대출가능', '2025-03-11 08:30:00', NULL);
+
 -- LOAN 샘플 데이터 생성
 INSERT INTO LOAN (lbidx, uidx, loanDate, dueDate, returnDate, status, regdate, modify) 
 VALUES 
@@ -387,22 +449,6 @@ VALUES
 INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
 VALUES (10, 4, 'Y', '2025-03-23', '2025-03-27');
 
--- REQUEST 샘플 데이터 생성
-INSERT INTO REQUEST(uidx,bidx,status,rejectionReason) 
-VALUES (3, 1, '신청중', null),
-(4, 2, '신청중', null),
-(4, 3, '신청중', null),
-(3, 4, '신청대기', null),
-(3, 5, '신청완료', null),
-(3, 6, '신청반려', '불필요한 도서'),
-(4, 7, '신청중', null),
-(4, 8, '신청중', null),
-(3, 9, '신청중', null),
-(3, 10, '신청중', null),
-(3, 11, '신청중', null),
-(4, 12, '신청중', null),
-(4, 13, '신청중', null);
-
 
 INSERT INTO RESERVATION (lbidx, uidx, regDate, pickupDate, status, dueDate, modify)
 VALUES
@@ -411,6 +457,7 @@ VALUES
 (14, 4, '2025-03-22', '2025-03-23', '수령완료', '2025-03-30', '2025-03-23 09:00:00'),
 (15, 3, '2025-03-27', '2025-03-29', '예약중', '2025-04-05', NULL);
 
+<<<<<<< HEAD
 -- APPROVAL 샘플 데이터 생성
 INSERT INTO APPROVAL(uidx,rqidx,bidx,status,rejectionReason) 
 VALUES  (2,1,null,'반려','예산부족'), 
@@ -493,3 +540,5 @@ VALUES
 
 
 
+=======
+>>>>>>> 049512de54a6ee6f1975474b06267e52bbda1aab

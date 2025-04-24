@@ -36,11 +36,12 @@ public class LibraryBookDto {
 	private String dueDate; // 도서관 책 반납예정일
 	private String status; // 도서관 책 상태(대출중, 대출가능, 예약대기)
 	
-
 	private int cidx; // 도서관 책 카테고리 인덱스
 	private String name; // 카테고리 이름(문학, 등)	
 	private String parentCode; // 카테고리 상위 코드
 	private String childCode; // 카테고리 하위 코드
+	
+	private int aidx; //  도서관 책 결재 승인 된 인덱스
 	
 	public int getBidx() {
 		return bidx;
@@ -198,6 +199,11 @@ public class LibraryBookDto {
 	public void setChildCode(String childCode) {
 		this.childCode = childCode;
 	}
-
+	public int getAidx() {
+		return aidx;
+	}
+	public void setAidx(int aidx) {
+		this.aidx = aidx;
+	}
 
 }
