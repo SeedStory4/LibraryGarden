@@ -1,16 +1,6 @@
 package libraryGarden.domain;
-/**
- * [설명] 도서관에 있는 책들에 관련된 Dto
- * 
- * [주요기능]
- * - 도서관에 현재 있는 책의 대한 정보와 대출상태를 나타냄
- *  
- * @author SiYeon
- * 
- * 
- */ 
 
-public class LibraryBookDto {
+public class LibraryBook2Dto {
 
 	private int bidx; // 책 인덱스
 	private String coverImg; // 책 표지
@@ -36,12 +26,14 @@ public class LibraryBookDto {
 	private String dueDate; // 도서관 책 반납예정일
 	private String status; // 도서관 책 상태(대출중, 대출가능, 예약대기)
 	
+
 	private int cidx; // 도서관 책 카테고리 인덱스
 	private String name; // 카테고리 이름(문학, 등)	
 	private String parentCode; // 카테고리 상위 코드
 	private String childCode; // 카테고리 하위 코드
 	
-	private int aidx; //  도서관 책 결재 승인 된 인덱스
+	 
+    private int loanCount; //이달의 대출순위를 위한 loanCount 추가
 	
 	public int getBidx() {
 		return bidx;
@@ -199,11 +191,9 @@ public class LibraryBookDto {
 	public void setChildCode(String childCode) {
 		this.childCode = childCode;
 	}
-	public int getAidx() {
-		return aidx;
-	}
-	public void setAidx(int aidx) {
-		this.aidx = aidx;
-	}
+	
+	public int getLoanCount() { return loanCount; }
+	public void setLoanCount(int loanCount) { this.loanCount = loanCount; }
+
 
 }

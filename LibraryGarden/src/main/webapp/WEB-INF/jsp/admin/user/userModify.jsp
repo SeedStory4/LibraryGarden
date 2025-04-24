@@ -35,7 +35,7 @@
 				<!-- 선 추가 -->
 
 				<!-- 회원 정보 수정 -->
-				<form action="${pageContext.request.contextPath}/admin/user/userModifyAction.do" method="post">
+				<form action="${pageContext.request.contextPath}/admin/user/userModifyAction.do" method="post" id="adminModifyForm" novalidate>
 				<div class="draft-content">
 					<div class="mb-21">
 						<p class="font-767678-18">이름</p>
@@ -79,9 +79,11 @@
 						    </label>
 						</div>
 					</div>
-					<div class="mb-30">
-						<p class="font-767678-18">가입일</p>
-						<p class="font-000-20">${user.date}</p>
+					<div class="mb-33">
+					  <p class="font-767678-18">가입일</p>
+					  <p class="font-000-20">
+					    <c:out value="${fn:replace(fn:substring(user.date, 0, 10), '-', '.')}" />
+					  </p>
 					</div>
 				</div>
 
@@ -89,7 +91,7 @@
 				<!-- 등록/취소 버튼 -->
 				<div class="draft-actions mb-37">
 					<button type="submit" class="draft-btn-small btn-submit-140">확인</button>
-					<button type="reset" class="draft-btn-small btn-list-140">취소</button>
+					<button type="reset" class="draft-btn-small btn-list-140" onclick="history.back();">취소</button>
 				</div>
 			</form>
 			</section>
@@ -100,6 +102,56 @@
 	<div id="footer-container">
 		<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
     </div>
+    
+		    <script>
+			  document.querySelector("input[name='phone']").addEventListener("input", function () {
+			    // 숫자와 +만 허용
+			    this.value = this.value.replace(/[^0-9+]/g, "");
+			    if (this.value.indexOf('+') > 0) {
+			      this.value = this.value.replace(/\+/g, ''); // 맨 앞이 아닌 "+"는 제거
+			    }
+			    if ((this.value.match(/\+/g) || []).length > 1) {
+			      this.value = this.value.replace(/\+/g, '+'); // "+"가 2개 이상이면 하나만 남기기
+			    }
+			  });
+			
+			  document.getElementById("adminModifyForm").addEventListener("submit", function (e) {
+			    const form = e.target;
+			    const phone = form.phone.value.trim();
+			    const email = form.email.value.trim();
+			    const address = form.address.value.trim();
+			
+			    if (phone === "") {
+			      alert("휴대전화번호를 입력해주세요.");
+			      form.phone.focus();
+			      e.preventDefault();
+			      return;
+			    }
+			
+			    if (email === "") {
+			      alert("이메일을 입력해주세요.");
+			      form.email.focus();
+			      e.preventDefault();
+			      return;
+			    }
+			
+			    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+			    if (!emailRegex.test(email)) {
+			      alert("올바른 이메일 형식이 아닙니다.");
+			      form.email.focus();
+			      e.preventDefault();
+			      return;
+			    }
+			
+			    if (address === "") {
+			      alert("주소를 입력해주세요.");
+			      form.address.focus();
+			      e.preventDefault();
+			      return;
+			    }
+			  });
+			</script>
+    
 
 
 

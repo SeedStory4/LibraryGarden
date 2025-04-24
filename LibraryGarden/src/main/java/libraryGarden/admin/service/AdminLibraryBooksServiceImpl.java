@@ -2,22 +2,17 @@ package libraryGarden.admin.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
+ 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
-import libraryGarden.admin.mapper.AdminBookMapper;
+ 
 import libraryGarden.admin.mapper.AdminLibraryBooksMapper;
-import libraryGarden.domain.BookVo;
 import libraryGarden.domain.LibraryBookDto;
-import libraryGarden.domain.RequestDto;
+import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.mapper.LibraryBooksMapper;
+
 
 /** [설명] AdminBookService 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
  * 
@@ -26,9 +21,7 @@ import libraryGarden.user.mapper.LibraryBooksMapper;
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
- *  - 관리자가 승인한 도서 책 갯수 조회 메서드
- *  - 관리자가 승인한 도서 책 리스트 조회 메서드
- *  - 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
+ *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
  *  
  * @author Siyeon
  */
@@ -39,6 +32,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 	
 	@Autowired
 	private AdminLibraryBooksMapper albm;
+	
 	
 	// 관리자 도서관 책 전체 조회 목록 출력 메서드
 	@Override
@@ -97,5 +91,24 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		return value;
 	}
 
+	// 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+	@Override
+	public String getLibraryBookLastCode() {
+		String lastCode = albm.getLibraryBookLastCode();
+		return lastCode;
+	}
 	
+	// 관리자 도서관 청구기호 일치여부 숫자 조회 매서드
+	@Override
+	public int getCheckCallNumberDuplicate(String callName) {
+		int cnt = albm.getCheckCallNumberDuplicate(callName);
+		return cnt;
+	}
+
+	@Override
+	public int insertLibraryBookAboutBook(LibraryBooksVo lbv) {
+		int cnt = albm.insertLibraryBookAboutBook(lbv);
+		return cnt;
+	}
+
 }

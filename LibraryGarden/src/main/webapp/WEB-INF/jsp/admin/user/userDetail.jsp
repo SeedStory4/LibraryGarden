@@ -65,9 +65,11 @@
 						<p class="font-767678-18">권한</p>
 						<p class="font-000-20">${user.role}</p>
 					</div>
-					<div class="mb-42">
-						<p class="font-767678-18">가입일</p>
-						<p class="font-000-20">${user.date}</p>
+					<div class="mb-33">
+					  <p class="font-767678-18">가입일</p>
+					  <p class="font-000-20">
+					    <c:out value="${fn:replace(fn:substring(user.date, 0, 10), '-', '.')}" />
+					  </p>
 					</div>
 				</div>
 

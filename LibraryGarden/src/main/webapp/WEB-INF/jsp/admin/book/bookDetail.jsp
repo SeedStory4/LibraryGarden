@@ -140,8 +140,6 @@
 				</table>
 
 				<div class="draft-actions mg-top">
-					<button class="draft-btn-small btn-submit">예약</button>
-					
 					<c:choose>
 				    <c:when test="${lbd.status eq '대출중' or lbd.status eq '예약대기'}">
 				        <button class="draft-btn-small btn-submit"

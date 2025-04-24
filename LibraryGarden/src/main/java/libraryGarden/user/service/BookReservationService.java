@@ -1,4 +1,4 @@
-package libraryGarden.admin.service;
+package libraryGarden.user.service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
 
-public interface AdminBookReservationService {
+public interface BookReservationService {
 	
 	public int bookReservationTotalCount(SearchCriteria scri, String filter); // 예약 총 갯수
 	public ArrayList<ReservationDto> bookReservationSelectAll(SearchCriteria scri, String filter); // 예약 모든 리스트 가져오기
@@ -19,7 +19,7 @@ public interface AdminBookReservationService {
     // 예약 등록 메소드 추가
     public int registerReservation(ReservationDto reservation);
     public int cancelReservation(int ridx); // 예약 삭제
- // 수정 팝업에서 불가능 날짜 조회
+    // 수정 팝업에서 불가능 날짜 조회
     List<Map<String,String>> getUnavailableDatesForModify(int lbidx, String userNumber, int ridx);
     // 실제 수정
     int updateReservation(ReservationDto reservation);

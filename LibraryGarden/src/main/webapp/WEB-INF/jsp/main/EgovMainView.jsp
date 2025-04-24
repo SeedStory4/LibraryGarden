@@ -188,7 +188,7 @@
       <tr>
         <td rowspan="4">bookReservation</td>
         <td>목록</td>
-        <td><a href="<%= request.getContextPath() %>/admin/bookReservation/bookReservationList.do">bookReservationList</a></td>
+        <td><a href="<%= request.getContextPath() %>/user/bookReservation/bookReservationList.do">bookReservationList</a></td>
         <td rowspan="4">BookReservationController</td>
       </tr>
       <tr>

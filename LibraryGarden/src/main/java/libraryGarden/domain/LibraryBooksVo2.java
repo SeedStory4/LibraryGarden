@@ -1,11 +1,10 @@
 package libraryGarden.domain;
 
-public class LibraryBooksVo {
+public class LibraryBooksVo2 {
 	
     private int lbidx;
     private int bidx;
     private int cidx;
-    private int aidx;
     private String code;
     private String callName;
     private String location;
@@ -36,12 +35,6 @@ public class LibraryBooksVo {
 	}
 	public void setCidx(int cidx) {
 		this.cidx = cidx;
-	}
-	public int getAidx() {
-		return aidx;
-	}
-	public void setAidx(int aidx) {
-		this.aidx = aidx;
 	}
 	public String getCode() {
 		return code;

@@ -19,16 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.admin.service.AdminApproval2Service;
-import libraryGarden.admin.service.AdminBookService;
+import libraryGarden.admin.service.AdminBookCUDService;
+import libraryGarden.admin.service.AdminCategoryService;
 import libraryGarden.admin.service.AdminLibraryBooksService;
 import libraryGarden.cmm.util.UrlEncoder;
-import libraryGarden.domain.BookVo;
 import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.PageMaker;
-import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.controller.Book1Controller;
-import libraryGarden.user.service.LibraryBooksService;
+
 
 /**
  * [설명] 관리자의 도서 관리 페이지
@@ -67,13 +66,21 @@ public class AdminBookController {
 	@Autowired(required = false)
 	private AdminLibraryBooksService adminLibraryBooksService;
 	
+	// AdminCategoryService 주입
+	@Autowired(required = false)
+	private AdminCategoryService adminCategoryService;
+	
+	// AdminBookCUDService 주입
+	@Autowired(required = false)
+	private AdminBookCUDService adminBookCUDService;
+	
 	// PageMaker 주입 (페이징 기능)
 	@Autowired(required = false)
 	private PageMaker pm;
 
 	// 도서 조회 목록 페이지 이동
 	@GetMapping("/bookList.do")
-	public String bookList(SearchCriteria scri, Model model) {
+	public String moveBookList(SearchCriteria scri, Model model) {
 		/*
 		 * 검색 기능 - 사용자가 입력한 검색조건과 검색어 저장 
 		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지기능 (scri)
@@ -113,8 +120,8 @@ public class AdminBookController {
 
 	// 도서 상세 페이지 이동
 	@GetMapping("/{lbidx}/bookDetail.do")
-	public String bookDetail(@PathVariable("lbidx") int lbidx, Model model) {
-		logger.debug("bookDetail 들어옴");
+	public String moveBookDetail(@PathVariable("lbidx") int lbidx, Model model) {
+		logger.debug("moveBookDetail 들어옴");
 
 		/*
 		 * 도서관 책 상세 조회 
@@ -133,8 +140,8 @@ public class AdminBookController {
 
 	// 관리자 도서관 도서 삭제 기능
 	@GetMapping("/{lbidx}/bookDelete.do")
-	public String bookDelete(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
-		logger.debug("bookDelete 들어옴");
+	public String moveBookDelete(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
+		logger.debug("moveBookDelete 들어옴");
 		
 		/*
 		 * 도서관 책 삭제
@@ -149,56 +156,53 @@ public class AdminBookController {
 
 	}
 
-	// 관리자 도서관 도서 수정 페이지 이동
-	@GetMapping("/{lbidx}/bookModify.do")
-	public String bookModify(@PathVariable("lbidx") int lbidx,Model model) {
-		logger.debug("bookModify 들어옴");
-		
-		/*
-		 * 도서관 책 상세 조회 
-		 * [input] 도서관 책 인덱스(lbidx) 
-		 * [output] 책 상세(lbd)
-		 */
-		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
-		
-		/*
-		 * Model를 통해 jsp로 이동 
-		 * - lbd : 책 상세 내용
-		 */
-		model.addAttribute("lbd", lbd);
-		return "admin/book/bookModify";
-
-	}
-	
-//	// 도서 수정 페이지 이동
-//	@GetMapping("/bookModify.do")
-//	public String bookModify() {
-//		return "admin/book/bookModify";
-//	}
 
 	// 도서 등록 페이지 이동
 	@GetMapping("/bookWrite.do")
-	public String bookWrite() {
+	public String getbookWrite(Model model) {
+		
+
+		/****도서 구분****/
+		// 등록된 도서관 책 중 마지막 구분을 가지고 옮
+		String lastCode = adminLibraryBooksService.getLibraryBookLastCode();
+		// ss분리 
+		String prefix = lastCode.replaceAll("[0-9]", "");
+	    // 숫자 분리
+	    String numberPart = lastCode.replaceAll("[^0-9]", ""); 
+	    // 숫자 변환 및 +1
+	    int number = Integer.parseInt(numberPart);
+	    number++;
+	    // 원래 자릿수에 맞춰 0 채우기
+	    lastCode = prefix + String.format("%06d", number);
+	    /**************/
+	    
+	    /****도서 분류(대분류)****/
+	    // 도서 카테고리 대분류를 가지고 옴(level = 1)
+	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
+	    /**************/
+	    
+		HashMap<String, Object> hm = new HashMap<String, Object>();
+		hm.put("lastCode", lastCode);
+		hm.put("parentList", parentList);
+
+		
+		model.addAttribute("hm", hm);
+		
 		return "admin/book/bookWrite";
 	}
 
-	// 도서 선택 팝업 페이지 이동
-	@GetMapping("/popBookSelect.do")
-	public String popBookSelect() {
-		return "admin/book/popBookSelect";
-	}
-	
-	// 도서 선택 팝업 페이지 이동 ajax
+
+	// 도서 등록/수정 시 선택 팝업 페이지 이동 ajax
 	@PostMapping("/bookSelectList.do")
 	@ResponseBody
-	public HashMap<String, Object> bookSelectList(
+	public HashMap<String, Object> moveBookSelectList(
 			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx
 	) {
 		
-		logger.info("bookList 들어옴");
+		logger.info("moveBookSelectList 들어옴");
 		
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 SearchCriteria scri = new SearchCriteria();
@@ -229,16 +233,84 @@ public class AdminBookController {
 		 return hm;
 	}
 	
-	// 도서 선택 팝업에서 선택한 책 정보 가지고오기 ajax
-	@PostMapping("/bookSelectOne")
+	// 도서 등록/수정 시 선택 팝업에서 선택한 책 정보 가지고오기 ajax
+	@PostMapping("/bookSelectOne.do")
 	@ResponseBody
-	public BookVo bookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
+	public HashMap<String, Object> getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
+
 		
 		logger.info("bookSelectOne 들어옴");
 		
 		 // 동록에서 보여줄 데이터 DB에서 가져오기
-		 BookVo bv = adminApprovalService.getBookApprovalSelectOne(aidx);
+		HashMap<String, Object> hm = adminApprovalService.getBookApprovalSelectOne(aidx);
 		 
-		 return bv;
+		 return hm;
 	}
+
+	
+	// 도서 등록/수정 시 카데고리 소분류 가지고오기 ajax
+	@PostMapping("/getChildrenCategory.do")
+	@ResponseBody
+	public List<LibraryBookDto> getChildrenCategory(@RequestParam(value = "parentCode") int parentCode) {
+		
+		logger.info("getChildrenCategory 들어옴");
+		
+	    // 도서 카테고리 소분류를 가지고 옴(level = 1)
+		List<LibraryBookDto> lbdList = adminCategoryService.getChildrenCategoryByparentCode(parentCode);
+		 
+		return lbdList;
+	}
+	
+	// 도서 등록/수정 시 청구기호 일치여부 숫자 ajax
+	@PostMapping("/checkCallNumberDuplicate.do")
+	@ResponseBody
+	public int checkCallNumberDuplicate(@RequestParam(value = "callName") String callName) {
+		
+		logger.info("checkCallNumberDuplicate 들어옴");
+		
+	    // 청구기호 일치여부 숫자 
+		int cnt = adminLibraryBooksService.getCheckCallNumberDuplicate(callName);
+		 
+		return cnt;
+	}
+	
+	// 도서 등록 
+	@PostMapping("/bookWriteAction.do")
+	public String insertBookWriteAction(LibraryBooksVo lbv, Model model) {
+		
+		logger.info("insertBookWriteAction 들어옴");
+		
+	    int result = adminBookCUDService.insertLibraryBooksAndUpdateApproval(lbv);
+
+	    if (result == 2) {
+	        return "redirect:/admin/book/bookWrite.do";
+	    }
+	    
+	    model.addAttribute("msg", "도서 등록에 실패했습니다.");
+	    return "redirect:/admin/book/bookWrite.do";
+	    
+	}
+	
+
+	// 관리자 도서관 도서 수정 페이지 이동
+	@GetMapping("/{lbidx}/bookModify.do")
+	public String moveBookModify(@PathVariable("lbidx") int lbidx,Model model) {
+		logger.debug("moveBookModify 들어옴");
+		
+		/*
+		 * 도서관 책 상세 조회 
+		 * [input] 도서관 책 인덱스(lbidx) 
+		 * [output] 책 상세(lbd)
+		 */
+		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
+		
+		/*
+		 * Model를 통해 jsp로 이동 
+		 * - lbd : 책 상세 내용
+		 */
+		model.addAttribute("lbd", lbd);
+		return "admin/book/bookModify";
+
+	}
+
 }

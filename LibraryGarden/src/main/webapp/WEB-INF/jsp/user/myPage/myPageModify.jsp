@@ -77,8 +77,10 @@
 					</div>
 					
 					<div class="mb-33">
-						<p class="font-767678-18">가입일</p>
-						<p class="font-000-20">${user.date}</p>
+					  <p class="font-767678-18">가입일</p>
+					  <p class="font-000-20">
+					    <c:out value="${fn:replace(fn:substring(user.date, 0, 10), '-', '.')}" />
+					  </p>
 					</div>
 				</div>
 
@@ -86,7 +88,7 @@
 				<!-- 등록/취소 버튼 -->
 				<div class="draft-actions mb-37">
 					<button type="submit" class="draft-btn-small btn-submit-140">확인</button>
-    				<button type="reset" class="draft-btn-small btn-cancel-140">취소</button>
+    				<button type="reset" class="draft-btn-small btn-cancel-140" onclick="history.back();">취소</button>
 				</div>
 			</form>
 			</section>
