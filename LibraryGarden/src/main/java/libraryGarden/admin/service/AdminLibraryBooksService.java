@@ -14,6 +14,7 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
  *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+<<<<<<< HEAD
  *  - 관리자 도서관 청구기호 일치여부 숫자 조회 매서드
  *  - 관리자 도서관 도서 등록 매서드
  *  
@@ -21,6 +22,8 @@ import libraryGarden.domain.SearchCriteria;
  *  
  *  
  *  
+=======
+>>>>>>> c15234b9bfb1d731b6fe16854c3fa00deee78531
  *  
  *  
  * @author SiYeon

@@ -111,6 +111,4 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		return cnt;
 	}
 
-
-	
 }

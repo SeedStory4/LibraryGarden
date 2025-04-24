@@ -161,6 +161,7 @@ public class AdminBookController {
 	@GetMapping("/bookWrite.do")
 	public String getbookWrite(Model model) {
 		
+
 		/****도서 구분****/
 		// 등록된 도서관 책 중 마지막 구분을 가지고 옮
 		String lastCode = adminLibraryBooksService.getLibraryBookLastCode();
@@ -183,11 +184,13 @@ public class AdminBookController {
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("lastCode", lastCode);
 		hm.put("parentList", parentList);
+
 		
 		model.addAttribute("hm", hm);
 		
 		return "admin/book/bookWrite";
 	}
+
 
 	// 도서 등록/수정 시 선택 팝업 페이지 이동 ajax
 	@PostMapping("/bookSelectList.do")
@@ -234,6 +237,7 @@ public class AdminBookController {
 	@PostMapping("/bookSelectOne.do")
 	@ResponseBody
 	public HashMap<String, Object> getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
+
 		
 		logger.info("bookSelectOne 들어옴");
 		
@@ -242,7 +246,7 @@ public class AdminBookController {
 		 
 		 return hm;
 	}
-	
+
 	
 	// 도서 등록/수정 시 카데고리 소분류 가지고오기 ajax
 	@PostMapping("/getChildrenCategory.do")
@@ -287,6 +291,7 @@ public class AdminBookController {
 	    
 	}
 	
+
 	// 관리자 도서관 도서 수정 페이지 이동
 	@GetMapping("/{lbidx}/bookModify.do")
 	public String moveBookModify(@PathVariable("lbidx") int lbidx,Model model) {

@@ -51,6 +51,7 @@
 	FROM LIBRARYBOOKS AS LB ORDER BY LB.lbidx DESC LIMIT 1
 	</select>
 	
+
 	<!-- 도서관 책 중 lbidx 마지막 번호 코드번호 가지고 오기 -->
 	<select id="getCheckCallNumberDuplicate" resultType="int">
 	SELECT COUNT(*) AS cnt  
@@ -62,5 +63,6 @@
 	INSERT INTO LIBRARYBOOKS (bidx, cidx, aidx, code, callName, location, loanDate, dueDate, returnDate) 
 	VALUES (#{bidx},#{cidx},#{aidx},#{code},#{callName},#{location},null,null,null)
 	</insert>
+
 	
 </mapper>
