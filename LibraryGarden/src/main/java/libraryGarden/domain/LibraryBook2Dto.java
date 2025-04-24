@@ -1,6 +1,6 @@
 package libraryGarden.domain;
 
-public class LibraryBookDto2 {
+public class LibraryBook2Dto {
 
 	private int bidx; // 책 인덱스
 	private String coverImg; // 책 표지

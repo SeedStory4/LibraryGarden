@@ -53,47 +53,27 @@
 									<th>상태</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">신청중</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">신청중</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">신청중</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">신청중</td>
-								</tr>
+								<thead>
+								  <c:forEach var="req" items="${requestList}">
+								    <tr>
+								      <td>${req.rqidx}</td>
+								      <td>${req.title}</td>
+								      <td>${req.author}</td>
+								      <td>${req.publisher}</td>
+								      <td>${req.name}</td>
+								      <td>${fn:substring(req.regDate, 0, 10)}</td>
+								      <td class=
+										<c:if test="${req.status eq '신청중'}">"blue"</c:if>
+										<c:if test="${req.status eq '신청완료'}">"green"</c:if>
+										<c:if test="${req.status eq '신청반려'}">"red"</c:if>
+										<c:if test="${req.status eq '신청대기'}">"orange"</c:if>
+									>${req.status}</td>
+								    </tr>
+								  </c:forEach>
 							</tbody>
-						</table>
+							</table>
+						</div>
 					</div>
-				</div>
 			</section>
 
 			<!-- 결재관리목록 -->
@@ -124,43 +104,22 @@
 									<th>상태</th>
 								</tr>
 							</thead>
-							<tbody>
-								<tr>
-									<td>1</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">대기</td>
-								</tr>
-								<tr>
-									<td>2</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">대기</td>
-								</tr>
-								<tr>
-									<td>3</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">대기</td>
-								</tr>
-								<tr>
-									<td>4</td>
-									<td><a href="#" class="title-link">채식주의자</a></td>
-									<td>한강</td>
-									<td>창비</td>
-									<td>채형찬</td>
-									<td>2025.03.01</td>
-									<td class="blue">대기</td>
-								</tr>
+							<thead>
+								<c:forEach var="app" items="${approvalList}">
+								    <tr>
+								        <td>${app.aidx}</td>
+								        <td>${app.title}</td>
+								        <td>${app.author}</td>
+								        <td>${app.publisher}</td>
+								        <td>${app.name}</td>
+								        <td>${fn:substring(app.regDate, 0, 10)}</td>
+								        <td class=
+										<c:if test="${app.status eq '대기'}">"blue"</c:if>
+										<c:if test="${app.status eq '승인'}">"green"</c:if>
+										<c:if test="${app.status eq '반려'}">"red"</c:if>
+									>${app.status}</td>
+								    </tr>
+								</c:forEach>
 							</tbody>
 						</table>
 					</div>
@@ -172,5 +131,20 @@
 
 	<!-- 푸터 로드할 부분 -->
 	<jsp:include page="/WEB-INF/jsp/cmm/footer.jsp" />
+	
+	<!-- <script>
+		window.addEventListener("DOMContentLoaded", () => {
+		    const tableBody = document.getElementById("requestTableBody");
+		    const rows = Array.from(tableBody.rows);
+		    rows.reverse(); // 순서를 반대로
+	
+		    // 기존 행 제거 후 역순으로 다시 추가
+		    rows.forEach(row => {
+		        tableBody.appendChild(row);
+		    });
+		});
+	</script> -->
+	
+	
 </body>
 </html>

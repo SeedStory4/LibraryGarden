@@ -8,21 +8,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import libraryGarden.domain.LibraryBookDto;
-import libraryGarden.domain.LibraryBookDto2;
+import libraryGarden.domain.LibraryBook2Dto;
 import libraryGarden.domain.LibraryBooksVo2;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.mapper.LibraryBooksMapper;
-import libraryGarden.user.mapper.LibraryBookMapper2;
+import libraryGarden.user.mapper.LibraryBook2Mapper;
 
 @Service
-public class LibraryBookServiceImpl2 implements LibraryBookService2{
+public class LibraryBook2ServiceImpl implements LibraryBook2Service{
 
 	@Autowired
-	private LibraryBookMapper2 lbm;
+	private LibraryBook2Mapper lbm;
 	
 	// 도서관 책 전체 조회 목록 출력 메서드
 	@Override
-	public ArrayList<LibraryBookDto2> BookSelectAll(SearchCriteria scri) {
+	public ArrayList<LibraryBook2Dto> BookSelectAll(SearchCriteria scri) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -36,7 +36,7 @@ public class LibraryBookServiceImpl2 implements LibraryBookService2{
 		 * [input]검색조건 외 페이지 기능 (hm)
 		 * [output] 책 목록(alist)
 		 */ 
-		ArrayList<LibraryBookDto2> lblist =  lbm.BookSelectAll(hm);
+		ArrayList<LibraryBook2Dto> lblist =  lbm.BookSelectAll(hm);
 		return lblist;
 	}
 
@@ -56,17 +56,17 @@ public class LibraryBookServiceImpl2 implements LibraryBookService2{
 
 	// 도서관 책 상세 조회 매서드
 	@Override
-	public LibraryBookDto2 BookSelectOne(int lbidx) {
+	public LibraryBook2Dto BookSelectOne(int lbidx) {
 		/* 도서관 책 상세 조회
 		 * [input] 	도서관 책 인덱스(lbidx)
 		 * [output] 책 상세(lbd)
 		 */ 
-		LibraryBookDto2 lbd = lbm.BookSelectOne(lbidx);
+		LibraryBook2Dto lbd = lbm.BookSelectOne(lbidx);
 		return lbd;
 	}
 
 	@Override
-	public List<LibraryBookDto2> selectTopLoanBooksThisMonth() {
+	public List<LibraryBook2Dto> selectTopLoanBooksThisMonth() {
 		return lbm.selectTopLoanBooksThisMonth();
 	}
 
