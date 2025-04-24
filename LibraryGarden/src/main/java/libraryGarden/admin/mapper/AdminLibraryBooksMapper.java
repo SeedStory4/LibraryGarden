@@ -2,11 +2,9 @@ package libraryGarden.admin.mapper;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import libraryGarden.domain.BookVo;
+ 
 import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.SearchCriteria;
 
 /** [설명]AdminBookMapper 인터페이스: 관리자 사용자 도서관 책 관련 메서드
@@ -16,7 +14,17 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 책 전체 갯수 매서드(페이징)
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
- * 
+ *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+<<<<<<< HEAD
+ *  - 관리자 도서관 청구기호 일치여부 숫자 조회 매서드
+ *  - 관리자 도서관 도서 등록 매서드
+ *  
+ *  
+ *  
+ *  
+ *  
+=======
+>>>>>>> c15234b9bfb1d731b6fe16854c3fa00deee78531
  * @author SiYeon
  *
  */
@@ -34,5 +42,12 @@ public interface AdminLibraryBooksMapper {
 	// 관리자 도서관 책 삭제 매서드
 	public int getBookDeleteOne(int lbidx);
 	
-
+	// 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+	public String getLibraryBookLastCode();
+	
+	// 관리자 도서관 청구기호 일치여부 숫자 조회 매서드
+	public int getCheckCallNumberDuplicate(String callName);
+	
+	// 관리자 도서관 도서 등록 매서드
+	public int insertLibraryBookAboutBook(LibraryBooksVo lbv);
 }
