@@ -19,16 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.admin.service.AdminApproval2Service;
-import libraryGarden.admin.service.AdminBookService;
+import libraryGarden.admin.service.AdminBookCUDService;
+import libraryGarden.admin.service.AdminCategoryService;
 import libraryGarden.admin.service.AdminLibraryBooksService;
 import libraryGarden.cmm.util.UrlEncoder;
-import libraryGarden.domain.BookVo;
 import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.PageMaker;
-import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.controller.Book1Controller;
-import libraryGarden.user.service.LibraryBooksService;
+
 
 /**
  * [설명] 관리자의 도서 관리 페이지
@@ -66,6 +65,14 @@ public class AdminBookController {
 	// AdminLibraryBooksService 주입
 	@Autowired(required = false)
 	private AdminLibraryBooksService adminLibraryBooksService;
+	
+	// AdminCategoryService 주입
+	@Autowired(required = false)
+	private AdminCategoryService adminCategoryService;
+	
+	// AdminBookCUDService 주입
+	@Autowired(required = false)
+	private AdminBookCUDService adminBookCUDService;
 	
 	// PageMaker 주입 (페이징 기능)
 	@Autowired(required = false)
@@ -154,6 +161,7 @@ public class AdminBookController {
 	@GetMapping("/bookWrite.do")
 	public String getbookWrite(Model model) {
 		
+		/****도서 구분****/
 		// 등록된 도서관 책 중 마지막 구분을 가지고 옮
 		String lastCode = adminLibraryBooksService.getLibraryBookLastCode();
 		// ss분리 
@@ -165,18 +173,23 @@ public class AdminBookController {
 	    number++;
 	    // 원래 자릿수에 맞춰 0 채우기
 	    lastCode = prefix + String.format("%06d", number);
-		
-		
-		
+	    /**************/
+	    
+	    /****도서 분류(대분류)****/
+	    // 도서 카테고리 대분류를 가지고 옴(level = 1)
+	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
+	    /**************/
+	    
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("lastCode", lastCode);
+		hm.put("parentList", parentList);
 		
 		model.addAttribute("hm", hm);
 		
 		return "admin/book/bookWrite";
 	}
 
-	// 도서 선택 팝업 페이지 이동 ajax
+	// 도서 등록/수정 시 선택 팝업 페이지 이동 ajax
 	@PostMapping("/bookSelectList.do")
 	@ResponseBody
 	public HashMap<String, Object> moveBookSelectList(
@@ -217,17 +230,61 @@ public class AdminBookController {
 		 return hm;
 	}
 	
-	// 도서 선택 팝업에서 선택한 책 정보 가지고오기 ajax
-	@PostMapping("/bookSelectOne")
+	// 도서 등록/수정 시 선택 팝업에서 선택한 책 정보 가지고오기 ajax
+	@PostMapping("/bookSelectOne.do")
 	@ResponseBody
-	public BookVo getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
+	public HashMap<String, Object> getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
 		
 		logger.info("bookSelectOne 들어옴");
 		
 		 // 동록에서 보여줄 데이터 DB에서 가져오기
-		 BookVo bv = adminApprovalService.getBookApprovalSelectOne(aidx);
+		HashMap<String, Object> hm = adminApprovalService.getBookApprovalSelectOne(aidx);
 		 
-		 return bv;
+		 return hm;
+	}
+	
+	
+	// 도서 등록/수정 시 카데고리 소분류 가지고오기 ajax
+	@PostMapping("/getChildrenCategory.do")
+	@ResponseBody
+	public List<LibraryBookDto> getChildrenCategory(@RequestParam(value = "parentCode") int parentCode) {
+		
+		logger.info("getChildrenCategory 들어옴");
+		
+	    // 도서 카테고리 소분류를 가지고 옴(level = 1)
+		List<LibraryBookDto> lbdList = adminCategoryService.getChildrenCategoryByparentCode(parentCode);
+		 
+		return lbdList;
+	}
+	
+	// 도서 등록/수정 시 청구기호 일치여부 숫자 ajax
+	@PostMapping("/checkCallNumberDuplicate.do")
+	@ResponseBody
+	public int checkCallNumberDuplicate(@RequestParam(value = "callName") String callName) {
+		
+		logger.info("checkCallNumberDuplicate 들어옴");
+		
+	    // 청구기호 일치여부 숫자 
+		int cnt = adminLibraryBooksService.getCheckCallNumberDuplicate(callName);
+		 
+		return cnt;
+	}
+	
+	// 도서 등록 
+	@PostMapping("/bookWriteAction.do")
+	public String insertBookWriteAction(LibraryBooksVo lbv, Model model) {
+		
+		logger.info("insertBookWriteAction 들어옴");
+		
+	    int result = adminBookCUDService.insertLibraryBooksAndUpdateApproval(lbv);
+
+	    if (result == 2) {
+	        return "redirect:/admin/book/bookWrite.do";
+	    }
+	    
+	    model.addAttribute("msg", "도서 등록에 실패했습니다.");
+	    return "redirect:/admin/book/bookWrite.do";
+	    
 	}
 	
 	// 관리자 도서관 도서 수정 페이지 이동

@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -25,6 +27,11 @@
 	<!-- 헤더가 로드될 부분 -->
     <jsp:include page="/WEB-INF/jsp/admin/adminHeader.jsp"/>
 
+	<c:if test="${not empty msg}">
+	    <script>
+	        alert("${msg}");
+	    </script>
+	</c:if>
 	<div class="wrapper">
 		<div class="inner p-0">
 			<!-- 메인 콘텐츠 -->
@@ -53,7 +60,7 @@
 							<span class="info-title">● 출판사</span> <span class="info-content publisher">도서를 선택해주세요.</span>
 						</p>
 						<p>
-							<span class="info-title">● 출판년도</span> <span class="info-content publishedYear">도서를 선택해주세요.</span>
+							<span class="info-title">● 출판일</span> <span class="info-content publishedYear">도서를 선택해주세요.</span>
 						</p>
 						<p>
 							<span class="info-title">● 전체쪽수</span> <span class="info-content totalPages">도서를 선택해주세요.</span>
@@ -71,6 +78,14 @@
 
 				<p class="description-title">● 소장정보</p>
 
+
+				<form name="frm">
+				<input type="hidden" name="bidx" value="${hm.bidx}">
+				<input type="hidden" name="code" value="${hm.lastCode}">
+				<input type="hidden" name="callName" id="callName">
+				<input type="hidden" name="cidx" id="cidx">
+				<input type="hidden" name="aidx" value="${hm.aidx}">
+
 				<table class="info-table">
 					<colgroup>
 						<col width="15%">
@@ -86,38 +101,41 @@
 							<th>분류</th>
 						</tr>
 					</thead>
+				
 					<tbody>
 						<tr>
-							<td>${hm.lastCode}</td>
+							<td >${hm.lastCode}</td>
 							<td class="call-number-container">
-							<span class="fixed-call-number">802.</span> 
-							<input type="text" class="input-call-number" value="123">
+								<span class="fixed-call-number">---.</span> 
+								<input type="text" class="input-call-number" value="">
 							</td>
 							<td>
-						<select class="js-example-basic-single select" name="state" data-width="wide">
-							<option value="normal">일반열람실</option>
-							<option value="kids">어린이열람실</option>
-							<option value="kids">보존서고</option>
-						</select>
+								<select class="js-example-basic-single select" name="location" data-width="wide">
+									<option value="">자료실 선택</option>
+									<option value="normal">일반열람실</option>
+									<option value="kids">어린이열람실</option>
+									<option value="kids">보존서고</option>
+								</select>
 							</td>
 							<td>
-						<select class="js-example-basic-single select" name="state">
-							<option value="normal">문학</option>
-							<option value="kids">역사</option>
-						</select> 
-							<span class="category-separator">&gt;</span> 
-						<select class="js-example-basic-single select" name="state">
-							<option value="normal">한국문학</option>
-							<option value="kids">중국문학</option>
-							<option value="kids">일본문학</option>
-						</select>
+								<select class="js-example-basic-single select" id="parentCategory" name="parentCode">
+								    <option value="">대분류 선택</option>
+								    <c:forEach var="parentList" items="${hm.parentList}">
+								      <option value="${parentList.parentCode}">${parentList.name}</option>
+								    </c:forEach>
+								</select> 
+									<span class="category-separator">&gt;</span> 
+								<select class="js-example-basic-single select" id="childCategory" name="childCode">
+								    <option value="">소분류 선택</option>
+								</select>
 							</td>
 						</tr>
 					</tbody>
 				</table>
-			
+				</form>
+				
 				<div class="draft-actions mt-20">
-					<button class="draft-btn-small btn-submit">등록</button>
+					<button class="draft-btn-small btn-submit"  type="button" onclick="check();">등록</button>
 				</div>
 
 				<hr class="custom-divider">
@@ -227,14 +245,77 @@
     <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 
 	<script>
+		// 모달에서 책 선택
 		let selectedAidx = null;
-	
-		// select2
+
 		$(document).ready(function() {
+			// select2
 		    $('.js-example-basic-single').select2().each(function() {
 		        if ($(this).attr('data-width') === 'wide') {
 		            $(this).next('.select2-container').addClass('select-wide');
 		        }
+		    });
+			
+		    // 대분류 선택 시 소분류 불러오기
+		    $("#parentCategory").change(function() {
+		        let parentCode = $(this).val();
+		        
+		        // 대분류가 선택되지 않은 경우 안내
+		        if (!parentCode) {
+		            alert("먼저 대분류를 선택해주세요.");
+		            return; // 더 이상 진행하지 않음
+		        }
+		        
+		        // 소분류 초기화
+		        $("#childCategory").empty().append(`<option value="">소분류 선택</option>`);
+
+		        // 대분류가 선택된 경우 → Ajax로 소분류 요청
+		        if (parentCode) {
+		            $.ajax({
+		                url: "${pageContext.request.contextPath}/admin/book/getChildrenCategory.do",
+		                type: "POST",
+		                data: { "parentCode": parentCode },
+		                success: function(data) {
+		                    
+		                    for (let i = 0; i < data.length; i++) {
+		                        let $option = $("<option>")
+		                        .val(data[i].childCode)
+		                        .text(data[i].name)
+         					    .attr("data-cidx", data[i].cidx);  
+		                    	$("#childCategory").append($option);
+		                    }
+
+		                    // 새로 append된 childCategory에도 select2 다시 적용
+		                    $("#childCategory").select2("destroy");
+		                    $("#childCategory").select2();
+		                },
+		                error: function() {
+		                    alert("하위 카테고리 불러오기 실패");
+		                }
+		            });
+		        }
+		    });
+		    
+			 // 소분류 선택 시 청구기호 자동 변경
+		    $("#childCategory").on("change", function () {
+		        let selectedIndex = $(this).prop('selectedIndex');
+		        // 선택된 option
+		        let selectedOption = $(this).find('option:selected');
+		        
+		        if (selectedIndex > 0) {
+		            // cidx 값 설정
+		            let selectedCidx = selectedOption.data("cidx");
+		            $("#cidx").val(selectedCidx);
+
+		            // 청구기호 앞자리 설정
+		            const selectedCode = $(this).val();  // childCode
+		            $(".fixed-call-number").text(selectedCode + ".");
+		        } else {
+		            // 선택 안했을 경우 초기화
+		            $("#cidx").val("");
+		            $(".fixed-call-number").text("---.");
+		        }
+
 		    });
 		});
 		
@@ -242,7 +323,7 @@
 	    const openModalBtns = document.querySelectorAll(".openModal");
 	    let listUrl = "";
 	    function openModalClick(e) {
-	    	 console.log("모달 열기"); // 추가!
+	    	 
 			// 1. 제목 설정
 			document.querySelector(".modal .title").innerText = e.target.innerText;
 			
@@ -253,6 +334,7 @@
 			} else {
 				listUrl = ""  // api 상
 			}
+
 		    loadList(1, listUrl);
 
 			// 3. 모달 열기
@@ -313,7 +395,7 @@
 					              <tbody>`;
 					     if(blist.length == 0) {
 					    	 listcontent += `<tr>
-									<td colspan="8" class="center">검색된 도서가 없습니다.</td>
+									<td colspan="7" class="center">검색된 도서가 없습니다.</td>
 								</tr>`;
 					     } else {
 							 for(var i = 0; i < blist.length; i++){
@@ -415,42 +497,41 @@
 						 // alert("전송성공");
 						 
 						 // 도서 정보 보여주기
-			 			 const bv = result.bv;
-						 let labelTitle = "● 제목";
-						 let title = bv.title;
-						 let subtitle = "-";
-						 
+			 			 const bv = result;
 				         document.querySelector(".coverImg").src = bv.coverImg;
 				         document.querySelector(".coverImg").alt = bv.title;
-				         
+						 
+						 let labelTitle = "● 제목";
+						 let title = bv.title;
 				         if(bv.originalTitle != undefined) {
 					         title = bv.title + " / " + bv.originalTitle;
 					         labelTitle = "● 제목 / 원제";				         
 				         }
 				         document.querySelector(".label-title").innerText = labelTitle;
-				         document.querySelector(".title").innerText = title;
+				         document.querySelector(".draft-info .title").innerText = title;
 				         
+						 let subtitle = "-";
 				         if(bv.subtitle != undefined) {
 				        	 subtitle = bv.subtitle;
 				         }
 				         document.querySelector(".subtitle").innerText = subtitle;
-				         
 				         document.querySelector(".author").innerText = bv.author;
-				         document.querySelector(".publisher").innerText = bv.publisher + "(" + bv.publishedYear.replaceAll('-', '.') + ")";
+				         document.querySelector(".publisher").innerText = bv.publisher;
+				         document.querySelector(".publishedYear").innerText = bv.publishedYear;
 				         document.querySelector(".totalPages").innerText = bv.totalPages + "쪽";
 				         document.querySelector(".isbn").innerText = bv.isbn;
 				         document.querySelector(".info").innerText = bv.sizeWidth + "mm * " + bv.sizeHeight + "mm / " + bv.weight + "g / " + bv.category;
-				         			 		 
-				 		 function addComma(str) {  // 3자리마다 콤마(,)를 입력
-				 		   return str.replace(/(\d)(?=(?:\d{3})+(?!\d))/g, '$1,');
-				 		 }
-				         document.querySelector(".price").innerText = addComma(String(bv.price)) + "원";
+
 				         			         
-				         // controller에 보내기 위해 희망도서 idx 저장하기
-						 document.frm.rqidx.value = rqidx;
+				         // 도서 등록을 위해 결재, 책 idx 저장하기
+						 document.frm.aidx.value = bv.aidx;
+						 document.frm.bidx.value = bv.bidx;
 				         
 						 // 모달 닫기
-				    	 closeModalClick();
+						 document.querySelector(".modal").style.display = "none";
+					    $('.modal .select').val('title').trigger('change');
+				        document.querySelector(".modal .select").value = "";
+				        document.querySelector(".modal .input").value = "";
 						 
 					   },
 					   error: function(xhr, status, error) {  // 실패
@@ -461,6 +542,82 @@
 					   }
 	  			})
 	  		}
+		}
+	    
+	    // 등록 및 유효성 검사
+		function check(){
+	    	
+			var fm = document.frm;	
+
+			// 청구기호 유효성 검사 변수
+			let fixedCode = $(".fixed-call-number").text().trim();   
+			let inputCode = $(".input-call-number").val().trim();   
+			let fullCode = fixedCode + inputCode;        
+
+			// 도서
+			if (fm.bidx.value === "" ) {// bidx
+			    alert("등록할 도서를 선택헤주세요");
+			    return;
+			}
+			
+			// 분류
+			if (fm.parentCode.value === "") {
+			    alert("대분류를 선택해주세요.");
+			    return;
+			}
+			if (fm.childCode.value === "") {
+			    alert("소분류를 선택해주세요.");
+			    return;
+			}
+			if (fixedCode === "---." || !fixedCode) {
+			    alert("분류를 다시 선택해주세요.");
+			    return;
+			}
+			
+			// 청구기호
+			if (!inputCode) { // 청구기호 입력값 유효성 검사
+			    alert("청구기호 뒷자리를 입력해주세요.");
+			    $(".input-call-number").focus();
+			    return;
+			}
+			
+			// 자료실
+			if (fm.location.value === "" ) { // 자료실 입력값 유효성 검사
+			    alert("자료실을 선택해주세요.");
+			    return;
+			}
+			
+			//청구기호 중복 검사
+		    callNumberDuplicateCheck(fullCode).done(function(result) {
+		        if (result > 0) {
+		            alert("이미 존재하는 청구기호입니다. 다시 입력해주세요.");
+		            $(".input-call-number").focus();
+		        } else {
+		            $("#callName").val(fullCode);
+		        	var ans = confirm("저장하시겠습니까?");
+		        	if (ans == true){
+
+		        		fm.action="${pageContext.request.contextPath}/admin/book/bookWriteAction.do",
+		        		fm.method="post"; 
+		        		fm.submit();
+		        	}
+
+		        }
+		    }).fail(function() {
+		        alert("청구기호 중복검사 중 오류가 발생했습니다.");
+		    });
+
+			 
+	    }
+	    
+	    //  청구기호 중복검사
+		function callNumberDuplicateCheck(callName) {
+		    return $.ajax({
+		        type: "POST",
+		        url: "${pageContext.request.contextPath}/admin/book/checkCallNumberDuplicate.do",
+		        data: { "callName": callName },
+		        dataType: "json"
+		    });
 		}
     </script>
 
