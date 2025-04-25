@@ -17,6 +17,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import libraryGarden.admin.mapper.AdminBookLoanMapper;
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.domain.ReservationDto;
@@ -28,6 +29,9 @@ public class BookReservationServiceImpl implements BookReservationService{
 	
 	@Autowired
 	private BookReservationMapper rm;
+	
+	@Autowired
+    private AdminBookLoanMapper adminBookLoanMapper;
 	
 	
 	@Override
@@ -109,6 +113,10 @@ public class BookReservationServiceImpl implements BookReservationService{
 	
 	@Override
 	public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber) {
+		
+		// 0) 당일 오전 연체 감지
+	    adminBookLoanMapper.insertOverdueForPastDue();
+		
 	    Set<String> regDates = new HashSet<>();
 	    Set<String> overdueDates = new HashSet<>();
 	    SimpleDateFormat dbFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -129,16 +137,29 @@ public class BookReservationServiceImpl implements BookReservationService{
 	        }
 	    }
 
-	    // 대출 날짜
+	    // 대출 날짜 (반납일 반영)
 	    List<LoanVo> loans = rm.getLoansByBook(lbidx);
 	    for (LoanVo loan : loans) {
 	        try {
 	            Calendar cal = Calendar.getInstance();
+	            // 시작 = loanDate
 	            Date start = dbFormat.parse(loan.getLoanDate());
-	            Date end = dbFormat.parse(loan.getDueDate());
+	            // dueDate
+	            Date due   = dbFormat.parse(loan.getDueDate());
+	            
+	            // 실제 블락 종료일 = dueDate 또는 returnDate 중 이른 쪽
+	            Date end = due;
+	            if (loan.getReturnDate() != null && !loan.getReturnDate().isEmpty()) {
+	                Date ret = dbFormat.parse(loan.getReturnDate());
+	                if (ret.before(due)) {
+	                    end = ret;
+	                }
+	            }
+	            
+	            // start~end 까지만 블락
 	            cal.setTime(start);
 	            while (!cal.getTime().after(end)) {
-	            	regDates.add(outputFormat.format(cal.getTime()));
+	                regDates.add(outputFormat.format(cal.getTime()));
 	                cal.add(Calendar.DATE, 1);
 	            }
 	        } catch (Exception e) {
@@ -179,6 +200,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 	
 	@Override
 	public int registerReservation(ReservationDto reservation) {
+		
 	    int inserted = rm.insertReservation(reservation);
 
 	    // → 전역 호출 제거 rm.updateBooksToWaitStatus();

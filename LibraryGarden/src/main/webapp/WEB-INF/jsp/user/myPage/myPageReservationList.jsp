@@ -84,6 +84,11 @@
 										</td>
 									</tr>
 								</c:forEach>
+								  <c:if test="${empty reservationList['reservationList']}">
+								    <tr>
+								      <td colspan="9" style="text-align:center;">예약한 도서가 없습니다.</td>
+								    </tr>
+								  </c:if>
 							</tbody>
 						</table>
 						<ul class="paging flex w-270 justify-center">
