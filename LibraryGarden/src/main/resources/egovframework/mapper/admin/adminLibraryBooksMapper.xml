@@ -20,7 +20,7 @@
 		FROM LIBRARYBOOKS AS LB
 		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
 		<include refid="search"/>
-		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
+		ORDER BY LB.lbidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
 	<!-- 도서관 책 전체/검색조건를 통해 책의 갯수를 조회 -->
@@ -60,8 +60,8 @@
 	
 	<!-- 도서관 도서 등록 매서드-->
 	<insert id="insertLibraryBookAboutBook" parameterType="lbv">
-	INSERT INTO LIBRARYBOOKS (bidx, cidx, aidx, code, callName, location, loanDate, dueDate, returnDate) 
-	VALUES (#{bidx},#{cidx},#{aidx},#{code},#{callName},#{location},null,null,null)
+	INSERT INTO LIBRARYBOOKS (bidx, cidx, aidx, code, callName, location, loanDate, dueDate, returnDate, status) 
+	VALUES (#{bidx},#{cidx},#{aidx},#{code},#{callName},#{location},null,null,null,#{status})
 	</insert>
 
 	

@@ -107,6 +107,13 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 
 	@Override
 	public int insertLibraryBookAboutBook(LibraryBooksVo lbv) {
+		
+		if ("보존서고".equals(lbv.getLocation())) {
+		    lbv.setStatus("대출불가");
+		} else {
+		    lbv.setStatus("대출가능");
+		}
+		
 		int cnt = albm.insertLibraryBookAboutBook(lbv);
 		return cnt;
 	}
