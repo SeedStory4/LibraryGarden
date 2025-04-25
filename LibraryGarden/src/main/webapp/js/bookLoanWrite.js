@@ -131,6 +131,12 @@ function addBook() {
             $('#bookCode').val('');
             return;
         }
+		// “대출불가” 도 막고
+		if (response === "대출불가") {
+		    alert("대출이 불가한 도서입니다.");
+		    $('#bookCode').val('');
+		    return;
+		}
 
         // 그 외 (== "대출가능" or "예약대기") 모두 addBookLoan 호출
         $.post(contextPath + '/admin/bookLoan/addBookLoan.do',
