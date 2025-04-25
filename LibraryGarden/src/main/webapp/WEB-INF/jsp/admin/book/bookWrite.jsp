@@ -112,9 +112,9 @@
 							<td>
 								<select class="js-example-basic-single select" name="location" data-width="wide">
 									<option value="">자료실 선택</option>
-									<option value="normal">일반열람실</option>
-									<option value="kids">어린이열람실</option>
-									<option value="kids">보존서고</option>
+									<option value="일반열람실">일반열람실</option>
+									<option value="어린이열람실">어린이열람실</option>
+									<option value="보존서고">보존서고</option>
 								</select>
 							</td>
 							<td>
