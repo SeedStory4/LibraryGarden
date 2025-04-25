@@ -1,5 +1,7 @@
 package libraryGarden.admin.controller;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -138,25 +140,6 @@ public class AdminBookController {
 		return "admin/book/bookDetail";
 	}
 
-	// 관리자 도서관 도서 삭제 기능
-	@GetMapping("/{lbidx}/bookDelete.do")
-	public String moveBookDelete(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
-		logger.debug("moveBookDelete 들어옴");
-		
-		/*
-		 * 도서관 책 삭제
-		 * [input] 도서관 책 인덱스(lbidx) 
-		 */
-		int value = adminLibraryBooksService.getBookDeleteOne(lbidx);
-		if (value==0) {
-			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
-			return "redirect:/admin/book/"+lbidx+"/bookDetail.do"; //삭제하지 못했을 때 삭제하려고 했던 페이지로 이동 
-		}	
-		return "redirect:/admin/book/bookList.do"; // 삭제 후 리스트로 이동
-
-	}
-
-
 	// 도서 등록 페이지 이동
 	@GetMapping("/bookWrite.do")
 	public String getbookWrite(Model model) {
@@ -180,6 +163,7 @@ public class AdminBookController {
 	    // 도서 카테고리 대분류를 가지고 옴(level = 1)
 	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
 	    /**************/
+	    
 	    
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("lastCode", lastCode);
@@ -288,10 +272,68 @@ public class AdminBookController {
 	    
 	    model.addAttribute("msg", "도서 등록에 실패했습니다.");
 	    return "redirect:/admin/book/bookWrite.do";
-	    
 	}
 	
+	// 도서 등록 리스트 가지고 오기 ajax
+	@PostMapping("/bookWriteList.do")
+	@ResponseBody
+	public HashMap<String, Object> getBookWriteList(@RequestParam(value = "page", defaultValue = "1") int page) {
+		
+		logger.info("bookWriteList 들어옴");
+	    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+	    
+		 // 페이징 저장
+		 SearchCriteria scri = new SearchCriteria();
+		 scri.setPage(page);
+		 pm.setScri(scri);
+		 
+		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
+		 int cnt = adminLibraryBooksService.getBookWriteListCount(today);
+		 pm.setTotalCount(cnt);
+		 
+		 // 목록에서 보여줄 데이터 DB에서 가져오기
+		 ArrayList<LibraryBookDto> bwlist = adminLibraryBooksService.getBookWriteListSelectAll(scri, today);
+		 
+		 HashMap<String, Object> bwhm = new HashMap<String, Object>();
+		 bwhm.put("bwlist", bwlist);
+		 bwhm.put("bwpm", pm);
+		 
+		 return bwhm;
+	}
 
+	// 관리자 도서관 도서 등록에서 도서 삭제 기능
+	@PostMapping("/bookWriteDelete.do")
+	@ResponseBody
+	public String deleteLibraryBooksWrite(@RequestParam("lbidx") int lbidx) {
+		logger.debug("deleteLibraryBooksWrite 들어옴");
+
+		int value = adminBookCUDService.deleteLibraryBooksAndUpdateApproval(lbidx);
+		
+		if (value==2) {
+			return "error"; 
+		}	
+		return "success"; 
+	}
+	
+	// 관리자 도서관 도서 상세에서 도서 삭제 기능
+	@GetMapping("/{lbidx}/bookDelete.do")
+	public String deleteLibraryBooks(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
+		logger.debug("deleteLibraryBooks 들어옴");
+		
+		/*
+		 * 도서관 책 삭제
+		 * [input] 도서관 책 인덱스(lbidx) 
+		 */
+		
+		int value = adminBookCUDService.deleteLibraryBooksAndUpdateApproval(lbidx);
+		if (value==0) {
+			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
+			return "redirect:/admin/book/"+lbidx+"/bookDetail.do"; //삭제하지 못했을 때 삭제하려고 했던 페이지로 이동 
+		}	
+		return "redirect:/admin/book/bookList.do"; // 삭제 후 리스트로 이동
+
+	}
+	
 	// 관리자 도서관 도서 수정 페이지 이동
 	@GetMapping("/{lbidx}/bookModify.do")
 	public String moveBookModify(@PathVariable("lbidx") int lbidx,Model model) {

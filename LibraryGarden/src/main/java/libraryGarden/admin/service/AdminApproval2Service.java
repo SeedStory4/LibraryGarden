@@ -12,7 +12,8 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자가 승인한 도서 책 갯수 조회 메서드
  *  - 관리자가 승인한 도서 책 리스트 조회 메서드
  *  - 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
- *  - 관리자가 승인한 도서 중 등록시 등록여부 업데이트 메서드
+ *  - 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드
+ *  - 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드
  *  
  *  
  * @author SiYeon
@@ -29,7 +30,10 @@ public interface AdminApproval2Service {
 	// 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
 	public HashMap<String, Object> getBookApprovalSelectOne(int aidx);
 	
-	// 관리자가 승인한 도서 중 등록시 등록여부 업데이트 메서드
-	public int updateApprovalRegyn(int aidx);
+	// 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드
+	public int updateApprovalRegynY(int aidx);
+	
+	// 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드
+	public int updateApprovalRegynN(int aidx);
 
 }

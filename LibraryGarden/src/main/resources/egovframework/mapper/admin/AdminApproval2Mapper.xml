@@ -60,9 +60,14 @@
 
 	</select>
 	
-    <!-- 관리자가 승인한 도서 중 등록시 등록여부 업데이트 메서드 -->
-	<update id="updateApprovalRegyn" parameterType="int">
+    <!-- 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드 -->
+	<update id="updateApprovalRegynY" parameterType="int">
 	update APPROVAL set regyn='Y', modify=now() where aidx=#{aidx} 
+    </update>
+    
+   <!-- 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드 -->
+	<update id="updateApprovalRegynN" parameterType="int">
+	update APPROVAL set regyn='N', modify=now() where aidx=#{aidx} 
     </update>
     
 </mapper>
