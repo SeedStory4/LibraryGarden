@@ -11,13 +11,7 @@ import libraryGarden.domain.LibraryBookDto;
  *  - 관리자 도서 등록/수정을 위한 카테고리 중 대분류 가지고 오는 메서드
  *  - 관리자 도서 등록/수정을 위한 카테고리 중 소분류 가지고 오는 메서드
  *  
- *  
- *  
- *  
- *  
- *  
  * @author SiYeon
- *
  */
 public interface AdminCategoryService {
 

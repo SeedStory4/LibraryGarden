@@ -11,9 +11,9 @@ import libraryGarden.domain.LibraryBooksVo;
 /** [설명] AdminBookCUDService 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
  * 
  *  [주요기능] 
- *  - 관리자 도서관 도서 등록 메서드
- *  - 관리자 도서관 도서 삭제 메서드
- *  - 관리자 도서관 도서 수정 메서드
+ *  - 도서관 도서 등록 메서드
+ *  - 도서관 도서 삭제 메서드
+ *  - 도서관 도서 수정 메서드
  *  
  * @author Siyeon
  */
@@ -26,7 +26,7 @@ public class AdminBookCUDServiceImpl implements  AdminBookCUDService{
     @Autowired
     private AdminApproval2Service adminApprovalService;
 
-	// 도서 등록
+	// 도서관 도서 등록 메서드
 	@Override
 	// 도서관 도서 등록과 승인된 등록된 도서 등록 여부 수정 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
@@ -44,7 +44,7 @@ public class AdminBookCUDServiceImpl implements  AdminBookCUDService{
         return 0; // 트랜잭션이 실패하면 rollback 됨
     }
 
-	// 도서 삭제
+	// 도서관 도서 삭제 메서드
 	@Override
 	// 도서관 도서 삭제와 삭제된 도서 등록 여부 수정 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
@@ -65,7 +65,7 @@ public class AdminBookCUDServiceImpl implements  AdminBookCUDService{
 		return 0;
 	}
 
-	// 도서 수정
+    // 도서관 도서 수정 메서드
 	@Override
 	// 도서관 도서 수정과 수정된 도서 등록 여부 수정 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)

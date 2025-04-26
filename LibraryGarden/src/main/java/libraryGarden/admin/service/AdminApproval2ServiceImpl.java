@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import libraryGarden.admin.mapper.AdminApproval2Mapper;
 import libraryGarden.domain.SearchCriteria;
 
-
 /** [설명] AdminApproval2Service 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
  * 
  *  [주요기능] 
@@ -19,9 +18,6 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
  *  - 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드
  *  - 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드
- *  
- *  
- *  
  *  
  * @author Siyeon
  */
@@ -63,7 +59,6 @@ public class AdminApproval2ServiceImpl implements  AdminApproval2Service{
 		List<Map<String, Object>> blist = aam.getBookApprovalSelectAll(hm);
 		
 		return blist;
-
 	}
 
 	// 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드

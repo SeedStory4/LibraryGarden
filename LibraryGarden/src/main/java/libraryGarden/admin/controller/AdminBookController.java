@@ -12,8 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping; 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -33,33 +32,24 @@ import libraryGarden.domain.SearchCriteria;
 
 
 /**
- * [설명] 관리자의 도서 관리 페이지
+ * [설명] 관리자 도서 조회 관련 controller
  * 
  * [주요기능] 
- * - 관리자 도서관 도서 조회 목록 페이지 
- * 	- 도서 조회 목록 출력 기능 
- * 	- 도서 조회 검색 기능 
- * 	- 도서 조회 페이지 기능
- * 
- * - 관리자 도서관 도서 상세 페이지 이동
- *  
- * - 관리자 도서관 도서 등록 페이지 이동
- *  - 
- *  
- *  
- *  
- *  
- * - 관리자 도서관 도서 삭제 기능 
- * 
- * - 관리자 도서관 도서 수정 페이지 이동
- * 
-
- * 
- * - 관리자 도서 선택 팝업 페이지 이동
- * 
+ *  - 도서 조회 목록 페이지 이동
+ *  - 도서 상세 페이지 이동
+ *  - 도서 상세에서 도서 삭제 기능
+ *  - 도서 등록 페이지 이동 
+ *  - 도서 등록 Action 기능
+ *  - 도서 등록 시 선택 팝업 페이지 열기 ajax
+ *  - 도서 등록 시 선택 팝업에서 선택한 책 정보 조회 ajax
+ *  - 도서 등록/수정 시 카데고리 소분류 조회 ajax 
+ *  - 도서 등록/수정 시 청구기호 일치여부 숫자 조회 ajax
+ *  - 도서 등록에서 등록한 도서 리스트 조회 ajax
+ *  - 도서 등록에서 등록한 도서 중에서 삭제 기능 ajax
+ *  - 도서 수정 페이지 이동
+ *  - 도서 수정 Action 기능
  * 
  * @author SiYeon
- * 
  */
 @Controller
 @RequestMapping("/admin/book")
@@ -90,38 +80,19 @@ public class AdminBookController {
 	// 도서 조회 목록 페이지 이동
 	@GetMapping("/bookList.do")
 	public String moveBookList(SearchCriteria scri, Model model) {
-		/*
-		 * 검색 기능 - 사용자가 입력한 검색조건과 검색어 저장 
-		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지기능 (scri)
-		 * 
-		 */
+ 
+		// 검색 기능 - 사용자가 입력한 검색조건과 검색어 저장 
 		pm.setScri(scri);
-
-		/*
-		 * 페이징 기능 - 책 리스트 전체 갯수 - 페이징을 위한 전체 데이터 갯수 DB에서 가져오기 
-		 * [input] 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri)
-		 * [output] 조건에 따른 잭 전체 개수 cnt
-		 */
+ 
+		// 페이징 기능 - 책 리스트 전체 갯수 - 페이징을 위한 전체 데이터 갯수 DB에서 가져오기 
 		int cnt = adminLibraryBooksService.getBookTotalCount(scri);
 
-		/*
-		 * 페이지 기능 
-		 * [input] 조건에 따른 책 전체 개수 cnt
-		 */
+		// 페이지 기능 
 		pm.setTotalCount(cnt);
 
-		/*
-		 * 책 목록 조회 
-		 * [input] 검색조건 외 페이지 기능 (scri) 
-		 * [output] 책 목록(alist)
-		 */
+		// 책 목록 조회 
 		ArrayList<LibraryBookDto> lblist = adminLibraryBooksService.getBookSelectAll(scri);
 
-		/*
-		 * Model를 통해 jsp로 이동 
-		 * - lblist : 책 목록 리스트 
-		 * - pm : 페이징 기능
-		 */
 		model.addAttribute("lblist", lblist);
 		model.addAttribute("pm", pm);
 		return "admin/book/bookList";
@@ -132,26 +103,32 @@ public class AdminBookController {
 	public String moveBookDetail(@PathVariable("lbidx") int lbidx, Model model) {
 		logger.debug("moveBookDetail 들어옴");
 
-		/*
-		 * 도서관 책 상세 조회 
-		 * [input] 도서관 책 인덱스(lbidx) 
-		 * [output] 책 상세(lbd)
-		 */
+		// 도서관 책 상세 조회 
 		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
 		
-		/*
-		 * Model를 통해 jsp로 이동 
-		 * - lbd : 책 상세 내용
-		 */
 		model.addAttribute("lbd", lbd);
 		return "admin/book/bookDetail";
 	}
+	
+	// 도서 상세에서 도서 삭제 기능
+	@GetMapping("/{lbidx}/bookDelete.do")
+	public String deleteLibraryBooks(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
+		logger.debug("deleteLibraryBooks 들어옴");
+		
+		// 도서관 책 삭제
+		int value = adminBookCUDService.deleteLibraryBooksAndUpdateApproval(lbidx);
+		if (value==0) {
+			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
+			return "redirect:/admin/book/"+lbidx+"/bookDetail.do"; //삭제하지 못했을 때 삭제하려고 했던 페이지로 이동 
+		}	
+		return "redirect:/admin/book/bookList.do"; // 삭제 후 리스트로 이동
 
-	// 도서 등록 페이지 이동
+	}
+
+	// 도서 등록 페이지 이동 
 	@GetMapping("/bookWrite.do")
 	public String getbookWrite(Model model) {
 		
-
 		/****도서 구분****/
 		// 등록된 도서관 책 중 마지막 구분을 가지고 옮
 		String lastCode = adminLibraryBooksService.getLibraryBookLastCode();
@@ -171,27 +148,39 @@ public class AdminBookController {
 	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
 	    /**************/
 	    
-	    
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("lastCode", lastCode);
 		hm.put("parentList", parentList);
 
-		
 		model.addAttribute("hm", hm);
 		
 		return "admin/book/bookWrite";
 	}
 
+	// 도서 등록 Action 기능
+	@PostMapping("/bookWriteAction.do")
+	public String insertBookWriteAction(LibraryBooksVo lbv, Model model) {
+		
+		logger.info("insertBookWriteAction 들어옴");
+		
+	    int result = adminBookCUDService.insertLibraryBooksAndUpdateApproval(lbv);
 
-	// 도서 등록/수정 시 선택 팝업 페이지 이동 ajax
+	    if (result == 2) {
+	        return "redirect:/admin/book/bookWrite.do";
+	    }
+	    
+	    model.addAttribute("msg", "도서 등록에 실패했습니다.");
+	    return "redirect:/admin/book/bookWrite.do";
+	}
+
+	// 도서 등록 시 선택 팝업 페이지 열기 ajax
 	@PostMapping("/bookSelectList.do")
 	@ResponseBody
 	public HashMap<String, Object> moveBookSelectList(
 			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx
-	) {
+			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx) {
 		
 		logger.info("moveBookSelectList 들어옴");
 		
@@ -209,7 +198,6 @@ public class AdminBookController {
 		 int cnt = adminApprovalService.getBookApprovalTotalCount(scri, filter, selectedAidx);
 		 pm.setTotalCount(cnt);
 		 
-		 
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
 		 List<Map<String, Object>> blist = adminApprovalService.getBookApprovalSelectAll(scri, filter, selectedAidx);
 		 
@@ -224,22 +212,20 @@ public class AdminBookController {
 		 return hm;
 	}
 	
-	// 도서 등록/수정 시 선택 팝업에서 선택한 책 정보 가지고오기 ajax
+	// 도서 등록 시 선택 팝업에서 선택한 책 정보 조회 ajax
 	@PostMapping("/bookSelectOne.do")
 	@ResponseBody
 	public HashMap<String, Object> getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
 
-		
 		logger.info("bookSelectOne 들어옴");
 		
 		 // 동록에서 보여줄 데이터 DB에서 가져오기
 		HashMap<String, Object> hm = adminApprovalService.getBookApprovalSelectOne(aidx);
 		 
-		 return hm;
+		return hm;
 	}
-
 	
-	// 도서 등록/수정 시 카데고리 소분류 가지고오기 ajax
+	// 도서 등록/수정 시 카데고리 소분류 조회 ajax
 	@PostMapping("/getChildrenCategory.do")
 	@ResponseBody
 	public List<LibraryBookDto> getChildrenCategory(@RequestParam(value = "parentCode") int parentCode) {
@@ -252,7 +238,7 @@ public class AdminBookController {
 		return lbdList;
 	}
 	
-	// 도서 등록/수정 시 청구기호 일치여부 숫자 ajax
+	// 도서 등록/수정 시 청구기호 일치여부 숫자 조회 ajax
 	@PostMapping("/checkCallNumberDuplicate.do")
 	@ResponseBody
 	public int checkCallNumberDuplicate(@RequestParam(value = "callName") String callName,
@@ -297,23 +283,7 @@ public class AdminBookController {
 	    }
 	}
 	
-	// 도서 등록 
-	@PostMapping("/bookWriteAction.do")
-	public String insertBookWriteAction(LibraryBooksVo lbv, Model model) {
-		
-		logger.info("insertBookWriteAction 들어옴");
-		
-	    int result = adminBookCUDService.insertLibraryBooksAndUpdateApproval(lbv);
-
-	    if (result == 2) {
-	        return "redirect:/admin/book/bookWrite.do";
-	    }
-	    
-	    model.addAttribute("msg", "도서 등록에 실패했습니다.");
-	    return "redirect:/admin/book/bookWrite.do";
-	}
-	
-	// 도서 등록 리스트 가지고 오기 ajax
+	// 도서 등록에서 등록한 도서 리스트 조회 ajax
 	@PostMapping("/bookWriteList.do")
 	@ResponseBody
 	public HashMap<String, Object> getBookWriteList(@RequestParam(value = "page", defaultValue = "1") int page) {
@@ -340,7 +310,7 @@ public class AdminBookController {
 		 return bwhm;
 	}
 
-	// 관리자 도서관 도서 등록에서 도서 삭제 기능
+	// 도서 등록에서 등록한 도서 중에서 삭제 기능 ajax
 	@PostMapping("/bookWriteDelete.do")
 	@ResponseBody
 	public String deleteLibraryBooksWrite(@RequestParam("lbidx") int lbidx) {
@@ -354,22 +324,7 @@ public class AdminBookController {
 		return "success"; 
 	}
 	
-	// 관리자 도서관 도서 상세에서 도서 삭제 기능
-	@GetMapping("/{lbidx}/bookDelete.do")
-	public String deleteLibraryBooks(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
-		logger.debug("deleteLibraryBooks 들어옴");
-		
-		// 도서관 책 삭제
-		int value = adminBookCUDService.deleteLibraryBooksAndUpdateApproval(lbidx);
-		if (value==0) {
-			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
-			return "redirect:/admin/book/"+lbidx+"/bookDetail.do"; //삭제하지 못했을 때 삭제하려고 했던 페이지로 이동 
-		}	
-		return "redirect:/admin/book/bookList.do"; // 삭제 후 리스트로 이동
-
-	}
-	
-	// 관리자 도서관 도서 수정 페이지 이동
+	// 도서 수정 페이지 이동
 	@GetMapping("/{lbidx}/bookModify.do")
 	public String moveBookModify(@PathVariable("lbidx") int lbidx,Model model) {
 		logger.debug("moveBookModify 들어옴");
@@ -390,7 +345,7 @@ public class AdminBookController {
 
 	}
 	
-	// 관리자 도서관 도서 상세에서 도서 삭제 기능
+	// 도서 수정 Action 기능
 	@PostMapping("/bookModifyAction.do")
 	public String modifyLibraryBooks(LibraryBooksVo lbv, RedirectAttributes rttr) {
 		logger.debug("bookModifyAction 들어옴");

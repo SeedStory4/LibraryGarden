@@ -3,8 +3,6 @@ package libraryGarden.admin.service;
  
 import java.util.List;
  
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
@@ -18,16 +16,10 @@ import libraryGarden.domain.LibraryBookDto;
  *  - 관리자 도서 등록/수정을 위한 카테고리 중 대분류 가지고 오는 메서드
  *  - 관리자 도서 등록/수정을 위한 카테고리 중 소분류 가지고 오는 메서드
  *  
- *  
- *  
- *  
- *  
  * @author Siyeon
  */
 @Service
 public class AdminCategoryServiceImpl implements AdminCategoryService{
-
-	private static final Logger logger = LoggerFactory.getLogger(AdminCategoryServiceImpl.class);
 	
 	@Autowired
 	private AdminCategoryMapper acm;
@@ -43,8 +35,5 @@ public class AdminCategoryServiceImpl implements AdminCategoryService{
 	public List<LibraryBookDto> getChildrenCategoryByparentCode(int parentCode) {
 		return acm.getChildrenCategoryByparentCode(parentCode);
 	}
-	
 
-
-	
 }

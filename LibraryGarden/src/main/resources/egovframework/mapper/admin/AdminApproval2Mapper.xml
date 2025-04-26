@@ -14,7 +14,6 @@
 		</if>
 	</sql>
 
-   
    	<!-- 관리자가 승인한 도서 책 갯수 조회 메서드 -->
   	<select id="getBookApprovalTotalCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*) AS cnt  

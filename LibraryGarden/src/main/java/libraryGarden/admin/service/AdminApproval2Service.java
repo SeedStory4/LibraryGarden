@@ -15,9 +15,7 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드
  *  - 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드
  *  
- *  
  * @author SiYeon
- *
  */
 public interface AdminApproval2Service {
 
