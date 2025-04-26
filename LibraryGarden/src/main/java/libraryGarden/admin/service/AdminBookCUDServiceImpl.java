@@ -1,8 +1,6 @@
 package libraryGarden.admin.service;
 
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+ 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,16 +13,13 @@ import libraryGarden.domain.LibraryBooksVo;
  *  [주요기능] 
  *  - 관리자 도서관 도서 등록 메서드
  *  - 관리자 도서관 도서 삭제 메서드
- *  
+ *  - 관리자 도서관 도서 수정 메서드
  *  
  * @author Siyeon
  */
 @Service
 public class AdminBookCUDServiceImpl implements  AdminBookCUDService{
-
-	private static final Logger logger = LoggerFactory.getLogger(AdminBookCUDServiceImpl.class);
-	
-
+ 
     @Autowired
     private AdminLibraryBooksService adminLibraryBooksService;
     
@@ -69,9 +64,15 @@ public class AdminBookCUDServiceImpl implements  AdminBookCUDService{
         }
 		return 0;
 	}
-	
 
-
-
+	// 도서 수정
+	@Override
+	// 도서관 도서 수정과 수정된 도서 등록 여부 수정 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
+	@Transactional(rollbackFor=Exception.class)
+	public int modifyLibraryBooksAndUpdateApproval(LibraryBooksVo lbv) {
+		
+		int value  = adminLibraryBooksService.modifyLibraryBook(lbv);  // 수정
+	    return value;
+	}
 	
 }

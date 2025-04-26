@@ -16,10 +16,9 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
 <style>
-.draft-buttons { margin-right: 90px; }
-.draft-divider { width: 100%; transform: translateX(0); margin-bottom: 20px; }
 .draft-info .title { color: inherit; font-size: inherit; padding:0; margin:0;}
-.draft-actions-mt { margin-bottom: 20px; }
+.section-title {padding:0;}
+.p-0{padding:0;}
 </style>
 </head>
 <body>
@@ -32,15 +31,15 @@
 	        alert("${msg}");
 	    </script>
 	</c:if>
-	<div class="wrapper">
+	<div class="wrapper p-0">
 		<div class="inner p-0">
 			<!-- 메인 콘텐츠 -->
 			<section class="section draft-section ">
 				<div class="draft-header ">
-					<div class="section-title draft-title m-0">도서등록</div>
+					<div class="section-title draft-title">도서등록</div>
 					<button class="btn-green small select-book-btn draft-btn openModal" data-modalType="bookSelect">도서선택</button>
 				</div>
-				<hr class="draft-divider m-0">
+				<hr class="draft-divider ">
 
 				<!-- 도서 정보 -->
 				<div class="draft-content">
@@ -160,7 +159,7 @@
 			          <div class="search flex gap-20 justify-center">
 			            <select class="js-example-basic-single select shadow" name="searchType">
 			              <option value="title" selected>제목</option>
-			              <option value="author">저자</option>
+			              <option value="author">서명/저자사항</option>
 			              <option value="name">신청자</option>
 			            </select>
 			            <input type="text" class="shadow w-520 input" name="keyword">						
@@ -203,11 +202,6 @@
 		    $("#parentCategory").change(function() {
 		        let parentCode = $(this).val();
 		        
-		        // 대분류가 선택되지 않은 경우 안내
-		        if (!parentCode) {
-		            alert("먼저 대분류를 선택해주세요.");
-		            return; // 더 이상 진행하지 않음
-		        }
 		        
 		        // 소분류 초기화
 		        $("#childCategory").empty().append(`<option value="">소분류 선택</option>`);
@@ -329,7 +323,7 @@
 					                  <th>번호</th>
 					                  <th>표지</th>
 					                  <th>제목</th>
-					                  <th>저자</th>
+					                  <th>서명/저자사항</th>
 					                  <th>출판사</th>
 					                  <th>출판일</th>
 					                  <th>선택</th>
@@ -598,7 +592,7 @@
 									<th>번호</th>
 									<th>표지</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>출판사</th>
 									<th>구분</th>
 									<th>청구기호</th>

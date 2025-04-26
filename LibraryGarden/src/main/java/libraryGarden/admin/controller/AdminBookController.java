@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -40,13 +41,19 @@ import libraryGarden.domain.SearchCriteria;
  * 	- 도서 조회 검색 기능 
  * 	- 도서 조회 페이지 기능
  * 
- * - 관리자 도서관 도서 삭제 기능 
- * 
  * - 관리자 도서관 도서 상세 페이지 이동
+ *  
+ * - 관리자 도서관 도서 등록 페이지 이동
+ *  - 
+ *  
+ *  
+ *  
+ *  
+ * - 관리자 도서관 도서 삭제 기능 
  * 
  * - 관리자 도서관 도서 수정 페이지 이동
  * 
- * - 관리자 도서관 도서 등록 페이지 이동
+
  * 
  * - 관리자 도서 선택 팝업 페이지 이동
  * 
@@ -248,14 +255,46 @@ public class AdminBookController {
 	// 도서 등록/수정 시 청구기호 일치여부 숫자 ajax
 	@PostMapping("/checkCallNumberDuplicate.do")
 	@ResponseBody
-	public int checkCallNumberDuplicate(@RequestParam(value = "callName") String callName) {
+	public int checkCallNumberDuplicate(@RequestParam(value = "callName") String callName,
+		    @RequestParam(value = "lbidx", required = false) Integer lbidx,
+		    @RequestParam(value = "aidx", required = false) Integer aidx,
+		    @RequestParam(value = "bidx", required = false) Integer bidx) {
 		
 		logger.info("checkCallNumberDuplicate 들어옴");
-		
-	    // 청구기호 일치여부 숫자 
-		int cnt = adminLibraryBooksService.getCheckCallNumberDuplicate(callName);
-		 
-		return cnt;
+
+	    // lbidx, aidx, bidx 모두 있으면 => 수정시
+	    if (lbidx != null && aidx != null && bidx != null) {
+	        LibraryBookDto original = adminLibraryBooksService.getBookSelectOne(lbidx);
+
+	        if (original == null) {
+	            return -99;  // 오류 상황
+	        }
+
+			System.out.println(lbidx);
+			System.out.println(aidx);
+			System.out.println(bidx);
+			System.out.println(original.getAidx());
+			System.out.println(original.getBidx());
+	        boolean isSameBook = (original.getAidx() == aidx) && (original.getBidx() == bidx);
+	        boolean isSameCallNumber = callName.equals(original.getCallName());
+	        System.out.println("isSameBook "+isSameBook);
+	        System.out.println("isSameCallNumber "+isSameCallNumber);
+	        
+	        System.out.println("callName "+callName);
+	        System.out.println("original.getCallName() "+original.getCallName());
+	        
+	        if (isSameBook && isSameCallNumber) {
+	            return -1;  // 같은 책 + 같은 청구기호
+	        } else {
+	            int cnt = adminLibraryBooksService.getCheckCallNumberDuplicate(callName);
+	            return cnt;  // 중복 개수 리턴
+	        }
+	    }else {
+	    
+		    // 청구기호 일치여부 숫자 => 등록시
+			int cnt = adminLibraryBooksService.getCheckCallNumberDuplicate(callName); // 
+			return cnt;
+	    }
 	}
 	
 	// 도서 등록 
@@ -320,11 +359,7 @@ public class AdminBookController {
 	public String deleteLibraryBooks(@PathVariable("lbidx") int lbidx, RedirectAttributes rttr) {
 		logger.debug("deleteLibraryBooks 들어옴");
 		
-		/*
-		 * 도서관 책 삭제
-		 * [input] 도서관 책 인덱스(lbidx) 
-		 */
-		
+		// 도서관 책 삭제
 		int value = adminBookCUDService.deleteLibraryBooksAndUpdateApproval(lbidx);
 		if (value==0) {
 			rttr.addFlashAttribute("msg", "삭제하지 못했습니다.");
@@ -339,19 +374,34 @@ public class AdminBookController {
 	public String moveBookModify(@PathVariable("lbidx") int lbidx,Model model) {
 		logger.debug("moveBookModify 들어옴");
 		
-		/*
-		 * 도서관 책 상세 조회 
-		 * [input] 도서관 책 인덱스(lbidx) 
-		 * [output] 책 상세(lbd)
-		 */
+		//도서관 책 상세 조회 
 		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
 		
-		/*
-		 * Model를 통해 jsp로 이동 
-		 * - lbd : 책 상세 내용
-		 */
+	    // 도서 카테고리 대분류
+	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
+
+	    // 도서 카테고리 소분류
+	    List<LibraryBookDto> childList = adminCategoryService.getChildrenCategoryByparentCode(Integer.parseInt(lbd.getParentCode()));
+
 		model.addAttribute("lbd", lbd);
+		model.addAttribute("parentList", parentList);
+		model.addAttribute("childList", childList);
 		return "admin/book/bookModify";
+
+	}
+	
+	// 관리자 도서관 도서 상세에서 도서 삭제 기능
+	@PostMapping("/bookModifyAction.do")
+	public String modifyLibraryBooks(LibraryBooksVo lbv, RedirectAttributes rttr) {
+		logger.debug("bookModifyAction 들어옴");
+		
+		// 도서관 책 삭제
+		int value = adminBookCUDService.modifyLibraryBooksAndUpdateApproval(lbv);
+		if (value==0) {
+			rttr.addFlashAttribute("msg", "수정하지 못했습니다.");
+			return "redirect:/admin/book/"+lbv.getLbidx()+"/bookModify.do"; 
+		}	
+		return "redirect:/admin/book/"+lbv.getLbidx()+"/bookDetail.do"; 
 
 	}
 

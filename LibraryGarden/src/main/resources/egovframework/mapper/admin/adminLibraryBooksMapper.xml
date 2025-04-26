@@ -82,11 +82,21 @@
 		ORDER BY LB.lbidx DESC LIMIT #{startPageNum}, #{perPageNum}; 
 	</select>
 	
-	<!-- 도서관 오늘자 도서 등록 갯수 조회 매서드 -->
+	<!-- 도서관 aidx를 가지고 오는 매서드 -->
 	<select id="getLibraryBookAboutAidx" resultType="int">
 		SELECT aidx FROM LIBRARYBOOKS where lbidx=#{lbidx} 
 	</select>
-
 	
+	<!-- 도서관 lbidx, bidx, aidx를 가지고 오는 매서드 -->
+	<select id="getLibraryBookByLbidxAndBidxAndAidx" resultType="lbd">
+	    SELECT aidx, bidx, lbidx
+	    FROM LIBRARYBOOKS
+	    WHERE lbidx = #{lbidx}
+	</select>
+	
+	<!-- 도서관 도서 수정 매서드 -->
+	<update id="modifyLibraryBook" parameterType="lbv">
+	update LIBRARYBOOKS set callName = #{callName}, location = #{location}, cidx = #{cidx}, status = #{status}, modify=now() where lbidx=#{lbidx} 
+    </update>
 	
 </mapper>

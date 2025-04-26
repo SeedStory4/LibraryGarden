@@ -33,8 +33,7 @@
 				<!-- 도서 정보 -->
 				<c:set var="lbd" value="${requestScope.lbd}" />
 				<div class="draft-content">
-					<img src="${lbd.coverImg}" alt="${lbd.title}"
-						class="draft-book-img">
+					<img src="${lbd.coverImg}" alt="${lbd.title}" class="draft-book-img">
 					<div class="draft-info">
 						<p>
 							<span class="info-title self-start">● 제목<c:choose><c:when test="${not empty lbd.originalTitle}"> / 원제</c:when><c:otherwise> </c:otherwise></c:choose></span> <span class="info-content max-w-600">${lbd.title}<c:choose><c:when test="${not empty lbd.originalTitle}"> / ${lbd.originalTitle}</c:when><c:otherwise> </c:otherwise></c:choose></span>

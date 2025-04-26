@@ -1,5 +1,5 @@
 package libraryGarden.admin.service;
-
+ 
 import libraryGarden.domain.LibraryBooksVo;
 
 
@@ -8,7 +8,7 @@ import libraryGarden.domain.LibraryBooksVo;
  * [주요기능] 
  *  - 관리자 도서관 도서 등록 메서드
  *  - 관리자 도서관 도서 삭제 메서드
- *  
+ *  - 관리자 도서관 도서 수정 메서드
  *  
  * @author SiYeon
  *
@@ -21,4 +21,6 @@ public interface AdminBookCUDService {
 	// 관리자 도서관 도서 삭제 메서드
 	public int deleteLibraryBooksAndUpdateApproval(int lbidx);
 
+    // 관리자 도서관 도서 수정 메서드
+	public int modifyLibraryBooksAndUpdateApproval(LibraryBooksVo lbv);
 }
