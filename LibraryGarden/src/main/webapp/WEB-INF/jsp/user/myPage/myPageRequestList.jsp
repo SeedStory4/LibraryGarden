@@ -94,7 +94,7 @@
 							</tbody>
 						</table>
 						</form>
-						<ul class="paging flex w-270 justify-center">
+						<ul class="paging flex justify-center">
 							<c:if test="${requestScope.pm.prev == true}">
 							<li>
 					          <a href="${pageContext.request.contextPath}/user/myPage/myPageRequestList.do?page=${requestScope.pm.startPage - 1}" aria-label="Previous">◀</a>

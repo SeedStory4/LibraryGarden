@@ -16,21 +16,7 @@
         <filter-name>encodingFilter</filter-name>
         <url-pattern>*.do</url-pattern>
     </filter-mapping>
-    
-    <!--
-		Tomcat의 경우 allowCasualMultipartParsing="true" 추가
-		<Context docBase="" path="/" reloadable="true" allowCasualMultipartParsing="true">
-	-->
-	<filter>
-		<display-name>springMultipartFilter</display-name>
-		<filter-name>springMultipartFilter</filter-name>
-		<filter-class>org.springframework.web.multipart.support.MultipartFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>springMultipartFilter</filter-name>
-		<url-pattern>*.do</url-pattern>
-	</filter-mapping>
-    
+	
     <!--
 		HTMLTagFilter의 경우는 파라미터에 대하여 XSS 오류 방지를 위한 변환을 처리합니다.
 		XSS 보안 위험 방지를 위하여 반드시 설정 하셔야 합니다.

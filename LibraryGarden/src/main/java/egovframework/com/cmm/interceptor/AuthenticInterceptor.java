@@ -38,17 +38,7 @@ public class AuthenticInterceptor extends WebContentInterceptor {
 	 * 계정정보(LoginVO)가 없다면, 로그인 페이지로 이동한다.
 	 */
 	@Override
-	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
-
-//		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-//
-//		if (loginVO.getId() != null) {
-//			return true;
-//		} else {
-//			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
-//			throw new ModelAndViewDefiningException(modelAndView);
-//		}
-		
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {		
 		
 		// 세션에 저장된 UserVo를 가져오기
 		UserVo loginUser = (UserVo)request.getSession().getAttribute("loginUser");

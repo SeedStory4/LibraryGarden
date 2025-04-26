@@ -17,7 +17,6 @@ public class EgovBindingInitializer implements WebBindingInitializer {
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));
 		binder.registerCustomEditor(String.class, new StringTrimmerEditor(false));
 		
-		binder.registerCustomEditor(String.class, "atchFileId", new EgovAtchFileIdPropertyEditor());
 	}
 
 }

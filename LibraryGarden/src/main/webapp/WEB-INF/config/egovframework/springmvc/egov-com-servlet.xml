@@ -68,16 +68,9 @@
     <!-- 로그인 체크가 필요한 URL과 로그인 여부를 체크해준다 -->
     <mvc:interceptors>
         <mvc:interceptor>
-            <mvc:mapping path="/cop/com/*.do"/>
-            <mvc:mapping path="/cop/bbs/*Master*.do"/>
-            <mvc:mapping path="/uat/uia/*.do"/>
             <mvc:mapping path="/admin/**" />  <!-- /admin/ 하위 URL에 적용 -->
-            <mvc:mapping path="/user/myPage/myPageLoanList.do" />
-            <mvc:mapping path="/user/myPage/myPageRequestList.do" />
-            <mvc:mapping path="/user/myPage/deleteRequest.do" />
+            <mvc:mapping path="/user/myPage/**" />  <!-- /user/myPage/ 하위 URL에 적용 -->
             <mvc:mapping path="/user/bookRequest/bookRequestWriteAction.do" />
-            <mvc:exclude-mapping path="/uat/uia/actionLogin.do"/>
-            <mvc:exclude-mapping path="/uat/uia/egovLoginUsr.do"/>
 		    <bean class="egovframework.com.cmm.interceptor.AuthenticInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>

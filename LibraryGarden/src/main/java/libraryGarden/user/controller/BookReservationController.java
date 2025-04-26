@@ -177,16 +177,6 @@ public class BookReservationController {
 	    }
 	    return response;
 	}
-
-
-    
-    
-	// 도서예약 등록 팝업
-	@GetMapping("/popBookReservationWrite.do")
-	public String popBookReservationWrite() {
-		return "user/bookReservation/popBookReservationWrite";
-	}
-	
 	
 	  // 수정 팝업에서 비활성화 날짜 조회
 	  @ResponseBody

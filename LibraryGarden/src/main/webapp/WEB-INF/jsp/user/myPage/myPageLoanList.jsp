@@ -101,7 +101,7 @@
 								  </c:if>
 							</tbody>
 						</table>
-						<ul class="paging flex w-270 justify-center">
+						<ul class="paging flex justify-center">
 							<!-- ◀ 이전 페이지 (첫 페이지가 아닐 때만 표시) -->
 							<c:if test="${currentPage > 1}">
 								<li><a href="?page=${currentPage - 1}">◀</a></li>

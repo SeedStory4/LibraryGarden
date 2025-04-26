@@ -27,7 +27,6 @@
 	<bean id="messageSource" class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
         <property name="basenames">
             <list>
-                <value>classpath:/egovframework/message/com/message-common</value>
                 <value>classpath:/org/egovframe/rte/fdl/idgnr/messages/idgnr</value>
                 <value>classpath:/org/egovframe/rte/fdl/property/messages/properties</value>
             </list>
@@ -65,32 +64,5 @@
 	<bean id="antPathMater" class="org.springframework.util.AntPathMatcher" />
     <!-- Exception 발생시 후처리용 별도작업을 위해 실행환경의  DefaultTraceHandler 를 활용하도록 설정 org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler -->
     <bean id="defaultTraceHandler" class="egovframework.com.cmm.EgovComTraceHandler" />
-	
-    <!-- For Pagination Tag 설정-->
-    <bean id="imageRenderer" class="egovframework.com.cmm.ImagePaginationRenderer"/>
-    <bean id="paginationManager" class="org.egovframe.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
-        <property name="rendererType">
-            <map>
-                <entry key="image" value-ref="imageRenderer"/> 
-            </map>
-        </property>
-    </bean>
-    
-    <!-- MULTIPART RESOLVERS -->
-    <!-- regular spring resolver -->    
-    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="100000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-    <!-- custom multi file resolver -->
-    <!-- 확장자 제한 : globals.properties > Globals.fileUpload.Extensions로 설정 -->
-    <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver">
-        <property name="maxUploadSize" value="100000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-    <!-- choose one from above and alias it to the name Spring expects -->
-    <alias name="local.MultiCommonsMultipartResolver" alias="filterMultipartResolver" />
-    <!-- <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" /> -->
-    
-        
+
 </beans>

@@ -28,21 +28,7 @@ public class UserController {
 	@Resource(name = "userService")
 	private UserService userService;
 	
-	
-	
-//	@Resource(name = "userService")
-//	private UserVo userVo;
-	
-	
-	
-//	@GetMapping("/userPrivacyPolicy.do")
-//	public String userPrivacyPolicy() {
-//		logger.info("userPrivacyPolicy enter");
-//		return "user/user/userPrivacyPolicy";
-//	}
-//	
 	@GetMapping("/userJoinForm.do")
-
 	public String userJoinForm() {
 
 	logger.info("약관 동의 완료 → 회원가입 입력 페이지로 이동");

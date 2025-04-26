@@ -362,7 +362,7 @@
 						 // 2. paging 설정
 						 const queryParam = "keyword=${pm.scri.keyword}&searchType=${pm.scri.searchType}";
 						 
-						 let pagecontent = `<ul class="paging flex w-270 justify-center">`;
+						 let pagecontent = `<ul class="paging flex justify-center">`;
 						 
 						 if(Boolean(pm.prev)) {
 							 pagecontent += 
@@ -629,7 +629,7 @@
 					`;
 		
 					// 페이징 처리
-					let paging = `<ul class="paging flex w-270 justify-spacebtween">`;
+					let paging = `<ul class="paging flex justify-center">`;
 					if (pm.prev) {
 						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${pm.startPage - 1})">◀</a></li>`;
 					}

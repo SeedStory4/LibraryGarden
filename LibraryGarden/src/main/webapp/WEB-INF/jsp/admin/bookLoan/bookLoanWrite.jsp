@@ -71,7 +71,7 @@
                             </tbody>
 						</table>
                         <!-- 페이지네이션 -->
-                        <ul class="paging flex w-270 justify-center" id="pagination">
+                        <ul class="paging flex justify-center" id="pagination">
                             <!-- 페이지 번호가 동적으로 추가될 부분 -->
                         </ul>	
 					</div>

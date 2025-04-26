@@ -38,7 +38,7 @@
 					</button>
 					<button 
 						class="draft-btn-small draft-btn-small-n btn-list-140"
-						onclick="location.href='<%= request.getContextPath() %>/main.do'">
+						onclick="location.href='<%= request.getContextPath() %>/user/main.do'">
 						메인
 					</button>
 				</div>
