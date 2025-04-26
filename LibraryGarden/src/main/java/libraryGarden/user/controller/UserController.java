@@ -86,6 +86,10 @@ public class UserController {
     public String userFoundPassword() {
         return "user/user/userFoundPassword";
     }
+    @RequestMapping("/jusoPopup.do")
+    public String jusoPopup() {
+        return "user/user/jusoPopup";
+    }
     
     
     @PostMapping("/userJoinAction.do")
