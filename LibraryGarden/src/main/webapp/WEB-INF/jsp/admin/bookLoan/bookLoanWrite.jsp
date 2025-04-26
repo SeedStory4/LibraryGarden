@@ -44,11 +44,11 @@
 								<col width="6%">
 								<col width="8%">
 								<col>
-								<col width="10%">
-								<col width="10%">
-								<col width="12%">
-								<col width="12%">
-								<col width="12%">
+								<col width="14%">
+								<col width="9%">
+								<col width="11%">
+								<col width="11%">
+								<col width="11%">
 								<col width="8%">
 								<col width="10%">
 							</colgroup>
@@ -57,7 +57,7 @@
 									<th>번호</th>
 									<th>표지</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>구분</th>
 									<th>대출일</th>
 									<th>반납예정일</th>

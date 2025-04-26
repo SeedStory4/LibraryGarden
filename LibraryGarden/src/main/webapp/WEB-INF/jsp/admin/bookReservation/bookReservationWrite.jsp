@@ -41,7 +41,7 @@
                         <div class="search flex gap-20 justify-center">
                             <select class="js-example-basic-single select shadow" name="searchType">
                                 <option value="title">제목</option>
-                                <option value="author">저자</option>
+                                <option value="author">서명/저자사항</option>
                             </select>
                             <input type="hidden" name="userNumber" value="${userNumber}" />
                             <input type="text" class="shadow w-720" name="keyword" value="">
@@ -54,9 +54,9 @@
                                 <col width="6%">
                                 <col width="8%">
                                 <col>
-                                <col width="10%">
-                                <col width="10%">
                                 <col width="15%">
+                                <col width="10%">
+                                <col width="10%">
                                 <col width="10%">
                                 <col width="12%">
                                 <col width="8%">
@@ -66,7 +66,7 @@
                                     <th>번호</th>
                                     <th>표지</th>
                                     <th>제목</th>
-                                    <th>저자</th>
+                                    <th>서명/저자사항</th>
                                     <th>출판사</th>
                                     <th>청구기호</th>
                                     <th>자료실</th>
