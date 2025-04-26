@@ -41,19 +41,19 @@
 							<colgroup>
 								<col width="6%">
 								<col>
+								<col width="14%">
 								<col width="10%">
-								<col width="10%">
-								<col width="12%">
-								<col width="12%">
-								<col width="12%">
-								<col width="9%">
+								<col width="11%">
+								<col width="11%">
+								<col width="11%">
+								<col width="8%">
 								<col width="10%">
 							</colgroup>
 							<thead>
 								<tr>
 									<th>번호</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>출판사</th>
 									<th>예약일</th>
 									<th>반납예정일</th>
