@@ -10,7 +10,6 @@ import libraryGarden.domain.BookVo;
  * - isbn 으로 책 데이터 중 bidx 가지고 오는 메서드
  * 
  * @author SiYeon
- *
  */
 public interface Book1Service {
 

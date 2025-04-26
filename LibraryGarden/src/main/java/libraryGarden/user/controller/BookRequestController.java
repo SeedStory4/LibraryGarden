@@ -21,8 +21,7 @@ import libraryGarden.domain.ApiBookPageDto;
 import libraryGarden.domain.BookVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.domain.UserVo;
-import libraryGarden.user.service.LibraryBooksService;
+import libraryGarden.domain.UserVo; 
 import libraryGarden.user.service.Book1Service;
 import libraryGarden.user.service.BookRequestService;
 
