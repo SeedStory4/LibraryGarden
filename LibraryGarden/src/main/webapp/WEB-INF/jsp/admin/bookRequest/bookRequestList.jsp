@@ -21,7 +21,7 @@
 
 	<div class="wrapper">
 		<section class="section p-0">
-			<h2 class="section-title m-0 normal relative">희망도서 목록<button class="btn btn-primary absolute">도서등록</button></h2>
+			<h2 class="section-title m-0 normal relative">희망도서 목록</h2>
 			
 			<div class="contents">
 				<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>

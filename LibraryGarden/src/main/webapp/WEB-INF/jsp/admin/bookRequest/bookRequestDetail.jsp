@@ -176,6 +176,12 @@
     <script>
     function saveRequest(status, rejectionReason, rqidx) {
 	    var fm = document.frm;
+	    
+	    if (status === "신청반려" && (rejectionReason == null || rejectionReason.trim() === "")) {
+	        alert("반려사유를 입력해 주세요.");
+	        return; // 저장 진행하지 않고 함수 종료
+	    }
+	    
 	    var ans = confirm("저장하시겠습니까?");
 	    if (ans) {
 	        fm.status.value = status;
