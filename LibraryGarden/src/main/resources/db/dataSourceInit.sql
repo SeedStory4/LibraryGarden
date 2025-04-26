@@ -39,7 +39,7 @@ CREATE TABLE USER (
     address VARCHAR(225) NOT NULL,
     userNumber VARCHAR(20) NOT NULL UNIQUE,
     role VARCHAR(50) NOT NULL DEFAULT '일반회원',
-    date DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    regdate DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     modify DATETIME,
     delyn CHAR(1) NOT NULL DEFAULT 'N'
 );
@@ -181,7 +181,7 @@ CREATE TABLE RESERVATION (
     ridx INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     lbidx INT NOT NULL,                           
     uidx INT NOT NULL,                            
-    regDate DATE NOT NULL,  
+    regDate DATETIME NOT NULL,  
     pickupDate DATE NOT NULL,                      
     status VARCHAR(50) NOT NULL DEFAULT '예약중',  
     dueDate DATE NOT NULL,                      
