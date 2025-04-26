@@ -79,7 +79,7 @@
 					<div class="mb-33">
 					  <p class="font-767678-18">가입일</p>
 					  <p class="font-000-20">
-					    <c:out value="${fn:replace(fn:substring(user.date, 0, 10), '-', '.')}" />
+					    <c:out value="${fn:replace(fn:substring(user.regdate, 0, 10), '-', '.')}" />
 					  </p>
 					</div>
 				</div>

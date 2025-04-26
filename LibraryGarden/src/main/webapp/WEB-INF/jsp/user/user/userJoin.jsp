@@ -35,7 +35,9 @@
 		          <input type="password" name="passwordConfirm" class="user-A-input mb-30" placeholder="비밀번호 확인" required>
 		          <input type="tel" name="phone" pattern="^\+?\d{10,15}$" class="user-A-input mb-30" placeholder="휴대전화번호 ( 예> 01012345678 )" required>
 		          <input type="email" name="email" class="user-A-input mb-30" placeholder="이메일" required>
-		          <input type="text" name="address" class="user-A-input mb-57" placeholder="주소" required>
+		          <input type="text" name="address" id="address" class="user-A-input mb-30" placeholder="주소" required readonly>
+				  <button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30">주소 검색</button>
+
 		
 		          <!-- 버튼들 form 안에 위치 -->
 		          <div class="draft-actions mb-37">
@@ -216,6 +218,26 @@
 		     
 		      });
 		    });
+		  
+		  
+		  function goPopup() {
+			  var pop = window.open("<%= request.getContextPath() %>/user/user/jusoPopup.do", "pop", "width=570,height=420, scrollbars=yes, resizable=yes");
+			}
+
+			// 팝업에서 주소 받아오는 함수
+			function jusoCallBack(roadFullAddr, roadAddrPart1, addrDetail, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn, detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn, lnbrMnnm, lnbrSlno, emdNo) {
+					  document.getElementById("address").value = decodeHtmlEntities(roadFullAddr);
+					}
+
+			
+			function decodeHtmlEntities(str) {
+				  var txt = document.createElement("textarea");
+				  txt.innerHTML = str;
+				  return txt.value;
+				}
+
+
+
 		</script>
 
 		<!-- 푸터 로드 -->
