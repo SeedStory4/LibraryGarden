@@ -44,7 +44,7 @@
 .book-card {
     display: flex;
     align-items: center;
-    width: 380px; /* 1200px 내에서 3개 배치 */
+    width: 570px; /* 1200px 내에서 2개 배치 */
     background: var(--bg-section);
     padding: 10px;
     border-radius: 10px;
@@ -86,7 +86,7 @@
     font-size: 20px;
     font-weight: normal;
     color: var(--color-primary);
-    width: 80px; /* 일정한 너비 유지 */
+    width: 130px; /* 일정한 너비 유지 */
     text-align: left;
     flex-shrink: 0; /* 크기 자동 축소 방지 */
 }
@@ -94,7 +94,7 @@
 
 .info-content {
     display: inline-block;
-    max-width: 80px;
+    max-width: 230px;
     min-width: 0;            /* ✅ 반드시 추가 */
     white-space: nowrap;
     overflow: hidden;

@@ -31,9 +31,9 @@
 			<section class="book-section">
 			  <h2 class="section-title">이달의 대출 도서 순위</h2>
 			  <div class="book-list">
-			    <c:forEach var="i" begin="0" end="${fn:length(topLoanBooks) - 1}" step="3">
+			    <c:forEach var="i" begin="0" end="${fn:length(topLoanBooks) - 1}" step="2">
 			      <div class="book-row">
-			        <c:forEach var="j" begin="0" end="2">
+			        <c:forEach var="j" begin="0" end="1">
 			          <c:if test="${i + j < fn:length(topLoanBooks)}">
 			            <c:set var="book" value="${topLoanBooks[i + j]}" />
 			            <div class="book-card">
@@ -79,9 +79,9 @@
 			<section class="book-section">
 			  <h2 class="section-title">이달의 신간</h2>
 			  <div class="book-list">
-			    <c:forEach var="i" begin="0" end="${fn:length(latestBooks) - 1}" step="3">
+			    <c:forEach var="i" begin="0" end="${fn:length(latestBooks) - 1}" step="2">
 			      <div class="book-row">
-			        <c:forEach var="j" begin="0" end="2">
+			        <c:forEach var="j" begin="0" end="1">
 			          <c:if test="${i + j < fn:length(latestBooks)}">
 			            <c:set var="book" value="${latestBooks[i + j]}" />
 			            <div class="book-card">
