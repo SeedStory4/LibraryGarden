@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.UserVo;
-import libraryGarden.user.service.MyPage1Service;
+import libraryGarden.user.service.BookLoanService;
+import libraryGarden.user.service.BookReservationService;
 
 @Controller
 @RequestMapping("/user/myPage")
 public class MyPage1Controller {
 	
     @Autowired
-    private MyPage1Service myPage1Service;
+    private BookLoanService bookLoanService;
+    
+    @Autowired
+    private BookReservationService bookReservationService;
     
 	@Autowired(required=false)
 	private PageMaker pm;
@@ -37,18 +41,15 @@ public class MyPage1Controller {
 	    Model model
 	) throws Exception {
 	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");
-	    if (loginUser == null) {
-	        return "redirect:/user/user/userLogin.do";
-	    }
 
 	    String userNumber = loginUser.getUserNumber();
 	    String name = loginUser.getName();
 
-	    String loanStatus = myPage1Service.getUserLoanStatus(userNumber);
+	    String loanStatus = bookLoanService.getUserLoanStatus(userNumber);
 	    model.addAttribute("loanStatus", loanStatus);
 
 	    int perPageNum = 12;
-	    Map<String, Object> loanList = myPage1Service.getUserLoanInfo(userNumber, page, perPageNum);
+	    Map<String, Object> loanList = bookLoanService.getUserLoanInfo(userNumber, page, perPageNum);
 	    model.addAttribute("loanList", loanList);
 
 	    int totalCount = (int) loanList.get("totalCount");
@@ -63,7 +64,7 @@ public class MyPage1Controller {
 	}
        
 	
-	// 내 도서 예약관리
+	// 내 도서 
 	@GetMapping("/myPageReservationList.do")
 	public String myPageReservationList(
 	    @RequestParam(value = "page", defaultValue = "1") int page,
@@ -78,11 +79,11 @@ public class MyPage1Controller {
 	    String userNumber = loginUser.getUserNumber();
 	    String name = loginUser.getName();
 
-	    String loanStatus = myPage1Service.getUserLoanStatus(userNumber);
+	    String loanStatus = bookLoanService.getUserLoanStatus(userNumber);
 	    model.addAttribute("loanStatus", loanStatus);
 
 	    int perPageNum = 12;
-	    Map<String, Object> reservationList = myPage1Service.getUserReservationInfo(userNumber, page, perPageNum);
+	    Map<String, Object> reservationList = bookReservationService.getUserReservationInfo(userNumber, page, perPageNum);
 	    model.addAttribute("reservationList", reservationList);
 
 	    int totalCount = (int) reservationList.get("totalCount");
@@ -111,7 +112,7 @@ public class MyPage1Controller {
         }
         String userNumber = loginUser.getUserNumber();
         try {
-            boolean success = myPage1Service.extendLoan(lidx, userNumber);
+            boolean success = bookLoanService.extendLoan(lidx, userNumber);
             if (success) {
                 result.put("success", true);
                 result.put("message", "연장이 완료되었습니다.");

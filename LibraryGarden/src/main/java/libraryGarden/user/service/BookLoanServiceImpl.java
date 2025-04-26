@@ -11,13 +11,13 @@ import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminBookLoanMapper;
 import libraryGarden.domain.LoanVo;
-import libraryGarden.user.mapper.MyPage1Mapper;
+import libraryGarden.user.mapper.BookLoanMapper;
 
 @Service
-public class MyPage1ServiceImpl implements MyPage1Service{
+public class BookLoanServiceImpl implements BookLoanService{
 	
     @Autowired
-    private MyPage1Mapper myPage1Mapper;
+    private BookLoanMapper bookLoanMapper;
     
 	@Autowired
     private AdminBookLoanMapper adminBookLoanMapper;
@@ -27,7 +27,7 @@ public class MyPage1ServiceImpl implements MyPage1Service{
 		// 0) 당일 오전 연체 감지
 	    adminBookLoanMapper.insertOverdueForPastDue();
     	
-        return myPage1Mapper.selectUserLoanStatus(userNumber); // 대출 가능 여부 조회
+        return bookLoanMapper.selectUserLoanStatus(userNumber); // 대출 가능 여부 조회
     }
 
     @Override
@@ -38,9 +38,9 @@ public class MyPage1ServiceImpl implements MyPage1Service{
         // 페이징 계산 추가
         int startPageNum = (page - 1) * perPageNum;
 
-        List<Map<String, Object>> loanList = myPage1Mapper.selectUserLoanList(userNumber, startPageNum, perPageNum);
+        List<Map<String, Object>> loanList = bookLoanMapper.selectUserLoanList(userNumber, startPageNum, perPageNum);
 
-        int totalCount = myPage1Mapper.selectUserLoanTotalCount(userNumber);
+        int totalCount = bookLoanMapper.selectUserLoanTotalCount(userNumber);
 
         result.put("loanList", loanList);
         result.put("totalCount", totalCount);
@@ -50,32 +50,14 @@ public class MyPage1ServiceImpl implements MyPage1Service{
 
     @Override
     public String getUserName(String userNumber) throws Exception {
-        return myPage1Mapper.selectUserName(userNumber); // 회원 이름 조회
+        return bookLoanMapper.selectUserName(userNumber); // 회원 이름 조회
     }
     
-    
-    @Override
-    public Map<String, Object> getUserReservationInfo(String userNumber, int page, int perPageNum) throws Exception {
-    	
-        Map<String, Object> result = new HashMap<>();
-
-        // 페이징 계산 추가
-        int startPageNum = (page - 1) * perPageNum;
-
-        List<Map<String, Object>> reservationList = myPage1Mapper.selectUserReservationList(userNumber, startPageNum, perPageNum);
-
-        int totalCount = myPage1Mapper.selectUserReservationTotalCount(userNumber);
-
-        result.put("reservationList", reservationList);
-        result.put("totalCount", totalCount);
-
-        return result;
-    }
     
     @Override
     public boolean extendLoan(int lidx, String userNumber) throws Exception {
         // 1. 해당 대출 정보를 조회 (로그인한 사용자의 대출 정보여야 함)
-        LoanVo loan = myPage1Mapper.selectLoanByIdAndUser(lidx, userNumber);
+        LoanVo loan = bookLoanMapper.selectLoanByIdAndUser(lidx, userNumber);
         if (loan == null) {
             // 해당 대출 기록이 없으면 연장 불가
             System.out.println("대출 기록이 없습니다.");
@@ -103,7 +85,7 @@ public class MyPage1ServiceImpl implements MyPage1Service{
         String newDueDate = dateFormat.format(cal.getTime());
         
         // 4. 해당 도서(lbidx)에 대해 가장 빠른 예약 픽업일 조회
-        String earliestPickup = myPage1Mapper.selectEarliestReservationPickupDateByBook(loan.getLbidx());
+        String earliestPickup = bookLoanMapper.selectEarliestReservationPickupDateByBook(loan.getLbidx());
         System.out.println("loan.getLbidx(): " + loan.getLbidx());
         System.out.println("Computed newDueDate: " + newDueDate);
         System.out.println("Retrieved earliestPickup: " + earliestPickup);
@@ -121,7 +103,7 @@ public class MyPage1ServiceImpl implements MyPage1Service{
         }
         
         // 5. 업데이트 쿼리 실행 (LOAN 테이블의 dueDate 업데이트)
-        int updateCount = myPage1Mapper.extendLoan(lidx, newDueDate);
+        int updateCount = bookLoanMapper.extendLoan(lidx, newDueDate);
         System.out.println("연장 업데이트 결과: " + updateCount);
         return updateCount > 0;
     }

@@ -2,9 +2,8 @@ package libraryGarden.user.controller;
 
  
 import java.util.ArrayList;
- 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-
 import libraryGarden.domain.LibraryBookDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
@@ -69,8 +67,11 @@ public class Book1Controller {
 	public String bookDetail(
 			@PathVariable("lbidx") int lbidx,
 			HttpSession session,
-			Model model) {
+			Model model,
+			HttpServletRequest request) {
 		logger.debug("bookDetail 들어옴");
+		
+		request.getSession().setAttribute("saveUrl", request.getRequestURI());
 		
 	    // 로그인 유저가 없어도 상세보기는 가능해야 하니까 체크 안함 
 	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");

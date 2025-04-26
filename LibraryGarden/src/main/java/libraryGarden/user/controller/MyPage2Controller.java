@@ -19,7 +19,7 @@ import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
 import libraryGarden.user.service.BookRequestService;
-import libraryGarden.user.service.MyPage1Service;
+import libraryGarden.user.service.BookLoanService;
 
 /**
  * [설명] 사용자의 개인 페이지 - 희망 도서 신청한 목혹 (신청을 해서 목록으로 들어옴)
@@ -38,7 +38,7 @@ public class MyPage2Controller {
 	
 	// MyPage1Service 주입
     @Autowired
-    private MyPage1Service myPage1Service;
+    private BookLoanService bookLoanService;
     
 	// BookRequestService 주입
 	@Autowired(required=false)
@@ -57,7 +57,7 @@ public class MyPage2Controller {
 	    }
 		
 		// 로그인 한 유저 대출상태 확인
-		String loanStatus = myPage1Service.getUserLoanStatus(loginUser.getUserNumber()); 
+		String loanStatus = bookLoanService.getUserLoanStatus(loginUser.getUserNumber()); 
 	    
 		// 유저의 희망도서 신청 리스트 출력
 		List<Map<String, Object>> requestList = bookRequestService.getUserRequestInfo(loginUser.getUidx());

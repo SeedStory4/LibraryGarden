@@ -2,6 +2,17 @@
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%
+  String uri = request.getRequestURI();
+  String query = request.getQueryString();
+  if (query != null) {
+    uri += "?" + query;
+  }
+
+  if (uri.contains("/book/") && uri.contains("bookDetail.do")) {
+    session.setAttribute("saveUrl", uri);
+  }
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -198,6 +209,8 @@
     <jsp:include page="/WEB-INF/jsp/cmm/footer.jsp"/>
 	<script>
   		var contextPath = '${pageContext.request.contextPath}';
+  	  var isLoggedIn = "${not empty sessionScope.loginUser}";
+  	  isLoggedIn = (isLoggedIn === "true");  // 문자열 → boolean 변환
 	</script>
     <!-- reservation.js 불러오기 -->
     <script src="${pageContext.request.contextPath}/js/reservation.js"></script>
