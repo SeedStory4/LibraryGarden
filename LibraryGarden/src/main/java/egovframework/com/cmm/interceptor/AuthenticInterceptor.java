@@ -1,11 +1,13 @@
 package egovframework.com.cmm.interceptor;
 
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import libraryGarden.domain.UserVo;
+
+import java.io.PrintWriter;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
@@ -38,13 +40,67 @@ public class AuthenticInterceptor extends WebContentInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws ServletException {
 
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		if (loginVO.getId() != null) {
-			return true;
-		} else {
-			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
+//		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+//
+//		if (loginVO.getId() != null) {
+//			return true;
+//		} else {
+//			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
+//			throw new ModelAndViewDefiningException(modelAndView);
+//		}
+		
+		
+		// 세션에 저장된 UserVo를 가져오기
+		UserVo loginUser = (UserVo)request.getSession().getAttribute("loginUser");
+		
+		if(loginUser == null) {
+			// 이동할 경로를 저장
+			saveUrl(request);
+			
+			// 로그인 페이지로 이동
+			ModelAndView modelAndView = new ModelAndView("redirect:/user/user/userLogin.do");
 			throw new ModelAndViewDefiningException(modelAndView);
+			
+		} else {  // 세션에 저장된 UserVo가 있으면 요청 진행
+			
+			// 로그인한 사용자가 관리자가 아니고 이동할 경로가 관리자 페이지라면 "권한이 없습니다" alert창 발생 후 메인으로 이동
+			saveUrl(request);
+			HttpSession session = request.getSession();
+			String role = loginUser.getRole();
+			if(!role.equals("도서관장") && !role.equals("사서") && session.getAttribute("saveUrl").toString().contains("/admin/")) {
+
+    			try {
+    		        response.setContentType("text/html; charset=utf-8");
+    		        PrintWriter w = response.getWriter();
+    		        w.write("<script>alert('권한이 없습니다. 메인으로 이동합니다.');location.href='/user/main.do';</script>");
+    		        w.flush();
+    		        w.close();
+    		    } catch(Exception e) {
+    		        e.printStackTrace();
+    		    }
+			}
+			
+			return true;
+		}
+	}
+	
+	public void saveUrl(HttpServletRequest request) {
+		
+		String uri = request.getRequestURI();  // 전체경로주소
+		String param = request.getQueryString();  // 파라미터를 가져온다
+		
+		if(param == null || param.equals("null") || param.equals("")) {
+			param = "";
+		} else {
+			param = "?" + param;
+		}
+		
+		// 이동할 페이지
+		String locationUrl = uri + param; 
+		
+		HttpSession session = request.getSession();
+		if(request.getMethod().equals("GET")) {  // 대문자 GET
+			session.setAttribute("saveUrl", locationUrl);
 		}
 	}
 
