@@ -49,7 +49,7 @@
 			                  <p class="info-content" title="${book.subtitle}">${book.subtitle}</p>
 			                </div>
 			                <div class="book-info-row">
-			                  <p class="info-title">저자</p>
+			                  <p class="info-title">서명/저자사항</p>
 			                  <p class="info-content" title="${book.author}">${book.author}</p>
 			                </div>
 			                <div class="book-info-row">
@@ -104,7 +104,7 @@
 			                  </p>
 			                </div>
 			                <div class="book-info-row">
-			                  <p class="info-title">저자</p>
+			                  <p class="info-title">서명/저자사항</p>
 			                  <p class="info-content" title="${book.author}">${book.author}</p>
 			                </div>
 			                <div class="book-info-row">
