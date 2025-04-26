@@ -270,7 +270,6 @@
 	    </resources>
 		<defaultGoal>install</defaultGoal>
 		<directory>${basedir}/target</directory>
-		<finalName>sht_webapp</finalName>
 		<pluginManagement>
 			<plugins>
 				<plugin>
