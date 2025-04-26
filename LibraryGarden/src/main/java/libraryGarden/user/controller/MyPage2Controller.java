@@ -85,6 +85,9 @@ public class MyPage2Controller {
 		
 		// 로그인 정보 세션값에서 가지고 오기
 		UserVo loginUser = (UserVo) session.getAttribute("loginUser");
+		if (loginUser == null) {
+			return "redirect:/user/user/userLogin.do"; // 로그인 안 되어 있으면 로그인 페이지로
+	    }
 		
 		// 삭제하고 값 가지고 오기
 		int value = bookRequestService.deleteRequest(loginUser.getUidx(),bidx,rqidx);
