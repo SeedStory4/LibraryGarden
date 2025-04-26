@@ -21,16 +21,14 @@ import libraryGarden.domain.UserVo;
 import libraryGarden.user.service.BookRequestService;
 import libraryGarden.user.service.BookLoanService;
 
-/*
+/**
  * [설명] 사용자의 개인 페이지 - 희망 도서 신청한 목혹 (신청을 해서 목록으로 들어옴)
  * 
  * [주요기능]
  * - 도서신청관리(희망 도서 신청한 목록) 페이지 이동
- *  
- *  
- * @author SiYeon
- * @write 2024.03.23
+ * - 신청한 희망 도서 삭제
  * 
+ * @author SiYeon
  */
 @Controller
 @RequestMapping("/user/myPage")
@@ -64,7 +62,6 @@ public class MyPage2Controller {
 		// 유저의 희망도서 신청 리스트 출력
 		List<Map<String, Object>> requestList = bookRequestService.getUserRequestInfo(loginUser.getUidx());
 	    
-		
 		// 페이징
 		int cnt = bookRequestService.getUserRequestInfoTotalCount(loginUser.getUidx()); // 전체 수
 	    PageMaker pm = new PageMaker();
@@ -73,7 +70,6 @@ public class MyPage2Controller {
 	    pm.setScri(scri);
 	    pm.setTotalCount(cnt);
 	    
-		
 	    model.addAttribute("uv", loginUser);// 유저 정보
 	    model.addAttribute("loanStatus", loanStatus); // 대출가능 정보
 	    model.addAttribute("requestList", requestList); // 희망도서 신청 정보

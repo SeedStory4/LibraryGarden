@@ -13,7 +13,6 @@ import libraryGarden.domain.SearchCriteria;
  * - 도서관 책 상세 조회 매서드
  * 
  * @author SiYeon
- *
  */
 public interface LibraryBooksService {
 	
@@ -25,6 +24,4 @@ public interface LibraryBooksService {
 	
 	// 도서관 책 상세 조회 매서드
 	public LibraryBookDto getBookSelectOne(int lbidx);
-	
-	
 }
