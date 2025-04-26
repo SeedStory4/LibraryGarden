@@ -5,6 +5,7 @@ package libraryGarden.user.controller;
 import java.util.ArrayList;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -101,8 +102,11 @@ public class Book1Controller {
 	public String bookDetail(
 			@PathVariable("lbidx") int lbidx,
 			HttpSession session,
-			Model model) {
+			Model model,
+			HttpServletRequest request) {
 		logger.debug("bookDetail 들어옴");
+		
+		request.getSession().setAttribute("saveUrl", request.getRequestURI());
 		
 	    // 로그인 유저가 없어도 상세보기는 가능해야 하니까 체크 안함 
 	    UserVo loginUser = (UserVo) session.getAttribute("loginUser");

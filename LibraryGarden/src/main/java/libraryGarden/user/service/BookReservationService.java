@@ -24,6 +24,7 @@ public interface BookReservationService {
     // 실제 수정
     int updateReservation(ReservationDto reservation);
     int countUserByNumber(String userNumber);
+    public Map<String, Object> getUserReservationInfo(String userNumber, int page, int perPageNum) throws Exception; // 내도서 예약 목록 조회
 
     
 

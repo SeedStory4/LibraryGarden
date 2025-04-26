@@ -110,6 +110,13 @@
     // — 모달 열기 & 예약 현황 로드
     $('.openReservationModal').on('click', function(e){
       e.preventDefault();
+	  
+	  if (!window.isLoggedIn) {
+	    const currentUrl = window.location.pathname + window.location.search;
+	    const loginUrl = contextPath + '/user/user/userLogin.do?returnUrl=' + encodeURIComponent(currentUrl);
+	    window.location.href = loginUrl;
+	    return;
+	  }
 
       // 1) UI & 변수 초기화
       selectedDate = null;

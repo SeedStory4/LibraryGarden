@@ -203,8 +203,6 @@ public class BookReservationServiceImpl implements BookReservationService{
 		
 	    int inserted = rm.insertReservation(reservation);
 
-	    // → 전역 호출 제거 rm.updateBooksToWaitStatus();
-
 	    // 대신 방금 INSERT한 이 책만, 
 	    //  오늘부터 픽업일이 0~6일 이내면 바로 상태 바꿔 주기
 	    long days = ChronoUnit.DAYS.between(
@@ -278,6 +276,25 @@ public class BookReservationServiceImpl implements BookReservationService{
     @Override
     public int countUserByNumber(String userNumber) {
         return rm.countUserByNumber(userNumber);
+    }
+    
+    // 내도서
+    @Override
+    public Map<String, Object> getUserReservationInfo(String userNumber, int page, int perPageNum) throws Exception {
+    	
+        Map<String, Object> result = new HashMap<>();
+
+        // 페이징 계산 추가
+        int startPageNum = (page - 1) * perPageNum;
+
+        List<Map<String, Object>> reservationList = rm.selectUserReservationList(userNumber, startPageNum, perPageNum);
+
+        int totalCount = rm.selectUserReservationTotalCount(userNumber);
+
+        result.put("reservationList", reservationList);
+        result.put("totalCount", totalCount);
+
+        return result;
     }
 
 

@@ -3,6 +3,7 @@ package libraryGarden.user.mapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -38,4 +39,6 @@ public interface BookReservationMapper {
     int updateReservation(ReservationDto reservation);
     //회원번호로 USER 테이블에 몇 건이 있는지 조회
     int countUserByNumber(String userNumber);
+    List<Map<String, Object>> selectUserReservationList(@Param("userNumber") String userNumber, @Param("startPageNum") int startPageNum, @Param("perPageNum") int perPageNum); // 내도서 예약 목록 조회
+    int selectUserReservationTotalCount(String userNumber); // 내 도서 예약 목록 전체 개수 조회
 }
