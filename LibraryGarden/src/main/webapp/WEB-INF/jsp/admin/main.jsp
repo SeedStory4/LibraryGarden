@@ -54,9 +54,9 @@
 								</tr>
 							</thead>
 								<thead>
-								  <c:forEach var="req" items="${requestList}">
+								  <c:forEach var="req" items="${requestList}" varStatus="status">
 								    <tr>
-								      <td>${req.rqidx}</td>
+								      <td>${status.index + 1}</td>
 								      <td>${req.title}</td>
 								      <td>${req.author}</td>
 								      <td>${req.publisher}</td>
@@ -105,9 +105,9 @@
 								</tr>
 							</thead>
 							<thead>
-								<c:forEach var="app" items="${approvalList}">
+								<c:forEach var="app" items="${approvalList}" varStatus="status">
 								    <tr>
-								        <td>${app.aidx}</td>
+								        <td>${status.index + 1}</td>
 								        <td>${app.title}</td>
 								        <td>${app.author}</td>
 								        <td>${app.publisher}</td>
