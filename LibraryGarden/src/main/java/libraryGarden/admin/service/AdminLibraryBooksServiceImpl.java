@@ -22,6 +22,13 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 책 상세 조회 매서드
  *  - 관리자 도서관 책 삭제 매서드
  *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
+ *  - 관리자 도서관 청구기호 일치여부 숫자 조회 매서드
+ *  - 관리자 도서관 도서 등록 매서드
+ *  - 관리자 도서관 오늘자 도서 등록 조회 목록 출력 메서드
+ *  - 관리자 도서관 오늘자 도서 등록 갯수 조회 매서드
+ *  - 관리자 도서관 aidx를 가지고 오는 매서드
+ *  - 관리자 도서관 lbidx, bidx, aidx를 가지고 오는 매서드
+ *  - 관리자 도서관 도서 수정 매서드
  *  
  * @author Siyeon
  */
@@ -46,10 +53,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		hm.put("keyword", scri.getKeyword());
 		
 		
-		/* 책 목록 조회
-		 * [input]검색조건 외 페이지 기능 (hm)
-		 * [output] 책 목록(alist)
-		 */ 
+		// 책 목록 조회
 		ArrayList<LibraryBookDto> lblist =  albm.getBookSelectAll(hm);
 		return lblist;
 	}
@@ -58,12 +62,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 	@Override
 	public int getBookTotalCount(SearchCriteria scri) {
 		
-		 /* 페이징 기능 
-		  * - 책 리스트 전체 갯수
-		  * - 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
-		  * [input] 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri) 
-		  * [output] 조건에 따른 잭 전체 개수 cnt
-		  */ 
+		//페이징 기능 
 		int cnt = albm.getBookTotalCount(scri);
 		return cnt;
 	}
@@ -71,22 +70,16 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 	// 관리자 도서관 책 상세 조회 매서드
 	@Override
 	public LibraryBookDto getBookSelectOne(int lbidx) {
-		/* 도서관 책 상세 조회
-		 * [input] 	도서관 책 인덱스(lbidx)
-		 * [output] 책 상세(lbd)
-		 */ 
+		// 도서관 책 상세 조회
 		LibraryBookDto lbd = albm.getBookSelectOne(lbidx);
 		return lbd;
 	}
 
 	// 관리자 도서관 책 삭제 매서드
 	@Override
-	public int getBookDeleteOne(int lbidx) {
-		/* 도서관 책 상세 조회
-		 * [input] 	도서관 책 인덱스(lbidx)
-		 * [output] 삭제 여부 값(value)
-		 */ 
-		int value = albm.getBookDeleteOne(lbidx);
+	public int getLibraryBookDeleteOne(int lbidx) {
+		// 도서관 책 상세 조회
+		int value = albm.getLibraryBookDeleteOne(lbidx);
 		logger.debug("AdminBookServiceImpl BookDeleteOne value" + value);
 		return value;
 	}
@@ -105,6 +98,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		return cnt;
 	}
 
+	// 관리자 도서관 도서 등록 매서드
 	@Override
 	public int insertLibraryBookAboutBook(LibraryBooksVo lbv) {
 		
@@ -117,5 +111,54 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		int cnt = albm.insertLibraryBookAboutBook(lbv);
 		return cnt;
 	}
+
+    // 관리자 도서관 오늘자 도서 등록 조회 목록 출력 메서드
+	@Override
+	public ArrayList<LibraryBookDto> getBookWriteListSelectAll(SearchCriteria scri, String today) {
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		hm.put("startPageNum", (scri.getPage() - 1) * scri.getPerPageNum());//페이지 조회 첫번째 수
+		hm.put("perPageNum", scri.getPerPageNum());//페이지 조회 끝번째 수
+		hm.put("today", today);
+
+		ArrayList<LibraryBookDto> lblist =  albm.getBookWriteListSelectAll(hm);
+		
+		return lblist;
+	}
+
+	// 관리자 도서관 오늘자 도서 등록 갯수 조회 매서드
+	@Override
+	public int getBookWriteListCount(String today) {
+		int cnt = albm.getBookWriteListCount(today);
+		return cnt;
+	}
+
+	// 관리자 도서관 aidx를 가지고 오는 매서드
+	@Override
+	public int getLibraryBookAboutAidx(int lbidx) {
+		int aidx = albm.getLibraryBookAboutAidx(lbidx);
+		return aidx;
+	}
+
+	// 관리자 도서관 lbidx, bidx, aidx를 가지고 오는 매서드
+	@Override
+	public LibraryBookDto getLibraryBookByLbidxAndBidxAndAidx(int lbidx) {
+		LibraryBookDto lbd = albm.getLibraryBookByLbidxAndBidxAndAidx(lbidx);
+		return lbd;
+	}
+
+	// 관리자 도서관 도서 수정 매서드
+	@Override
+	public int modifyLibraryBook(LibraryBooksVo lbv) {
+		if ("보존서고".equals(lbv.getLocation())) {
+		    lbv.setStatus("대출불가");
+		} else {
+		    lbv.setStatus("대출가능");
+		}
+		int value = albm.modifyLibraryBook(lbv);  // 수정
+		return value;
+	}
+
 
 }

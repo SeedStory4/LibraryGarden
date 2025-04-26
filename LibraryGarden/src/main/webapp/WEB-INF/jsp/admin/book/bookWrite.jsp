@@ -16,10 +16,9 @@
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/list.css">
 <style>
-.draft-buttons { margin-right: 90px; }
-.draft-divider { width: 100%; transform: translateX(0); margin-bottom: 20px; }
 .draft-info .title { color: inherit; font-size: inherit; padding:0; margin:0;}
-.draft-actions-mt { margin-bottom: 20px; }
+.section-title {padding:0;}
+.p-0{padding:0;}
 </style>
 </head>
 <body>
@@ -32,15 +31,15 @@
 	        alert("${msg}");
 	    </script>
 	</c:if>
-	<div class="wrapper">
+	<div class="wrapper p-0">
 		<div class="inner p-0">
 			<!-- 메인 콘텐츠 -->
 			<section class="section draft-section ">
 				<div class="draft-header ">
-					<div class="section-title draft-title m-0">도서등록</div>
+					<div class="section-title draft-title">도서등록</div>
 					<button class="btn-green small select-book-btn draft-btn openModal" data-modalType="bookSelect">도서선택</button>
 				</div>
-				<hr class="draft-divider m-0">
+				<hr class="draft-divider ">
 
 				<!-- 도서 정보 -->
 				<div class="draft-content">
@@ -139,70 +138,8 @@
 				</div>
 
 				<hr class="custom-divider">
-				<div class="table table-narrow">
-					<table>
-						<colgroup>
-							<col width="6%">
-							<col width="8%">
-							<col>
-							<col width="10%">
-							<col width="10%">
-							<col width="10%">
-							<col width="15%">
-							<col width="12%">
-							<col width="8%">
-						</colgroup>
-						<thead>
-							<tr>
-								<th>번호</th>
-								<th>표지</th>
-								<th>제목</th>
-								<th>저자</th>
-								<th>출판사</th>
-								<th>구분</th>
-								<th>청구기호</th>
-								<th>자료실</th>
-								<th>삭제</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td>1</td>
-								<td><img
-									src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg"
-									alt="채식주의자"></td>
-								<td><a href="#">채식주의자</a></td>
-								<td>한강</td>
-								<td>창비</td>
-								<td>DM250314</td>
-								<td>802.123 한 127 v1</td>
-								<td>일반열람실</td>
-								<td><button class="delete-btn">삭제</button></td>
-							</tr>
-							<tr>
-								<td>1</td>
-								<td><img
-									src="https://image.aladin.co.kr/product/29137/2/cover500/8936434594_2.jpg"
-									alt="채식주의자"></td>
-								<td><a href="#">채식주의자</a></td>
-								<td>한강</td>
-								<td>창비</td>
-								<td>DM250314</td>
-								<td>802.123 한 127 v1</td>
-								<td>일반열람실</td>
-								<td><button class="delete-btn">삭제</button></td>
-							</tr>
-						</tbody>
-					</table>
-					<ul class="paging flex w-270 justify-spacebtween">
-						<li><a href="#">◀</a></li>
-						<li><a href="#" class="on">1</a></li>
-						<li><a href="#">2</a></li>
-						<li><a href="#">3</a></li>
-						<li><a href="#">4</a></li>
-						<li><a href="#">5</a></li>
-						<li><a href="#">▶</a></li>
-					</ul>
+				<div class="table table-narrow book-write-list">
+
 				</div>
 
 
@@ -222,7 +159,7 @@
 			          <div class="search flex gap-20 justify-center">
 			            <select class="js-example-basic-single select shadow" name="searchType">
 			              <option value="title" selected>제목</option>
-			              <option value="author">저자</option>
+			              <option value="author">서명/저자사항</option>
 			              <option value="name">신청자</option>
 			            </select>
 			            <input type="text" class="shadow w-520 input" name="keyword">						
@@ -248,6 +185,11 @@
 		// 모달에서 책 선택
 		let selectedAidx = null;
 
+		// 페이지 열었을 때 등록된 도서 자동 로딩
+		window.onload = function() {
+			loadBookList(1);
+		}
+		
 		$(document).ready(function() {
 			// select2
 		    $('.js-example-basic-single').select2().each(function() {
@@ -260,11 +202,6 @@
 		    $("#parentCategory").change(function() {
 		        let parentCode = $(this).val();
 		        
-		        // 대분류가 선택되지 않은 경우 안내
-		        if (!parentCode) {
-		            alert("먼저 대분류를 선택해주세요.");
-		            return; // 더 이상 진행하지 않음
-		        }
 		        
 		        // 소분류 초기화
 		        $("#childCategory").empty().append(`<option value="">소분류 선택</option>`);
@@ -386,7 +323,7 @@
 					                  <th>번호</th>
 					                  <th>표지</th>
 					                  <th>제목</th>
-					                  <th>저자</th>
+					                  <th>서명/저자사항</th>
 					                  <th>출판사</th>
 					                  <th>출판일</th>
 					                  <th>선택</th>
@@ -619,6 +556,125 @@
 		        dataType: "json"
 		    });
 		}
+	    
+	    // 등록된 도서 정보 리스트 가지고 오기
+		function loadBookList(page) {
+		
+			$.ajax({
+				type: "post",
+				url: "${pageContext.request.contextPath}/admin/book/bookWriteList.do",
+				dataType: "json",
+				data: {
+					page: page
+				},
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+				success: function(result) {
+					const blist = result.bwlist;
+					const pm = result.bwpm;
+					let listHtml  = "";
+
+					// 테이블 생성
+					listHtml  += `
+						<table>
+							<colgroup>
+								<col width="6%">
+								<col width="8%">
+								<col>
+								<col width="10%">
+								<col width="10%">
+								<col width="10%">
+								<col width="15%">
+								<col width="12%">
+								<col width="8%">
+							</colgroup>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>표지</th>
+									<th>제목</th>
+									<th>서명/저자사항</th>
+									<th>출판사</th>
+									<th>구분</th>
+									<th>청구기호</th>
+									<th>자료실</th>
+									<th>삭제</th>
+								</tr>
+							</thead>
+							<tbody>`;
+					if (blist.length === 0) {
+						listHtml  += `<tr><td colspan="9" class="center">등록된 도서가 없습니다.</td></tr>`;
+					} else {
+						for (let i = 0; i < blist.length; i++) {
+							const item = blist[i];
+							const num = (pm.scri.page - 1) * pm.scri.perPageNum + i + 1;
+							listHtml  += `
+								<tr>
+									<td>\${num}</td>
+									<td><img src="\${item.coverImg}" alt="\${item.title}" /></td>
+									<td><a href="${pageContext.request.contextPath}/admin/book/\${item.lbidx}/bookDetail.do">\${item.title}</a></td>
+									<td>\${item.author}</td>
+									<td>\${item.publisher}</td>
+									<td>\${item.code}</td>
+									<td>\${item.callName}</td>
+									<td>\${item.location}</td>
+									<td><button class="delete-btn" onclick="deleteBookWrite(\${item.lbidx},this)">삭제</button></td>
+								</tr>
+							`;
+						}
+					}
+		
+					listHtml += `
+							</tbody>
+						</table>
+					`;
+		
+					// 페이징 처리
+					let paging = `<ul class="paging flex w-270 justify-spacebtween">`;
+					if (pm.prev) {
+						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${pm.startPage - 1})">◀</a></li>`;
+					}
+					for (let i = pm.startPage; i <= pm.endPage; i++) {
+						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${i})" class="${i == pm.scri.page ? 'on' : ''}">${i}</a></li>`;
+					}
+					if (pm.next) {
+						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${pm.endPage + 1})">▶</a></li>`;
+					}
+					paging += `</ul>`;
+		
+					// HTML 삽입
+					document.querySelector(".book-write-list").innerHTML = listHtml + paging;
+				},
+				error: function() {
+					alert("도서 목록 불러오기 실패");
+				}
+			});
+		}
+	    
+	    // 등록된 도서 삭제하기 
+		function deleteBookWrite(lbidx, btn) {
+        	var ans = confirm("저장하시겠습니까?");
+        	if (ans == true){
+			   	$.ajax({
+			        type: "POST",
+			        url: "${pageContext.request.contextPath}/admin/book/bookWriteDelete.do",
+			        data: { "lbidx": lbidx },
+			        dataType: "json",
+			        success : function(response) {
+						alert("삭제되었습니다.");
+						// 삭제된 행 정렬
+						$(btn).closest("tr").remove();
+			             // 남은 행 번호 다시 정렬
+		                $(".book-write-list tbody tr").each(function(index) {
+		                    $(this).find("td").eq(0).text(index + 1);  // 첫 번째 <td>에 번호 다시 넣기
+		                });
+					},
+					error: function() {
+						alert("삭제 실패");
+					}
+			    });
+        	}
+		}
+	    
     </script>
 
 </body>

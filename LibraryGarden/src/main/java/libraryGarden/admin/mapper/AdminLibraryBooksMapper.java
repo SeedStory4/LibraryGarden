@@ -17,6 +17,11 @@ import libraryGarden.domain.SearchCriteria;
  *  - 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
  *  - 관리자 도서관 청구기호 일치여부 숫자 조회 매서드
  *  - 관리자 도서관 도서 등록 매서드
+ *  - 관리자 도서관 오늘자 도서 등록 조회 목록 출력 메서드
+ *  - 관리자 도서관 오늘자 도서 등록 갯수 조회 매서드
+ *  - 관리자 도서관 aidx를 가지고 오는 매서드
+ *  - 관리자 도서관 lbidx, bidx, aidx를 가지고 오는 매서드
+ *  - 관리자 도서관 도서 수정 매서드
  *  
  * @author SiYeon
  */
@@ -32,7 +37,7 @@ public interface AdminLibraryBooksMapper {
 	public LibraryBookDto getBookSelectOne(int lbidx);
 	
 	// 관리자 도서관 책 삭제 매서드
-	public int getBookDeleteOne(int lbidx);
+	public int getLibraryBookDeleteOne(int lbidx);
 	
 	// 관리자 도서관 도서등록 시 도서관 마지막 구분 조회 매서드
 	public String getLibraryBookLastCode();
@@ -42,4 +47,19 @@ public interface AdminLibraryBooksMapper {
 	
 	// 관리자 도서관 도서 등록 매서드
 	public int insertLibraryBookAboutBook(LibraryBooksVo lbv);
+	
+    // 관리자 도서관 오늘자 도서 등록 조회 목록 출력 메서드
+	public ArrayList<LibraryBookDto> getBookWriteListSelectAll(HashMap<String,Object> hm);
+	
+	// 관리자 도서관 오늘자 도서 등록 갯수 조회 매서드
+	public int getBookWriteListCount(String today);
+	
+	// 관리자 도서관 aidx를 가지고 오는 매서드
+	public int getLibraryBookAboutAidx(int lbidx);
+	
+	// 관리자 도서관 lbidx, bidx, aidx를 가지고 오는 매서드
+	public LibraryBookDto getLibraryBookByLbidxAndBidxAndAidx(int lbidx);
+	
+	// 관리자 도서관 도서 수정 매서드
+	public int modifyLibraryBook(LibraryBooksVo lbv);
 }
