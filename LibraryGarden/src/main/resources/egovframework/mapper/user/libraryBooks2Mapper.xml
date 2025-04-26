@@ -18,8 +18,7 @@
 	    FROM BOOKS b
 	    JOIN LIBRARYBOOKS lb ON b.bidx = lb.bidx
 	    JOIN LOAN l ON lb.lbidx = l.lbidx
-	    WHERE MONTH(l.loanDate) = MONTH(CURRENT_DATE)
-	      AND YEAR(l.loanDate) = YEAR(CURRENT_DATE)
+	    WHERE l.loanDate >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
 	    GROUP BY b.bidx
 	    ORDER BY loanCount DESC
 	    LIMIT 6

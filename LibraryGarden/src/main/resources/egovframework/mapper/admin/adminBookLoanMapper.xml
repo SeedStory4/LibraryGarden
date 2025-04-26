@@ -214,5 +214,47 @@
 	    AND R.delyn      = 'N'
 	</update>
 	
+	  <!-- (A) dueDate 지난 모든 미반납 LOAN에 대해 OVERDUE 레코드를 한 번만 insert -->
+  <insert id="insertOverdueForPastDue">
+    INSERT INTO OVERDUE (lidx, uidx, status, startDate, endDate)
+    SELECT
+      l.lidx,
+      l.uidx,
+      'Y',              
+      DATE_ADD(l.dueDate, INTERVAL 1 DAY), 
+      '2028-12-31'                
+    FROM LOAN l
+    WHERE
+      l.delyn = 'N'
+      AND l.returnDate IS NULL
+      AND l.dueDate &lt; CURDATE()
+      AND NOT EXISTS (
+        SELECT 1 
+          FROM OVERDUE o
+         WHERE o.lidx = l.lidx
+           AND o.status = 'Y'
+      )
+  </insert>
+
+  <!-- (B) 반납 시 실제 연체일수*2+1 만큼 endDate만 갱신 -->
+  <update id="updateOverdueEndDate">
+    UPDATE OVERDUE
+       SET endDate = #{newEndDate},
+           status  = 'Y'
+     WHERE lidx   = #{lidx}
+       AND status = 'Y'
+  </update>
+
+  <!-- (C) 사용자별 active 연체 건수 조회 -->
+  <select id="selectActiveOverdueCount" parameterType="String" resultType="int">
+    SELECT COUNT(*)
+      FROM OVERDUE o
+      JOIN LOAN l ON o.lidx = l.lidx
+      JOIN `USER` u ON l.uidx = u.uidx
+     WHERE u.userNumber = #{userNumber}
+       AND o.status = 'Y'
+       AND o.endDate >= CURDATE()
+  </select>
+	
 
 </mapper>

@@ -68,7 +68,7 @@
 	        id,
 	        phone,
 	        role,
-	        DATE_FORMAT(date, '%Y.%m.%d') AS date
+	        DATE_FORMAT(regdate, '%Y.%m.%d') AS regdate
 	    FROM user
 	    ORDER BY userNumber DESC
 	</select>
@@ -126,7 +126,7 @@
 	
 	<select id="searchUsersByCriteria" resultType="libraryGarden.domain.UserVo" parameterType="libraryGarden.domain.SearchCriteria">
 		SELECT 
-		    userNumber, name, id, phone, role, DATE_FORMAT(date, '%Y.%m.%d') AS date
+		    userNumber, name, id, phone, role, DATE_FORMAT(regdate, '%Y.%m.%d') AS regdate
 		FROM user
 		WHERE 
 			<choose>
@@ -143,7 +143,7 @@
 					1 = 1
 				</otherwise>
 			</choose>
-		ORDER BY date DESC, userNumber DESC
+		ORDER BY regdate DESC, userNumber DESC
 		LIMIT #{startRow}, #{perPageNum}
 	</select>
 

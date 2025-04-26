@@ -44,7 +44,7 @@
 .book-card {
     display: flex;
     align-items: center;
-    width: 380px; /* 1200px 내에서 3개 배치 */
+    width: 570px; /* 1200px 내에서 2개 배치 */
     background: var(--bg-section);
     padding: 10px;
     border-radius: 10px;
@@ -74,29 +74,37 @@
 
 .book-info-row {
     display: flex;
-    align-items: center; /* 텍스트 수직 정렬 */
-    gap: 20px; /* 제목과 내용 사이 간격 */
+    align-items: center;
+    gap: 20px;
     width: 100%;
-    white-space: nowrap; /* 자동 줄바꿈 방지 */
+    overflow: hidden;
+    white-space: nowrap;
 }
+
 
 .info-title {
     font-size: 20px;
     font-weight: normal;
     color: var(--color-primary);
-    width: 80px; /* 일정한 너비 유지 */
+    width: 130px; /* 일정한 너비 유지 */
     text-align: left;
     flex-shrink: 0; /* 크기 자동 축소 방지 */
 }
 
+
 .info-content {
+    display: inline-block;
+    max-width: 230px;
+    min-width: 0;            /* ✅ 반드시 추가 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 16px;
-    font-weight: normal;
-    color: #000000;
-    flex-grow: 1; /* 내용이 자동으로 정렬되도록 설정 */
-    text-align: left;
-    white-space: nowrap; /* 자동 줄바꿈 방지 */
+    color: #000;
+    vertical-align: middle;
 }
+
+
 
 .divider {
     width: 100%;

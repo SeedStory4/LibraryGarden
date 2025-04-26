@@ -44,19 +44,19 @@
 							<colgroup>
 								<col width="6%">
 								<col>
+								<col width="14%">
 								<col width="10%">
-								<col width="10%">
-								<col width="12%">
-								<col width="12%">
-								<col width="12%">
-								<col width="9%">
+								<col width="11%">
+								<col width="11%">
+								<col width="11%">
+								<col width="8%">
 								<col width="10%">
 							</colgroup>
 							<thead>
 								<tr>
 									<th>번호</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>출판사</th>
 									<th>대출일</th>
 									<th>반납예정일</th>
@@ -92,6 +92,13 @@
 										</td>
 									</tr>
 								</c:forEach>
+								  <c:if test="${empty loanList['loanList']}">
+								    <tr>
+								      <td colspan="9" style="text-align:center;">
+								        대출한 도서가 없습니다.
+								      </td>
+								    </tr>
+								  </c:if>
 							</tbody>
 						</table>
 						<ul class="paging flex w-270 justify-center">

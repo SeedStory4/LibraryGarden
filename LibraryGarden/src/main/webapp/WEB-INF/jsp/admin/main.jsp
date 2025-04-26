@@ -28,7 +28,7 @@
 			<!-- 희망도서목록 -->
 			<section class="section section-bordered">
 				<div class="section-title">
-					희망도서목록 <span class="section-add">＋</span>
+					희망도서목록 <span class="section-add"><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestList.do">＋</a></span>
 				</div>
 				<div class="list">
 					<div class="table">
@@ -46,7 +46,7 @@
 								<tr>
 									<th>번호</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>출판사</th>
 									<th>신청자</th>
 									<th>신청일</th>
@@ -54,9 +54,9 @@
 								</tr>
 							</thead>
 								<thead>
-								  <c:forEach var="req" items="${requestList}">
+								  <c:forEach var="req" items="${requestList}" varStatus="status">
 								    <tr>
-								      <td>${req.rqidx}</td>
+								      <td>${status.index + 1}</td>
 								      <td>${req.title}</td>
 								      <td>${req.author}</td>
 								      <td>${req.publisher}</td>
@@ -79,7 +79,7 @@
 			<!-- 결재관리목록 -->
 			<section class="section section-bordered">
 				<div class="section-title">
-					결재관리목록 <span class="section-add">＋</span>
+					결재관리목록 <span class="section-add"><a href="<%= request.getContextPath() %>/admin/approval/approvalList.do">＋</a></span>
 				</div>
 				<div class="list">
 					<div class="table">
@@ -97,7 +97,7 @@
 								<tr>
 									<th>번호</th>
 									<th>제목</th>
-									<th>저자</th>
+									<th>서명/저자사항</th>
 									<th>출판사</th>
 									<th>신청자</th>
 									<th>신청일</th>
@@ -105,9 +105,9 @@
 								</tr>
 							</thead>
 							<thead>
-								<c:forEach var="app" items="${approvalList}">
+								<c:forEach var="app" items="${approvalList}" varStatus="status">
 								    <tr>
-								        <td>${app.aidx}</td>
+								        <td>${status.index + 1}</td>
 								        <td>${app.title}</td>
 								        <td>${app.author}</td>
 								        <td>${app.publisher}</td>
