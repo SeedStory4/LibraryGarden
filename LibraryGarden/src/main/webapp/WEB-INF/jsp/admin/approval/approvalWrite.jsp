@@ -95,7 +95,7 @@
 			          <div class="search flex gap-20 justify-center">
 			            <select class="js-example-basic-single select shadow" name="searchType">
 			              <option value="title" selected>제목</option>
-			              <option value="author">저자</option>
+			              <option value="author">서명/저자사항</option>
 			              <option value="name">신청자</option>
 			            </select>
 			            <input type="text" class="shadow w-520 input" name="keyword">						
@@ -197,7 +197,7 @@
 				                  <th>번호</th>
 				                  <th>표지</th>
 				                  <th>제목</th>
-				                  <th>저자</th>
+				                  <th>서명/저자사항</th>
 				                  <th>출판사</th>`;
 				                  
 					 if(modalType == "bookRequestSelect") { 
