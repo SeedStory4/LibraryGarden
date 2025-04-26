@@ -202,6 +202,7 @@
     font-weight: normal;
 	flex-grow: 1; /* 내용이 자동으로 정렬되도록 */
 	text-align: left;
+	width: 751px;
 }
 
 /* 등록/취소 버튼 */
@@ -610,10 +611,8 @@ ul, li { list-style: none; }
 .shadow { box-shadow: 2px 2px 4px rgba(0, 0, 0, .25); }
 .flex { display: flex; }
 .justify-center { justify-content: center; }
-.justify-spacebtween { justify-content: space-between; }
 .align-center { align-items : center; }
 .gap-20 { gap: 20px; }
-.w-270 { width: 270px; }
 .w-290 { width: 290px; }
 .w-720 { width: 720px; }
 .m-0 { margin: 0; }

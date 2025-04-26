@@ -40,14 +40,12 @@ a { text-decoration: none; color: inherit; }
 .absolute { position: absolute; }
 .flex { display: flex; }
 .justify-center { justify-content: center; }
-.justify-spacebtween { justify-content: space-between; }
 .gap-20 { gap: 20px; }
 .gap-3 { gap: 3px; }
 
 .border-top-2 { border-top: 2px solid var(--color-primary); }
 
 .w-100p { width: 100%; }
-.w-270 { width: 270px; }
 .w-290 { width: 290px; }
 .w-520 { width: 520px; }
 .w-720 { width: 720px; }
