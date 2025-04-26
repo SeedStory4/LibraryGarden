@@ -78,8 +78,8 @@
 				<form name="frm" method="post">
 					<div class="draft-actions">						
 						<c:if test="${requestScope.av.status eq \"대기\" && sessionScope.loginUser.uidx == requestScope.av.uidx}">
-							<a href="${pageContext.request.contextPath}/admin/approval/${requestScope.av.aidx}/approvalModify.do" class="draft-btn-small btn-submit flex justify-center align-center">수정</a>
-							<button type="button" class="draft-btn-small btn-cancel" onClick="del()">삭제</button>
+							<a href="${pageContext.request.contextPath}/admin/approval/${requestScope.av.aidx}/approvalModify.do" class="draft-btn-small btn-submit btn-modify flex justify-center align-center">수정</a>
+							<button type="button" class="draft-btn-small btn-cancel btn-delete" onClick="del()">삭제</button>
 						</c:if>
 						<a href="${pageContext.request.contextPath}/admin/approval/approvalList.do" class="draft-btn-small btn-list flex align-center justify-center">목록</a>
 						<c:if test="${sessionScope.loginUser.role eq \"도서관장\"}">
@@ -151,6 +151,7 @@
 		// 모달 열기
 		const openRejectionModal = document.querySelector(".openRejectionModal");
 		const rejectionTextarea = document.getElementById("rejectionReason");
+		let rejectionTextareaValue = "${requestScope.av.rejectionReason}";
 		if(openRejectionModal != null) {
 			const modal = document.getElementById("rejectionModal");
 			openRejectionModal.addEventListener("click", function () {
@@ -161,6 +162,7 @@
 			const closeBtn = document.getElementById("closeRejectionModal");
 			closeBtn.addEventListener("click", function () {
 				modal.style.display = "none";
+				rejectionTextarea.value = rejectionTextareaValue;
 			});
 			
 			// 확인 버튼 클릭 시 입력값 출력
@@ -186,16 +188,22 @@
 						alert("반려되었습니다.");
 						
 						// 반려 사유 변경
-						rejectionTextarea.value = result.rejectionReason;
+						rejectionTextareaValue = result.rejectionReason;
 
 					 	// 반려 버튼 변경
-						const rejectionBtn = document.querySelector(".draft-actions .btn-cancel");
+						const rejectionBtn = document.querySelector(".draft-actions .openRejectionModal");
 						rejectionBtn.style.width = "190px";
 						rejectionBtn.innerText = "반려 사유 변경";
 						
 						// 반려 버튼 앞에 승인 버튼 생성(insertAdjacentHTML(position, htmlString)은 문자열을 그대로 DOM에 삽입해 줌. ``가 Node가 아닌 문자열이므로 insertBefore 사용 불가)
 						if(document.querySelector(".draft-actions .btn-submit") == null) {
 							rejectionBtn.insertAdjacentHTML("beforebegin", `<button type="button" class="draft-btn-small btn-submit" onclick="approval()">승인</button>`);
+						}
+						
+						// 수정, 삭제 버튼 삭제
+						if(document.querySelector(".draft-actions .btn-modify")) {
+							document.querySelector(".draft-actions .btn-modify").remove();
+							document.querySelector(".draft-actions .btn-delete").remove();
 						}
 						
 					 },
@@ -227,13 +235,16 @@
 						 rejectionTextarea.value = "";
 
 						 // 반려 버튼 변경
-						 const rejectionBtn = document.querySelector(".draft-actions .btn-cancel");
+						 const rejectionBtn = document.querySelector(".draft-actions .openRejectionModal");
 						 rejectionBtn.style.width = "100px";
 						 rejectionBtn.innerText = "반려";
 						 
-					 	 // 승인 버튼 삭제
-						 const acceptionBtn = document.querySelector(".draft-actions .btn-submit");
-						 acceptionBtn.remove();
+					 	 // 승인, 수정, 삭제 버튼 삭제
+						 if(document.querySelector(".draft-actions .btn-modify")) {
+							 document.querySelector(".draft-actions .btn-modify").remove();
+							 document.querySelector(".draft-actions .btn-delete").remove();
+						 }
+					 	 document.querySelector(".draft-actions .btn-submit").remove();
 					 },
 					 error: function(xhr, status, error) {  // 실패
 					 	alert("전송실패");
