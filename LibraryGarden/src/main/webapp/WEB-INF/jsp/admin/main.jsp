@@ -28,7 +28,7 @@
 			<!-- 희망도서목록 -->
 			<section class="section section-bordered">
 				<div class="section-title">
-					희망도서목록 <span class="section-add">＋</span>
+					희망도서목록 <span class="section-add"><a href="<%= request.getContextPath() %>/admin/bookRequest/bookRequestList.do">＋</a></span>
 				</div>
 				<div class="list">
 					<div class="table">
@@ -79,7 +79,7 @@
 			<!-- 결재관리목록 -->
 			<section class="section section-bordered">
 				<div class="section-title">
-					결재관리목록 <span class="section-add">＋</span>
+					결재관리목록 <span class="section-add"><a href="<%= request.getContextPath() %>/admin/approval/approvalList.do">＋</a></span>
 				</div>
 				<div class="list">
 					<div class="table">
