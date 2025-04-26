@@ -16,7 +16,6 @@ import libraryGarden.user.mapper.BookRequestMapper;
  * - 사용자 희망 도서 신청한 수를 조회하는 메서드
  * - 사용자 희망 도서 신청을 삭제하는 메서드
  * 
- * 
  * @author Siyeon
  */
 @Service

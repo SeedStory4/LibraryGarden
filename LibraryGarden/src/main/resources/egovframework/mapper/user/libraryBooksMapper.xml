@@ -20,7 +20,7 @@
 		FROM LIBRARYBOOKS AS LB
 		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
 		<include refid="search"/>
-		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
+		ORDER BY LB.lbidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
 	<!-- 도서관 책 전체/검색조건를 통해 책의 갯수를 조회 -->

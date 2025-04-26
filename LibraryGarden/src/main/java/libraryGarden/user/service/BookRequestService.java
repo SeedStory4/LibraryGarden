@@ -3,7 +3,6 @@ package libraryGarden.user.service;
 import java.util.List;
 import java.util.Map;
 
-
 /** [설명]BookRequestService 인터페이스: 사용자 희망 도서 관련 매서드
  * 
  * [주요기능] 
@@ -13,7 +12,6 @@ import java.util.Map;
  * - 사용자 희망 도서 신청을 삭제하는 메서드
  * 
  * @author SiYeon
- *
  */
 public interface BookRequestService {
 

@@ -14,7 +14,6 @@ import org.apache.ibatis.annotations.Param;
  * - 사용자 희망 도서 신청을 삭제하는 메서드
  * 
  * @author SiYeon
- *
  */
 public interface BookRequestMapper {
 	
