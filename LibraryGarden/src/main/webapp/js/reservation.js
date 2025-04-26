@@ -1,7 +1,7 @@
 // js/reservation.js
 (function($){
   var calendar, calendarEl, selectedDate = null;
-
+ 
   function initCalendar() {
     // 1) 이전 인스턴스 파기
     if (calendar) {
@@ -107,6 +107,12 @@
   }
 
   $(function(){
+	
+	// 만약 isLoggedIn이 undefined면 false로 초기화
+	if (typeof window.isLoggedIn === "undefined") {
+	  window.isLoggedIn = false;
+	}
+	
     // — 모달 열기 & 예약 현황 로드
     $('.openReservationModal').on('click', function(e){
       e.preventDefault();

@@ -181,6 +181,8 @@
 	</script>
     <!-- reservation.js 불러오기 -->
     <script src="${pageContext.request.contextPath}/js/reservation.js"></script>
+    <script>window.isLoggedIn = ${not empty sessionScope.loginUser};</script>
+    
 <script>
 $(document).ready(function() {
     // select2 초기화
