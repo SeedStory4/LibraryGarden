@@ -1,6 +1,8 @@
 package libraryGarden.admin.service;
 
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -21,35 +23,41 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     
     @Override
     public Map<String, Object> getUserLoanInfo(String userNumber, int page, int perPageNum) {
-        Map<String, Object> result = new HashMap<>();
-        //System.out.println("서비스 호출됨: userNumber = " + userNumber);
+        // — 자동 연체 감지: overdue 테이블만 채우고, 도서 상태는 그대로 둠 —
+    	adminBookLoanMapper.insertOverdueForPastDue();
 
-        String userName = adminBookLoanMapper.selectUserName(userNumber);
-        //System.out.println("회원 이름 조회 결과: " + userName);
-        result.put("userName", userName);
-
+        // (기존) UI에 보여줄 ‘이용가능/이용불가’ 여부
+        String userName   = adminBookLoanMapper.selectUserName(userNumber);
         String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
-        //System.out.println("대출 가능 여부 조회 결과: " + loanStatus);
-        result.put("loanStatus", loanStatus);
 
-        Map<String, Object> params = new HashMap<>();
+        // 페이징 & 대출 목록 조회
         int startPageNum = (page - 1) * perPageNum;
-        params.put("userNumber", userNumber);
+        Map<String,Object> params = new HashMap<>();
+        params.put("userNumber",  userNumber);
         params.put("startPageNum", startPageNum);
-        params.put("perPageNum", perPageNum);
+        params.put("perPageNum",   perPageNum);
 
-        List<Map<String, Object>> loanList = adminBookLoanMapper.selectUserLoanList(params);
+        List<Map<String,Object>> loanList = adminBookLoanMapper.selectUserLoanList(params);
         int totalCount = adminBookLoanMapper.selectUserLoanTotalCount(userNumber);
-        
-        result.put("loanList", loanList);
-        result.put("totalCount", totalCount);
 
+        Map<String,Object> result = new HashMap<>();
+        result.put("userName",   userName);
+        result.put("loanStatus", loanStatus);
+        result.put("loanList",   loanList);
+        result.put("totalCount", totalCount);
         return result;
     }
     
     @Override
     public void addBookLoan(String userNumber, String code) throws Exception {
-        // 1) code → lbidx
+        
+        // — (C) 연체 중이면 대출 불가 —
+        int odCnt = adminBookLoanMapper.selectActiveOverdueCount(userNumber);
+        if (odCnt > 0) {
+            throw new IllegalStateException("연체 중인 회원은 대출할 수 없습니다.");
+        }
+    	
+    	// 1) code → lbidx
         int lbidx = adminBookLoanMapper.selectLbidxByCode(code);
 
         // 2) 예약대기 상태인 경우, 오늘 픽업예약자만 허용
@@ -90,27 +98,31 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     
     @Override
     public void returnBookLoan(int lidx) throws Exception {
+        // 1) 반납예정일 조회 & 오늘 날짜 비교 (시간 제거)
+        SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
         Date dueDate = adminBookLoanMapper.selectDueDate(lidx);
-        Date now = new Date();
+        Date today   = fmt.parse(fmt.format(new Date()));
 
-        // 날짜만 비교하도록 처리
-        java.text.SimpleDateFormat sdf = new java.text.SimpleDateFormat("yyyy-MM-dd");
-        String dueDateStr = sdf.format(dueDate);
-        String nowStr = sdf.format(now);
+        if (today.after(fmt.parse(fmt.format(dueDate)))) {
+            // 2) 연체일수 계산 후 penalty = 연체일수 *2 +1
+            long lateDays = ( today.getTime() - fmt.parse(fmt.format(dueDate)).getTime() )
+                             / (1000L * 60 * 60 * 24);
+            int penaltyDays = (int)lateDays * 2 + 1;
 
-        String status;
-        if (nowStr.compareTo(dueDateStr) > 0) {
-            // 연체인 경우
-            long overdueDays = (now.getTime() - dueDate.getTime()) / (1000 * 60 * 60 * 24);
-            int overduePenaltyDays = (int) overdueDays * 2 + 1;
+            // 3) OVERDUE.endDate = 오늘 + penaltyDays
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(today);
+            cal.add(Calendar.DATE, penaltyDays);
+            adminBookLoanMapper.updateOverdueEndDate(lidx, cal.getTime());
 
-            adminBookLoanMapper.insertOverdue(lidx, overduePenaltyDays);
-            status = "연체반납";
+            // 4) LOAN.status = '연체반납'
+            adminBookLoanMapper.updateLoanStatusToReturned(lidx, "연체반납");
         } else {
-            status = "반납완료";
+            // 정상반납
+            adminBookLoanMapper.updateLoanStatusToReturned(lidx, "반납완료");
         }
 
-        adminBookLoanMapper.updateLoanStatusToReturned(lidx, status);
+        // 5) LIBRARYBOOKS.status = '대출가능'
         adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
     }
 

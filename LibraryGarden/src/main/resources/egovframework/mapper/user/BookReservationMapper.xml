@@ -108,9 +108,10 @@
     
     <!-- 대출 테이블에서 loanDate와 dueDate 조회 (LoanVo 사용) -->
     <select id="getLoansByBook" parameterType="int" resultType="libraryGarden.domain.LoanVo">
-        SELECT loanDate, dueDate 
+        SELECT loanDate, dueDate, returnDate 
         FROM LOAN 
         WHERE lbidx = #{lbidx}
+        AND delyn = 'N'
     </select>
 	
 	<!-- 연체 기간 조회 -->

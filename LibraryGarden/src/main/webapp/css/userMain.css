@@ -74,11 +74,13 @@
 
 .book-info-row {
     display: flex;
-    align-items: center; /* 텍스트 수직 정렬 */
-    gap: 20px; /* 제목과 내용 사이 간격 */
+    align-items: center;
+    gap: 20px;
     width: 100%;
-    white-space: nowrap; /* 자동 줄바꿈 방지 */
+    overflow: hidden;
+    white-space: nowrap;
 }
+
 
 .info-title {
     font-size: 20px;
@@ -89,14 +91,21 @@
     flex-shrink: 0; /* 크기 자동 축소 방지 */
 }
 
+
 .info-content {
+    display: inline-block;
+    max-width: 80px;
+    min-width: 0;            /* ✅ 반드시 추가 */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     font-size: 16px;
-    font-weight: normal;
-    color: #000000;
-    flex-grow: 1; /* 내용이 자동으로 정렬되도록 설정 */
-    text-align: left;
-    white-space: nowrap; /* 자동 줄바꿈 방지 */
+    color: #000;
+    cursor: pointer;
+    vertical-align: middle;
 }
+
+
 
 .divider {
     width: 100%;

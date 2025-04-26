@@ -9,6 +9,7 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import libraryGarden.admin.mapper.AdminBookLoanMapper;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.user.mapper.MyPage1Mapper;
 
@@ -17,14 +18,21 @@ public class MyPage1ServiceImpl implements MyPage1Service{
 	
     @Autowired
     private MyPage1Mapper myPage1Mapper;
+    
+	@Autowired
+    private AdminBookLoanMapper adminBookLoanMapper;
 
     @Override
     public String getUserLoanStatus(String userNumber) throws Exception {
+		// 0) 당일 오전 연체 감지
+	    adminBookLoanMapper.insertOverdueForPastDue();
+    	
         return myPage1Mapper.selectUserLoanStatus(userNumber); // 대출 가능 여부 조회
     }
 
     @Override
     public Map<String, Object> getUserLoanInfo(String userNumber, int page, int perPageNum) throws Exception {
+    	
         Map<String, Object> result = new HashMap<>();
 
         // 페이징 계산 추가
@@ -48,6 +56,7 @@ public class MyPage1ServiceImpl implements MyPage1Service{
     
     @Override
     public Map<String, Object> getUserReservationInfo(String userNumber, int page, int perPageNum) throws Exception {
+    	
         Map<String, Object> result = new HashMap<>();
 
         // 페이징 계산 추가
