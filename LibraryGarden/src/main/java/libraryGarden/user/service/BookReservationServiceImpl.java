@@ -142,26 +142,23 @@ public class BookReservationServiceImpl implements BookReservationService{
 	        }
 	    }
 
-	    // 대출 날짜 (반납일 반영)
+	 // 대출 날짜 (반납일 반영)
 	    List<LoanVo> lvs = rm.getLoansByBook(lbidx);
 	    for (LoanVo lv : lvs) {
 	        try {
-	            Calendar cal = Calendar.getInstance();
-	            // 시작 = loanDate
 	            Date start = dbFormat.parse(lv.getLoanDate());
-	            // dueDate
 	            Date due   = dbFormat.parse(lv.getDueDate());
-	            
-	            // 실제 블락 종료일 = dueDate 또는 returnDate 중 이른 쪽
-	            Date end = due;
-	            if (lv.getReturnDate() != null && !lv.getReturnDate().isEmpty()) {
-	                Date ret = dbFormat.parse(lv.getReturnDate());
+	            Date end   = due;
+
+	            // 🚩 여기서 returnDate를 제대로 읽어야 end=due가 아닌 returnDate로 설정합니다
+	            if (lv.getReturnDate() != null && !lv.getReturnDate().trim().isEmpty()) {
+	                Date ret = dbFormat.parse(lv.getReturnDate().trim());
 	                if (ret.before(due)) {
 	                    end = ret;
 	                }
 	            }
-	            
-	            // start~end 까지만 블락
+
+	            Calendar cal = Calendar.getInstance();
 	            cal.setTime(start);
 	            while (!cal.getTime().after(end)) {
 	                regDates.add(outputFormat.format(cal.getTime()));
@@ -318,7 +315,11 @@ public class BookReservationServiceImpl implements BookReservationService{
         Map<String,Object> p = new HashMap<>();
         p.put("lbidx", lbidx);
         p.put("userNumber", userNumber);
-        return rm.countActiveReservationByUserAndBook(p) > 0;
+        // 기존 예약 중/수령완료
+        boolean alreadyReserved = rm.countActiveReservationByUserAndBook(p) > 0;
+        // 새로 추가한, 아직 반납 안 한 대출 중
+        boolean alreadyLoaned    = rm.countActiveLoanByUserAndBook(p) > 0;
+        return alreadyReserved || alreadyLoaned;
     }
 
 

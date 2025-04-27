@@ -75,6 +75,7 @@
         FROM RESERVATION 
         WHERE lbidx = #{lbidx}
           AND delyn = 'N'
+          AND status  = '예약중'
     </select>
     
     <update id="cancelReservation" parameterType="int">
@@ -226,6 +227,16 @@
       OR (r.status = '수령완료' AND l.returnDate IS NULL)
     )
 </select>
+
+  <select id="countActiveLoanByUserAndBook" parameterType="map" resultType="int">
+    SELECT COUNT(*)
+      FROM LOAN l
+      JOIN `USER` u ON l.uidx = u.uidx
+     WHERE l.lbidx         = #{lbidx}
+       AND u.userNumber    = #{userNumber}
+       AND l.returnDate   IS NULL
+       AND l.delyn         = 'N'
+  </select>
 	
 	
 	
