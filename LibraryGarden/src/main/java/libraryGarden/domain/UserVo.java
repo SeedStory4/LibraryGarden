@@ -11,7 +11,7 @@ public class UserVo {
    private String address;
    private String userNumber;
    private String role;
-   private String regdate;
+   private String regDate;
    private String modify;
    private String delyn;
 
@@ -70,11 +70,11 @@ public String getRole() {
 public void setRole(String role) {
 	this.role = role;
 }
-public String getRegdate() {
-	return regdate;
+public String getRegDate() {
+	return regDate;
 }
-public void setRegdate(String regdate) {
-	this.regdate = regdate;
+public void setRegDate(String regDate) {
+	this.regDate = regDate;
 }
 public String getModify() {
 	return modify;

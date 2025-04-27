@@ -15,14 +15,14 @@ import java.util.List;
  */
 
 public class ApiBookPageDto {
-    private List<BookVo> blist;
+    private List<BooksVo> blist;
     private int totalCount;
 
-    public List<BookVo> getBlist() {
+    public List<BooksVo> getBlist() {
         return blist;
     }
 
-    public void setBlist(List<BookVo> blist) {
+    public void setBlist(List<BooksVo> blist) {
         this.blist = blist;
     }
 
