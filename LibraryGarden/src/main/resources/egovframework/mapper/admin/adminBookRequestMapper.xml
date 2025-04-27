@@ -44,7 +44,7 @@
 	
 	<!-- 신청한 희망 도서 책 상세 -->
 	<select id="getBookRequestSelectone" resultType="map">
-		SELECT B.coverImg, B.title, B.originalTitle, B.subtitle, B.author, B.publisher, B.publishedYear, B.isbn, B.totalPages, B.sizeWidth, B.sizeHeight, B.weight, B.category, B.introduction, B.price, U.name, U.userNumber, RQ.rqidx, RQ.status, DATE_FORMAT(RQ.regDate, '%Y.%m.%d') AS regDate, RQ.rejectionReason
+		SELECT B.coverImg, B.title, B.originalTitle, B.subTitle, B.author, B.publisher, B.publishedYear, B.isbn, B.totalPages, B.sizeWidth, B.sizeHeight, B.weight, B.category, B.introduction, B.price, U.name, U.userNumber, RQ.rqidx, RQ.status, DATE_FORMAT(RQ.regDate, '%Y.%m.%d') AS regDate, RQ.rejectionReason
 		FROM request RQ
 		JOIN books B ON RQ.bidx = B.bidx
 		JOIN `user` U ON RQ.uidx = U.uidx

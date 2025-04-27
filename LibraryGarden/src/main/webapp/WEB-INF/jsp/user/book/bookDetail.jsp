@@ -58,8 +58,8 @@
 							<span class="info-title">● 부제</span> 
 							<span class="info-content">
 								<c:choose>
-									<c:when test="${not empty lbd.subtitle}">
-									${lbd.subtitle}
+									<c:when test="${not empty lbd.subTitle}">
+									${lbd.subTitle}
 								  	</c:when>
 									<c:otherwise>
 								    -
