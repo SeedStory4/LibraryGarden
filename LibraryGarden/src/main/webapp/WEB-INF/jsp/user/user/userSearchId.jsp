@@ -44,7 +44,7 @@
 				<!-- 아이디 찾기 / 취소 버튼 -->
 				<div class="text-center mb-37">
 					<button class="draft-btn-small btn-submit-600-65 mb-15">아이디 찾기</button>
-					<button class="draft-btn-small btn-cancel-600-65" onclick="history.back();" >취소</button>
+					<button type="button" class="draft-btn-small btn-cancel-600-65" onclick="history.back();" >취소</button>
 				</div>
 				</form>
 		</section>

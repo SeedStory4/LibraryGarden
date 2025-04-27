@@ -175,8 +175,8 @@ CREATE TABLE RESERVATION (
 
 -- USER 샘플 데이터 생성
 INSERT INTO USER(id, password, name, phone, email, address, userNumber, role) 
-VALUES ('director','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','도서관장','01012345678','director@aaa.ccc','대한민국','00000000','도서관장');
-
+VALUES ('director','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','도서관장','01012345678','director@aaa.ccc','대한민국','00000000','도서관장'),
+('user1','$2a$10$GlSGv1jjhBrWSk9ebqOa0uTeVUJ/RWqTLwkf1mA3pMN7ySNySkNQS','일반회원','01012345679','ktiun9630@naver.com','대한민국','00000001','일반회원');
 -- CATEGORY 샘플 데이터 생성
 INSERT INTO CATEGORY (name, parentCode, childCode, level) VALUES
 ('총류', '000', '000', 1),
