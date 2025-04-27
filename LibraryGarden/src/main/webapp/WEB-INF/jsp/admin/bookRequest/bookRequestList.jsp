@@ -98,17 +98,17 @@
 						<ul class="paging flex justify-center">
 							<c:if test="${requestScope.pm.prev == true}">
 							<li>
-					          <a href="${pageContext.request.contextPath}/admin/book/bookList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					          <a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
 					        </li>
 							</c:if> 
 							
 					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
-					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/book/bookList.do?page=${i}&${queryParam}">${i}</a></li>
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${i}&${queryParam}">${i}</a></li>
 					        </c:forEach>
 					        
 					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
 							<li class="page-item">
-					          <a href="${pageContext.request.contextPath}/admin/book/bookList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					          <a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
 					        </li>
 							</c:if>
 						</ul>
