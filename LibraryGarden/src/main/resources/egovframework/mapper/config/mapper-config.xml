@@ -18,6 +18,7 @@
 		<typeAlias alias="lbd"				type="libraryGarden.domain.LibraryBookDto"/>
 		<typeAlias alias="rd"				type="libraryGarden.domain.RequestDto"/>
 		<typeAlias alias="lbv"				type="libraryGarden.domain.LibraryBooksVo"/>
+		<typeAlias alias="lv"				type="libraryGarden.domain.LoanVo"/>
 	</typeAliases>
     
 </configuration>

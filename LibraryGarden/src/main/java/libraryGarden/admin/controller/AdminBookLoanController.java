@@ -25,7 +25,6 @@ public class AdminBookLoanController {
 	// 도서 대여 화면
 	@GetMapping("/bookLoanWrite.do")
 	public String bookLoanWrite() {
-		//System.out.println("bookLoanWrite.do 호출됨");
 		return "admin/bookLoan/bookLoanWrite";
 	}
 	

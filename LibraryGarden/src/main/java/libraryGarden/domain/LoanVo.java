@@ -10,7 +10,7 @@ public class LoanVo {
     private String returnDate;
     private String status;
     private String extended;
-    private String regdate;
+    private String regDate;
     private String modify;
     private String delyn;
     
@@ -62,11 +62,11 @@ public class LoanVo {
 	public void setExtended(String extended) {
 		this.extended = extended;
 	}
-	public String getRegdate() {
-		return regdate;
+	public String getRegDate() {
+		return regDate;
 	}
-	public void setRegdate(String regdate) {
-		this.regdate = regdate;
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 	public String getModify() {
 		return modify;
