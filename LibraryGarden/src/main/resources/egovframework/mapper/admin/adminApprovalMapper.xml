@@ -20,7 +20,7 @@
 		</if>
 	</sql>
 	
-  	<select id="getApprovalTotalCount" parameterType="HashMap" resultType="int">
+	<select id="getApprovalTotalCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*) AS cnt 
 		FROM APPROVAL AS A 
 		JOIN USER AS U ON A.uidx = U.uidx 
@@ -79,4 +79,60 @@
 	<update id="updateApprovalProcessing" parameterType="av">
   		UPDATE APPROVAL SET status = #{status}, rejectionReason = #{rejectionReason}, approvalDate = now() WHERE aidx = #{aidx}
 	</update>
+
+   	<!-- 관리자가 승인한 도서 책 갯수 조회 메서드 -->
+  	<select id="getBookApprovalTotalCount" parameterType="HashMap" resultType="int">
+		SELECT COUNT(*) AS cnt  
+		 FROM APPROVAL AS A
+		 LEFT JOIN REQUEST AS R ON A.rqidx = R.rqidx
+		 LEFT JOIN BOOKS AS B ON B.bidx = COALESCE(A.bidx, R.bidx)
+		 WHERE A.delyn = 'N' AND (B.delyn = 'N' OR B.delyn IS NULL) AND A.regyn = "N"
+		<include refid="search"/>
+		<if test="filter != null and filter != ''">
+			AND A.status = #{filter}
+		</if>
+		<if test="selectedAidx != null and selectedAidx != ''">
+		    AND A.aidx != #{selectedAidx}
+		</if>
+	</select>
+	
+	<!-- 관리자가 승인한 도서 책 리스트 조회 메서드 -->
+  	<select id="getBookApprovalSelectAll" parameterType="HashMap" resultType="map">
+		 SELECT COALESCE(A.bidx, R.bidx) AS bidx, B.coverImg, B.title, B.author, B.publisher, B.publishedYear, A.aidx
+		 FROM APPROVAL AS A
+		 LEFT JOIN REQUEST AS R ON A.rqidx = R.rqidx
+		 LEFT JOIN BOOKS AS B ON B.bidx = COALESCE(A.bidx, R.bidx)
+		 WHERE A.delyn = 'N' AND (B.delyn = 'N' OR B.delyn IS NULL) AND A.regyn = "N"
+		<include refid="search"/>
+		<if test="filter != null and filter != ''">
+			AND A.status = #{filter}
+		</if>
+		<if test="selectedAidx != null and selectedAidx != ''">
+		    AND A.aidx != #{selectedAidx}
+		</if>
+		ORDER BY A.aidx LIMIT #{startPageNum}, #{perPageNum};
+	</select>
+	
+	<!-- 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드 -->
+  	<select id="getBookApprovalSelectOne" resultType="map">
+		 SELECT COALESCE(A.bidx, R.bidx) AS bidx, B.coverImg, B.title, B.originalTitle, B.subTitle, B.author, B.introduction,
+		 B.publisher, DATE_FORMAT(B.publishedYear, '%Y.%m.%d') AS publishedYear, B.totalPages, B.isbn, B.sizeWidth, B.sizeHeight, B.weight, B.category,
+		 A.aidx
+		 FROM APPROVAL AS A
+		 LEFT JOIN REQUEST AS R ON A.rqidx = R.rqidx
+		 LEFT JOIN BOOKS AS B ON B.bidx = COALESCE(A.bidx, R.bidx)
+		 WHERE A.delyn = 'N' AND (B.delyn = 'N' OR B.delyn IS NULL) AND A.aidx = #{aidx} 
+
+	</select>
+	
+    <!-- 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드 -->
+	<update id="updateApprovalRegynY" parameterType="int">
+	update APPROVAL set regyn='Y', modify=now() where aidx=#{aidx} 
+    </update>
+    
+   <!-- 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드 -->
+	<update id="updateApprovalRegynN" parameterType="int">
+	update APPROVAL set regyn='N', modify=now() where aidx=#{aidx} 
+    </update>
+    
 </mapper>

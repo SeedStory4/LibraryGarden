@@ -24,7 +24,7 @@ public class AdminBookCUDServiceImpl implements  AdminBookCUDService{
     private AdminLibraryBooksService adminLibraryBooksService;
     
     @Autowired
-    private AdminApproval2Service adminApprovalService;
+    private AdminApprovalService adminApprovalService;
 
 	// 도서관 도서 등록 메서드
 	@Override
