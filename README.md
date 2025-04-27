@@ -52,12 +52,12 @@ FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능
 
 ![사용자 메인페이지 화면](https://drive.google.com/uc?export=view&id=1j6QNI_fV9LOuFmtD5jKddBJsvtR_BHAI)
 
-사용자 로그인시 보이는 메인페이지 입니다. 
+- 사용자 로그인시 보이는 메인페이지 입니다. 
 
 
 
 ![https://drive.google.com/uc?export=view&id=1WJ6z5DlwyM2VU지 화면](https://drive.google.com/uc?export=view&id=1xHHugzQprJ7k_20mLu0hlYQFpGrdOscF)
-관리자 로그인시 보이는 메인페이지 입니다. 
+- 관리자 로그인시 보이는 메인페이지 입니다. 
 
 
 ### 도서 목록 페이지
