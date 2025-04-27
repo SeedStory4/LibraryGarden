@@ -51,19 +51,18 @@
               : '해당 날짜는 예약이 불가능합니다.'
           );
         }
-		
-		// 7일 전체 구간 겹침 검사 
-		//    클릭한 날짜 다음 날부터 6일 후까지 한번이라도 불가일 포함되면 차단
-		for (var offset = 1; offset < 8; offset++) {
-		  var d = new Date(info.date);
-		  d.setDate(d.getDate() + offset);
-		  var dayIso = d.toISOString().slice(0,10);       // "yyyy-mm-dd"
-		  var dayFmt = dayIso.replace(/-/g, '.');         // "yyyy.MM.dd"
-		  if ((window.disabledDates||[]).includes(dayFmt)) {
-		    return alert('선택하신 예약 기간이 기존 예약/대출·연체 기간과 겹칩니다.');
-		  }
-		}
-		
+    
+        // 7일 전체 구간 겹침 검사
+        for (var offset = 1; offset < 8; offset++) {
+          var d = new Date(info.date);
+          d.setDate(d.getDate() + offset);
+          var dayIso = d.toISOString().slice(0,10);       // "yyyy-mm-dd"
+          var dayFmt = dayIso.replace(/-/g, '.');         // "yyyy.MM.dd"
+          if ((window.disabledDates||[]).includes(dayFmt)) {
+            return alert('선택하신 예약 기간이 기존 예약/대출·연체 기간과 겹칩니다.');
+          }
+        }
+
         // C) 선택 표시 갱신
         calendarEl.querySelectorAll('.fc-day-selected')
           .forEach(el => el.classList.remove('fc-day-selected'));
@@ -107,24 +106,23 @@
   }
 
   $(function(){
-	
-	// 만약 isLoggedIn이 undefined면 false로 초기화
-	if (typeof window.isLoggedIn === "undefined") {
-	  window.isLoggedIn = false;
-	}
-	
+    // 만약 isLoggedIn이 undefined면 false로 초기화
+    if (typeof window.isLoggedIn === "undefined") {
+      window.isLoggedIn = false;
+    }
+    
     // — 모달 열기 & 예약 현황 로드
     $('.openReservationModal').on('click', function(e){
       e.preventDefault();
-	  
-	  if (!window.isLoggedIn) {
-	    const currentUrl = window.location.pathname + window.location.search;
-	    const loginUrl = contextPath + '/user/user/userLogin.do?returnUrl=' + encodeURIComponent(currentUrl);
-	    window.location.href = loginUrl;
-	    return;
-	  }
+      
+      // 0) 로그인 체크
+      if (!window.isLoggedIn) {
+        const returnUrl = encodeURIComponent(location.pathname + location.search);
+        location.href = contextPath + '/user/user/userLogin.do?returnUrl=' + returnUrl;
+        return;
+      }
 
-      // 1) UI & 변수 초기화
+      // 1) UI 초기화
       selectedDate = null;
       delete window.selectedDate;
       $('#selectedDate').text('선택 없음');
@@ -137,25 +135,40 @@
         return alert('예약이 불가한 도서입니다.');
       }
 
-      // 3) 글로벌 lbidx 저장
-      window.lbidx = $(this).data('lbidx');
-      var userNumber = $('#userNumber').val();
+      // 3) 글로벌 lbidx/userNumber
+      window.lbidx    = $(this).data('lbidx');
+      var userNumber  = $('#userNumber').val();
 
-      // 4) AJAX로 disabledDates/Reasons 받아오기
-      $.getJSON(contextPath + '/user/bookReservation/getReservedDates.do', {
-        lbidx: window.lbidx,
-        userNumber: userNumber
-      })
-      .done(function(data){
-        window.disabledDates   = data.map(d => d.date);
-        window.disabledReasons = {};
-        data.forEach(d => window.disabledReasons[d.date] = d.reason);
+      // 4) 중복 예약·수령완료 체크 API 호출
+      $.getJSON(
+        contextPath + '/user/bookReservation/checkDuplicateReservation.do',
+        { lbidx: window.lbidx, userNumber: userNumber }
+      )
+      .done(function(resp){
+        if (resp.duplicate) {
+          // 중복이면 여기서 종료
+          return alert('이미 예약 중이거나 수령완료한 도서입니다.');
+        }
 
-        $('#reservationModal').show();
-        initCalendar();
+        // 5) 중복 아니면 달력 데이터 로드
+        $.getJSON(
+          contextPath + '/user/bookReservation/getReservedDates.do',
+          { lbidx: window.lbidx, userNumber: userNumber }
+        )
+        .done(function(data){
+          window.disabledDates   = data.map(d => d.date);
+          window.disabledReasons = {};
+          data.forEach(d => window.disabledReasons[d.date] = d.reason);
+
+          $('#reservationModal').show();
+          initCalendar();
+        })
+        .fail(function(){
+          alert('예약 현황을 불러오지 못했습니다.');
+        });
       })
       .fail(function(){
-        alert('예약 현황을 불러오지 못했습니다.');
+        alert('예약 가능 여부를 확인할 수 없습니다.');
       });
     });
 
@@ -191,13 +204,15 @@
         return alert('예약에 필요한 정보를 확인해주세요.');
       }
 
-      $.post(contextPath + '/user/bookReservation/registerReservation.do', {
-        lbidx: window.lbidx,
-        userNumber: $('#userNumber').val(),
-        pickupDate: selectedDate.replace(/\./g,'-')
-      })
+      $.post(
+        contextPath + '/user/bookReservation/registerReservation.do',
+        {
+          lbidx:      window.lbidx,
+          userNumber: $('#userNumber').val(),
+          pickupDate: selectedDate.replace(/\./g,'-')
+        }
+      )
       .always(function(res){
-        // 메시지 띄우고 반드시 전체 리로드
         if (res && res.message) alert(res.message);
         window.location.href = window.location.href;
       });
@@ -212,9 +227,9 @@
       $.getJSON(contextPath + '/user/bookReservation/checkUser.do', { userNumber: num })
         .done(function(r){
           if (r.exists) {
-            window.location.href = contextPath
-              + '/user/bookReservation/bookReservationWrite.do?userNumber='
-              + encodeURIComponent(num);
+            window.location.href =
+              contextPath + '/user/bookReservation/bookReservationWrite.do?userNumber=' +
+              encodeURIComponent(num);
           } else {
             alert(r.message);
           }

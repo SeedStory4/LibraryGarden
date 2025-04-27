@@ -101,23 +101,22 @@
 								  </c:if>
 							</tbody>
 						</table>
-						<ul class="paging flex justify-center">
-							<!-- ◀ 이전 페이지 (첫 페이지가 아닐 때만 표시) -->
-							<c:if test="${currentPage > 1}">
-								<li><a href="?page=${currentPage - 1}">◀</a></li>
-							</c:if>
-
-							<!-- 페이지 번호는 항상 표시 -->
-							<c:forEach var="i" begin="1" end="${totalPageCount}">
-								<li><a href="?page=${i}"
-									class="${i == currentPage ? 'on' : ''}">${i}</a></li>
-							</c:forEach>
-
-							<!-- ▶ 다음 페이지 (마지막 페이지가 아닐 때만 표시) -->
-							<c:if test="${currentPage < totalPageCount}">
-								<li><a href="?page=${currentPage + 1}">▶</a></li>
-							</c:if>
-						</ul>
+							<ul class="paging flex justify-center">
+								<!-- ◀ 이전 페이지 (총 페이지가 5 이상이고, 현재 페이지가 1 초과일 때만) -->
+								<c:if test="${totalPageCount >= 5 && currentPage > 1}">
+									<li><a href="?page=${currentPage - 1}">◀</a></li>
+								</c:if>
+							
+								<!-- 페이지 번호는 항상 표시 -->
+								<c:forEach var="i" begin="1" end="${totalPageCount}">
+									<li><a href="?page=${i}" class="${i == currentPage ? 'on' : ''}">${i}</a></li>
+								</c:forEach>
+							
+								<!-- ▶ 다음 페이지 (총 페이지가 5 이상이고, 현재 페이지가 마지막 페이지보다 작을 때만) -->
+								<c:if test="${totalPageCount >= 5 && currentPage < totalPageCount}">
+									<li><a href="?page=${currentPage + 1}">▶</a></li>
+								</c:if>
+							</ul>
 					</div>
 				</div>
 			</div>

@@ -3,12 +3,14 @@ package libraryGarden.user.controller;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -124,10 +126,18 @@ public class BookReservationController {
     // AJAX로 도서의 대출/예약 정보를 조회하여 예약불가 날짜 목록 반환
 	@ResponseBody
 	@GetMapping("/getReservedDates.do")
-	public List<Map<String, String>> getReservedDates(
+	public Object getReservedDates(
 	        @RequestParam("lbidx") int lbidx,
 	        @RequestParam("userNumber") String userNumber) {
-	    return adminBookReservationService.getUnavailableDatesWithReasons(lbidx, userNumber);
+	    try {
+	        return adminBookReservationService.getUnavailableDatesWithReasons(lbidx, userNumber);
+	    } catch (IllegalStateException e) {
+	        // 409 Conflict + 에러 메시지
+	        Map<String,Object> err = new HashMap<>();
+	        err.put("error", true);
+	        err.put("message", e.getMessage());
+	        return ResponseEntity.status(409).body(err);
+	    }
 	}
 	
 	
@@ -237,6 +247,17 @@ public class BookReservationController {
 	      }
 	      return resp;
 	  }
+	  
+	  @ResponseBody
+	  @GetMapping("/checkDuplicateReservation.do")
+	  public Map<String, Object> checkDuplicateReservation(
+	      @RequestParam("lbidx") int lbidx,
+	      @RequestParam("userNumber") String userNumber
+	  ) {
+	      boolean dup = adminBookReservationService.hasActiveReservation(lbidx, userNumber);
+	      return Collections.singletonMap("duplicate", dup);
+	  }
+
 
 
 }

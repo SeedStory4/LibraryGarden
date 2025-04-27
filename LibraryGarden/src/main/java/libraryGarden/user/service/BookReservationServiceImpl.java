@@ -114,6 +114,11 @@ public class BookReservationServiceImpl implements BookReservationService{
 	@Override
 	public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber) {
 		
+        // — ① 중복 예약이 있으면 바로 예외 —
+        if (hasActiveReservation(lbidx, userNumber)) {
+            throw new IllegalStateException("이미 이 도서를 예약하셨습니다.");
+        }
+		
 		// 0) 당일 오전 연체 감지
 		alm.insertOverdueForPastDue();
 		
@@ -201,6 +206,17 @@ public class BookReservationServiceImpl implements BookReservationService{
 	@Override
 	public int registerReservation(ReservationDto reservation) {
 		
+        // — ③ 등록 직전에 한 번 더 중복 체크 —
+        if (hasActiveReservation(reservation.getLbidx(), reservation.getUserNumber())) {
+            throw new IllegalStateException("이미 이 도서를 예약하셨습니다.");
+        }
+		
+	    // 현재 시간 포함된 문자열 생성 (예: 2025-04-27 15:48:23)
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+	    String now = sdf.format(new Date());
+
+	    reservation.setRegDate(now); 
+	    
 	    int inserted = rm.insertReservation(reservation);
 
 	    // 대신 방금 INSERT한 이 책만, 
@@ -295,6 +311,14 @@ public class BookReservationServiceImpl implements BookReservationService{
         result.put("totalCount", totalCount);
 
         return result;
+    }
+    
+    @Override
+    public boolean hasActiveReservation(int lbidx, String userNumber) {
+        Map<String,Object> p = new HashMap<>();
+        p.put("lbidx", lbidx);
+        p.put("userNumber", userNumber);
+        return rm.countActiveReservationByUserAndBook(p) > 0;
     }
 
 
