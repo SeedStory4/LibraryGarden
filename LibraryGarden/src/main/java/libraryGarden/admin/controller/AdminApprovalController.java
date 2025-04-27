@@ -20,7 +20,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import libraryGarden.domain.ApprovalDto;
 import libraryGarden.domain.ApprovalVo;
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
@@ -87,7 +87,7 @@ public class AdminApprovalController {
 		logger.debug("📝 approvalDetail 들어옴");
 		
 		// 도서 정보 DB에서 가져오기
-		BookVo bv = approvalService.approvalSelectOne(aidx);
+		BooksVo bv = approvalService.approvalSelectOne(aidx);
 
 		// 본인이 작성한 기안인지 확인 및 기안의 상태값 확인하기 위해 DB에서 av 정보 가져오기
 		ApprovalVo av = approvalService.approvalSelectAv(aidx);	
@@ -148,7 +148,7 @@ public class AdminApprovalController {
 		logger.info("📝 approvalWriteAction 들어옴");
 		
 		ApprovalVo av = new ApprovalVo();
-		BookVo bv = new BookVo();
+		BooksVo bv = new BooksVo();
 		
 		// DB에 작성자 정보를 저장하기 위해 session에 저장된 uidx를 av 안에 세팅
 		UserVo user = (UserVo) request.getSession().getAttribute("loginUser");
@@ -192,7 +192,7 @@ public class AdminApprovalController {
 		
 		logger.info("📝 approvalSelect 들어옴");
 		
-		BookVo bv = null;
+		BooksVo bv = null;
 		
 		if(type.equals("rqidx")) {
 			// 도서 정보 DB에서 가져오기
@@ -222,7 +222,7 @@ public class AdminApprovalController {
 		logger.debug("📝 approvalModify 들어옴");
 		
 		// 도서 정보 DB에서 가져오기
-		BookVo bv = approvalService.approvalSelectOne(aidx);
+		BooksVo bv = approvalService.approvalSelectOne(aidx);
 		
 		model.addAttribute("bv", bv);
 		model.addAttribute("aidx", aidx);
@@ -243,7 +243,7 @@ public class AdminApprovalController {
 		logger.info("📝 approvalModifyAction 들어옴");
 
 		ApprovalVo av = new ApprovalVo();
-		BookVo bv = new BookVo();
+		BooksVo bv = new BooksVo();
 		
 		// 해당 기안 수정을 위해 aidx를 av 안에 세팅
 		av.setAidx(aidx);

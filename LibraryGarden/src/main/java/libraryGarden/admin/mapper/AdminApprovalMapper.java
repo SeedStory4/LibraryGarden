@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import libraryGarden.domain.ApprovalDto;
 import libraryGarden.domain.ApprovalVo;
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 
 public interface AdminApprovalMapper {
 
@@ -13,7 +13,7 @@ public interface AdminApprovalMapper {
 	
 	public ArrayList<ApprovalDto> approvalSelectAll(HashMap<String,Object> hm);
 	
-	public BookVo approvalSelectOne(int aidx);
+	public BooksVo approvalSelectOne(int aidx);
 
 	public int approvalDelete(int aidx);
 	

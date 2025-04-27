@@ -231,7 +231,7 @@ public class AladdinOpenAPI {
     	bv.setOriginalTitle(itemSubInfo.path("originalTitle").asText());
     	
     	// 책 부제
-    	bv.setSubtitle(itemSubInfo.path("subtitle").asText());
+    	bv.setSubTitle(itemSubInfo.path("subTitle").asText());
     	
         // 책 저자
     	bv.setAuthor(item.path("author").asText());
@@ -272,7 +272,7 @@ public class AladdinOpenAPI {
     	//	 +" \n카테고리/category: "+bv.getCategory()+" 한줄요약/introduction: "+bv.getIntroduction()+" 정가/price: "+bv.getPrice());
 
     	//logger.debug("AladdinOpenAPI searchBooksList bv 확인2 "+" 원제/originalTitle: "+bv.getOriginalTitle()
-    	//   +" \n부제/subtitle: "+bv.getSubtitle()+" 쪽수/totalPages: "+bv.getTotalPages()
+    	//   +" \n부제/subTitle: "+bv.getSubTitle()+" 쪽수/totalPages: "+bv.getTotalPages()
     	//   +" \n넓이/sizeWidth: "+bv.getSizeWidth()+" 높이/sizeHeight: "+bv.getSizeHeight()+" 무게/weight: "+bv.getWeight());
 
         return bv;

@@ -49,7 +49,7 @@
 	
 	<!-- 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드 -->
   	<select id="getBookApprovalSelectOne" resultType="map">
-		 SELECT COALESCE(A.bidx, R.bidx) AS bidx, B.coverImg, B.title, B.originalTitle, B.subtitle, B.author, B.introduction,
+		 SELECT COALESCE(A.bidx, R.bidx) AS bidx, B.coverImg, B.title, B.originalTitle, B.subTitle, B.author, B.introduction,
 		 B.publisher, DATE_FORMAT(B.publishedYear, '%Y.%m.%d') AS publishedYear, B.totalPages, B.isbn, B.sizeWidth, B.sizeHeight, B.weight, B.category,
 		 A.aidx
 		 FROM APPROVAL AS A

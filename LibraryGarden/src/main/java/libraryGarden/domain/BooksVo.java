@@ -1,12 +1,12 @@
 package libraryGarden.domain;
 
-public class BookVo {
+public class BooksVo {
 	
     private int bidx;
     private String coverImg;
     private String title;
     private String originalTitle;
-    private String subtitle;
+    private String subTitle;
     private String author;
     private String publisher;
     private String publishedYear;
@@ -47,11 +47,11 @@ public class BookVo {
 	public void setOriginalTitle(String originalTitle) {
 		this.originalTitle = originalTitle;
 	}
-	public String getSubtitle() {
-		return subtitle;
+	public String getSubTitle() {
+		return subTitle;
 	}
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
 	}
 	public String getAuthor() {
 		return author;

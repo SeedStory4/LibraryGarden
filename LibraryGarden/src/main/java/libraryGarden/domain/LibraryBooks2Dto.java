@@ -1,12 +1,12 @@
 package libraryGarden.domain;
 
-public class LibraryBook2Dto {
+public class LibraryBooks2Dto {
 
 	private int bidx; // 책 인덱스
 	private String coverImg; // 책 표지
     private String title; // 책 체목
     private String originalTitle; // 책 원제
-	private String subtitle; // 책 부제
+	private String subTitle; // 책 부제
 	private String author; // 책 저자 
 	private String publisher; // 책 출판사
 	private String publishedYear; // 책 출판일
@@ -59,11 +59,11 @@ public class LibraryBook2Dto {
 	public void setOriginalTitle(String originalTitle) {
 		this.originalTitle = originalTitle;
 	}
-	public String getSubtitle() {
-		return subtitle;
+	public String getSubTitle() {
+		return subTitle;
 	}
-	public void setSubtitle(String subtitle) {
-		this.subtitle = subtitle;
+	public void setSubTitle(String subTitle) {
+		this.subTitle = subTitle;
 	}
 	public String getAuthor() {
 		return author;
