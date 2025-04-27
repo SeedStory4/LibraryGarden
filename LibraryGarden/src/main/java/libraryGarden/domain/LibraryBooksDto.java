@@ -42,7 +42,8 @@ public class LibraryBooksDto {
 	private String childCode; // 카테고리 하위 코드
 	
 	private int aidx; //  도서관 책 결재 승인 된 인덱스
-	
+	private int loanCount; //이달의 대출순위를 위한 loanCount 추가
+	   
 	public int getBidx() {
 		return bidx;
 	}
@@ -204,6 +205,12 @@ public class LibraryBooksDto {
 	}
 	public void setAidx(int aidx) {
 		this.aidx = aidx;
+	}
+	public int getLoanCount() {
+		return loanCount;
+	}
+	public void setLoanCount(int loanCount) {
+		this.loanCount = loanCount;
 	}
 
 }

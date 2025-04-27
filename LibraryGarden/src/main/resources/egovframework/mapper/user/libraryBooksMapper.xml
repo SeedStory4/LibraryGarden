@@ -40,4 +40,39 @@
 		WHERE B.delyn = 'N' AND LB.delyn = 'N'  AND lbidx = #{lbidx};
 	</select>
 	
+		<select id="selectTopLoanBooksThisMonth" resultType="lbd">
+	    SELECT 
+	        b.bidx,
+	        b.coverImg,
+	        b.title,
+	        b.subTitle,
+	        b.author,
+	        b.publisher,
+	        b.publishedYear,
+	        b.totalPages,
+	        COUNT(l.lidx) AS loanCount
+	    FROM BOOKS b
+	    JOIN LIBRARYBOOKS lb ON b.bidx = lb.bidx
+	    JOIN LOAN l ON lb.lbidx = l.lbidx
+	    WHERE l.loanDate >= DATE_SUB(CURDATE(), INTERVAL 30 DAY)
+	    GROUP BY b.bidx
+	    ORDER BY loanCount DESC
+	    LIMIT 6
+	</select>
+	
+	<select id="getLatestBooks" resultType="lbd">
+	    SELECT 
+	        b.bidx,
+	        b.coverImg,
+	        b.title,
+	        b.subTitle,
+	        b.author,
+	        b.publisher,
+	        b.publishedYear,
+	        b.totalPages
+	    FROM BOOKS b
+	    ORDER BY b.publishedYear DESC
+	    LIMIT 6
+	</select>
+	
 </mapper>
