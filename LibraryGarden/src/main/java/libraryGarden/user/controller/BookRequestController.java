@@ -22,7 +22,7 @@ import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo; 
-import libraryGarden.user.service.Book1Service;
+import libraryGarden.user.service.BookService;
 import libraryGarden.user.service.BookRequestService;
 
 /**
@@ -57,7 +57,7 @@ public class BookRequestController {
 	
 	// BookRequestService 주입
 	@Autowired(required=false)
-	private Book1Service bookService;
+	private BookService bookService;
 	
 	// 희망 도서 신청 목록 페이지 이동
 	@GetMapping("/bookRequestWrite.do")

@@ -11,7 +11,7 @@ import libraryGarden.domain.BooksVo;
  * 
  * @author SiYeon
  */
-public interface Book1Mapper {
+public interface BookMapper {
 	
 	// isbn 으로 도서 데이터 여부 확인 메서드
 	public int getBookByIsbnToCount(String isbn);

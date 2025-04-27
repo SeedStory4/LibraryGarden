@@ -29,9 +29,9 @@ import libraryGarden.user.service.LibraryBooksService;
  */
 @Controller
 @RequestMapping("/user/book")
-public class Book1Controller {
+public class BookController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(Book1Controller.class);
+	private static final Logger logger = LoggerFactory.getLogger(BookController.class);
 	
 	// book1Service 주입
 	@Autowired(required=false)

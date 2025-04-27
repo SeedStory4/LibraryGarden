@@ -16,7 +16,7 @@ import libraryGarden.domain.ApprovalDto;
 import libraryGarden.domain.ApprovalVo;
 import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.SearchCriteria;
-import libraryGarden.user.service.Book1Service;
+import libraryGarden.user.service.BookService;
 
 @Service
 public class AdminApprovalServiceImpl implements AdminApprovalService{
@@ -31,7 +31,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	AladdinOpenAPI aladdinOpenAPI;
 	
 	@Autowired(required=false)
-	Book1Service bookService;
+	BookService bookService;
 	
 	@Override
 	public int getApprovalTotalCount(SearchCriteria scri, String filter) {
