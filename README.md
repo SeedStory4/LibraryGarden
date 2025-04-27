@@ -55,14 +55,13 @@ FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능
 
 
 
-![https://drive.google.com/uc?export=view&id=1WJ6z5DlwyM2VUkv_O9jMvjKdDvh-Wzzn](https://drive.google.com/file/d/1xHHugzQprJ7k_20mLu0hlYQFpGrdOscF/view?usp=drive_link)
-
+![https://drive.google.com/uc?export=view&id=1WJ6z5DlwyM2VU지 화면](https://drive.google.com/uc?export=view&id=1xHHugzQprJ7k_20mLu0hlYQFpGrdOscF)
 관리자 로그인시 보이는 메인페이지 입니다. 
 
 
 ### 도서 목록 페이지
 
-![희망도서 결재관리 화면](https://drive.google.com/uc?export=view&id=1xHHugzQprJ7k_20mLu0hlYQFpGrdOscF)
+
 
 도서관에 있는 도서 목록을  보여줍니다.
 
