@@ -14,7 +14,7 @@ import libraryGarden.admin.mapper.AdminApprovalMapper;
 import libraryGarden.cmm.util.AladdinOpenAPI;
 import libraryGarden.domain.ApprovalDto;
 import libraryGarden.domain.ApprovalVo;
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.service.Book1Service;
 
@@ -63,9 +63,9 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	}
 	
 	@Override
-	public BookVo approvalSelectOne(int aidx) {
+	public BooksVo approvalSelectOne(int aidx) {
 		
-		BookVo bv = am.approvalSelectOne(aidx);
+		BooksVo bv = am.approvalSelectOne(aidx);
 		
 		return bv;
 	};
@@ -90,7 +90,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	// 게시글 등록과 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	public int approvalInsert(ApprovalVo av, BookVo bv, String status) throws Exception{
+	public int approvalInsert(ApprovalVo av, BooksVo bv, String status) throws Exception{
 		
 		// 희망도서선택으로 기안 등록하는 경우와 도서선택으로 기안 등록하는 경우 데이터가 다르므로 HashMap 사용
 		HashMap<String,Object> hm = new HashMap<String,Object>();
@@ -148,7 +148,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	// 게시글 수정과 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	public int approvalUpdate(ApprovalVo av, BookVo bv) throws Exception{
+	public int approvalUpdate(ApprovalVo av, BooksVo bv) throws Exception{
 		
 		// 희망도서선택으로 기안 등록하는 경우와 도서선택으로 기안 등록하는 경우 데이터가 다르므로 HashMap 사용
 		HashMap<String,Object> hm = new HashMap<String,Object>();
