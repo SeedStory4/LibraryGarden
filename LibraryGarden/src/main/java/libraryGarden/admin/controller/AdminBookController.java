@@ -139,6 +139,9 @@ public class AdminBookController {
 		/****도서 구분****/
 		// 등록된 도서관 책 중 마지막 구분을 가지고 옮
 		String lastCode = adminLibraryBooksService.getLibraryBookLastCode();
+		if(lastCode == null  ) {
+			lastCode = "ss000000";
+		}
 		// ss분리 
 		String prefix = lastCode.replaceAll("[0-9]", "");
 	    // 숫자 분리
@@ -148,6 +151,7 @@ public class AdminBookController {
 	    number++;
 	    // 원래 자릿수에 맞춰 0 채우기
 	    lastCode = prefix + String.format("%06d", number);
+		
 	    /**************/
 	    
 	    /****도서 분류(대분류)****/
