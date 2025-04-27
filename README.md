@@ -110,6 +110,197 @@ FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능
 
 
 
+### 도서 조회 목록
+
+![image](https://github.com/user-attachments/assets/91fd7919-f3eb-4484-a264-f8e37395e255)
+
+- 도서관에 등록된 도서들이 목록으로 나타나는 페이지입니다.
+- 도서에 대한 정보가 표시되며 대출가능여부와 예약상태를 볼 수 있습니다.
+
+### 도서 상세
+
+![image](https://github.com/user-attachments/assets/93cd6b4b-ece0-40ce-84a8-0dfbdfb07e14)
+
+
+- 도서관에 등록된 도서의 상세를 나타내는 페이지입니다.
+- 해당 페이지에서 도서 예약을 할 수 있습니다.
+
+### 희망도서 신청
+
+![image](https://github.com/user-attachments/assets/f257d0ae-0893-44da-b216-879e3bb3bb4d)
+
+
+- 알라딘 API를 사용해 도서를 검색해서 희망하는 도서를 선택합니다.
+- 신청버튼을 누르면 희망도서 신청이 완료 됩니다.
+
+### 내 도서 - 도서신청관리
+
+![image](https://github.com/user-attachments/assets/074fd8eb-fd99-489f-a211-a1424ba8b4a2)
+
+
+- 희망도서 신청한 내역 목록들을 볼 수 있습니다.
+- 취소 버튼을 누르면 신청한 내역이 삭제됩니다.
+
+
+
+### 도서관리 목록
+
+![image](https://github.com/user-attachments/assets/2eca3dff-9dcb-47fc-b5b8-999b1db63a76)
+
+
+- 도서관에서 관리하는 도서 목록들을 볼 수 있는 페이지 입니다.
+- 도서에 대한 정보가 표시되며 대출가능여부와 예약상태를 볼 수 있습니다.
+
+### 도서 등록
+
+![image](https://github.com/user-attachments/assets/58cd0a67-7148-4785-af84-1913124dc772)
+
+
+- 도서관 도서를 등록하는 페이지입니다.
+- 등록하면 하단에 등록한 책 목록들이 나타나며 삭제 또는 제목을 클릭하면 상세페이지로 이동할 수 있습니다.
+
+### 도서 선택
+
+![image](https://github.com/user-attachments/assets/2eaf6e03-ac9e-4d12-9187-642927fbecc9)
+
+
+- 관리자 결재 관리에서 승인된 도서들이 나타나는 페이지입니다.
+- 선택을 누르면 도서 등록으로 도서에 대한 정보가 표시 됩니다.
+
+### 도서 관리 상세
+
+![image](https://github.com/user-attachments/assets/d6326840-e64b-4d18-830b-595ad5c87718)
+
+
+- 도서관에 등록된 도서의 상세를 나타내는 페이지입니다.
+- 해당 페이지에서 도서 수정 또는 삭제를 할 수 있습니다.
+
+### 도서 관리 수정
+
+![image](https://github.com/user-attachments/assets/a827249c-05c1-4761-95e1-bf96bc50fa00)
+
+
+- 도서관에 등록된 도서를 수정하는 페이지입니다.
+- 해당 페이지에서 도서에 대한 소장정보를 수정할 수 있습니다.
+
+### 희망도서 목록
+
+![image](https://github.com/user-attachments/assets/66ad2d13-d389-4ffb-95c8-e540f4223fcd)
+
+
+- 사용자가 희망도서를 신청한 내역이 나타나는 페이지입니다.
+- 신청대기 신청완료 신청반려 등 신청된 도서의 상태를 볼 수 있습니다.
+
+### 희망도서 상세
+
+![image](https://github.com/user-attachments/assets/b98c8fd0-1a44-4ccf-b70c-1bdef8d442a2)
+
+
+- 사용자가 희망도서를 신청한 내역의 상세를 나타나는 페이지입니다.
+- 신청한 도서의 정보와 신청자 정보를 확인할 수 있습니다.
+
+
+
+
+
+### 예약 등록 팝업  
+![image](https://github.com/user-attachments/assets/6f0c8100-0650-426e-9435-da573253f133)
+
+- 도서 상세에서 예약 버튼을 누르면 도서 예약 팝업이 뜹니다.
+
+![image](https://github.com/user-attachments/assets/f9c66c36-2d6a-41a7-9f5b-8e2761682a37)
+
+- 예약 팝업에서 날짜를 선택하면 선택된 날짜가 시각적으로 강조되어 파란색으로 표시됩니다.
+
+![image](https://github.com/user-attachments/assets/f6b4b79e-4d44-4039-a039-1b6b5affed27)
+
+- 예약 등록이 성공하면 선택일로부터 일주일간 예약이 됩니다.
+
+
+### 내 도서 - 대출이력
+
+![image](https://github.com/user-attachments/assets/cb47f660-a387-4159-826b-e920abea0ead)
+
+- 사용자의 대출 이력을 확인할 수 있습니다. 연장 버튼을 누르면 일주일 연장이 가능합니다.
+
+### 내 도서 - 예약관리
+![image](https://github.com/user-attachments/assets/2cedaa2b-fdee-46a5-91df-a8e8e42f434f)
+
+- 사용자의 예약을 확인할 수 있습니다. 취소 버튼을 누르면 해당 예약이 취소됩니다.
+
+### 도서예약 목록
+
+![image](https://github.com/user-attachments/assets/7bfe5505-aab8-404d-bcae-d88729a2fd25)
+
+- 회원들의 도서 예약 목록을 확인할 수 있습니다. 제목, 서명/저자사항, 예약자로 검색을 할 수 있습니다. 취소버튼을 누르면 해당 예약이 취소됩니다.
+도서 제목을 누르면 예약 수정 팝업 캘린더가 열립니다.
+
+![image](https://github.com/user-attachments/assets/043da0c3-2767-4a46-8d4c-42f58a276a37)
+
+- 도서 예약 수정 팝업입니다. 이전에 선택한 날짜가 이미 선택되어 있고, 원하는 날짜로 수정이 가능합니다. 
+
+### 도서예약 등록
+![image](https://github.com/user-attachments/assets/cae4e626-ca71-4a50-b9ca-4410787d42ca)
+
+- 회원번호를 입력한 뒤 도서 제목을 누르면 사용자 도서 예약 등록 팝업과 동일하게 열립니다. 
+
+
+
+
+### 결재관리 목록
+![image](https://github.com/user-attachments/assets/4e2db673-0c3c-407f-b0db-3d4ca3dc4566)
+
+* 기안의 상태별로 목록을 보여줍니다.
+* 기안 등록 버튼을 누르면 기안 등록 페이지로, 기안의 제목을 누르면 기안 상세 페이지로 이동합니다.
+
+### 기안 등록
+![image](https://github.com/user-attachments/assets/cb3566f9-9975-4c3a-80ba-fa72ff671cc9)
+
+* 희망도서선택 버튼을 누르면 신청된 희망도서 목록을 보여줍니다.
+* 기안 등록 버튼을 누르면 도서 목록을 보여줍니다.
+* 도서 선택 후 등록 버튼을 눌러서 기안을 등록합니다.
+
+### 희망도서선택
+![image](https://github.com/user-attachments/assets/2cd9e465-277f-44c3-ba30-469f06ada641)
+
+* 희망도서 목록에서 기안을 올릴 도서를 선택합니다.
+
+### 도서선택
+![image](https://github.com/user-attachments/assets/6e0cd15e-9984-45c9-a512-cca6a71b043a)
+
+* 도서 목록에서 기안을 올릴 도서를 선택합니다.
+
+### 기안 상세
+![image](https://github.com/user-attachments/assets/738d6a77-e9e6-465e-ad5a-dc0815200a2d)
+![image](https://github.com/user-attachments/assets/fe5c17c3-4346-483c-bee9-9bc19b8e9288)
+
+* 기안에 올린 도서의 상세 정보를 나타냅니다.
+* 수정 버튼을 누르면 수정 페이지로, 목록 버튼을 누르면 목록 페이지로 이동합니다.
+* 삭제 버튼을 누르면 기안이 삭제됩니다.
+* 도서관장이 신청된 기안에 승인/반려 버튼을 눌러서 승인/반려를 합니다.(반려시 반려사유 입력 필요)
+
+### 기안 수정
+![image](https://github.com/user-attachments/assets/879adf2a-38fc-4947-a66e-684a18137f5f)
+
+* 기안을 수정합니다.
+
+### 반려사유 팝업
+![image](https://github.com/user-attachments/assets/1ed1abd1-8eb9-4b11-b9b0-681b063d8a2c)
+![image](https://github.com/user-attachments/assets/90c6c651-be8f-45f5-8e8c-2c9b0a36fada)
+
+* 반려상태인 도서의 상태를 누르면 반려사유를 보여줍니다.
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
