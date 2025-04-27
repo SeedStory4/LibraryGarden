@@ -71,7 +71,7 @@
 		WHERE u.userNumber = #{userNumber}
 		AND l.delyn = 'N'
 		ORDER BY
-		l.loanDate DESC
+		l.lidx DESC
 		LIMIT #{startPageNum}, #{perPageNum}
 	</select>
 
