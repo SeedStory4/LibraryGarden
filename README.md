@@ -21,3 +21,30 @@ Library Garden은 도서관 시스템에 ‘정원’이라는 따뜻한 개념�
 
 #### 데이터베이스
 ![dbeaver](https://img.shields.io/badge/dbeaver-382923?style=for-the-badge&logo=dbeaver&logoColor=white) ![mysql](https://img.shields.io/badge/mysql-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+
+#### Tools
+![figma](https://img.shields.io/badge/figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white)
+
+#### 라이브러리
+![](https://camo.githubusercontent.com/50d547031109b5a5e729951b67889771d8808144144b45ced75e45c3defe076d/68747470733a2f2f696d672e736869656c64732e696f2f62616467652f46756c6c43616c656e6461722d3030373844373f7374796c653d666f722d7468652d6261646765266c6f676f3d63616c656e646172266c6f676f436f6c6f723d7768697465) ![apachemaven](https://img.shields.io/badge/apachemaven-C71A36?style=for-the-badge&logo=apachemaven&logoColor=white)
+
+#### 버전관리
+![github](https://img.shields.io/badge/github-181717?style=for-the-badge&logo=github&logoColor=white)
+
+#### API
+![Aladin API](https://img.shields.io/badge/Aladin%20API-1E90FF?style=flat&logo=bookstack&logoColor=white)
+
+----------------
+### 주요기능
+일반 사용자가 희망도서를 직접 신청할 수 있고, 신청 내역 및 처리 결과를 실시간으로 확인할 수 있음			
+도서관 운영에 사용자 의견을 반영하여 참여형 지식 플랫폼 구현			
+FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능			
+연장 여부, 연체 상태 등도 실시간으로 반영되어 편리한 도서 관리 가능			
+도서 검색 시 알라딘 API를 통해 책 제목, 표지, 출판사 등 자동 불러오기			
+관리자/사용자의 입력 편의성 향상 및 오류 방지			
+로그인 시 역할(Role)에 따라 UI 및 기능 자동 분기			
+사용자: 대출·예약·희망도서 신청			
+관리자: 도서 등록, 결재 관리, 회원 관리 등 운영 중심 기능 제공
+
+
+
