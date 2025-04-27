@@ -126,7 +126,7 @@ public class AdminBookRequestController {
 			@RequestParam(value = "page", defaultValue = "1") int page
 		 ) {
 					
-		 logger.info("bookRequestList 들어옴");
+		 logger.debug("bookRequestList 들어옴");
 		 
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 SearchCriteria scri = new SearchCriteria();
