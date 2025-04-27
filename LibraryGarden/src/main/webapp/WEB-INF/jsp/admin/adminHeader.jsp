@@ -19,7 +19,7 @@
 				<li><a href="<%= request.getContextPath() %>/admin/user/userList.do">회원관리</a></li>
 			</ul>
 			<ul class="admin-nav-auth">
-	            <li><a href="<%= request.getContextPath() %>/user/myPage/myPageModify.do">마이페이지</a></li>
+	            <li><a href="<%= request.getContextPath() %>/user/myPage/myPageModify.do">회원정보 수정</a></li>
 	            <li>·</li>
 	            <li>
 				  <form action="<%= request.getContextPath() %>/user/user/logout.do" method="post" style="display:inline;">

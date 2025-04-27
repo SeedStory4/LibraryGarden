@@ -24,19 +24,21 @@
 		      <!-- 회원가입 form -->
 		      <div class="draft-content ml-mr-50">
 		        <form action="<%= request.getContextPath() %>/user/user/userJoinAction.do" method="post" id="joinForm" novalidate>
-		          <input type="text" name="name" class="user-A-input mb-30" placeholder="이름" maxlength="10" required>
+		          <input type="text" name="name" class="user-A-input mb-30" placeholder="이름" maxlength="10" onkeydown="checkSpacebar(event);" required>
 		
-		          <input type="text" name="id" class="user-A-input mb-17" placeholder="아이디" required>
+		          <input type="text" name="id" class="user-A-input mb-17" placeholder="아이디" onkeydown="checkSpacebar(event);" required>
 		          <div class="draft-actions-end mb-24">
 		            <button type="button" id="idCheckBtn" class="draft-btn-small-16 btn-submit-100-30">중복확인</button>
 		          </div>
 		
-		          <input type="password" name="password" class="user-A-input mb-30" placeholder="비밀번호" required>
-		          <input type="password" name="passwordConfirm" class="user-A-input mb-30" placeholder="비밀번호 확인" required>
-		          <input type="tel" name="phone" pattern="^\+?\d{10,15}$" class="user-A-input mb-30" placeholder="휴대전화번호 ( 예> 01012345678 )" required>
-		          <input type="email" name="email" class="user-A-input mb-30" placeholder="이메일" required>
+		          <input type="password" name="password" class="user-A-input mb-30" placeholder="비밀번호" onkeydown="checkSpacebar(event);" required>
+		          <input type="password" name="passwordConfirm" class="user-A-input mb-30" placeholder="비밀번호 확인" onkeydown="checkSpacebar(event);" required>
+		          <input type="tel" name="phone" pattern="^\+?\d{10,15}$" class="user-A-input mb-30" placeholder="휴대전화번호 ( 예> 01012345678 )" onkeydown="checkSpacebar(event);" required>
+		          <input type="email" name="email" class="user-A-input mb-30" placeholder="이메일" onkeydown="checkSpacebar(event);" required>
 		          <input type="text" name="address" id="address" class="user-A-input mb-17" placeholder="주소" required readonly>
-				  <button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30 mb-30">주소 검색</button>
+		          <div class="draft-actions-end">
+				  	<button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30 mb-30">주소검색</button>
+				  </div>
 
 		
 		          <!-- 버튼들 form 안에 위치 -->
@@ -70,6 +72,8 @@
 		        alert("아이디는 영문자와 숫자만 입력 가능합니다.");
 		        return;
 		      }
+		      
+
 		
 		      fetch("<%= request.getContextPath() %>/user/user/checkId.do", {
 		        method: "POST",
@@ -96,6 +100,8 @@
 		        alert("서버 오류 발생!");
 		      });
 		    });
+			
+			
 			
 			// 아이디 입력값 변경 시 중복확인 상태 초기화
 			  document.querySelector("input[name='id']").addEventListener("input", function () {
@@ -150,6 +156,14 @@
 		          e.preventDefault();
 		          return;
 		        }
+		        
+		        // 아이디 중복확인 여부 체크 (추가)
+			      if (!isIdChecked || id !== lastCheckedId) {
+			        alert("아이디 중복 확인을 해주세요.");
+			        form.id.focus();
+			        e.preventDefault();
+			        return;
+			      }
 		        
 		        
 		        if (pw === "") {
@@ -234,6 +248,12 @@
 				  var txt = document.createElement("textarea");
 				  txt.innerHTML = str;
 				  return txt.value;
+				}
+			
+			function checkSpacebar(e) {
+				  if (e.key === " " || e.keyCode === 32) {
+				    e.preventDefault(); // 스페이스바 입력 막기
+				  }
 				}
 
 

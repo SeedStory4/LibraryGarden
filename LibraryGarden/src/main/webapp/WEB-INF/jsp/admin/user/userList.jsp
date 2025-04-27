@@ -68,8 +68,8 @@
 							</thead>
 							<tbody>
 							  <c:forEach var = "user" items = "${userList}" varStatus = "status">
-							    <tr>
-							      <td>${pageMaker.totalCount - ((cri.page - 1) * cri.perPageNum) - status.index}</td> <!-- 역순으로 번호 출력 -->
+							    <tr>							      
+							      <td>${(cri.page - 1) * cri.perPageNum + (status.index + 1)}</td>							      
 							      <td>${user.name}</td>
 							      <td><a href="${pageContext.request.contextPath}/admin/user/userDetail.do?id=${user.id}" class="link">
 								    ${user.id}
