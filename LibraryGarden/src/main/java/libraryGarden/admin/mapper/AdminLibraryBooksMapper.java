@@ -3,7 +3,7 @@ package libraryGarden.admin.mapper;
 import java.util.ArrayList;
 import java.util.HashMap;
  
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.SearchCriteria;
 
@@ -28,13 +28,13 @@ import libraryGarden.domain.SearchCriteria;
 public interface AdminLibraryBooksMapper {
 	
 	// 관리자 도서관 책 전체 조회 목록 출력 메서드
-	public ArrayList<LibraryBookDto> getBookSelectAll(HashMap<String,Object> hm);
+	public ArrayList<LibraryBooksDto> getBookSelectAll(HashMap<String,Object> hm);
 
 	// 관리자 도서관 책 전체 갯수 매서드
 	int getBookTotalCount(SearchCriteria scri);
 	
 	// 관리자 도서관 책 상세 조회 매서드
-	public LibraryBookDto getBookSelectOne(int lbidx);
+	public LibraryBooksDto getBookSelectOne(int lbidx);
 	
 	// 관리자 도서관 책 삭제 매서드
 	public int getLibraryBookDeleteOne(int lbidx);
@@ -49,7 +49,7 @@ public interface AdminLibraryBooksMapper {
 	public int insertLibraryBookAboutBook(LibraryBooksVo lbv);
 	
     // 관리자 도서관 오늘자 도서 등록 조회 목록 출력 메서드
-	public ArrayList<LibraryBookDto> getBookWriteListSelectAll(HashMap<String,Object> hm);
+	public ArrayList<LibraryBooksDto> getBookWriteListSelectAll(HashMap<String,Object> hm);
 	
 	// 관리자 도서관 오늘자 도서 등록 갯수 조회 매서드
 	public int getBookWriteListCount(String today);
@@ -58,7 +58,7 @@ public interface AdminLibraryBooksMapper {
 	public int getLibraryBookAboutAidx(int lbidx);
 	
 	// 관리자 도서관 lbidx, bidx, aidx를 가지고 오는 매서드
-	public LibraryBookDto getLibraryBookByLbidxAndBidxAndAidx(int lbidx);
+	public LibraryBooksDto getLibraryBookByLbidxAndBidxAndAidx(int lbidx);
 	
 	// 관리자 도서관 도서 수정 매서드
 	public int modifyLibraryBook(LibraryBooksVo lbv);

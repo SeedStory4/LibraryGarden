@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import libraryGarden.cmm.util.UrlEncoder;
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
@@ -93,7 +93,7 @@ public class BookReservationController {
 	public String bookReservationWrite(
 			@RequestParam(value = "userNumber", required = false) String userNumber,
 			SearchCriteria scri,
-			LibraryBookDto ld,
+			LibraryBooksDto ld,
 			Model model) {
 		
 		 // 사용자가 입력한 검색조건과 검색어 저장
@@ -107,7 +107,7 @@ public class BookReservationController {
 		 pm.setTotalCount(cnt);
 		
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
-		 ArrayList<LibraryBookDto> lblist = adminBookReservationService.bookSelectAll(scri, filter);
+		 ArrayList<LibraryBooksDto> lblist = adminBookReservationService.bookSelectAll(scri, filter);
 		 
 		 // "\" 등 검색시 오류 발생하지 않도록 검색어 encoding
 		 UrlEncoder encoder = new UrlEncoder();		 
