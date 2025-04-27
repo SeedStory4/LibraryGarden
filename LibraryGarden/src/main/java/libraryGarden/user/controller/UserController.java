@@ -85,7 +85,7 @@ public class UserController {
             // 마지막 userNumber 가져오기
             String lastUserNumber = userService.getLastUserNumber();
             int nextNumber = (lastUserNumber == null) ? 1 : Integer.parseInt(lastUserNumber) + 1;
-            String formattedNumber = String.format("%06d", nextNumber); // ex) 000001
+            String formattedNumber = String.format("%08d", nextNumber); // ex) 000001
 
             // userNumber 세팅
             user.setUserNumber(formattedNumber);
