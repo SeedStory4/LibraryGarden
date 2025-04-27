@@ -442,7 +442,7 @@
 						 
 						 let labelTitle = "● 제목";
 						 let title = bv.title;
-				         if(bv.originalTitle != undefined && bv.originalTitle != "" && bv.originalTitle != null) {
+				         if(bv.originalTitle) {
 					         title = bv.title + " / " + bv.originalTitle;
 					         labelTitle = "● 제목 / 원제";				         
 				         }
@@ -450,7 +450,7 @@
 				         document.querySelector(".draft-info .title").innerText = title;
 				         
 						 let subTitle = "-";
-				         if(bv.subTitle != undefined) {
+				         if(bv.subTitle) {
 				        	 subTitle = bv.subTitle;
 				         }
 				         document.querySelector(".subTitle").innerText = subTitle;
@@ -595,7 +595,7 @@
 								<col width="6%">
 								<col width="8%">
 								<col>
-								<col width="10%">
+								<col width="16%">
 								<col width="10%">
 								<col width="10%">
 								<col width="15%">
