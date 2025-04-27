@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminBookLoanMapper;
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
@@ -77,7 +77,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 	}
 	
 	@Override
-	public ArrayList<LibraryBookDto> bookSelectAll(SearchCriteria scri, String filter) {
+	public ArrayList<LibraryBooksDto> bookSelectAll(SearchCriteria scri, String filter) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -87,7 +87,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 		hm.put("keyword", scri.getKeyword());
 		hm.put("filter", filter);
 		
-		ArrayList<LibraryBookDto> lblist = rm.bookSelectAll(hm);
+		ArrayList<LibraryBooksDto> lblist = rm.bookSelectAll(hm);
 		
 		return lblist;
 	}
