@@ -46,25 +46,72 @@ FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능
 사용자: 대출·예약·희망도서 신청			
 관리자: 도서 등록, 결재 관리, 회원 관리 등 운영 중심 기능 제공
 
-
+----------------
 ### 메인페이지
-
-
 ![사용자 메인페이지 화면](https://drive.google.com/uc?export=view&id=1j6QNI_fV9LOuFmtD5jKddBJsvtR_BHAI)
-
-- 사용자 로그인시 보이는 메인페이지 입니다. 
-
-
+- 사용자 로그인시 보이는 메인페이지 입니다.
+- 이달의 대출 도서 순위와 이달의 신간을 6개씩 보여줍니다.
 
 ![https://drive.google.com/uc?export=view&id=1WJ6z5DlwyM2VU지 화면](https://drive.google.com/uc?export=view&id=1xHHugzQprJ7k_20mLu0hlYQFpGrdOscF)
 - 관리자 로그인시 보이는 메인페이지 입니다. 
 
+----------------
+### 이용약관
+![이용약관](https://github.com/user-attachments/assets/e3e66478-7f8d-4867-8a63-bdc4aabe9375)
+- 이용약관 페이지입니다. 회원가입시 가장 처음으로 보이는 페이지입니다.
 
-### 도서 목록 페이지
+----------------
+### 로그인
+![로그인](https://github.com/user-attachments/assets/c04053f6-c5b6-4384-bea2-d5f7556a207e)
+- 로그인 페이지입니다.
+
+----------------
+### 회원가입
+![회원가입](https://github.com/user-attachments/assets/ff65e4b0-ff1c-4dc2-8580-a94f5d8ae361)
+- 회원가입페이지 입니다.
+
+----------------
+### 아이디찾기
+![아이디찾기](https://github.com/user-attachments/assets/7d3ecea2-7dc9-446c-a1ac-10d95086c4e5)
+- 아이디 찾기 페이지입니다. 회원의 이름과 휴대전화를 DB에서 조회후 아이디를 알려줍니다.
+
+----------------
+### 아이디찾기완료
+![image](https://github.com/user-attachments/assets/43dd524c-effa-4836-9e07-c37c61027c71)
+- 아이디 찾기 완료페이지입니다.
+
+----------------
+### 비빌번호찾기
+![비빌번호찾기](https://github.com/user-attachments/assets/96ad189a-064e-4102-adeb-52617ad2099f)
+- 비밀번호 찾기 페이지입니다. 아이디와 휴대전화를 DB에서 조회후 가입시 입력한 이메일로 임시비빌번호를 발송합니다.
+
+----------------
+### 비밀번호찾기 완료
+![비밀번호찾기](https://github.com/user-attachments/assets/f3fc3822-cb88-4cff-93c5-450fedad5084)
+- 비밀번호 찾기 페이지입니다. 아이디와 휴대전화를 DB에서 조회후 가입시 입력한 이메일로 임시비빌번호를 발송합니다.
+
+----------------
+### 회원목록
+![회원목록](https://github.com/user-attachments/assets/9425eba1-6fe9-4608-8c3a-4b72550fdcaf)
+- 회원목록 페이지입니다. 아이디클릭시 회원상세정보페이지로 이동합니다.
+
+----------------
+### 회원상세정보
+![회원상세정보](https://github.com/user-attachments/assets/3c51688f-7ddd-4666-8507-7716416ddf62)
+- 회원정보를 보여줍니다.
+
+----------------
+### 회원정보 수정
+![회원정보](https://github.com/user-attachments/assets/f7932656-c5f0-43c4-a3a3-b616a722976a)
+- 회원정보 수정페이지입니다. 휴대전화번호와 이메일, 주소, 권한을 수정 할 수있습니다.
 
 
 
-도서관에 있는 도서 목록을  보여줍니다.
+
+
+
+
+
 
 
 
