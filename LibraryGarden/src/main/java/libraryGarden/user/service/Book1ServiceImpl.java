@@ -3,7 +3,7 @@ package libraryGarden.user.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.user.mapper.Book1Mapper;
 
 
@@ -31,7 +31,7 @@ public class Book1ServiceImpl implements Book1Service{
 
 	// 도서 데이터 삽입 메서드
 	@Override
-	public int insertBook(BookVo bv) {
+	public int insertBook(BooksVo bv) {
 		int bookInsertValue = bm.insertBook(bv);
 		return bookInsertValue;
 	}

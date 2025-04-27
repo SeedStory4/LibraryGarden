@@ -25,7 +25,7 @@ import libraryGarden.admin.service.AdminBookCUDService;
 import libraryGarden.admin.service.AdminCategoryService;
 import libraryGarden.admin.service.AdminLibraryBooksService;
 import libraryGarden.cmm.util.UrlEncoder;
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
@@ -91,7 +91,7 @@ public class AdminBookController {
 		pm.setTotalCount(cnt);
 
 		// 책 목록 조회 
-		ArrayList<LibraryBookDto> lblist = adminLibraryBooksService.getBookSelectAll(scri);
+		ArrayList<LibraryBooksDto> lblist = adminLibraryBooksService.getBookSelectAll(scri);
 
 		model.addAttribute("lblist", lblist);
 		model.addAttribute("pm", pm);
@@ -104,7 +104,7 @@ public class AdminBookController {
 		logger.debug("moveBookDetail 들어옴");
 
 		// 도서관 책 상세 조회 
-		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
+		LibraryBooksDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
 		
 		model.addAttribute("lbd", lbd);
 		return "admin/book/bookDetail";
@@ -145,7 +145,7 @@ public class AdminBookController {
 	    
 	    /****도서 분류(대분류)****/
 	    // 도서 카테고리 대분류를 가지고 옴(level = 1)
-	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
+	    List<LibraryBooksDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
 	    /**************/
 	    
 		HashMap<String, Object> hm = new HashMap<String, Object>();
@@ -161,7 +161,7 @@ public class AdminBookController {
 	@PostMapping("/bookWriteAction.do")
 	public String insertBookWriteAction(LibraryBooksVo lbv, Model model) {
 		
-		logger.info("insertBookWriteAction 들어옴");
+		logger.debug("insertBookWriteAction 들어옴");
 		
 	    int result = adminBookCUDService.insertLibraryBooksAndUpdateApproval(lbv);
 
@@ -182,7 +182,7 @@ public class AdminBookController {
 			@RequestParam(value = "page", defaultValue = "1") int page,
 			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx) {
 		
-		logger.info("moveBookSelectList 들어옴");
+		logger.debug("moveBookSelectList 들어옴");
 		
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 SearchCriteria scri = new SearchCriteria();
@@ -217,7 +217,7 @@ public class AdminBookController {
 	@ResponseBody
 	public HashMap<String, Object> getbookSelectOne(@RequestParam(value = "aidx", defaultValue = "1") int aidx) {
 
-		logger.info("bookSelectOne 들어옴");
+		logger.debug("bookSelectOne 들어옴");
 		
 		 // 동록에서 보여줄 데이터 DB에서 가져오기
 		HashMap<String, Object> hm = adminApprovalService.getBookApprovalSelectOne(aidx);
@@ -228,12 +228,12 @@ public class AdminBookController {
 	// 도서 등록/수정 시 카데고리 소분류 조회 ajax
 	@PostMapping("/getChildrenCategory.do")
 	@ResponseBody
-	public List<LibraryBookDto> getChildrenCategory(@RequestParam(value = "parentCode") int parentCode) {
+	public List<LibraryBooksDto> getChildrenCategory(@RequestParam(value = "parentCode") int parentCode) {
 		
-		logger.info("getChildrenCategory 들어옴");
+		logger.debug("getChildrenCategory 들어옴");
 		
 	    // 도서 카테고리 소분류를 가지고 옴(level = 1)
-		List<LibraryBookDto> lbdList = adminCategoryService.getChildrenCategoryByparentCode(parentCode);
+		List<LibraryBooksDto> lbdList = adminCategoryService.getChildrenCategoryByparentCode(parentCode);
 		 
 		return lbdList;
 	}
@@ -246,11 +246,11 @@ public class AdminBookController {
 		    @RequestParam(value = "aidx", required = false) Integer aidx,
 		    @RequestParam(value = "bidx", required = false) Integer bidx) {
 		
-		logger.info("checkCallNumberDuplicate 들어옴");
+		logger.debug("checkCallNumberDuplicate 들어옴");
 
 	    // lbidx, aidx, bidx 모두 있으면 => 수정시
 	    if (lbidx != null && aidx != null && bidx != null) {
-	        LibraryBookDto original = adminLibraryBooksService.getBookSelectOne(lbidx);
+	    	LibraryBooksDto original = adminLibraryBooksService.getBookSelectOne(lbidx);
 
 	        if (original == null) {
 	            return -99;  // 오류 상황
@@ -288,7 +288,7 @@ public class AdminBookController {
 	@ResponseBody
 	public HashMap<String, Object> getBookWriteList(@RequestParam(value = "page", defaultValue = "1") int page) {
 		
-		logger.info("bookWriteList 들어옴");
+		logger.debug("bookWriteList 들어옴");
 	    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	    
 		 // 페이징 저장
@@ -301,7 +301,7 @@ public class AdminBookController {
 		 pm.setTotalCount(cnt);
 		 
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
-		 ArrayList<LibraryBookDto> bwlist = adminLibraryBooksService.getBookWriteListSelectAll(scri, today);
+		 ArrayList<LibraryBooksDto> bwlist = adminLibraryBooksService.getBookWriteListSelectAll(scri, today);
 		 
 		 HashMap<String, Object> bwhm = new HashMap<String, Object>();
 		 bwhm.put("bwlist", bwlist);
@@ -330,13 +330,13 @@ public class AdminBookController {
 		logger.debug("moveBookModify 들어옴");
 		
 		//도서관 책 상세 조회 
-		LibraryBookDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
+		LibraryBooksDto lbd = adminLibraryBooksService.getBookSelectOne(lbidx);
 		
 	    // 도서 카테고리 대분류
-	    List<LibraryBookDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
+	    List<LibraryBooksDto> parentList = adminCategoryService.getParentCategoryByLevel(); 
 
 	    // 도서 카테고리 소분류
-	    List<LibraryBookDto> childList = adminCategoryService.getChildrenCategoryByparentCode(Integer.parseInt(lbd.getParentCode()));
+	    List<LibraryBooksDto> childList = adminCategoryService.getChildrenCategoryByparentCode(Integer.parseInt(lbd.getParentCode()));
 
 		model.addAttribute("lbd", lbd);
 		model.addAttribute("parentList", parentList);
