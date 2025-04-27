@@ -55,7 +55,7 @@ FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능
 
 
 
-![](![](https://drive.google.com/uc?export=view&id=1WJ6z5DlwyM2VUkv_O9jMvjKdDvh-Wzzn)
+![](https://drive.google.com/uc?export=view&id=1WJ6z5DlwyM2VUkv_O9jMvjKdDvh-Wzzn)
 
 관리자 로그인시 보이는 메인페이지 입니다. 
 
