@@ -6,7 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.RequestDto;
 
 public interface AdminBookRequestMapper {
@@ -46,7 +46,7 @@ public interface AdminBookRequestMapper {
 	
 	public ArrayList<RequestDto> bookRequestSelectAll(HashMap<String,Object> hm);
 
-	public BookVo bookRequestSelectOne(int rqidx);
+	public BooksVo bookRequestSelectOne(int rqidx);
 
 	public int statusUpdate(HashMap<String,Object> hm);
 	

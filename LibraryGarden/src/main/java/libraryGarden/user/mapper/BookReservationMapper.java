@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.domain.ReservationDto;
 
@@ -16,7 +16,7 @@ public interface BookReservationMapper {
 	public int bookReservationTotalCount(HashMap<String,Object> hm);
 	public ArrayList<ReservationDto> bookReservationSelectAll(HashMap<String,Object> hm);
 	public int bookTotalCount(HashMap<String,Object> hm);
-	public ArrayList<LibraryBookDto> bookSelectAll(HashMap<String,Object> hm);
+	public ArrayList<LibraryBooksDto> bookSelectAll(HashMap<String,Object> hm);
 	public List<HashMap<String, String>> getOverduePeriodsByUser(String userNumber); // 예약 연체 조회
     // 해당 도서(lbidx)의 예약 pickupDate 조회
     public List<ReservationDto> getReservationsByBook(int lbidx);

@@ -76,7 +76,7 @@
 								  </a></td>
 							      <td>${user.phone}</td>
 							      <td>${user.role}</td>
-							      <td>${user.regdate}</td>
+							      <td>${user.regDate}</td>
 							    </tr>
 							  </c:forEach>
 							</tbody>
