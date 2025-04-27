@@ -381,14 +381,14 @@
 			         document.querySelector(".coverImg").src = bv.coverImg;
 			         document.querySelector(".coverImg").alt = bv.title;
 			         
-			         if(bv.originalTitle != "") {
+			         if(bv.originalTitle) {
 				         title = bv.title + " / " + bv.originalTitle;
 				         labelTitle = "● 제목 / 원제";				         
 			         }
 			         document.querySelector(".label-title").innerText = labelTitle;
 			         document.querySelector(".title").innerText = title;
 			         
-			         if(bv.subTitle != undefined) {
+			         if(bv.subTitle) {
 			        	 subTitle = bv.subTitle;
 			         }
 			         document.querySelector(".subTitle").innerText = subTitle;
