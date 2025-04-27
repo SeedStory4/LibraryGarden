@@ -35,5 +35,5 @@ public interface LibraryBooksService {
 	
 	List<LibraryBooksDto> selectTopLoanBooksThisMonth();
 	 
-	List<LibraryBooksVo> getLatestBooks();
+	List<LibraryBooksDto> getLatestLibraryBooks();
 }

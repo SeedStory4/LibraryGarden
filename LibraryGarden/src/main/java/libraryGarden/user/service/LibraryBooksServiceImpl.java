@@ -73,7 +73,7 @@ public class LibraryBooksServiceImpl implements LibraryBooksService{
 	}
 
 	@Override
-	public List<LibraryBooksVo> getLatestBooks() {
-		return lbm.getLatestBooks();  // Mapper에 해당 메서드 추가 필요
+	 public List<LibraryBooksDto> getLatestLibraryBooks() {
+        return lbm.selectLatestLibraryBooks();
 	}
 }
