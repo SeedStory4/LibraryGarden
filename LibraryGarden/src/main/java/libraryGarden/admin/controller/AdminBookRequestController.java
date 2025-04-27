@@ -94,10 +94,9 @@ public class AdminBookRequestController {
 	@PostMapping("/bookRequestModify.do")
 	public String bookRequestModify(@RequestParam("status") String status, @RequestParam("rqidx") int rqidx,
 		    @RequestParam(value = "rejectionReason", required = false) String rejectionReason,Model model) {
-		System.out.println("AdminBookRequestService bookRequestModify 들어옴");
+		 logger.debug("AdminBookRequestService bookRequestModify 들어옴");
 		
 		int value = bookRequestService.modifyBookRequest(rqidx, status, rejectionReason);
-		System.out.println("AdminBookRequestService bookRequestModify value"+value);
 		
 		if(value == 0) {
 			model.addAttribute("msg", "등록을 실패했습니다. 잠시 후 다시 시도해주세요.");

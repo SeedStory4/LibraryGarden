@@ -18,7 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import libraryGarden.admin.mapper.AdminBookLoanMapper;
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LoanVo;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
@@ -31,7 +31,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 	private BookReservationMapper rm;
 	
 	@Autowired
-    private AdminBookLoanMapper adminBookLoanMapper;
+    private AdminBookLoanMapper alm;
 	
 	
 	@Override
@@ -77,7 +77,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 	}
 	
 	@Override
-	public ArrayList<LibraryBookDto> bookSelectAll(SearchCriteria scri, String filter) {
+	public ArrayList<LibraryBooksDto> bookSelectAll(SearchCriteria scri, String filter) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -87,7 +87,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 		hm.put("keyword", scri.getKeyword());
 		hm.put("filter", filter);
 		
-		ArrayList<LibraryBookDto> lblist = rm.bookSelectAll(hm);
+		ArrayList<LibraryBooksDto> lblist = rm.bookSelectAll(hm);
 		
 		return lblist;
 	}
@@ -115,7 +115,7 @@ public class BookReservationServiceImpl implements BookReservationService{
 	public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber) {
 		
 		// 0) 당일 오전 연체 감지
-	    adminBookLoanMapper.insertOverdueForPastDue();
+		alm.insertOverdueForPastDue();
 		
 	    Set<String> regDates = new HashSet<>();
 	    Set<String> overdueDates = new HashSet<>();
@@ -138,19 +138,19 @@ public class BookReservationServiceImpl implements BookReservationService{
 	    }
 
 	    // 대출 날짜 (반납일 반영)
-	    List<LoanVo> loans = rm.getLoansByBook(lbidx);
-	    for (LoanVo loan : loans) {
+	    List<LoanVo> lvs = rm.getLoansByBook(lbidx);
+	    for (LoanVo lv : lvs) {
 	        try {
 	            Calendar cal = Calendar.getInstance();
 	            // 시작 = loanDate
-	            Date start = dbFormat.parse(loan.getLoanDate());
+	            Date start = dbFormat.parse(lv.getLoanDate());
 	            // dueDate
-	            Date due   = dbFormat.parse(loan.getDueDate());
+	            Date due   = dbFormat.parse(lv.getDueDate());
 	            
 	            // 실제 블락 종료일 = dueDate 또는 returnDate 중 이른 쪽
 	            Date end = due;
-	            if (loan.getReturnDate() != null && !loan.getReturnDate().isEmpty()) {
-	                Date ret = dbFormat.parse(loan.getReturnDate());
+	            if (lv.getReturnDate() != null && !lv.getReturnDate().isEmpty()) {
+	                Date ret = dbFormat.parse(lv.getReturnDate());
 	                if (ret.before(due)) {
 	                    end = ret;
 	                }
@@ -236,11 +236,11 @@ public class BookReservationServiceImpl implements BookReservationService{
         }
 
         // 대출 날짜 (기존과 동일)
-        for (LoanVo loan : rm.getLoansByBook(lbidx)) {
+        for (LoanVo lv : rm.getLoansByBook(lbidx)) {
             try {
                 Calendar cal = Calendar.getInstance();
-                cal.setTime(dbFormat.parse(loan.getLoanDate()));
-                Date end = dbFormat.parse(loan.getDueDate());
+                cal.setTime(dbFormat.parse(lv.getLoanDate()));
+                Date end = dbFormat.parse(lv.getDueDate());
                 while (!cal.getTime().after(end)) {
                 	regDates.add(outputFormat.format(cal.getTime()));
                     cal.add(Calendar.DATE, 1);

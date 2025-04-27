@@ -3,7 +3,7 @@ package libraryGarden.admin.service;
 import java.util.ArrayList;
 import java.util.Map;
 
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.RequestDto;
 import libraryGarden.domain.SearchCriteria;
 
@@ -42,7 +42,7 @@ public interface AdminBookRequestService {
 	 */
 	public ArrayList<RequestDto> bookRequestSelectAll(SearchCriteria scri, String filter);
 
-	public BookVo bookRequestSelectOne(int rqidx);
+	public BooksVo bookRequestSelectOne(int rqidx);
 
 	public int statusUpdate(int rqidx, String status);
 	

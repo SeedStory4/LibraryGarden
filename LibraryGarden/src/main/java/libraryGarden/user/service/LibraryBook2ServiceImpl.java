@@ -7,8 +7,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import libraryGarden.domain.LibraryBookDto;
-import libraryGarden.domain.LibraryBook2Dto;
+import libraryGarden.domain.LibraryBooksDto;
+import libraryGarden.domain.LibraryBooks2Dto;
 import libraryGarden.domain.LibraryBooksVo2;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.mapper.LibraryBooksMapper;
@@ -22,7 +22,7 @@ public class LibraryBook2ServiceImpl implements LibraryBook2Service{
 	
 	// 도서관 책 전체 조회 목록 출력 메서드
 	@Override
-	public ArrayList<LibraryBook2Dto> BookSelectAll(SearchCriteria scri) {
+	public ArrayList<LibraryBooks2Dto> getBookSelectAll(SearchCriteria scri) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -36,13 +36,13 @@ public class LibraryBook2ServiceImpl implements LibraryBook2Service{
 		 * [input]검색조건 외 페이지 기능 (hm)
 		 * [output] 책 목록(alist)
 		 */ 
-		ArrayList<LibraryBook2Dto> lblist =  lbm.BookSelectAll(hm);
+		ArrayList<LibraryBooks2Dto> lblist =  lbm.getBookSelectAll(hm);
 		return lblist;
 	}
 
 	// 도서관 책 전체 갯수(페이징)
 	@Override
-	public int BookTotalCount(SearchCriteria scri) {
+	public int getBookTotalCount(SearchCriteria scri) {
 		
 		 /* 페이징 기능 
 		  * - 책 리스트 전체 갯수
@@ -50,23 +50,23 @@ public class LibraryBook2ServiceImpl implements LibraryBook2Service{
 		  * [input] 검색조건 searchType / 검색어 keyword 외 페이지 기능(scri) 
 		  * [output] 조건에 따른 잭 전체 개수 cnt
 		  */ 
-		int cnt = lbm.BookTotalCount(scri);
+		int cnt = lbm.getBookTotalCount(scri);
 		return cnt;
 	}
 
 	// 도서관 책 상세 조회 매서드
 	@Override
-	public LibraryBook2Dto BookSelectOne(int lbidx) {
+	public LibraryBooks2Dto getBookSelectOne(int lbidx) {
 		/* 도서관 책 상세 조회
 		 * [input] 	도서관 책 인덱스(lbidx)
 		 * [output] 책 상세(lbd)
 		 */ 
-		LibraryBook2Dto lbd = lbm.BookSelectOne(lbidx);
+		LibraryBooks2Dto lbd = lbm.getBookSelectOne(lbidx);
 		return lbd;
 	}
 
 	@Override
-	public List<LibraryBook2Dto> selectTopLoanBooksThisMonth() {
+	public List<LibraryBooks2Dto> selectTopLoanBooksThisMonth() {
 		return lbm.selectTopLoanBooksThisMonth();
 	}
 

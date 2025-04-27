@@ -61,7 +61,7 @@
 	</select>
 	
 		
-	<select id="bookSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.LibraryBookDto">
+	<select id="bookSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.LibraryBooksDto">
 		SELECT B.coverImg, B.title, B.author, B.publisher, LB.lbidx, LB.code, LB.callName, LB.location, LB.dueDate, LB.status 
 		FROM LIBRARYBOOKS AS LB
 		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'

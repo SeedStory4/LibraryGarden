@@ -29,9 +29,9 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping("/userJoinForm.do")
-	public String userJoinForm() {
+	public String getUserJoinForm() {
 
-	logger.info("약관 동의 완료 → 회원가입 입력 페이지로 이동");
+	logger.debug("약관 동의 완료 → 회원가입 입력 페이지로 이동");
 
 	return "user/user/userJoin"; // 실제 회원가입 입력 form
 
@@ -42,44 +42,44 @@ public class UserController {
 
 	@GetMapping("/userJoin.do")
 
-	public String userJoin() {
+	public String getUserJoin() {
 
 	return "user/user/userPrivacyPolicy";
 
 	}
 
     @GetMapping("/userLogin.do")
-    public String userLogin() {
+    public String getUserLogin() {
         return "user/user/userLogin";
     }
 
     @GetMapping("/userSearchId.do")
-    public String userSearchId() {
+    public String getUserSearchId() {
         return "user/user/userSearchId";
     }
 
     @GetMapping("/userFoundId.do")
-    public String userFoundId() {
+    public String getUserFoundId() {
         return "user/user/userFoundId";
     }
 
     @GetMapping("/userSearchPassword.do")
-    public String userSearchPassword() {
+    public String getUserSearchPassword() {
         return "user/user/userSearchPassword";
     }
 
     @GetMapping("/userFoundPassword.do")
-    public String userFoundPassword() {
+    public String getUserFoundPassword() {
         return "user/user/userFoundPassword";
     }
     @RequestMapping("/jusoPopup.do")
-    public String jusoPopup() {
+    public String getJusoPopup() {
         return "user/user/jusoPopup";
     }
     
     
     @PostMapping("/userJoinAction.do")
-    public String userJoinAction(UserVo user, RedirectAttributes rttr) {
+    public String getUserJoinAction(UserVo user, RedirectAttributes rttr) {
         
         try {
             // 마지막 userNumber 가져오기
@@ -91,11 +91,11 @@ public class UserController {
             user.setUserNumber(formattedNumber);
 
             userService.insertUser(user);
-            logger.info("회원가입 성공 - ID: {}, userNumber: {}", user.getId(), formattedNumber);
+            logger.debug("회원가입 성공 - ID: {}, userNumber: {}", user.getId(), formattedNumber);
             rttr.addFlashAttribute("joinSuccessMessage", "회원가입이 완료되었습니다.");
             return "redirect:/user/user/userLogin.do";
         } catch (Exception e) {
-            logger.error("회원가입 중 오류 발생", e);
+            logger.debug("회원가입 중 오류 발생", e);
             rttr.addFlashAttribute("errorMessage", "회원가입 중 오류가 발생했습니다.");
             return "redirect:/user/user/userJoin.do";
         }

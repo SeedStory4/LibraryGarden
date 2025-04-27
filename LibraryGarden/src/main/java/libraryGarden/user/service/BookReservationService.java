@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.ReservationDto;
 import libraryGarden.domain.SearchCriteria;
 
@@ -13,7 +13,7 @@ public interface BookReservationService {
 	public int bookReservationTotalCount(SearchCriteria scri, String filter); // 예약 총 갯수
 	public ArrayList<ReservationDto> bookReservationSelectAll(SearchCriteria scri, String filter); // 예약 모든 리스트 가져오기
 	public int bookTotalCount(SearchCriteria scri, String filter); // 책 총 갯수
-	public ArrayList<LibraryBookDto> bookSelectAll(SearchCriteria scri, String filter); // 책 모든 리스트 가져오기
+	public ArrayList<LibraryBooksDto> bookSelectAll(SearchCriteria scri, String filter); // 책 모든 리스트 가져오기
     // 신규 추가 메소드: 해당 도서(lbidx)의 예약/대출 정보를 기반으로 예약 불가능한 날짜 목록 반환
     public List<Map<String, String>> getUnavailableDatesWithReasons(int lbidx, String userNumber);
     // 예약 등록 메소드 추가

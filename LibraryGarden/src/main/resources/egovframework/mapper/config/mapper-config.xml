@@ -12,12 +12,13 @@
 	
 	<!-- Type Aliases 설정-->
 	<typeAliases>
-		<typeAlias alias="bv"				type="libraryGarden.domain.BookVo"/>
+		<typeAlias alias="bv"				type="libraryGarden.domain.BooksVo"/>
 		<typeAlias alias="av"				type="libraryGarden.domain.ApprovalVo"/>
 		<typeAlias alias="ad"				type="libraryGarden.domain.ApprovalDto"/>
-		<typeAlias alias="lbd"				type="libraryGarden.domain.LibraryBookDto"/>
+		<typeAlias alias="lbd"				type="libraryGarden.domain.LibraryBooksDto"/>
 		<typeAlias alias="rd"				type="libraryGarden.domain.RequestDto"/>
 		<typeAlias alias="lbv"				type="libraryGarden.domain.LibraryBooksVo"/>
+		<typeAlias alias="lv"				type="libraryGarden.domain.LoanVo"/>
 	</typeAliases>
     
 </configuration>

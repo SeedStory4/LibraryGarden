@@ -35,8 +35,8 @@
 		          <input type="password" name="passwordConfirm" class="user-A-input mb-30" placeholder="비밀번호 확인" required>
 		          <input type="tel" name="phone" pattern="^\+?\d{10,15}$" class="user-A-input mb-30" placeholder="휴대전화번호 ( 예> 01012345678 )" required>
 		          <input type="email" name="email" class="user-A-input mb-30" placeholder="이메일" required>
-		          <input type="text" name="address" id="address" class="user-A-input mb-30" placeholder="주소" required readonly>
-				  <button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30">주소 검색</button>
+		          <input type="text" name="address" id="address" class="user-A-input mb-17" placeholder="주소" required readonly>
+				  <button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30 mb-30">주소 검색</button>
 
 		
 		          <!-- 버튼들 form 안에 위치 -->
