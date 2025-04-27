@@ -16,15 +16,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import libraryGarden.admin.service.AdminApproval2Service;
+import libraryGarden.admin.service.AdminApprovalService;
 import libraryGarden.admin.service.AdminBookCUDService;
 import libraryGarden.admin.service.AdminCategoryService;
 import libraryGarden.admin.service.AdminLibraryBooksService;
+import libraryGarden.cmm.util.AladdinOpenAPI;
 import libraryGarden.cmm.util.UrlEncoder;
+import libraryGarden.domain.ApiBookPageDto;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.PageMaker;
@@ -59,7 +63,7 @@ public class AdminBookController {
 
 	// AdminApproval2Service 주입
 	@Autowired(required = false)
-	private AdminApproval2Service adminApprovalService;
+	private AdminApprovalService adminApprovalService;
 	
 	// AdminLibraryBooksService 주입
 	@Autowired(required = false)
@@ -76,6 +80,9 @@ public class AdminBookController {
 	// PageMaker 주입 (페이징 기능)
 	@Autowired(required = false)
 	private PageMaker pm;
+	
+	@Autowired(required = false)
+	AladdinOpenAPI aladdinOpenAPI;
 
 	// 도서 조회 목록 페이지 이동
 	@GetMapping("/bookList.do")
@@ -349,5 +356,54 @@ public class AdminBookController {
 		return "redirect:/admin/book/"+lbv.getLbidx()+"/bookDetail.do"; 
 
 	}
+	
+	// 도서 목록 페이지 이동(팝업)
+		@ResponseBody
+		@RequestMapping(value="/bookList.do", method = RequestMethod.POST)
+		public HashMap<String, Object> bookList(
+				@RequestParam(value = "searchType", defaultValue = "title") String searchType,
+				@RequestParam(value = "keyword", defaultValue = "") String keyword,
+				@RequestParam(value = "page", defaultValue = "1") int page
+			 ) {
+						
+			 logger.debug("bookList 들어옴");
+
+			// 현재 페이지 저장
+		     SearchCriteria scri = new SearchCriteria();
+		     scri.setPage(page);
+			 pm.setScri(scri);
+
+		     // API를 위해 사용자가 입력한 검색조건과 검색어 및 현재 페이지 세팅
+		     int start = page;
+		     String searchWord = keyword;
+		     String queryType = searchType;
+		     
+		 	 HashMap<String, Object> hm = new HashMap<String, Object>();
+		 	 List<BooksVo> alist = new ArrayList<>();  // List는 인터페이스이기 때문에 객체 생성을 못함 -> List<>()가 아닌 ArrayList<>()로 초기화
+		 	int totalCount = 0;
+		 	
+		     try {
+		    	ApiBookPageDto abpd = aladdinOpenAPI.searchBooksList(searchWord, queryType, start);
+
+		        if (abpd != null && !abpd.getBlist().isEmpty()) {
+
+		            alist = abpd.getBlist();
+		            totalCount = abpd.getTotalCount();
+		            
+		        }
+
+		     } catch (Exception e) {
+		        e.printStackTrace();
+		     }
+		     
+	         // 페이징을 위한 전체 데이터 갯수 저장
+			 pm.setTotalCount(totalCount);
+				
+			 hm.put("alist", alist);  // 책 리스트
+			 hm.put("pm", pm);  // 페이징 정보
+			 
+			 return hm;
+			
+		}
 
 }

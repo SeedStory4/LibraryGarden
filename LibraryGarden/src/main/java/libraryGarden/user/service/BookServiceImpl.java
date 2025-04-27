@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import libraryGarden.domain.BooksVo;
-import libraryGarden.user.mapper.Book1Mapper;
+import libraryGarden.user.mapper.BookMapper;
 
 
 /** [설명] Book1Service 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
@@ -17,10 +17,10 @@ import libraryGarden.user.mapper.Book1Mapper;
  * @author Siyeon
  */
 @Service
-public class Book1ServiceImpl implements Book1Service{
+public class BookServiceImpl implements BookService{
 
 	@Autowired
-	private Book1Mapper bm;
+	private BookMapper bm;
 	
 	// isbn 으로 도서 데이터 여부 확인 메서드
 	@Override
