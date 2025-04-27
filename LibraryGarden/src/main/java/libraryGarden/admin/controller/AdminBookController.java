@@ -287,14 +287,18 @@ public class AdminBookController {
 	// 도서 등록에서 등록한 도서 리스트 조회 ajax
 	@PostMapping("/bookWriteList.do")
 	@ResponseBody
-	public HashMap<String, Object> getBookWriteList(@RequestParam(value = "page", defaultValue = "1") int page) {
+	public HashMap<String, Object> getBookWriteList(SearchCriteria scri) {
 		
 		logger.debug("bookWriteList 들어옴");
 	    String today = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
 	    
-		 // 페이징 저장
-		 SearchCriteria scri = new SearchCriteria();
-		 scri.setPage(page);
+		// 페이징
+		if (scri.getPage() == 0) {
+		    scri.setPage(1); // 기본 1페이지로
+		}
+		if (scri.getPerPageNum() == 0) {
+		    scri.setPerPageNum(12); // ⭐ perPageNum도 기본 12개로 세팅
+		}
 		 pm.setScri(scri);
 		 
 		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기

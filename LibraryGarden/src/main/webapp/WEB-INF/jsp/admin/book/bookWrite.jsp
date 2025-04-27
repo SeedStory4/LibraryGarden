@@ -163,7 +163,6 @@
 			            <select class="js-example-basic-single select shadow" name="searchType">
 			              <option value="title" selected>제목</option>
 			              <option value="author">서명/저자사항</option>
-			              <option value="name">신청자</option>
 			            </select>
 			            <input type="text" class="shadow w-520 input" name="keyword">						
 			            <button type="button" class="btn btn-primary btn-small" onClick="loadList(1, listUrl)">검색</button>
@@ -335,7 +334,7 @@
 					              <tbody>`;
 					     if(blist.length == 0) {
 					    	 listcontent += `<tr>
-									<td colspan="7" class="center">검색된 도서가 없습니다.</td>
+									<td colspan="7" class="center">도서가 없습니다.</td>
 								</tr>`;
 					     } else {
 							 for(var i = 0; i < blist.length; i++){
@@ -560,12 +559,17 @@
 		    });
 		}
 	    
-	    // 등록된 도서 정보 리스트 가지고 오기
 		function loadBookList(page) {
+		    const listUrl = "${pageContext.request.contextPath}/admin/book/bookWriteList.do";  // ⭐ URL을 따로 뺌
+		    loadBookListInner(page, listUrl);
+		}
+		
+	    // 등록된 도서 정보 리스트 가지고 오기
+		function loadBookListInner(page, listUrl) {
 		
 			$.ajax({
 				type: "post",
-				url: "${pageContext.request.contextPath}/admin/book/bookWriteList.do",
+				url: listUrl,
 				dataType: "json",
 				data: {
 					page: page
@@ -575,6 +579,14 @@
 					const blist = result.bwlist;
 					const pm = result.bwpm;
 					let listHtml  = "";
+
+					const scri = pm.scri;   // 따로 꺼내기!
+
+					console.log(pm.startPage, pm.endPage, scri.page); 
+					
+					console.log(pm);
+					console.log(pm.startPage, pm.endPage, pm.scri); 
+					
 
 					// 테이블 생성
 					listHtml  += `
@@ -605,7 +617,7 @@
 							</thead>
 							<tbody>`;
 					if (blist.length === 0) {
-						listHtml  += `<tr><td colspan="9" class="center">등록된 도서가 없습니다.</td></tr>`;
+						listHtml  += `<tr><td colspan="9" class="center">도서가 없습니다.</td></tr>`;
 					} else {
 						for (let i = 0; i < blist.length; i++) {
 							const item = blist[i];
@@ -630,22 +642,45 @@
 							</tbody>
 						</table>
 					`;
-		
-					// 페이징 처리
-					let paging = `<ul class="paging flex justify-center">`;
-					if (pm.prev) {
-						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${pm.startPage - 1})">◀</a></li>`;
-					}
-					for (let i = pm.startPage; i <= pm.endPage; i++) {
-						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${i})" class="${i == pm.scri.page ? 'on' : ''}">${i}</a></li>`;
-					}
-					if (pm.next) {
-						paging += `<li><a href="javascript:void(0);" onclick="loadBookList(${pm.endPage + 1})">▶</a></li>`;
-					}
-					paging += `</ul>`;
-		
-					// HTML 삽입
-					document.querySelector(".book-write-list").innerHTML = listHtml + paging;
+							 
+					 let pagecontent = `<ul class="paging flex justify-center">`;
+					 
+					 if(Boolean(pm.prev)) {
+						 pagecontent += 
+							 `<li>
+				          		<a class="pointer" onClick="loadBookListInner(\${pm.startPage - 1}, '\${listUrl}')" aria-label="Previous">◀</a>
+				        	  </li>`;
+					 }
+					 
+					 for(var i = Number(pm.startPage); i <= Number(pm.endPage); i++){
+						 pagecontent += 
+							 `<li>
+						 		<a class="pointer`;
+						 
+						 if(i == Number(pm.scri.page)) {
+							pagecontent += ` on`;
+						 }
+						 
+						 pagecontent += 
+							 `" onClick="loadBookListInner(\${i}, '\${listUrl}')">\${i}</a>
+						 	</li>`;
+					 }
+					 
+					 if(Boolean(pm.next) && Number(pm.endPage) > 0) {
+						 pagecontent += 
+							 `<li class="page-item">
+				          		<a class="pointer" onClick="loadBookListInner(\${pm.endPage + 1}, '\${listUrl}')" aria-label="Next">▶</a>
+				        	  </li>`;
+					 }
+
+					 pagecontent += `</ul>`;
+					 
+					 // 3. html 생성
+					 const html = listHtml + pagecontent;
+
+
+
+					document.querySelector(".book-write-list").innerHTML = listHtml + pagecontent;
 				},
 				error: function() {
 					alert("도서 목록 불러오기 실패");
