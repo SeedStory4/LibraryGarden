@@ -70,7 +70,9 @@
 						<p class="font-767678-18">주소</p>						
 						<input type="text" name="address" id="address" class="user-A-input mb-17" value="${user.address}" placeholder="주소" required readonly>
 						<br>
-				  		<button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30">주소검색</button>
+						<div class="draft-actions-end">
+				  			<button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30 ml-500">주소검색</button>
+				  		</div>
 					</div>
 					
 					<div class="mb-21">
