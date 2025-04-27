@@ -50,7 +50,7 @@
 							<span class="info-title label-title">● 제목</span> <span class="info-content title m-0 p-0">도서를 선택해주세요.</span>
 						</p>
 						<p>
-							<span class="info-title">● 부제</span> <span class="info-content subtitle">도서를 선택해주세요.</span>
+							<span class="info-title">● 부제</span> <span class="info-content subTitle">도서를 선택해주세요.</span>
 						</p>
 						<p>
 							<span class="info-title">● 서명/저자사항</span> <span class="info-content author">도서를 선택해주세요.</span>
@@ -447,11 +447,11 @@
 				         document.querySelector(".label-title").innerText = labelTitle;
 				         document.querySelector(".draft-info .title").innerText = title;
 				         
-						 let subtitle = "-";
-				         if(bv.subtitle != undefined) {
-				        	 subtitle = bv.subtitle;
+						 let subTitle = "-";
+				         if(bv.subTitle != undefined) {
+				        	 subTitle = bv.subTitle;
 				         }
-				         document.querySelector(".subtitle").innerText = subtitle;
+				         document.querySelector(".subTitle").innerText = subTitle;
 				         document.querySelector(".author").innerText = bv.author;
 				         document.querySelector(".publisher").innerText = bv.publisher;
 				         document.querySelector(".publishedYear").innerText = bv.publishedYear;

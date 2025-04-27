@@ -11,8 +11,8 @@
 	
 	<!-- 도서 데이터 삽입 -->
     <insert id="insertBook" parameterType="bv">
-	    INSERT INTO BOOKS(coverImg, title, originalTitle, subtitle, author, publisher, publishedYear, totalPages, isbn, sizeWidth, sizeHeight, weight, category, introduction, price) 
-		VALUES(#{coverImg}, #{title}, #{originalTitle}, #{subtitle}, #{author}, #{publisher}, #{publishedYear}, #{totalPages}, #{isbn}, #{sizeWidth}, #{sizeHeight}, #{weight}, #{category}, #{introduction}, #{price})
+	    INSERT INTO BOOKS(coverImg, title, originalTitle, subTitle, author, publisher, publishedYear, totalPages, isbn, sizeWidth, sizeHeight, weight, category, introduction, price) 
+		VALUES(#{coverImg}, #{title}, #{originalTitle}, #{subTitle}, #{author}, #{publisher}, #{publishedYear}, #{totalPages}, #{isbn}, #{sizeWidth}, #{sizeHeight}, #{weight}, #{category}, #{introduction}, #{price})
     </insert>
     
 	<!-- isbn 으로 책 데이터 중 bidx 가지고 옴 -->
