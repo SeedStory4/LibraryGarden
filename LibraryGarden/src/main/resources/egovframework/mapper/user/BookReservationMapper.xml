@@ -212,15 +212,20 @@
 	</select>
 	
 	  <!-- ① 중복 예약 검사용 -->
-  <select id="countActiveReservationByUserAndBook" parameterType="map" resultType="int">
-    SELECT COUNT(*)
-      FROM RESERVATION r
-      JOIN `USER` u ON r.uidx = u.uidx
-     WHERE r.lbidx      = #{lbidx}
-       AND u.userNumber = #{userNumber}
-       AND r.status    IN ('예약중','수령완료')
-       AND r.delyn      = 'N'
-  </select>
+<select id="countActiveReservationByUserAndBook" parameterType="map" resultType="int">
+  SELECT COUNT(*)
+  FROM RESERVATION r
+  JOIN `USER` u ON r.uidx = u.uidx
+  LEFT JOIN LOAN l ON r.lbidx = l.lbidx AND r.uidx = l.uidx
+  WHERE r.lbidx = #{lbidx}
+    AND u.userNumber = #{userNumber}
+    AND r.status IN ('예약중', '수령완료')
+    AND r.delyn = 'N'
+    AND (
+      r.status = '예약중'
+      OR (r.status = '수령완료' AND l.returnDate IS NULL)
+    )
+</select>
 	
 	
 	
