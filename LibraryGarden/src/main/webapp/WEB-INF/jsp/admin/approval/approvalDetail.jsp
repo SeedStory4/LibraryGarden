@@ -39,7 +39,7 @@
 							<span class="info-title">● 부제</span>
 							<span class="info-content">
 								<c:choose>
-									<c:when test="${not empty requestScope.bv.subtitle}">${requestScope.bv.subtitle}</c:when>
+									<c:when test="${not empty requestScope.bv.subTitle}">${requestScope.bv.subTitle}</c:when>
 									<c:otherwise>-</c:otherwise>
 								</c:choose>
 							</span>

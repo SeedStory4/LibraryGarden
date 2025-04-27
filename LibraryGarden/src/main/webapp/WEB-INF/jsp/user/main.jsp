@@ -46,7 +46,7 @@
 			                </div>
 			                <div class="book-info-row">
 			                  <p class="info-title">부제</p>
-			                  <p class="info-content" title="${book.subtitle}">${book.subtitle}</p>
+			                  <p class="info-content" title="${book.subTitle}">${book.subTitle}</p>
 			                </div>
 			                <div class="book-info-row">
 			                  <p class="info-title">서명/저자사항</p>
@@ -94,10 +94,10 @@
 			                </div>
 			                <div class="book-info-row">
 			                  <p class="info-title">부제</p>
-			                  <p class="info-content" title="${book.subtitle}">
+			                  <p class="info-content" title="${book.subTitle}">
 			                    <c:choose>
-			                      <c:when test="${not empty book.subtitle}">
-			                        ${book.subtitle}
+			                      <c:when test="${not empty book.subTitle}">
+			                        ${book.subTitle}
 			                      </c:when>
 			                      <c:otherwise>-</c:otherwise>
 			                    </c:choose>

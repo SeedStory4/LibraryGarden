@@ -20,7 +20,7 @@
 		</if>
 	</sql>
 	
-  	<select id="approvalTotalCount" parameterType="HashMap" resultType="int">
+  	<select id="getApprovalTotalCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*) AS cnt 
 		FROM APPROVAL AS A 
 		JOIN USER AS U ON A.uidx = U.uidx 
@@ -30,7 +30,7 @@
 		<include refid="search"/>
 	</select>
 	
- 	<select id="approvalSelectAll" parameterType="HashMap" resultType="ad">
+ 	<select id="getApprovalSelectAll" parameterType="HashMap" resultType="ad">
 		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, A.aidx, A.regDate, A.status, A.rejectionReason 
 		<!-- APPROVAL 테이블의 uidx와 USER 테이블의 uidx를 JOIN하여 USER 정보를 가져온다. -->
 		FROM APPROVAL AS A 
@@ -50,7 +50,7 @@
 		ORDER BY A.aidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
-	<select id="approvalSelectOne" parameterType="int" resultType="bv">
+	<select id="getApprovalSelectOne" parameterType="int" resultType="bv">
 		SELECT B.* 
 		FROM APPROVAL AS A 
 		LEFT JOIN REQUEST AS RQ ON RQ.rqidx = A.rqidx 
@@ -58,25 +58,25 @@
 		WHERE A.delyn = 'N' and aidx = #{aidx}
 	</select>
 	
-	<update id="approvalDelete" parameterType="int">
+	<update id="deleteApproval" parameterType="int">
 		UPDATE APPROVAL SET delyn = 'Y', modify = now() WHERE aidx = #{aidx}
 	</update>
 	
 	<!-- 게시글 등록 후 이동할 상세페이지에서 게시글 내용을 보여주기 위해 새로 등록한 게시글의 aidx를 maxAidx 안에 넣어서 가져온다.(auto increment만 가능) -->
-	<insert id="approvalInsert" parameterType="HashMap" useGeneratedKeys="true" keyProperty="maxAidx">
+	<insert id="insertApproval" parameterType="HashMap" useGeneratedKeys="true" keyProperty="maxAidx">
   		INSERT INTO APPROVAL(uidx, rqidx, bidx) 
 		VALUES(#{uidx}, #{rqidx}, #{bidx})
 	</insert>
 	
-	<select id="approvalSelectAv" parameterType="int" resultType="av">
+	<select id="getApprovalSelectAv" parameterType="int" resultType="av">
 		SELECT * FROM APPROVAL WHERE delyn = 'N' and aidx = #{aidx}
 	</select>
 	
-	<update id="approvalUpdate" parameterType="HashMap">
+	<update id="updateApproval" parameterType="HashMap">
   		UPDATE APPROVAL SET rqidx = #{rqidx}, bidx = #{bidx}, modify = now() WHERE aidx = #{aidx}
 	</update>
 	
-	<update id="processingUpdate" parameterType="av">
+	<update id="updateApprovalProcessing" parameterType="av">
   		UPDATE APPROVAL SET status = #{status}, rejectionReason = #{rejectionReason}, approvalDate = now() WHERE aidx = #{aidx}
 	</update>
 </mapper>

@@ -48,12 +48,12 @@ public class AdminApprovalController {
 	AladdinOpenAPI aladdinOpenAPI;
 	
 	@RequestMapping(value="/approvalList.do")
-	public String approvalList(
+	public String getApprovalList(
 			SearchCriteria scri,
 			ApprovalDto ad,
 			Model model) {
 		 
-		 logger.debug("📝 approvalList 들어옴");
+		 logger.debug("📝 getApprovalList 들어옴");
 
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 pm.setScri(scri);
@@ -62,11 +62,11 @@ public class AdminApprovalController {
 		 String filter = ad.getStatus();
 		 
 		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
-		 int cnt = approvalService.approvalTotalCount(scri, filter);
+		 int cnt = approvalService.getApprovalTotalCount(scri, filter);
 		 pm.setTotalCount(cnt);
 		
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
-		 ArrayList<ApprovalDto> alist = approvalService.approvalSelectAll(scri, filter);
+		 ArrayList<ApprovalDto> alist = approvalService.getApprovalSelectAll(scri, filter);
 
 		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
 		 UrlEncoder encoder = new UrlEncoder();
@@ -80,17 +80,17 @@ public class AdminApprovalController {
 	}
 
 	@RequestMapping(value="/{aidx}/approvalDetail.do")
-	public String approvalDetail(
+	public String getApprovalDetail(
 			@PathVariable("aidx") int aidx,
 			Model model) {
 		
-		logger.debug("📝 approvalDetail 들어옴");
+		logger.debug("📝 getApprovalDetail 들어옴");
 		
 		// 도서 정보 DB에서 가져오기
-		BooksVo bv = approvalService.approvalSelectOne(aidx);
+		BooksVo bv = approvalService.getApprovalSelectOne(aidx);
 
 		// 본인이 작성한 기안인지 확인 및 기안의 상태값 확인하기 위해 DB에서 av 정보 가져오기
-		ApprovalVo av = approvalService.approvalSelectAv(aidx);	
+		ApprovalVo av = approvalService.getApprovalSelectAv(aidx);	
 		
 		model.addAttribute("bv", bv);
 		model.addAttribute("av", av);
@@ -99,21 +99,21 @@ public class AdminApprovalController {
 	}
 	
 	@PostMapping(value="/{aidx}/approvalDeleteAction.do")
-	public String approvalDeleteAction(
+	public String deleteApproval(
 			@PathVariable("aidx") int aidx,
 			RedirectAttributes rttr) {
 		
-		logger.debug("📝 approvalDeleteAction 들어옴");		
+		logger.debug("📝 deleteApproval 들어옴");
 		
 		// aidx로 ApprovalVo 가져오기
-		ApprovalVo av = approvalService.approvalSelectAv(aidx);
+		ApprovalVo av = approvalService.getApprovalSelectAv(aidx);
 
 		// 이동할 주소 초기화
 		String path = "";
 		
 		try {
 			// 해당 결재 게시글의 delyn 값 Y로 변경 및 희망도서로 등록한 경우 희망도서의 상태를 "신청대기"로 변경.
-			int value = approvalService.approvalDelete(av, "신청대기");
+			int value = approvalService.deleteApproval(av, "신청대기");
 			
 			// 삭제 후 이동할 url 및 메세지 설정
 			path = "redirect:/admin/approval/approvalList.do";
@@ -129,15 +129,15 @@ public class AdminApprovalController {
 	}
 
 	@RequestMapping(value="/approvalWrite.do")
-	public String approvalWrite() {
+	public String writeApproval() {
 		
-		logger.debug("📝 approvalWrite 들어옴");
+		logger.debug("📝 writeApproval 들어옴");
 
 		return "admin/approval/approvalWrite";
 	}
 		
 	@PostMapping(value="/approvalWriteAction.do")
-	public String approvalWriteAction(
+	public String insertApproval(
 			@RequestParam(value = "type") String type,
 			@RequestParam(value = "num") String num,
 			HttpServletRequest request,
@@ -145,7 +145,7 @@ public class AdminApprovalController {
 			Model model
 			) {
 		
-		logger.debug("📝 approvalWriteAction 들어옴");
+		logger.debug("📝 insertApproval 들어옴");
 		
 		ApprovalVo av = new ApprovalVo();
 		BooksVo bv = new BooksVo();
@@ -167,7 +167,7 @@ public class AdminApprovalController {
 		try {
 
 			// 작성한 게시글 정보를 DB에 저장 및 희망도서로 등록한 경우 희망도서의 상태를 "신청중"으로 변경. 저장이 성공하면 등록된 게시글의 aidx가 aidx에 저장됨.
-			int aidx = approvalService.approvalInsert(av, bv, "신청중");
+			int aidx = approvalService.insertApproval(av, bv, "신청중");
 			
 			// 게시글 등록 후 이동할 url 및 메세지 설정
 			rttr.addFlashAttribute("msg", "글쓰기가 성공했습니다.");
@@ -185,18 +185,18 @@ public class AdminApprovalController {
 	// 희망 도서 목록 페이지 팝업
 	@ResponseBody
 	@RequestMapping(value="/approvalSelect.do", method = RequestMethod.POST)
-	public HashMap<String, Object> approvalSelect(
+	public HashMap<String, Object> SelectApproval(
 			@RequestParam(value = "type") String type,
 			@RequestParam(value = "num") String num
 		 ) {
 		
-		logger.debug("📝 approvalSelect 들어옴");
+		logger.debug("📝 SelectApproval 들어옴");
 		
 		BooksVo bv = null;
 		
 		if(type.equals("rqidx")) {
 			// 도서 정보 DB에서 가져오기
-			bv = bookRequestService.bookRequestSelectOne(Integer.parseInt(num));
+			bv = bookRequestService.getBookRequestSelectOne(Integer.parseInt(num));
 		} else {
 			// 도서 정보 알라딘 API에서 가져오기
 		    try {
@@ -215,14 +215,14 @@ public class AdminApprovalController {
 	}
 	
 	@RequestMapping(value="/{aidx}/approvalModify.do")
-	public String approvalModify(
+	public String modifyApproval(
 			@PathVariable("aidx") int aidx,
 			Model model) {
 		
-		logger.debug("📝 approvalModify 들어옴");
+		logger.debug("📝 modifyApproval 들어옴");
 		
 		// 도서 정보 DB에서 가져오기
-		BooksVo bv = approvalService.approvalSelectOne(aidx);
+		BooksVo bv = approvalService.getApprovalSelectOne(aidx);
 		
 		model.addAttribute("bv", bv);
 		model.addAttribute("aidx", aidx);
@@ -232,7 +232,7 @@ public class AdminApprovalController {
 	}
 	
 	@RequestMapping(value="/{aidx}/approvalModifyAction.do", method=RequestMethod.POST)
-	public String approvalModifyAction(
+	public String updateApproval(
 			@RequestParam(value = "type") String type,
 			@RequestParam(value = "num") String num,
 			@PathVariable("aidx") int aidx,
@@ -240,7 +240,7 @@ public class AdminApprovalController {
 			RedirectAttributes rttr
 			) {
 		
-		logger.debug("📝 approvalModifyAction 들어옴");
+		logger.debug("📝 updateApproval 들어옴");
 
 		ApprovalVo av = new ApprovalVo();
 		BooksVo bv = new BooksVo();
@@ -260,7 +260,7 @@ public class AdminApprovalController {
 		try {
 			// 수정한 게시글 정보를 DB에 저장 및 기존에 등록된 도서가 희망도서로 등록한 경우 희망도서의 상태를 "신청대기"로 변경.
 			// 변경한 도서가 희망도서로 등록한 경우 희망도서의 상태를 "신청중"으로 변경.
-			int value = approvalService.approvalUpdate(av, bv);
+			int value = approvalService.updateApproval(av, bv);
 			
 			// 게시글 수정 후 이동할 url 및 메세지 설정
 			rttr.addFlashAttribute("msg", "글수정이 성공했습니다.");
@@ -278,18 +278,18 @@ public class AdminApprovalController {
 	// 기안 반려/승인
 	@ResponseBody
 	@RequestMapping(value="/{aidx}/approvalProcessingAction.do", method=RequestMethod.POST)
-	public HashMap<String, Object> approvalProcessingAction(
+	public HashMap<String, Object> updateApprovalProcessing(
 			ApprovalVo av,
 			@PathVariable("aidx") int aidx
 			) {
 		
-		logger.debug("📝 approvalProcessingAction 들어옴");
+		logger.debug("📝 updateApprovalProcessing 들어옴");
 		
 		// 해당 기안 반려를 위해 aidx를 av 안에 세팅
 		av.setAidx(aidx);
 		
 		// 기안 반려시 기안 상태를 "신청반려"로 변경 및 반려 사유 등록, 기안 승인시 기안 상태를 "신청완료"로 변경
-		int value = approvalService.approvalProcessing(av);
+		int value = approvalService.updateApprovalProcessing(av);
 		
 		HashMap<String, Object> hm = new HashMap<String, Object>();
 		hm.put("rejectionReason", av.getRejectionReason());

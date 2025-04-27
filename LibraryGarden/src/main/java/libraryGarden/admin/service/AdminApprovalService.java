@@ -9,20 +9,20 @@ import libraryGarden.domain.SearchCriteria;
 
 public interface AdminApprovalService {
 	
-	int approvalTotalCount(SearchCriteria scri, String filter);
+	int getApprovalTotalCount(SearchCriteria scri, String filter);
 	
-	public ArrayList<ApprovalDto> approvalSelectAll(SearchCriteria scri, String filter);
+	public ArrayList<ApprovalDto> getApprovalSelectAll(SearchCriteria scri, String filter);
 	
-	public BooksVo approvalSelectOne(int aidx);
+	public BooksVo getApprovalSelectOne(int aidx);
 	
-	public int approvalDelete(ApprovalVo av, String status) throws Exception;
+	public int deleteApproval(ApprovalVo av, String status) throws Exception;
 
-	public int approvalInsert(ApprovalVo av, BooksVo bv, String status) throws Exception;
+	public int insertApproval(ApprovalVo av, BooksVo bv, String status) throws Exception;
 
-	public ApprovalVo approvalSelectAv(int aidx);
+	public ApprovalVo getApprovalSelectAv(int aidx);
 
-	public int approvalUpdate(ApprovalVo av, BooksVo bv) throws Exception;
+	public int updateApproval(ApprovalVo av, BooksVo bv) throws Exception;
 	
-	public int approvalProcessing(ApprovalVo av);
+	public int updateApprovalProcessing(ApprovalVo av);
 	
 }

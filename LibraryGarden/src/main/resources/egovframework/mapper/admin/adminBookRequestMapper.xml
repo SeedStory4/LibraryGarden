@@ -31,17 +31,6 @@
 		<include refid="search"/>
 	</select>
 	
-	<!-- 신청한 희망 도서 책의 리스트(필터 포함) -->
- 	<select id="getBookRequestSelectAll" parameterType="HashMap" resultType="rd">
-		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, RQ.rqidx, RQ.regDate, RQ.status, RQ.rejectionReason
-		FROM REQUEST AS RQ
-		JOIN USER AS U ON RQ.uidx = U.uidx 
-		JOIN BOOKS AS B ON RQ.bidx = B.bidx 
-		WHERE RQ.delyn = 'N' 
-		<include refid="search"/>
-		ORDER BY RQ.rqidx DESC LIMIT #{startPageNum}, #{perPageNum};
-	</select>
-	
 	<!-- 신청한 희망 도서 책 상세 -->
 	<select id="getBookRequestSelectone" resultType="map">
 		SELECT B.coverImg, B.title, B.originalTitle, B.subTitle, B.author, B.publisher, B.publishedYear, B.isbn, B.totalPages, B.sizeWidth, B.sizeHeight, B.weight, B.category, B.introduction, B.price, U.name, U.userNumber, RQ.rqidx, RQ.status, DATE_FORMAT(RQ.regDate, '%Y.%m.%d') AS regDate, RQ.rejectionReason
@@ -57,18 +46,10 @@
 	    SET status = #{status}, rejectionReason = #{rejectionReason}
 	    WHERE rqidx = #{rqidx} 
     </update>
-    
-  	<select id="bookRequestTotalCount" parameterType="HashMap" resultType="int">
-		SELECT COUNT(*) AS cnt 
-		FROM REQUEST AS RQ 
-		JOIN USER AS U ON RQ.uidx = U.uidx 
-		JOIN BOOKS AS B ON RQ.bidx = B.bidx 
-		WHERE RQ.delyn = 'N' 
-		<include refid="search"/>
-	</select>
 	
- 	<select id="bookRequestSelectAll" parameterType="HashMap" resultType="rd">
-		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, RQ.rqidx, RQ.regDate  
+	<!-- 신청한 희망 도서 책의 리스트(필터 포함) -->
+ 	<select id="getBookRequestSelectAll" parameterType="HashMap" resultType="rd">
+		SELECT B.coverImg, B.title, B.author, B.publisher, U.name, U.userNumber, RQ.rqidx, RQ.regDate, RQ.status, RQ.rejectionReason
 		<!-- REQUEST 테이블의 uidx와 USER 테이블의 uidx를 JOIN하여 USER 정보를 가져온다. -->
 		FROM REQUEST AS RQ 
 		JOIN USER AS U ON RQ.uidx = U.uidx 
@@ -79,14 +60,14 @@
 		ORDER BY RQ.rqidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
-	<select id="bookRequestSelectOne" parameterType="HashMap" resultType="bv">
+	<select id="getBookRequestSelectOne" parameterType="HashMap" resultType="bv">
 		SELECT B.* 
 		FROM REQUEST AS RQ 
 		JOIN BOOKS AS B ON B.bidx = RQ.bidx 
 		WHERE RQ.delyn = 'N' and RQ.rqidx = #{rqidx} 
 	</select>
 	
-	<update id="statusUpdate" parameterType="HashMap">
+	<update id="updateStatus" parameterType="HashMap">
   		UPDATE REQUEST SET status = #{status}, modify = now() WHERE rqidx = #{rqidx}
 	</update>
 	

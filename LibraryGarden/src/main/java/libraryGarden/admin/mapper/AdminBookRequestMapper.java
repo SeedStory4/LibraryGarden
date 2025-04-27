@@ -42,12 +42,8 @@ public interface AdminBookRequestMapper {
 	 * @write 2024.03.23
 	 */
 	
-	public int bookRequestTotalCount(HashMap<String,Object> hm);
-	
-	public ArrayList<RequestDto> bookRequestSelectAll(HashMap<String,Object> hm);
+	public BooksVo getBookRequestSelectOne(int rqidx);
 
-	public BooksVo bookRequestSelectOne(int rqidx);
-
-	public int statusUpdate(HashMap<String,Object> hm);
+	public int updateStatus(HashMap<String,Object> hm);
 	
 }

@@ -33,7 +33,7 @@ public class AdminMainController {
 
 	 	    String filter = ""; // 전체 목록
 	 	    ArrayList<RequestDto> requestList = adminBookRequestService.getBookRequestSelectAll(scri, filter);
-	 	    ArrayList<ApprovalDto> approvalList = adminApprovalService.approvalSelectAll(scri, filter);
+	 	    ArrayList<ApprovalDto> approvalList = adminApprovalService.getApprovalSelectAll(scri, filter);
 	 	    
 
 	 	    model.addAttribute("requestList", requestList);

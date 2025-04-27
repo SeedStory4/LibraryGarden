@@ -34,20 +34,20 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	Book1Service bookService;
 	
 	@Override
-	public int approvalTotalCount(SearchCriteria scri, String filter) {
+	public int getApprovalTotalCount(SearchCriteria scri, String filter) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		hm.put("searchType", scri.getSearchType());
 		hm.put("keyword", scri.getKeyword());
 		hm.put("filter", filter);
 		
-		int cnt = am.approvalTotalCount(hm);
+		int cnt = am.getApprovalTotalCount(hm);
 		
 		return cnt;
 	}
 	
 	@Override
-	public ArrayList<ApprovalDto> approvalSelectAll(SearchCriteria scri, String filter) {
+	public ArrayList<ApprovalDto> getApprovalSelectAll(SearchCriteria scri, String filter) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -57,15 +57,15 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		hm.put("keyword", scri.getKeyword());
 		hm.put("filter", filter);
 		
-		ArrayList<ApprovalDto> alist = am.approvalSelectAll(hm);
+		ArrayList<ApprovalDto> alist = am.getApprovalSelectAll(hm);
 		
 		return alist;
 	}
 	
 	@Override
-	public BooksVo approvalSelectOne(int aidx) {
+	public BooksVo getApprovalSelectOne(int aidx) {
 		
-		BooksVo bv = am.approvalSelectOne(aidx);
+		BooksVo bv = am.getApprovalSelectOne(aidx);
 		
 		return bv;
 	};
@@ -73,15 +73,15 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	// 게시글 삭제와 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	public int approvalDelete(ApprovalVo av, String status) throws Exception{
+	public int deleteApproval(ApprovalVo av, String status) throws Exception{
 
 		if(av.getRqidx() != 0) {
 			// 삭제한 기안이 희망도서로 등록한 경우 희망도서의 상태를 신청대기로 변경
-			int value = bookRequestService.statusUpdate(av.getRqidx(), status);
+			int value = bookRequestService.updateStatus(av.getRqidx(), status);
 		}
 		
 		// 해당 결재 게시글의 delyn 값 Y로 변경하기
-		int cnt = am.approvalDelete(av.getAidx());
+		int cnt = am.deleteApproval(av.getAidx());
 		
 		return cnt;
 		
@@ -90,7 +90,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	// 게시글 등록과 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	public int approvalInsert(ApprovalVo av, BooksVo bv, String status) throws Exception{
+	public int insertApproval(ApprovalVo av, BooksVo bv, String status) throws Exception{
 		
 		// 희망도서선택으로 기안 등록하는 경우와 도서선택으로 기안 등록하는 경우 데이터가 다르므로 HashMap 사용
 		HashMap<String,Object> hm = new HashMap<String,Object>();
@@ -104,7 +104,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 			hm.put("bidx", null);
 
 			// 등록할 희망도서의 상태를 신청중으로 변경
-			int value2 = bookRequestService.statusUpdate(av.getRqidx(), status);
+			int value2 = bookRequestService.updateStatus(av.getRqidx(), status);
 			
 		} else {
 			// 도서선택으로 기안 등록하는 경우 도서 DB에 도서 정보 저장 필요(단, 이미 등록된 경우 생략)
@@ -126,7 +126,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 			hm.put("bidx", bidx);
 		}
 
-		int value = am.approvalInsert(hm);
+		int value = am.insertApproval(hm);
 	    
 		// 쿼리 반환값이 BigInteger 형식이므로 int 형식으로 변환 필요
 		int maxAidx = ((Number) hm.get("maxAidx")).intValue();
@@ -137,9 +137,9 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	};
 
 	@Override
-	public ApprovalVo approvalSelectAv(int aidx) {
+	public ApprovalVo getApprovalSelectAv(int aidx) {
 		
-		ApprovalVo av = am.approvalSelectAv(aidx);
+		ApprovalVo av = am.getApprovalSelectAv(aidx);
 		
 		return av;
 		
@@ -148,7 +148,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Override
 	// 게시글 수정과 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
 	@Transactional(rollbackFor=Exception.class)
-	public int approvalUpdate(ApprovalVo av, BooksVo bv) throws Exception{
+	public int updateApproval(ApprovalVo av, BooksVo bv) throws Exception{
 		
 		// 희망도서선택으로 기안 등록하는 경우와 도서선택으로 기안 등록하는 경우 데이터가 다르므로 HashMap 사용
 		HashMap<String,Object> hm = new HashMap<String,Object>();
@@ -157,9 +157,9 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		hm.put("aidx", av.getAidx());
 		
 		// 희망도서로 등록된 기안 수정시 수정전 희망도서 상태를 신청대기로 변경
-		ApprovalVo avOrigin = approvalSelectAv(av.getAidx());
+		ApprovalVo avOrigin = getApprovalSelectAv(av.getAidx());
 		if(avOrigin.getRqidx() != 0) {
-			int value2 = bookRequestService.statusUpdate(avOrigin.getRqidx(), "신청대기");
+			int value2 = bookRequestService.updateStatus(avOrigin.getRqidx(), "신청대기");
 		}
 		
 		if(av.getRqidx() != 0) {
@@ -168,7 +168,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 			hm.put("bidx", null);
 
 			// 등록할 희망도서의 상태를 신청중으로 변경
-			int value3 = bookRequestService.statusUpdate(av.getRqidx(), "신청중");
+			int value3 = bookRequestService.updateStatus(av.getRqidx(), "신청중");
 			
 		} else {
 			// 도서선택으로 기안 등록시 rqidx는 null로 저장
@@ -197,7 +197,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		}
 		
 		// 수정한 게시글 정보를 DB에 반영
-		int value = am.approvalUpdate(hm);
+		int value = am.updateApproval(hm);
 
 //		if (true) {
 //	        // 예외 발생 → 트랜잭션 rollback 테스트
@@ -207,7 +207,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		return value;
 	};
 	
-	public int approvalProcessing(ApprovalVo av) {
+	public int updateApprovalProcessing(ApprovalVo av) {
 		
 		if(av.getRejectionReason() != null) {
 			// 결재 반려
@@ -219,7 +219,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		}
 		
 		// 결재 정보를 DB에 반영
-		int value = am.approvalProcessingUpdate(av);
+		int value = am.updateApprovalProcessing(av);
 		
 		return value;
 		
