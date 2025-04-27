@@ -88,34 +88,24 @@
 				<table class="info-table">
 					<colgroup>
 						<col width="15%">
-						<col width="25%">
-						<col width="25%">
 						<col width="35%">
+						<col width="25%">
+						<col width="25%">
+
 					</colgroup>
 					<thead>
 						<tr>
 							<th>구분</th>
+							<th>분류</th>
 							<th>청구기호</th>
 							<th>자료실</th>
-							<th>분류</th>
+
 						</tr>
 					</thead>
 				
 					<tbody>
 						<tr>
 							<td >${hm.lastCode}</td>
-							<td class="call-number-container">
-								<span class="fixed-call-number">---.</span> 
-								<input type="text" class="input-call-number" value="">
-							</td>
-							<td>
-								<select class="js-example-basic-single select" name="location" data-width="wide">
-									<option value="">자료실 선택</option>
-									<option value="일반열람실">일반열람실</option>
-									<option value="어린이열람실">어린이열람실</option>
-									<option value="보존서고">보존서고</option>
-								</select>
-							</td>
 							<td>
 								<select class="js-example-basic-single select" id="parentCategory" name="parentCode">
 								    <option value="">대분류 선택</option>
@@ -128,6 +118,19 @@
 								    <option value="">소분류 선택</option>
 								</select>
 							</td>
+							<td class="call-number-container">
+								<span class="fixed-call-number">---.</span> 
+								<input type="text" class="input-call-number" value="">
+							</td>
+							<td>
+								<select class="js-example-basic-single select" name="location" data-width="wide">
+									<option value="">자료실 선택</option>
+									<option value="일반열람실">일반열람실</option>
+									<option value="어린이열람실">어린이열람실</option>
+									<option value="보존서고">보존서고</option>
+								</select>
+							</td>
+
 						</tr>
 					</tbody>
 				</table>
@@ -440,7 +443,7 @@
 						 
 						 let labelTitle = "● 제목";
 						 let title = bv.title;
-				         if(bv.originalTitle != undefined) {
+				         if(bv.originalTitle != undefined && bv.originalTitle != "" && bv.originalTitle != null) {
 					         title = bv.title + " / " + bv.originalTitle;
 					         labelTitle = "● 제목 / 원제";				         
 				         }

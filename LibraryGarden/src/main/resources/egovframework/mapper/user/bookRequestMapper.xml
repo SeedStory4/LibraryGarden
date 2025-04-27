@@ -11,13 +11,14 @@
     </insert>
 	
 	<!-- 사용자 희망 도서 신청을 조회하는 메서드 -->
-    <select id="getUserRequestInfo" resultType="map">
+    <select id="getUserRequestInfo" parameterType="HashMap"  resultType="map">
 		SELECT b.bidx, b.title, b.author, b.publisher, r.status, DATE_FORMAT(r.regDate, '%Y.%m.%d') AS regDate, r.rqidx, r.rejectionReason 
 		FROM request r
 		JOIN books b ON r.bidx = b.bidx
 		JOIN `user` u ON r.uidx = u.uidx
 		WHERE u.uidx = #{uidx} and u.delyn = "N" and b.delyn = "N" and r.delyn = "N"
-		ORDER BY r.regDate DESC;
+		ORDER BY r.regDate DESC LIMIT #{startPageNum}, #{perPageNum};
+		
     </select>
     
     <!-- 사용자 희망 도서 신청한 수를 조회하는 메서드 -->
