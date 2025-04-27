@@ -103,7 +103,7 @@ public class AdminApprovalController {
 			@PathVariable("aidx") int aidx,
 			RedirectAttributes rttr) {
 		
-		logger.info("📝 approvalDeleteAction 들어옴");		
+		logger.debug("📝 approvalDeleteAction 들어옴");		
 		
 		// aidx로 ApprovalVo 가져오기
 		ApprovalVo av = approvalService.approvalSelectAv(aidx);
@@ -131,7 +131,7 @@ public class AdminApprovalController {
 	@RequestMapping(value="/approvalWrite.do")
 	public String approvalWrite() {
 		
-		logger.info("📝 approvalWrite 들어옴");
+		logger.debug("📝 approvalWrite 들어옴");
 
 		return "admin/approval/approvalWrite";
 	}
@@ -145,7 +145,7 @@ public class AdminApprovalController {
 			Model model
 			) {
 		
-		logger.info("📝 approvalWriteAction 들어옴");
+		logger.debug("📝 approvalWriteAction 들어옴");
 		
 		ApprovalVo av = new ApprovalVo();
 		BooksVo bv = new BooksVo();
@@ -190,7 +190,7 @@ public class AdminApprovalController {
 			@RequestParam(value = "num") String num
 		 ) {
 		
-		logger.info("📝 approvalSelect 들어옴");
+		logger.debug("📝 approvalSelect 들어옴");
 		
 		BooksVo bv = null;
 		
@@ -240,7 +240,7 @@ public class AdminApprovalController {
 			RedirectAttributes rttr
 			) {
 		
-		logger.info("📝 approvalModifyAction 들어옴");
+		logger.debug("📝 approvalModifyAction 들어옴");
 
 		ApprovalVo av = new ApprovalVo();
 		BooksVo bv = new BooksVo();
@@ -283,7 +283,7 @@ public class AdminApprovalController {
 			@PathVariable("aidx") int aidx
 			) {
 		
-		logger.info("📝 approvalProcessingAction 들어옴");
+		logger.debug("📝 approvalProcessingAction 들어옴");
 		
 		// 해당 기안 반려를 위해 aidx를 av 안에 세팅
 		av.setAidx(aidx);

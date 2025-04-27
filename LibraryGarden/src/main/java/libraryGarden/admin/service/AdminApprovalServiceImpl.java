@@ -219,7 +219,7 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 		}
 		
 		// 결재 정보를 DB에 반영
-		int value = am.processingUpdate(av);
+		int value = am.approvalProcessingUpdate(av);
 		
 		return value;
 		

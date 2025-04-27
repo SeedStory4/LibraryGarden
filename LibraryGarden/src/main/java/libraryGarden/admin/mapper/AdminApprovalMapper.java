@@ -23,6 +23,6 @@ public interface AdminApprovalMapper {
 	
 	public int approvalUpdate(HashMap<String,Object> hm);
 
-	public int processingUpdate(ApprovalVo av);
+	public int approvalProcessingUpdate(ApprovalVo av);
 	
 }
