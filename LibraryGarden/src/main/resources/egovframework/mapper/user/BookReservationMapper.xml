@@ -56,7 +56,7 @@
 	<select id="bookTotalCount" parameterType="HashMap" resultType="int">
 		SELECT COUNT(*) AS cnt  
 		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'
+		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
 		<include refid="search"/>
 	</select>
 	
@@ -64,7 +64,7 @@
 	<select id="bookSelectAll" parameterType="HashMap" resultType="libraryGarden.domain.LibraryBooksDto">
 		SELECT B.coverImg, B.title, B.author, B.publisher, LB.lbidx, LB.code, LB.callName, LB.location, LB.dueDate, LB.status 
 		FROM LIBRARYBOOKS AS LB
-		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N'
+		JOIN BOOKS AS B ON LB.bidx = B.bidx WHERE B.delyn = 'N' AND LB.delyn = 'N'
 		<include refid="search"/>
 		ORDER BY LB.lbidx LIMIT #{startPageNum}, #{perPageNum};
 	</select>
@@ -177,26 +177,30 @@
   </select>
   
   		<!-- 내도서 목록 조회 -->
-	<select id="selectUserReservationList" parameterType="map" resultType="map">
-		SELECT
-			r.ridx,
-			@rownum := @rownum + 1 AS rownum,  <!-- 순번 생성 -->
-			b.title,
-			b.author,
-			b.publisher,
-			DATE_FORMAT(r.regDate, '%Y.%m.%d') AS regDate,
-			DATE_FORMAT(r.pickupDate, '%Y.%m.%d') AS pickupDate,
-			DATE_FORMAT(r.dueDate, '%Y.%m.%d') AS dueDate,
-			r.status
-		FROM RESERVATION r
-		JOIN USER u ON r.uidx = u.uidx
-		JOIN LIBRARYBOOKS lb ON r.lbidx = lb.lbidx
-		JOIN BOOKS b ON lb.bidx = b.bidx
-		CROSS JOIN (SELECT @rownum := 0) AS rnum
-		WHERE u.userNumber = #{userNumber}
-		ORDER BY r.regDate DESC
-		LIMIT #{startPageNum}, #{perPageNum}
-	</select>
+<select id="selectUserReservationList" parameterType="map" resultType="map">
+  SELECT
+    innerTable.*,
+    @rownum := @rownum + 1 AS rownum
+  FROM (
+    SELECT
+      r.ridx,
+      b.title,
+      b.author,
+      b.publisher,
+      DATE_FORMAT(r.regDate, '%Y.%m.%d') AS regDate,
+      DATE_FORMAT(r.pickupDate, '%Y.%m.%d') AS pickupDate,
+      DATE_FORMAT(r.dueDate, '%Y.%m.%d') AS dueDate,
+      r.status
+    FROM RESERVATION r
+    JOIN USER u ON r.uidx = u.uidx
+    JOIN LIBRARYBOOKS lb ON r.lbidx = lb.lbidx
+    JOIN BOOKS b ON lb.bidx = b.bidx
+    WHERE u.userNumber = #{userNumber}
+    ORDER BY r.ridx  DESC
+    LIMIT #{startPageNum}, #{perPageNum}
+  ) AS innerTable
+  CROSS JOIN (SELECT @rownum := #{startPageNum} + 1) AS r
+</select>
 
 
 	<!-- 내도서 예약 목록 전체 개수 조회 -->

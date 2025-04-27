@@ -31,31 +31,35 @@
 
 
 	<!-- 대출 목록 조회 -->
-	<select id="selectUserLoanList" parameterType="map" resultType="map">
-		SELECT
-		l.lidx,
-		@rownum := @rownum + 1 AS rownum,  <!-- 순차적인 숫자 생성 -->
-		b.title,
-		b.author,
-		b.publisher,  <!-- BOOKS 테이블에서 publisher 가져오기 -->
-		DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
-		DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
-		CASE WHEN l.returnDate IS NOT NULL
-		THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
-		ELSE '-'
-		END AS returnDate,
-		l.status,
-		l.extended
-		FROM LOAN l
-		JOIN USER u ON l.uidx = u.uidx
-		JOIN LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
-		JOIN BOOKS b ON lb.bidx = b.bidx
-		CROSS JOIN (SELECT @rownum := 0) AS r  <!-- 순차적인 번호를 위한 초기화 -->
-		WHERE u.userNumber = #{userNumber}
-		AND l.delyn = 'N'
-		ORDER BY l.loanDate DESC
-		LIMIT #{startPageNum}, #{perPageNum}
-	</select>
+<select id="selectUserLoanList" parameterType="map" resultType="map">
+  SELECT
+    innerTable.*,
+    @rownum := @rownum + 1 AS rownum
+  FROM (
+    SELECT
+      l.lidx,
+      b.title,
+      b.author,
+      b.publisher,
+      DATE_FORMAT(l.loanDate, '%Y.%m.%d') AS loanDate,
+      DATE_FORMAT(l.dueDate, '%Y.%m.%d') AS dueDate,
+      CASE 
+        WHEN l.returnDate IS NOT NULL THEN DATE_FORMAT(l.returnDate, '%Y.%m.%d')
+        ELSE '-'
+      END AS returnDate,
+      l.status,
+      l.extended
+    FROM LOAN l
+    JOIN USER u ON l.uidx = u.uidx
+    JOIN LIBRARYBOOKS lb ON l.lbidx = lb.lbidx
+    JOIN BOOKS b ON lb.bidx = b.bidx
+    WHERE u.userNumber = #{userNumber}
+    AND l.delyn = 'N'
+    ORDER BY l.lidx DESC
+    LIMIT #{startPageNum}, #{perPageNum}
+  ) AS innerTable
+  CROSS JOIN (SELECT @rownum := 0) AS r
+</select>
 
 	<!-- 대출 목록 전체 개수 조회 -->
 	<select id="selectUserLoanTotalCount" parameterType="String" resultType="int">

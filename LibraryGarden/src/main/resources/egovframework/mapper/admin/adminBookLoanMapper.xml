@@ -109,16 +109,16 @@
 	  </select>
 
 	<!-- 도서 대여 등록 -->
-    <insert id="insertBookLoan">
-      INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate, status)
-      VALUES (
-        (SELECT uidx FROM `USER` WHERE userNumber = #{userNumber}),
-        (SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code}),
-        NOW(),
-        DATE_ADD(NOW(), INTERVAL 6 DAY),
-        '대출중'
-      )
-    </insert>
+	<insert id="insertBookLoan">
+	  INSERT INTO LOAN (uidx, lbidx, loanDate, dueDate, status)
+	  VALUES (
+	    (SELECT uidx FROM `USER` WHERE userNumber = #{userNumber}),
+	    (SELECT lbidx FROM LIBRARYBOOKS WHERE code = #{code} AND delyn = 'N'),
+	    NOW(),
+	    DATE_ADD(NOW(), INTERVAL 6 DAY),
+	    '대출중'
+	  )
+	</insert>
 
 	<!-- 도서 상태 대출중으로 변경 -->
 	<update id="updateLibraryBookStatusToLoan">
@@ -185,10 +185,11 @@
 		)
 	</insert>
 	
-	<select id="selectLbidxByCode" parameterType="String" resultType="int">
+	<select id="selectLbidxByCode" parameterType="String" resultType="java.lang.Integer">
 	  SELECT lbidx
 	    FROM LIBRARYBOOKS
 	   WHERE code = #{code}
+	   AND delyn = 'N'
 	</select>
 	
 	<!-- 해당 도서 예약한 건이 있는지? -->

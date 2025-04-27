@@ -56,9 +56,12 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
         if (odCnt > 0) {
             throw new IllegalStateException("연체 중인 회원은 대출할 수 없습니다.");
         }
+        
+        Integer lbidx = alm.selectLbidxByCode(code);
+        if (lbidx == null) {
+            throw new IllegalStateException("없는 도서입니다.");
+        }
     	
-    	// 1) code → lbidx
-        int lbidx = alm.selectLbidxByCode(code);
 
         // 2) 예약대기 상태인 경우, 오늘 픽업예약자만 허용
         String status = alm.selectBookStatusByLbidx(lbidx);
@@ -75,7 +78,10 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
         String today = LocalDate.now().toString();
 
         // 3) 대출등록 & 도서상태 → 대출중
-        alm.insertBookLoan(userNumber, code);
+        int affectedRows = alm.insertBookLoan(userNumber, code);
+        if (affectedRows == 0) {
+            throw new IllegalStateException("삭제되었거나 존재하지 않는 도서입니다.");
+        }
         alm.updateLibraryBookStatusToLoan(code);
         alm.updateReservationToReceived(lbidx, userNumber, today);
     }

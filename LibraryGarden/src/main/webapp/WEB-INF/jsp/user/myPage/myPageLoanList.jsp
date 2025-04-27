@@ -73,7 +73,7 @@
 								  <!-- 문자열 "yyyy-MM-dd" → Date -->
   								  <fmt:parseDate value="${loan.dueDate}" pattern="yyyy.MM.dd" var="dueObj"/>
 									<tr>
-										<td>${status.index + 1}</td>
+										<td>${(currentPage - 1) * pageSize + status.index + 1}</td>
 										<!-- 순차적인 번호 출력 -->
 										<td>${loan.title}</td>
 										<td>${loan.author}</td>

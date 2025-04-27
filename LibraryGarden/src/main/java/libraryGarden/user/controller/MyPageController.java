@@ -77,6 +77,7 @@ public class MyPageController {
 
 	    model.addAttribute("totalPageCount", totalPageCount);
 	    model.addAttribute("currentPage", page); // 현재 페이지 정보도 전달
+	    model.addAttribute("pageSize", perPageNum);
 	    model.addAttribute("name", name);
 	    model.addAttribute("userNumber", userNumber);
 
@@ -111,6 +112,7 @@ public class MyPageController {
 
 	    model.addAttribute("totalPageCount", totalPageCount);
 	    model.addAttribute("currentPage", page); // 현재 페이지 정보도 전달
+	    model.addAttribute("pageSize", perPageNum);
 	    model.addAttribute("name", name);
 	    model.addAttribute("userNumber", userNumber);
 
