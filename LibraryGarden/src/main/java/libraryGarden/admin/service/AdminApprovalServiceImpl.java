@@ -2,11 +2,10 @@ package libraryGarden.admin.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.annotation.Resource;
+import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +17,9 @@ import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.service.BookService;
 
+
 @Service
-public class AdminApprovalServiceImpl implements AdminApprovalService{
+public class AdminApprovalServiceImpl implements  AdminApprovalService{
 
 	@Autowired
 	private AdminApprovalMapper am;
@@ -33,6 +33,75 @@ public class AdminApprovalServiceImpl implements AdminApprovalService{
 	@Autowired(required=false)
 	BookService bookService;
 	
+	/** [설명] AdminApproval2Service 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
+	 * 
+	 *  [주요기능] 
+	 *  - 관리자가 승인한 도서 책 갯수 조회 메서드
+	 *  - 관리자가 승인한 도서 책 리스트 조회 메서드
+	 *  - 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
+	 *  - 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드
+	 *  - 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드
+	 *  
+	 * @author Siyeon
+	 */
+	
+	// 관리자가 승인한 도서 책 갯수 조회 메서드
+	@Override
+	public int getBookApprovalTotalCount(SearchCriteria scri, String filter, int selectedAidx) {
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		hm.put("searchType", scri.getSearchType());
+		hm.put("keyword", scri.getKeyword());
+		hm.put("filter", filter);
+		hm.put("selectedAidx", selectedAidx);
+		
+		int cnt = am.getBookApprovalTotalCount(hm);
+		return cnt;
+	}
+
+	// 관리자가 승인한 도서 책 리스트 조회 메서드
+	@Override
+	public List<Map<String, Object>> getBookApprovalSelectAll(SearchCriteria scri, String filter, int selectedAidx) {
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		hm.put("startPageNum", (scri.getPage() - 1) * scri.getPerPageNum());
+		hm.put("perPageNum", scri.getPerPageNum());
+		hm.put("searchType", scri.getSearchType());
+		hm.put("keyword", scri.getKeyword());
+		hm.put("filter", filter);
+		hm.put("selectedAidx", selectedAidx);
+		
+		List<Map<String, Object>> blist = am.getBookApprovalSelectAll(hm);
+		
+		return blist;
+	}
+
+	// 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드
+	@Override
+	public HashMap<String, Object>  getBookApprovalSelectOne(int aidx) {
+		HashMap<String, Object> hm = am.getBookApprovalSelectOne(aidx);
+		return hm;
+	}
+
+	// 관리자가 승인한 도서 중 등록여부 Y 업데이트 메서드
+	@Override
+	public int updateApprovalRegynY(int aidx) {
+		int cnt = am.updateApprovalRegynY(aidx);
+		return cnt;
+	}
+
+	// 관리자가 승인한 도서 중 등록여부 N 업데이트 메서드
+	@Override
+	public int updateApprovalRegynN(int aidx) {
+		int cnt = am.updateApprovalRegynN(aidx);
+		return cnt;
+	}
+	
+
+	/** 
+	 * @author JiHye
+	 */
 	@Override
 	public int getApprovalTotalCount(SearchCriteria scri, String filter) {
 		
