@@ -276,17 +276,40 @@ public class AdminApprovalServiceImpl implements  AdminApprovalService{
 		return value;
 	};
 	
+	// 게시글 승인/반려처리와 희망도서 DB 업데이트를 트랜잭션으로 처리. Exception 발생시 롤백
+	@Transactional(rollbackFor=Exception.class)
 	public int updateApprovalProcessing(ApprovalVo av) {
 		
+		// requestStatus, requestRejectionReason 변경을 위해 aidx로 rqidx를 확인 후 저장
+		ApprovalVo avOrigin = getApprovalSelectAv(av.getAidx());
+		av.setRqidx(avOrigin.getRqidx());
+		
+		// requestStatus 초기화
+		String requestStatus;
+		
 		if(av.getRejectionReason() != null) {
+			
 			// 결재 반려
 			av.setStatus("반려");
 			
+			// 희망도서로 등록된 기안 반려시 희망도서 상태를 신청반려로 변경
+			requestStatus = "신청반려";
+			
 		} else {
+			
 			// 결재 승인
 			av.setStatus("승인");
+
+			// 희망도서로 등록된 기안 승인시 희망도서 상태를 신청완료로 변경
+			requestStatus = "신청완료";
+			
 		}
 		
+		// 희망도서 정보를 DB에 반영
+		if(av.getRqidx() != 0) {
+			int value = bookRequestService.modifyBookRequest(avOrigin.getRqidx(), requestStatus, av.getRejectionReason());
+		}
+
 		// 결재 정보를 DB에 반영
 		int value = am.updateApprovalProcessing(av);
 		

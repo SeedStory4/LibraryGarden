@@ -147,6 +147,17 @@
 	$(document).ready(function() {
 		$('.js-example-basic-single').select2();
 	});
+	
+	// 반려사유 팝업
+	const openRejectionModal = document.querySelectorAll(".openRejectionModal");
+	if(openRejectionModal != null) {
+		function openRejectionModalClick(e) {
+			const rejectionReason = e.target.attributes["data-reason"].value;
+			const rejectionDetail = document.querySelector(".rejection-detail");
+			rejectionDetail.textContent = rejectionReason;
+		}
+		openRejectionModal.forEach((e) => e.addEventListener("click", openRejectionModalClick));
+	}
     </script>
 	
 </body>

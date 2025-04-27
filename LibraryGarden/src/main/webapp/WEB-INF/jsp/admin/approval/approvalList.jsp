@@ -87,7 +87,7 @@
 								
 								<c:if test="${empty alist}">
 									<tr>
-										<td colspan="8" class="center">검색된 도서가 없습니다.</td>
+										<td colspan="8" class="center">도서가 없습니다.</td>
 									</tr>
 								</c:if>
 							</tbody>

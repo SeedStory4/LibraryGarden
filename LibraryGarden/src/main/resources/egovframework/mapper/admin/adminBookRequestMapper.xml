@@ -57,7 +57,7 @@
 		JOIN BOOKS AS B ON RQ.bidx = B.bidx 
 		WHERE RQ.delyn = 'N' 
 		<include refid="search"/> 
-		ORDER BY RQ.rqidx LIMIT #{startPageNum}, #{perPageNum};
+		ORDER BY RQ.rqidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
 	<select id="getBookRequestSelectOne" parameterType="HashMap" resultType="bv">

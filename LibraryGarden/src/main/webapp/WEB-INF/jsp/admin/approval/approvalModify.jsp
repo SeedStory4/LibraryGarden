@@ -251,7 +251,15 @@
 							 } else {
 								 listcontent += 
 								 `<td>\${alist[i].publishedYear.replaceAll("-", ".")}</td>
-								  <td><button class="btn btn-small btn-primary" onClick="select('isbn', \${alist[i].isbn})">선택</button></td>
+								  <td>`;
+								  
+								  if(alist[i].isbn != "") {
+									  listcontent += `<button class="btn btn-small btn-primary" onClick="select('isbn', \${alist[i].isbn})">선택</button>`;
+								  } else {
+									  listcontent += `<span class="red">불가</span>`;
+								  }
+								  
+								  listcontent += `</td>
 								</tr>`;
 							 }
 						 }
@@ -373,7 +381,7 @@
 			         document.querySelector(".coverImg").src = bv.coverImg;
 			         document.querySelector(".coverImg").alt = bv.title;
 			         
-			         if(bv.originalTitle != undefined) {
+			         if(bv.originalTitle != "") {
 				         title = bv.title + " / " + bv.originalTitle;
 				         labelTitle = "● 제목 / 원제";				         
 			         }
