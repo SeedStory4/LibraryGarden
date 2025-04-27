@@ -6,7 +6,7 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.mapper.LibraryBooksMapper;
 
@@ -27,7 +27,7 @@ public class LibraryBooksServiceImpl implements LibraryBooksService{
 	
 	// 도서관 책 전체 조회 목록 출력 메서드
 	@Override
-	public ArrayList<LibraryBookDto> getBookSelectAll(SearchCriteria scri) {
+	public ArrayList<LibraryBooksDto> getBookSelectAll(SearchCriteria scri) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -41,7 +41,7 @@ public class LibraryBooksServiceImpl implements LibraryBooksService{
 		 * [input]검색조건 외 페이지 기능 (hm)
 		 * [output] 책 목록(alist)
 		 */ 
-		ArrayList<LibraryBookDto> lblist =  lbm.getBookSelectAll(hm);
+		ArrayList<LibraryBooksDto> lblist =  lbm.getBookSelectAll(hm);
 		return lblist;
 	}
 
@@ -61,12 +61,12 @@ public class LibraryBooksServiceImpl implements LibraryBooksService{
 
 	// 도서관 책 상세 조회 매서드
 	@Override
-	public LibraryBookDto getBookSelectOne(int lbidx) {
+	public LibraryBooksDto getBookSelectOne(int lbidx) {
 		/* 도서관 책 상세 조회
 		 * [input] 	도서관 책 인덱스(lbidx)
 		 * [output] 책 상세(lbd)
 		 */ 
-		LibraryBookDto lbd = lbm.getBookSelectOne(lbidx);
+		LibraryBooksDto lbd = lbm.getBookSelectOne(lbidx);
 		return lbd;
 	}
 }

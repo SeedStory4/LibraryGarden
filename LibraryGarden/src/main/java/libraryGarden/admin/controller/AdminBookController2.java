@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import libraryGarden.cmm.util.AladdinOpenAPI;
 import libraryGarden.domain.ApiBookPageDto;
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 
@@ -53,7 +53,7 @@ public class AdminBookController2 {
 	     String queryType = searchType;
 	     
 	 	 HashMap<String, Object> hm = new HashMap<String, Object>();
-	 	 List<BookVo> alist = new ArrayList<>();  // List는 인터페이스이기 때문에 객체 생성을 못함 -> List<>()가 아닌 ArrayList<>()로 초기화
+	 	 List<BooksVo> alist = new ArrayList<>();  // List는 인터페이스이기 때문에 객체 생성을 못함 -> List<>()가 아닌 ArrayList<>()로 초기화
 	 	int totalCount = 0;
 	 	
 	     try {
