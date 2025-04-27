@@ -191,7 +191,7 @@ public class AdminBookController {
 			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "page", defaultValue = "1") int page,
-			@RequestParam(value = "selectedAidx", defaultValue = "1") int selectedAidx) {
+			@RequestParam(value = "selectedAidx", defaultValue = "0") int selectedAidx) {
 		
 		logger.debug("moveBookSelectList 들어옴");
 		
