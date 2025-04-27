@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import libraryGarden.domain.LibraryBook2Dto;
+import libraryGarden.domain.LibraryBooks2Dto;
 import libraryGarden.domain.LibraryBooksVo2;
 import libraryGarden.user.service.LibraryBook2Service;
 
@@ -22,7 +22,7 @@ public class MainController {
 		
 		@GetMapping("/main.do")
 		public String main(Model model) {
-			List<LibraryBook2Dto> topLoanBooks = libraryBook2Service.selectTopLoanBooksThisMonth();
+			List<LibraryBooks2Dto> topLoanBooks = libraryBook2Service.selectTopLoanBooksThisMonth();
 	        List<LibraryBooksVo2> latestBooks = libraryBook2Service.getLatestBooks();
 
 	        model.addAttribute("topLoanBooks", topLoanBooks);

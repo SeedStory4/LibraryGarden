@@ -31,7 +31,7 @@ public class UserController {
 	@GetMapping("/userJoinForm.do")
 	public String userJoinForm() {
 
-	logger.info("약관 동의 완료 → 회원가입 입력 페이지로 이동");
+	logger.debug("약관 동의 완료 → 회원가입 입력 페이지로 이동");
 
 	return "user/user/userJoin"; // 실제 회원가입 입력 form
 
@@ -91,11 +91,11 @@ public class UserController {
             user.setUserNumber(formattedNumber);
 
             userService.insertUser(user);
-            logger.info("회원가입 성공 - ID: {}, userNumber: {}", user.getId(), formattedNumber);
+            logger.debug("회원가입 성공 - ID: {}, userNumber: {}", user.getId(), formattedNumber);
             rttr.addFlashAttribute("joinSuccessMessage", "회원가입이 완료되었습니다.");
             return "redirect:/user/user/userLogin.do";
         } catch (Exception e) {
-            logger.error("회원가입 중 오류 발생", e);
+            logger.debug("회원가입 중 오류 발생", e);
             rttr.addFlashAttribute("errorMessage", "회원가입 중 오류가 발생했습니다.");
             return "redirect:/user/user/userJoin.do";
         }
