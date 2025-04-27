@@ -52,30 +52,30 @@
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">비밀번호</p>
-						<input type="password" name="password" class="user-A-input"  placeholder="비밀번호">
+						<input type="password" name="password" class="user-A-input"  placeholder="비밀번호" onkeydown="checkSpacebar(event);">
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">비밀번호 확인</p>
-						<input type="password" name="passwordConfirm" class="user-A-input" placeholder="비밀번호 확인" >
+						<input type="password" name="passwordConfirm" class="user-A-input" placeholder="비밀번호 확인" onkeydown="checkSpacebar(event);" >
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">휴대전화번호</p>
-						<input type="tel" name="phone" class="user-A-input" value="${user.phone}" placeholder="휴대전화번호 ( 예> 01012345678 )" >
+						<input type="tel" name="phone" class="user-A-input" value="${user.phone}" placeholder="휴대전화번호 ( 예> 01012345678 )" onkeydown="checkSpacebar(event);">
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">이메일</p>
-						<input type="email" name="email" class="user-A-input" value="${user.email}" placeholder="이메일">
+						<input type="email" name="email" class="user-A-input" value="${user.email}" placeholder="이메일" onkeydown="checkSpacebar(event);">
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">주소</p>						
 						<input type="text" name="address" id="address" class="user-A-input mb-17" value="${user.address}" placeholder="주소" required readonly>
 						<br>
-				  		<button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30">주소 검색</button>
+				  		<button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30">주소검색</button>
 					</div>
 					
 					<div class="mb-21">
 						<p class="font-767678-18">현재 비밀번호</p>
-						<input type="password" name="NowPassword" class="user-A-input"  placeholder="현재 비밀번호" required>
+						<input type="password" name="NowPassword" class="user-A-input"  placeholder="현재 비밀번호" onkeydown="checkSpacebar(event);" required>
 					</div>
 					
 					<div class="mb-33">
@@ -194,6 +194,12 @@
 							  var txt = document.createElement("textarea");
 							  txt.innerHTML = str;
 							  return txt.value;
+							}
+						
+						function checkSpacebar(e) {
+							  if (e.key === " " || e.keyCode === 32) {
+							    e.preventDefault(); // 스페이스바 입력 막기
+							  }
 							}
 				    
 				    

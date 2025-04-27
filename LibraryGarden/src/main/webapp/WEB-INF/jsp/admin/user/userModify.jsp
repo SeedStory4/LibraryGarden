@@ -59,8 +59,9 @@
 						<input type="email" name="email" class="user-A-input" value="${user.email}"  placeholder="이메일">
 					</div>
 					<div class="mb-21">
-						<p class="font-767678-18">주소</p>
-						<input type="text" name="address" class="user-A-input mb-17" value="${user.address}" placeholder="주소">
+						<p class="font-767678-18">주소</p>						
+						<input type="text" name="address" id="address" class="user-A-input mb-17" value="${user.address}" placeholder="주소" required readonly>						
+				  		<button type="button" onclick="goPopup()" class="draft-btn-small-16 btn-submit-100-30">주소검색</button>
 					</div>
 					<div class="mb-21">
 						<p class="font-767678-18">권한</p>
@@ -73,10 +74,12 @@
 						        <input type="radio" name="role" value="사서" class="radio-input" ${user.role == '사서' ? 'checked' : ''}>
 						        <span class="radio-box">사서</span>
 						    </label>
+						    <c:if test="${user.role != '사서'}">
 						    <label class="radio-label">
 						        <input type="radio" name="role" value="도서관장" class="radio-input" ${user.role == '도서관장' ? 'checked' : ''}>
 						        <span class="radio-box">도서 관장</span>
 						    </label>
+						    </c:if>
 						</div>
 					</div>
 					<div class="mb-33">
@@ -150,6 +153,23 @@
 			      return;
 			    }
 			  });
+			  
+			  
+			    function goPopup() {
+					  var pop = window.open("<%= request.getContextPath() %>/user/user/jusoPopup.do", "pop", "width=570,height=420, scrollbars=yes, resizable=yes");
+					}
+
+					// 팝업에서 주소 받아오는 함수
+					function jusoCallBack(roadFullAddr, roadAddrPart1, addrDetail, roadAddrPart2, engAddr, jibunAddr, zipNo, admCd, rnMgtSn, bdMgtSn, detBdNmList, bdNm, bdKdcd, siNm, sggNm, emdNm, liNm, rn, udrtYn, buldMnnm, buldSlno, mtYn, lnbrMnnm, lnbrSlno, emdNo) {
+							  document.getElementById("address").value = decodeHtmlEntities(roadFullAddr);
+							}
+
+					
+					function decodeHtmlEntities(str) {
+						  var txt = document.createElement("textarea");
+						  txt.innerHTML = str;
+						  return txt.value;
+						}
 			</script>
     
 

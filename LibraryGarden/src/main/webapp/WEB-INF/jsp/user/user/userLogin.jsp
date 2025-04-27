@@ -38,6 +38,13 @@
 			  console.log("로그아웃 메시지:", logoutMsg);  // 디버깅을 위한 콘솔 로그 추가
 			  alert(logoutMsg);
 			}
+		  
+		  
+		  function checkSpacebar(e) {
+			  if (e.key === " " || e.keyCode === 32) {
+			    e.preventDefault(); // 스페이스바 입력 막기
+			  }
+			}
 		</script>
 
 
@@ -52,9 +59,9 @@
 				<!-- 로그인 입력  -->
 			<form action="${pageContext.request.contextPath}/user/user/loginAction.do" method="post">
 				<div class="draft-content ml-mr-50">
-					<input type="text" name="id" class="user-A-input mb-40" placeholder="아이디" >
+					<input type="text" name="id" class="user-A-input mb-40" placeholder="아이디" onkeydown="checkSpacebar(event);" >
 					
-					<input type="password" name="password" class="user-A-input mb-77" placeholder="비밀번호" >
+					<input type="password" name="password" class="user-A-input mb-77" placeholder="비밀번호" onkeydown="checkSpacebar(event);" >
 				</div>
 
 				<!-- 로그인 버튼 -->
