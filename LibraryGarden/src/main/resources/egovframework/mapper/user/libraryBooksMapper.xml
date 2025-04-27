@@ -60,17 +60,10 @@
 	    LIMIT 6
 	</select>
 	
-	<select id="getLatestBooks" resultType="lbd">
-	    SELECT 
-	        b.bidx,
-	        b.coverImg,
-	        b.title,
-	        b.subTitle,
-	        b.author,
-	        b.publisher,
-	        b.publishedYear,
-	        b.totalPages
-	    FROM BOOKS b
+	<select id="selectLatestLibraryBooks" resultType="lbd">
+	   SELECT b.*
+	    FROM libraryBooks lb
+	    JOIN books b ON lb.bidx = b.bidx
 	    ORDER BY b.publishedYear DESC
 	    LIMIT 6
 	</select>

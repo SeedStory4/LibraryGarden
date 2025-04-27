@@ -36,5 +36,5 @@ public interface LibraryBooksMapper {
 	
 	List<LibraryBooksDto> selectTopLoanBooksThisMonth();
 	
-	List<LibraryBooksVo> getLatestBooks();
+	List<LibraryBooksDto> selectLatestLibraryBooks();
 }

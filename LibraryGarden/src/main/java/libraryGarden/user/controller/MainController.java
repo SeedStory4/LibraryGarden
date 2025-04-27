@@ -23,7 +23,7 @@ public class MainController {
 		@GetMapping("/main.do")
 		public String main(Model model) {
 			List<LibraryBooksDto> topLoanBooks = libraryBooksService.selectTopLoanBooksThisMonth();
-	        List<LibraryBooksVo> latestBooks = libraryBooksService.getLatestBooks();
+			List<LibraryBooksDto> latestBooks = libraryBooksService.getLatestLibraryBooks();	   
 
 	        model.addAttribute("topLoanBooks", topLoanBooks);
 	        model.addAttribute("latestBooks", latestBooks);
