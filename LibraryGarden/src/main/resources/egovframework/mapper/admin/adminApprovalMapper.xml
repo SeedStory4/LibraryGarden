@@ -110,7 +110,7 @@
 		<if test="selectedAidx != null and selectedAidx != ''">
 		    AND A.aidx != #{selectedAidx}
 		</if>
-		ORDER BY A.aidx LIMIT #{startPageNum}, #{perPageNum};
+		ORDER BY A.aidx DESC LIMIT #{startPageNum}, #{perPageNum};
 	</select>
 	
 	<!-- 관리자가 승인한 도서 중 등록할 책 정보 조회 메서드 -->

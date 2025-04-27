@@ -36,6 +36,6 @@
 	    JOIN books b ON r.bidx = b.bidx
 	    JOIN `user` u ON r.uidx = u.uidx
 	    SET r.delyn = 'Y'
-	    WHERE u.uidx = #{uidx} AND b.bidx = #{bidx} AND r.delyn = 'N' AND b.delyn = 'N' AND u.delyn = 'N'
+	    WHERE u.uidx = #{uidx} AND b.bidx = #{bidx} AND r.rqidx = #{rqidx} AND r.delyn = 'N' AND b.delyn = 'N' AND u.delyn = 'N'
     </update>
 </mapper>

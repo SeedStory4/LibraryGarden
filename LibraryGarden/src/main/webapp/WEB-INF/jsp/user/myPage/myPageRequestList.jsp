@@ -88,7 +88,7 @@
 								</c:forEach>
 								<c:if test="${empty requestList}">
 									<tr>
-										<td colspan="9" style="text-align:center;">도서가 없습니다.</td>
+										<td colspan="9" style="text-align:center;">신청한 도서가 없습니다.</td>
 									</tr>
 								</c:if>
 							</tbody>
