@@ -10,13 +10,13 @@ import libraryGarden.domain.SearchCriteria;
 public interface LibraryBook2Service {
 	
 	// 도서관 책 전체 조회 목록 출력 메서드
-	public ArrayList<LibraryBooks2Dto> BookSelectAll(SearchCriteria scri);
+	public ArrayList<LibraryBooks2Dto> getBookSelectAll(SearchCriteria scri);
 
 	// 도서관 책 전체 갯수 매서드
-	int BookTotalCount(SearchCriteria scri);
+	int getBookTotalCount(SearchCriteria scri);
 	
 	// 도서관 책 상세 조회 매서드
-	public LibraryBooks2Dto BookSelectOne(int lbidx);
+	public LibraryBooks2Dto getBookSelectOne(int lbidx);
 	
 	List<LibraryBooks2Dto> selectTopLoanBooksThisMonth();
 	 
