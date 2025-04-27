@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import libraryGarden.cmm.util.AladdinOpenAPI;
 import libraryGarden.domain.ApiBookPageDto;
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo; 
@@ -92,7 +92,7 @@ public class BookRequestController {
 	        if (abpd == null || abpd.getBlist().isEmpty()) {
 	            model.addAttribute("msg", "검색 결과가 없습니다. 다른 키워드를 입력해주세요.");
 	        } else {
-	            List<BookVo> blist = abpd.getBlist();
+	            List<BooksVo> blist = abpd.getBlist();
 	            int totalCount = abpd.getTotalCount();
 
 		   		pm.setScri(scri);
@@ -132,7 +132,7 @@ public class BookRequestController {
 	    logger.debug("BookRequestController bookRequestWriteAction isbn "+isbn);
 		
 	    // 도서 상세 조회
-	    BookVo bv = aladdinOpenAPI.lookUpBookDetail(isbn);
+	    BooksVo bv = aladdinOpenAPI.lookUpBookDetail(isbn);
 	    
 	    // isbn으로 책 여부 확인
 	    int cnt = bookService.getBookByIsbnToCount(isbn);

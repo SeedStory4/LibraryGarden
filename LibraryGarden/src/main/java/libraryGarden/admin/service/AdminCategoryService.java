@@ -2,7 +2,7 @@ package libraryGarden.admin.service;
  
 import java.util.List;
  
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
  
 
 /** [설명]AdminCategoryService 인터페이스: 관리자가 사용하는 도서 카테고리 관련 메서드
@@ -16,8 +16,8 @@ import libraryGarden.domain.LibraryBookDto;
 public interface AdminCategoryService {
 
 	// 관리자 도서 등록/수정을 위한 카테고리 중 대분류 가지고 오는 메서드
-	public List<LibraryBookDto> getParentCategoryByLevel();
+	public List<LibraryBooksDto> getParentCategoryByLevel();
 	
     // 관리자 도서 등록/수정을 위한 카테고리 중 소분류 가지고 오는 메서드
-	public List<LibraryBookDto> getChildrenCategoryByparentCode(int parentCode);
+	public List<LibraryBooksDto> getChildrenCategoryByparentCode(int parentCode);
 }

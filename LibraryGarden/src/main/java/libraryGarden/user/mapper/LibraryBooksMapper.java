@@ -3,7 +3,7 @@ package libraryGarden.user.mapper;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.SearchCriteria;
 
 /** [설명]LibraryBookMapper 인터페이스: 사용자 도서관 책 관련 메서드
@@ -18,11 +18,11 @@ import libraryGarden.domain.SearchCriteria;
 public interface LibraryBooksMapper {
 	
 	// 도서관 책 전체 조회 목록 출력 메서드
-	public ArrayList<LibraryBookDto> getBookSelectAll(HashMap<String,Object> hm);
+	public ArrayList<LibraryBooksDto> getBookSelectAll(HashMap<String,Object> hm);
 
 	// 도서관 책 전체 갯수 매서드
 	int getBookTotalCount(SearchCriteria scri);
 	
 	// 도서관 책 상세 조회 매서드
-	public LibraryBookDto getBookSelectOne(int lbidx);
+	public LibraryBooksDto getBookSelectOne(int lbidx);
 }

@@ -12,7 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.PageMaker;
 import libraryGarden.domain.SearchCriteria;
 import libraryGarden.domain.UserVo;
@@ -54,7 +54,7 @@ public class Book1Controller {
 		 pm.setTotalCount(cnt);
 		 
 		 // 책 목록 조회  
-		 ArrayList<LibraryBookDto> lblist = libraryBookService.getBookSelectAll(scri);
+		 ArrayList<LibraryBooksDto> lblist = libraryBookService.getBookSelectAll(scri);
  
 	     model.addAttribute("lblist",lblist);
 		 model.addAttribute("pm", pm);
@@ -78,7 +78,7 @@ public class Book1Controller {
 	    String userNumber = loginUser != null ? loginUser.getUserNumber() : "";
 		
 	    // 도서관 책 상세 조회
-		LibraryBookDto lbd = libraryBookService.getBookSelectOne(lbidx);
+		LibraryBooksDto lbd = libraryBookService.getBookSelectOne(lbidx);
 		
 		model.addAttribute("lbd", lbd);
 		model.addAttribute("userNumber", userNumber);

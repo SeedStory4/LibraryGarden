@@ -11,7 +11,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 import libraryGarden.domain.ApiBookPageDto;
-import libraryGarden.domain.BookVo;
+import libraryGarden.domain.BooksVo;
 
 
 import java.util.List;
@@ -116,10 +116,10 @@ public class AladdinOpenAPI {
 	    int totalCount = root.path("totalResults").asInt(); 
 	    
 	    JsonNode itemsNode = root.path("item");
-	    List<BookVo> blist = new ArrayList<>();
+	    List<BooksVo> blist = new ArrayList<>();
 
 	    for (JsonNode node : itemsNode) {
-	    	BookVo bv = new BookVo();
+	    	BooksVo bv = new BooksVo();
 
 	    	// 해당 api에 없는 데이터  = 원제, 부제, 쪽수, 넓이 , 높이, 무게, 
 	    	
@@ -167,7 +167,7 @@ public class AladdinOpenAPI {
 	}
 	
 	// 알라딘 상품 조회 API 메서드
-	public BookVo lookUpBookDetail(String isbn) throws Exception {
+	public BooksVo lookUpBookDetail(String isbn) throws Exception {
 		logger.debug("🔍 AladdinOpenAPI searchBooksList 들어옴");
 		Map<String,Object> hm = new HashMap<String,Object>();
 		hm.put("ttbkey", aladinKey);
@@ -218,7 +218,7 @@ public class AladdinOpenAPI {
 	    JsonNode itemSubInfo = item.path("subInfo");
 	    JsonNode itemSubInfoPacking = itemSubInfo.path("packing");
 
-    	BookVo bv = new BookVo();
+    	BooksVo bv = new BooksVo();
 
     	
     	// 책 표지

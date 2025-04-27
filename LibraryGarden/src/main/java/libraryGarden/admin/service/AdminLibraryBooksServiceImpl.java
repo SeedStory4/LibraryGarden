@@ -9,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
  
 import libraryGarden.admin.mapper.AdminLibraryBooksMapper;
-import libraryGarden.domain.LibraryBookDto;
+import libraryGarden.domain.LibraryBooksDto;
 import libraryGarden.domain.LibraryBooksVo;
 import libraryGarden.domain.SearchCriteria;
 
@@ -43,7 +43,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 	
 	// 관리자 도서관 책 전체 조회 목록 출력 메서드
 	@Override
-	public ArrayList<LibraryBookDto> getBookSelectAll(SearchCriteria scri) {
+	public ArrayList<LibraryBooksDto> getBookSelectAll(SearchCriteria scri) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -54,7 +54,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		
 		
 		// 책 목록 조회
-		ArrayList<LibraryBookDto> lblist =  albm.getBookSelectAll(hm);
+		ArrayList<LibraryBooksDto> lblist =  albm.getBookSelectAll(hm);
 		return lblist;
 	}
 
@@ -69,9 +69,9 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 
 	// 관리자 도서관 책 상세 조회 매서드
 	@Override
-	public LibraryBookDto getBookSelectOne(int lbidx) {
+	public LibraryBooksDto getBookSelectOne(int lbidx) {
 		// 도서관 책 상세 조회
-		LibraryBookDto lbd = albm.getBookSelectOne(lbidx);
+		LibraryBooksDto lbd = albm.getBookSelectOne(lbidx);
 		return lbd;
 	}
 
@@ -114,7 +114,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 
     // 관리자 도서관 오늘자 도서 등록 조회 목록 출력 메서드
 	@Override
-	public ArrayList<LibraryBookDto> getBookWriteListSelectAll(SearchCriteria scri, String today) {
+	public ArrayList<LibraryBooksDto> getBookWriteListSelectAll(SearchCriteria scri, String today) {
 		
 		HashMap<String,Object> hm = new HashMap<String,Object>();
 		
@@ -122,7 +122,7 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 		hm.put("perPageNum", scri.getPerPageNum());//페이지 조회 끝번째 수
 		hm.put("today", today);
 
-		ArrayList<LibraryBookDto> lblist =  albm.getBookWriteListSelectAll(hm);
+		ArrayList<LibraryBooksDto> lblist =  albm.getBookWriteListSelectAll(hm);
 		
 		return lblist;
 	}
@@ -143,8 +143,8 @@ public class AdminLibraryBooksServiceImpl implements AdminLibraryBooksService{
 
 	// 관리자 도서관 lbidx, bidx, aidx를 가지고 오는 매서드
 	@Override
-	public LibraryBookDto getLibraryBookByLbidxAndBidxAndAidx(int lbidx) {
-		LibraryBookDto lbd = albm.getLibraryBookByLbidxAndBidxAndAidx(lbidx);
+	public LibraryBooksDto getLibraryBookByLbidxAndBidxAndAidx(int lbidx) {
+		LibraryBooksDto lbd = albm.getLibraryBookByLbidxAndBidxAndAidx(lbidx);
 		return lbd;
 	}
 
