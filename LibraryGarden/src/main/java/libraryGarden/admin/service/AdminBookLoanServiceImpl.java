@@ -18,17 +18,17 @@ import libraryGarden.domain.ReservationDto;
 public class AdminBookLoanServiceImpl implements AdminBookLoanService{
 	
     @Autowired
-    private AdminBookLoanMapper adminBookLoanMapper;
+    private AdminBookLoanMapper alm;
     
     
     @Override
     public Map<String, Object> getUserLoanInfo(String userNumber, int page, int perPageNum) {
         // — 자동 연체 감지: overdue 테이블만 채우고, 도서 상태는 그대로 둠 —
-    	adminBookLoanMapper.insertOverdueForPastDue();
+    	alm.insertOverdueForPastDue();
 
         // (기존) UI에 보여줄 ‘이용가능/이용불가’ 여부
-        String userName   = adminBookLoanMapper.selectUserName(userNumber);
-        String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
+        String userName   = alm.selectUserName(userNumber);
+        String loanStatus = alm.selectUserLoanStatus(userNumber);
 
         // 페이징 & 대출 목록 조회
         int startPageNum = (page - 1) * perPageNum;
@@ -37,8 +37,8 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
         params.put("startPageNum", startPageNum);
         params.put("perPageNum",   perPageNum);
 
-        List<Map<String,Object>> loanList = adminBookLoanMapper.selectUserLoanList(params);
-        int totalCount = adminBookLoanMapper.selectUserLoanTotalCount(userNumber);
+        List<Map<String,Object>> loanList = alm.selectUserLoanList(params);
+        int totalCount = alm.selectUserLoanTotalCount(userNumber);
 
         Map<String,Object> result = new HashMap<>();
         result.put("userName",   userName);
@@ -52,21 +52,21 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     public void addBookLoan(String userNumber, String code) throws Exception {
         
         // — (C) 연체 중이면 대출 불가 —
-        int odCnt = adminBookLoanMapper.selectActiveOverdueCount(userNumber);
+        int odCnt = alm.selectActiveOverdueCount(userNumber);
         if (odCnt > 0) {
             throw new IllegalStateException("연체 중인 회원은 대출할 수 없습니다.");
         }
     	
     	// 1) code → lbidx
-        int lbidx = adminBookLoanMapper.selectLbidxByCode(code);
+        int lbidx = alm.selectLbidxByCode(code);
 
         // 2) 예약대기 상태인 경우, 오늘 픽업예약자만 허용
-        String status = adminBookLoanMapper.selectBookStatusByLbidx(lbidx);
+        String status = alm.selectBookStatusByLbidx(lbidx);
         if ("예약대기".equals(status)) {
             Map<String,Object> params = new HashMap<>();
             params.put("lbidx", lbidx);
             params.put("userNumber", userNumber);
-            ReservationDto res = adminBookLoanMapper.selectActiveReservation(params);
+            ReservationDto res = alm.selectActiveReservation(params);
             String today = LocalDate.now().toString();
             if (res == null || !today.equals(res.getPickupDate())) {
                 throw new IllegalStateException("오늘 픽업 가능한 예약자가 아닙니다.");
@@ -75,14 +75,14 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
         String today = LocalDate.now().toString();
 
         // 3) 대출등록 & 도서상태 → 대출중
-        adminBookLoanMapper.insertBookLoan(userNumber, code);
-        adminBookLoanMapper.updateLibraryBookStatusToLoan(code);
-        adminBookLoanMapper.updateReservationToReceived(lbidx, userNumber, today);
+        alm.insertBookLoan(userNumber, code);
+        alm.updateLibraryBookStatusToLoan(code);
+        alm.updateReservationToReceived(lbidx, userNumber, today);
     }
     
     @Override
     public boolean isUserOverdue(String userNumber) throws Exception {
-        String loanStatus = adminBookLoanMapper.selectUserLoanStatus(userNumber);
+        String loanStatus = alm.selectUserLoanStatus(userNumber);
         // '이용불가'라는 문자열이 포함되어 있으면 연체 중으로 간주
         return loanStatus.contains("이용불가");
     }
@@ -91,16 +91,16 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
     @Override
     public void deleteLoan(int lidx) throws Exception {
         // 대여 삭제
-        adminBookLoanMapper.deleteLoan(lidx);
+    	alm.deleteLoan(lidx);
         // 도서 상태 대출 가능으로 변경
-        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+    	alm.updateLibraryBookStatusToAvailable(lidx);
     }
     
     @Override
     public void returnBookLoan(int lidx) throws Exception {
         // 1) 반납예정일 조회 & 오늘 날짜 비교 (시간 제거)
         SimpleDateFormat fmt = new SimpleDateFormat("yyyy-MM-dd");
-        Date dueDate = adminBookLoanMapper.selectDueDate(lidx);
+        Date dueDate = alm.selectDueDate(lidx);
         Date today   = fmt.parse(fmt.format(new Date()));
 
         if (today.after(fmt.parse(fmt.format(dueDate)))) {
@@ -113,22 +113,22 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
             Calendar cal = Calendar.getInstance();
             cal.setTime(today);
             cal.add(Calendar.DATE, penaltyDays);
-            adminBookLoanMapper.updateOverdueEndDate(lidx, cal.getTime());
+            alm.updateOverdueEndDate(lidx, cal.getTime());
 
             // 4) LOAN.status = '연체반납'
-            adminBookLoanMapper.updateLoanStatusToReturned(lidx, "연체반납");
+            alm.updateLoanStatusToReturned(lidx, "연체반납");
         } else {
             // 정상반납
-            adminBookLoanMapper.updateLoanStatusToReturned(lidx, "반납완료");
+        	alm.updateLoanStatusToReturned(lidx, "반납완료");
         }
 
         // 5) LIBRARYBOOKS.status = '대출가능'
-        adminBookLoanMapper.updateLibraryBookStatusToAvailable(lidx);
+        alm.updateLibraryBookStatusToAvailable(lidx);
     }
 
     @Override
     public String getBookStatus(String code) throws Exception {
-        String status = adminBookLoanMapper.selectBookStatus(code);
+        String status = alm.selectBookStatus(code);
         return status == null ? "없는 도서" : status;
     }
 
