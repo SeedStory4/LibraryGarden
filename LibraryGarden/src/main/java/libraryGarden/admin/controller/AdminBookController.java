@@ -256,19 +256,9 @@ public class AdminBookController {
 	            return -99;  // 오류 상황
 	        }
 
-			System.out.println(lbidx);
-			System.out.println(aidx);
-			System.out.println(bidx);
-			System.out.println(original.getAidx());
-			System.out.println(original.getBidx());
 	        boolean isSameBook = (original.getAidx() == aidx) && (original.getBidx() == bidx);
 	        boolean isSameCallNumber = callName.equals(original.getCallName());
-	        System.out.println("isSameBook "+isSameBook);
-	        System.out.println("isSameCallNumber "+isSameCallNumber);
-	        
-	        System.out.println("callName "+callName);
-	        System.out.println("original.getCallName() "+original.getCallName());
-	        
+        
 	        if (isSameBook && isSameCallNumber) {
 	            return -1;  // 같은 책 + 같은 청구기호
 	        } else {

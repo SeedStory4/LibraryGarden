@@ -91,7 +91,6 @@ public class MyPage2Controller {
 		
 		// 삭제하고 값 가지고 오기
 		int value = bookRequestService.deleteRequest(loginUser.getUidx(),bidx,rqidx);
-		System.out.println(value);
 		
 		if(value == 0) {
 			model.addAttribute("msg", "희망도서 삭제를 실패했습니다. 잠시 후 다시 시도해주세요.");
