@@ -657,7 +657,7 @@ table td { padding: 5px; }
 .select2-container--default .select2-results>.select2-results__options { color: var(--color-secondary); }
 .select2-container--default .select2-results__option--selected { background-color: var(--color-white); }
 
-.max-w-600{max-width: 600px;}
+.max-w-600{max-width: 510px;}
 .self-start{align-self: flex-start;}
 
 /* modal */
