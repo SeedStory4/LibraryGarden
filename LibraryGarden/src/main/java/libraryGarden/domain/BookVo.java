@@ -18,7 +18,7 @@ public class BookVo {
     private String category;
     private String introduction;
     private int price;
-    private String regdate;
+    private String regDate;
     private String modify;
     private String delyn;
    
@@ -119,11 +119,11 @@ public class BookVo {
 	public void setPrice(int price) {
 		this.price = price;
 	}
-	public String getRegdate() {
-		return regdate;
+	public String getRegDate() {
+		return regDate;
 	}
-	public void setRegdate(String regdate) {
-		this.regdate = regdate;
+	public void setRegDate(String regDate) {
+		this.regDate = regDate;
 	}
 	public String getModify() {
 		return modify;

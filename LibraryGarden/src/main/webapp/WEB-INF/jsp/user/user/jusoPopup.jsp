@@ -13,10 +13,13 @@
 <body onload="init();">
 <form id="form" name="form" method="post">
   <input type="hidden" id="confmKey" name="confmKey" value="devU01TX0FVVEgyMDI1MDQyNjIxNDQxNzExNTY5OTg=">
-  <input type="hidden" id="returnUrl" name="returnUrl" value="http://localhost:8080/sht_webapp/user/user/jusoPopup.do?inputYn=Y">
+  <!-- <input type="hidden" id="returnUrl" name="returnUrl" value="http://localhost:8080/sht_webapp/user/user/jusoPopup.do?inputYn=Y"> -->
+  <input type="hidden" id="returnUrl" name="returnUrl" 
+  value="<%=request.getScheme() %>://<%=request.getServerName() %>:<%=request.getServerPort() %><%=request.getContextPath()%>/user/user/jusoPopup.do?inputYn=Y">  
   <input type="hidden" id="resultType" name="resultType" value="4">
 </form>
-
+<!-- 배포용 코드 -->
+  
 <script>
 function init() {
   var inputYn = "<%=inputYn%>";
