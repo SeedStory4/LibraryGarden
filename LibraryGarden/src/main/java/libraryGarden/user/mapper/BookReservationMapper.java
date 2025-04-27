@@ -42,4 +42,6 @@ public interface BookReservationMapper {
     List<Map<String, Object>> selectUserReservationList(@Param("userNumber") String userNumber, @Param("startPageNum") int startPageNum, @Param("perPageNum") int perPageNum); // 내도서 예약 목록 조회
     int selectUserReservationTotalCount(String userNumber); // 내 도서 예약 목록 전체 개수 조회
     int countActiveReservationByUserAndBook(Map<String, Object> params);
+    /** 특정 회원이 특정 도서를 반납하지 않고 대출 중인지 카운트 */
+    int countActiveLoanByUserAndBook(Map<String,Object> params);
 }
