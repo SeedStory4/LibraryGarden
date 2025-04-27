@@ -170,12 +170,12 @@ public class AdminApprovalController {
 			int aidx = approvalService.insertApproval(av, bv, "신청중");
 			
 			// 게시글 등록 후 이동할 url 및 메세지 설정
-			rttr.addFlashAttribute("msg", "글쓰기가 성공했습니다.");
+			rttr.addFlashAttribute("msg", "기안 등록이 성공했습니다.");
 			path = "redirect:/admin/approval/" + aidx + "/approvalDetail.do";
 			
 		} catch (Exception e) {
 			// 게시글 등록 실패시 이동할 url 및 메세지 설정
-			rttr.addFlashAttribute("msg", "글쓰기가 실패했습니다.");
+			rttr.addFlashAttribute("msg", "기안 등록이 실패했습니다.");
 			path = "redirect:/admin/approval/approvalWrite.do";
 		}
 		
@@ -263,12 +263,12 @@ public class AdminApprovalController {
 			int value = approvalService.updateApproval(av, bv);
 			
 			// 게시글 수정 후 이동할 url 및 메세지 설정
-			rttr.addFlashAttribute("msg", "글수정이 성공했습니다.");
+			rttr.addFlashAttribute("msg", "기안 수정이 성공했습니다.");
 			path = "redirect:/admin/approval/" + av.getAidx() + "/approvalDetail.do";
 			
 		} catch (Exception e) {
 			// 게시글 수정 실패시 이동할 url 및 메세지 설정
-			rttr.addFlashAttribute("msg", "글수정이 실패했습니다.");
+			rttr.addFlashAttribute("msg", "기안 수정이 실패했습니다.");
 			path = "redirect:/admin/approval/" + av.getAidx() + "/approvalModify.do";
 		}
 				
