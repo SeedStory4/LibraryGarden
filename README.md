@@ -47,4 +47,27 @@ FullCalendar를 활용한 직관적인 달력 UI로 도서 예약 가능
 관리자: 도서 등록, 결재 관리, 회원 관리 등 운영 중심 기능 제공
 
 
+### 메인페이지
+
+
+
+사용자 로그인시 보이는 메인페이지 입니다. 
+
+
+
+<img width="1453" alt="image" src="<img width="1453" alt="image" src="https://drive.google.com/drive/folders/1WJ6z5DlwyM2VUkv_O9jMvjKdDvh-Wzzn"/>
+
+관리자 로그인시 보이는 메인페이지 입니다. 
+
+
+### 도서 목록 페이지
+
+
+도서관에 있는 도서 목록을  보여줍니다.
+
+
+
+
+
+
 
