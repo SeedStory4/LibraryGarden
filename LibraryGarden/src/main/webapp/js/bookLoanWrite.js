@@ -45,7 +45,7 @@ function numberCheck(page = currentPage, perPageNum = currentPerPageNum) {
             tbody.empty();
 
             if (Array.isArray(loanList) && loanList.length > 0) {
-                loanList.forEach(function (item, index) {
+                loanList.reverse().forEach(function (item, index) {
                     if (item.delyn === 'Y') return;
 
                     var row = `
