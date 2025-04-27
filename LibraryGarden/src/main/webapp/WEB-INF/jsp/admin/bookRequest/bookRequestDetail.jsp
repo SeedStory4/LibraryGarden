@@ -47,8 +47,8 @@
 							<span class="info-title">● 부제</span> 
 							<span class="info-content">
 								<c:choose>
-									<c:when test="${not empty rq.subtitle}">
-									${rq.subtitle}
+									<c:when test="${not empty rq.subTitle}">
+									${rq.subTitle}
 								  	</c:when>
 									<c:otherwise>
 								    -
