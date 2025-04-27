@@ -62,20 +62,22 @@ public class AdminBookLoanServiceImpl implements AdminBookLoanService{
             throw new IllegalStateException("없는 도서입니다.");
         }
     	
-
+        // 오늘 문자열 (yyyy-MM-dd)
+        String today = LocalDate.now().toString();
+        
         // 2) 예약대기 상태인 경우, 오늘 픽업예약자만 허용
         String status = alm.selectBookStatusByLbidx(lbidx);
         if ("예약대기".equals(status)) {
             Map<String,Object> params = new HashMap<>();
             params.put("lbidx", lbidx);
             params.put("userNumber", userNumber);
+            params.put("pickupDate", today);
+            
             ReservationDto res = alm.selectActiveReservation(params);
-            String today = LocalDate.now().toString();
-            if (res == null || !today.equals(res.getPickupDate())) {
+            if (res == null) {
                 throw new IllegalStateException("오늘 픽업 가능한 예약자가 아닙니다.");
             }
         }
-        String today = LocalDate.now().toString();
 
         // 3) 대출등록 & 도서상태 → 대출중
         int affectedRows = alm.insertBookLoan(userNumber, code);

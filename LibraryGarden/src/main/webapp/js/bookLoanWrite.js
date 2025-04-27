@@ -77,23 +77,23 @@ function numberCheck(page = currentPage, perPageNum = currentPerPageNum) {
                 pagination.empty();
 
                 // ◀ 이전
-                if (page > 1) {
-                    pagination.append(`<li><a href="#" onclick="numberCheck(${page - 1}, ${perPageNum})">◀</a></li>`);
-                }
+				if (pageCount >= 5 && page > 1) {
+				    pagination.append(`<li><a href="#" onclick="numberCheck(${page - 1}, ${perPageNum})">◀</a></li>`);
+				}
 
-                // 페이지 번호들
-                for (let i = 1; i <= pageCount; i++) {
-                    pagination.append(`
-                        <li>
-                            <a href="#" class="${i === page ? 'on' : ''}" onclick="numberCheck(${i}, ${perPageNum})">${i}</a>
-                        </li>
-                    `);
-                }
+				// 페이지 번호들
+				for (let i = 1; i <= pageCount; i++) {
+				    pagination.append(`
+				        <li>
+				            <a href="#" class="${i === page ? 'on' : ''}" onclick="numberCheck(${i}, ${perPageNum})">${i}</a>
+				        </li>
+				    `);
+				}
 
-                // ▶ 다음
-                if (page < pageCount) {
-                    pagination.append(`<li><a href="#" onclick="numberCheck(${page + 1}, ${perPageNum})">▶</a></li>`);
-                }
+				// ▶ 다음 (5페이지 이상이고, 현재 페이지가 마지막보다 작을 때)
+				if (pageCount >= 5 && page < pageCount) {
+				    pagination.append(`<li><a href="#" onclick="numberCheck(${page + 1}, ${perPageNum})">▶</a></li>`);
+				}
 
             } else {
                 tbody.append(`<tr><td colspan="10">대출 기록이 없습니다.</td></tr>`);

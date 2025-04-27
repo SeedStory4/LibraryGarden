@@ -201,6 +201,7 @@
          AND u.userNumber = #{userNumber}
          AND r.status     = '예약중'
          AND r.delyn      = 'N'
+         AND r.pickupDate = #{pickupDate} 
     </select>
     
     <update id="updateReservationToReceived" parameterType="map">
