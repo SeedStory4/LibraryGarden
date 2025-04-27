@@ -1,5 +1,6 @@
 package libraryGarden.user.mapper;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public interface BookRequestMapper {
 	public int insertRequest(@Param("uidx") int uidx,@Param("bidx") int bidx);
 
 	// 사용자 희망 도서 신청을 조회하는 메서드
-	public List<Map<String, Object>> getUserRequestInfo(int uidx);
+	public List<Map<String, Object>> getUserRequestInfo(HashMap<String,Object> hm);
 	
 	// 사용자 희망 도서 신청한 수를 조회하는 메서드
 	public int getUserRequestInfoTotalCount(int uidx);

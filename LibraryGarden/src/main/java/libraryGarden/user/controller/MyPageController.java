@@ -152,7 +152,7 @@ public class MyPageController {
     
 	// 도서신청관리(희망 도서 신청한 목록) 페이지 이동
 	@GetMapping("/myPageRequestList.do")
-	public String myPageRequestList(@RequestParam(value = "page", required = false, defaultValue = "1") int  page, HttpSession session, Model model) throws Exception {
+	public String myPageRequestList(SearchCriteria scri, HttpSession session, Model model) throws Exception {
 		logger.debug("MyPageController myPageRequestList 들어옴");
 		
 		// 로그인 확인
@@ -161,19 +161,23 @@ public class MyPageController {
 			return "redirect:/user/user/userLogin.do"; // 로그인 안 되어 있으면 로그인 페이지로
 	    }
 		
+		// 페이징
+		if (scri.getPage() == 0) {
+		    scri.setPage(1); // 기본 1페이지로
+		}
+		if (scri.getPerPageNum() == 0) {
+		    scri.setPerPageNum(12); // ⭐ perPageNum도 기본 12개로 세팅
+		}
+		
+		pm.setScri(scri);
+		int cnt = bookRequestService.getUserRequestInfoTotalCount(loginUser.getUidx()); // 전체 수
+	    pm.setTotalCount(cnt);
+		 
 		// 로그인 한 유저 대출상태 확인
 		String loanStatus = bookLoanService.getUserLoanStatus(loginUser.getUserNumber()); 
 	    
 		// 유저의 희망도서 신청 리스트 출력
-		List<Map<String, Object>> requestList = bookRequestService.getUserRequestInfo(loginUser.getUidx());
-	    
-		// 페이징
-		int cnt = bookRequestService.getUserRequestInfoTotalCount(loginUser.getUidx()); // 전체 수
-	    PageMaker pm = new PageMaker();
-	    SearchCriteria scri = new SearchCriteria();
-	    scri.setPage(page);
-	    pm.setScri(scri);
-	    pm.setTotalCount(cnt);
+		List<Map<String, Object>> requestList = bookRequestService.getUserRequestInfo(loginUser.getUidx(), scri);
 	    
 	    model.addAttribute("uv", loginUser);// 유저 정보
 	    model.addAttribute("loanStatus", loanStatus); // 대출가능 정보

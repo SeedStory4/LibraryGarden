@@ -1,11 +1,13 @@
 package libraryGarden.user.service;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import libraryGarden.domain.SearchCriteria;
 import libraryGarden.user.mapper.BookRequestMapper;
 
 /** [설명] BookRequestService 인터페이스를 구현한 클래스 - 비즈니스 로직을 처리
@@ -33,8 +35,15 @@ public class BookRequestServiceImpl implements BookRequestService{
 
 	// 사용자 희망 도서 신청을 조회하는 메서드
 	@Override
-	public List<Map<String, Object>> getUserRequestInfo(int uidx) {
-		List<Map<String, Object>> requestList = brm.getUserRequestInfo(uidx);
+	public List<Map<String, Object>> getUserRequestInfo(int uidx, SearchCriteria scri) {
+		
+		HashMap<String,Object> hm = new HashMap<String,Object>();
+		
+		hm.put("startPageNum", (scri.getPage() - 1) * scri.getPerPageNum());//페이지 조회 첫번째 수
+		hm.put("perPageNum", scri.getPerPageNum());//페이지 조회 끝번째 수
+		hm.put("uidx", uidx);
+		
+		List<Map<String, Object>> requestList = brm.getUserRequestInfo(hm);
 		return requestList;
 	}
 

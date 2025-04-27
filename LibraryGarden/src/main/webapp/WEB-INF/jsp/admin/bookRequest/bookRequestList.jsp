@@ -26,8 +26,8 @@
 			<div class="contents">
 				<c:set var="queryParam" value="keyword=${requestScope.pm.scri.keyword}&searchType=${requestScope.pm.scri.searchType}"></c:set>
 				<div class="book-list pt-0">
-					<div class="search flex gap-20 justify-center">
 					<form action="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do">
+					<div class="search flex gap-20 justify-center">
 						<select class="js-example-basic-single select shadow" name="searchType">
 							<option value="title" selected>제목</option>
 							<option value="author">서명/저자사항</option>
@@ -35,8 +35,9 @@
 						</select>
 						<input type="text" class="shadow w-720" name="keyword" value="">						
 						<button class="btn btn-primary btn-small" >검색</button>
-					</form>
 					</div>
+					</form>
+					
 					<ul class="tab flex gap-3">
 						<li class="shadow <c:if test="${empty filter}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?${queryParam}">전체</a></li>
 						<li class="shadow <c:if test="${filter eq '신청대기'}">on</c:if>"><a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?status=신청대기&${queryParam}">신청대기</a></li>
@@ -89,7 +90,7 @@
 								
 								<c:if test="${empty rlist}">
 									<tr>
-										<td colspan="8" class="center">검색된 도서가 없습니다.</td>
+										<td colspan="8" class="center">도서가 없습니다.</td>
 									</tr>
 								</c:if>
 							</tbody>
@@ -97,17 +98,17 @@
 						<ul class="paging flex justify-center">
 							<c:if test="${requestScope.pm.prev == true}">
 							<li>
-					          <a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
+					          <a href="${pageContext.request.contextPath}/admin/book/bookList.do?page=${requestScope.pm.startPage - 1}&${queryParam}" aria-label="Previous">◀</a>
 					        </li>
 							</c:if> 
 							
 					        <c:forEach var="i" begin="${requestScope.pm.startPage}" end="${requestScope.pm.endPage}" step="1">
-					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${i}&${queryParam}">${i}</a></li>
+					        <li><a class="<c:if test="${i == requestScope.pm.scri.page}">on</c:if>" href="${pageContext.request.contextPath}/admin/book/bookList.do?page=${i}&${queryParam}">${i}</a></li>
 					        </c:forEach>
 					        
 					        <c:if test="${requestScope.pm.next == true && requestScope.pm.endPage > 0}">
 							<li class="page-item">
-					          <a href="${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
+					          <a href="${pageContext.request.contextPath}/admin/book/bookList.do?page=${requestScope.pm.endPage + 1}&${queryParam}" aria-label="Next">▶</a>
 					        </li>
 							</c:if>
 						</ul>

@@ -88,7 +88,7 @@
 								</c:forEach>
 								<c:if test="${empty requestList}">
 									<tr>
-										<td colspan="9" style="text-align:center;">신청한 희망도서가 없습니다.</td>
+										<td colspan="9" style="text-align:center;">도서가 없습니다.</td>
 									</tr>
 								</c:if>
 							</tbody>
@@ -147,7 +147,7 @@
 	function confirmDelete(page, bidx, rqidx) {
 		
 		var fm = document.frm;	
-		var ans = confirm("저장하시겠습니까?");
+		var ans = confirm("삭제하시겠습니까?");
 		if (ans == true) {
 			fm.action='${pageContext.request.contextPath}/user/myPage/deleteRequest.do?page='+ page +'&bidx='+ bidx +'&rqidx='+ rqidx;
 			fm.method="post"; 

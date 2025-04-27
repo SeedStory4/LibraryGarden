@@ -13,6 +13,10 @@
 	crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 <link rel="stylesheet" href="<%= request.getContextPath() %>/css/adminMain.css">
+<style type="text/css">
+.between {justify-content: space-evenly;}
+</style>
+
 </head>
 <body>
 
@@ -101,44 +105,23 @@
 					</div>
 				</div>
 
-				<div class="request-info">
+				<div class="request-info between">
 					<!-- 신청자 -->
-					<div class="request-info-group">
+					<div class="request-info-group ">
 						<span class="request-info-title">신청자</span> <span
 							class="request-info-content">${rq.name}(${rq.userNumber})</span>
 					</div>
 
 					<!-- 신청일 -->
-					<div class="request-info-group">
+					<div class="request-info-group ">
 						<span class="request-info-title">신청일</span> <span
 							class="request-info-content">${fn:replace(rq.regDate, '-', '.')}</span>
 					</div>
-
-					<!-- 상태 -->
-					<div class="request-info-group">
-						<span class="request-info-title">상태</span>
-						<div class="request-status-container">
-							<!-- 새 컨테이너 추가 -->
-							<select class="js-example-basic-single select" name="state">
-							<option value="신청중">신청중</option>
-							<option value="신청완료">신청완료</option>
-							<option value="신청반려">신청반려</option>
-							<option value="신청대기">신청대기</option>
-							</select>
-							<textarea class="reject-reason-input" placeholder="반려사유를 입력하세요." >${rq.rejectionReason != null ? rq.rejectionReason : ''}</textarea>
-						</div>
-					</div>
 				</div>
 
-				<form name="frm" method="post">
-				    <input type="hidden" name="rqidx" value="">
-				    <input type="hidden" name="status" value="">
-				    <input type="hidden" name="rejectionReason" value="">
-				</form>
+
 				<!-- 등록/취소 버튼 -->
 				<div class="draft-actions mg-top">
-					<button class="draft-btn-small btn-submit" 
-					        onclick="saveRequest( document.querySelector('.js-example-basic-single').value, document.querySelector('.reject-reason-input').value, '${rq.rqidx}')">저장</button>
 					<button class="draft-btn-small btn-list" onclick="location.href='${pageContext.request.contextPath}/admin/bookRequest/bookRequestList.do'">목록</button>
 				</div>
 			</section>
@@ -173,26 +156,6 @@
 		    });
 		});
     </script>	
-    <script>
-    function saveRequest(status, rejectionReason, rqidx) {
-	    var fm = document.frm;
-	    
-	    if (status === "신청반려" && (rejectionReason == null || rejectionReason.trim() === "")) {
-	        alert("반려사유를 입력해 주세요.");
-	        return; // 저장 진행하지 않고 함수 종료
-	    }
-	    
-	    var ans = confirm("저장하시겠습니까?");
-	    if (ans) {
-	        fm.status.value = status;
-	        fm.rejectionReason.value = rejectionReason;
-	        fm.rqidx.value = rqidx;
-	
-	        fm.action = "${pageContext.request.contextPath}/admin/bookRequest/bookRequestModify.do";
-	        fm.method = "post";
-	        fm.submit();
-	    }
-	}
-    </script>	
+  
 </body>
 </html>

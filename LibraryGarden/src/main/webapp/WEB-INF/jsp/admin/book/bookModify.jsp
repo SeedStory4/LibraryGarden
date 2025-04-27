@@ -140,36 +140,23 @@
 					<table class="info-table">
 						<colgroup>
 							<col width="15%">
-							<col width="25%">
-							<col width="25%">
 							<col width="35%">
+							<col width="25%">
+							<col width="25%">
+
 						</colgroup>
 						<thead>
 							<tr>
 								<th>구분</th>
+								<th>분류</th>
 								<th>청구기호</th>
 								<th>자료실</th>
-								<th>분류</th>
+
 							</tr>
 						</thead>
 						<tbody>
 							<tr>
 								<td>${lbd.code}</td>
-								<td class="call-number-container">
-									<span class="fixed-call-number"> ${fn:substringBefore(lbd.callName, '.')}.</span> 
-									<input type="text" class="input-call-number" value="${fn:substringAfter(lbd.callName, '.')}">
-								</td>
-								<td>
-									<select class="js-example-basic-single select" name="location" data-width="wide">
-										<option value="">자료실 선택</option>
-										<option value="일반열람실"
-											${lbd.location eq '일반열람실' ? 'selected' : ''}>일반열람실</option>
-										<option value="어린이열람실"
-											${lbd.location eq '어린이열람실' ? 'selected' : ''}>어린이열람실</option>
-										<option value="보존서고"
-											${lbd.location eq '보존서고' ? 'selected' : ''}>보존서고</option>
-									</select>
-								</td>
 								<td>
 									<select class="js-example-basic-single select" id="parentCategory" name="parentCode">
 											<option value="">대분류 선택</option>
@@ -185,6 +172,22 @@
 										</c:forEach>
 									</select>
 								</td>
+								<td class="call-number-container">
+									<span class="fixed-call-number"> ${fn:substringBefore(lbd.callName, '.')}.</span> 
+									<input type="text" class="input-call-number" value="${fn:substringAfter(lbd.callName, '.')}">
+								</td>
+								<td>
+									<select class="js-example-basic-single select" name="location" data-width="wide">
+										<option value="">자료실 선택</option>
+										<option value="일반열람실"
+											${lbd.location eq '일반열람실' ? 'selected' : ''}>일반열람실</option>
+										<option value="어린이열람실"
+											${lbd.location eq '어린이열람실' ? 'selected' : ''}>어린이열람실</option>
+										<option value="보존서고"
+											${lbd.location eq '보존서고' ? 'selected' : ''}>보존서고</option>
+									</select>
+								</td>
+
 							</tr>
 						</tbody>
 					</table>
