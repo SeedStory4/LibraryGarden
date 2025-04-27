@@ -48,7 +48,16 @@
 			                </div>
 			                <div class="book-info-row">
 			                  <p class="info-title">부제</p>
-			                  <p class="info-content" title="${book.subTitle}">${book.subTitle}</p>
+			                  <p class="info-content" title="${empty book.subTitle ? '-' : book.subTitle}">
+							    <c:choose>
+							      <c:when test="${empty book.subTitle}">
+							        -
+							      </c:when>
+							      <c:otherwise>
+							        ${book.subTitle}
+							      </c:otherwise>
+							    </c:choose>
+							  </p>
 			                </div>
 			                <div class="book-info-row">
 			                  <p class="info-title">서명/저자사항</p>
