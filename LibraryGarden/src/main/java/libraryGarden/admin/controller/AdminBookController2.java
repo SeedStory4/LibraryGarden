@@ -40,7 +40,7 @@ public class AdminBookController2 {
 			@RequestParam(value = "page", defaultValue = "1") int page
 		 ) {
 					
-		 logger.info("bookList 들어옴");
+		 logger.debug("bookList 들어옴");
 
 		// 현재 페이지 저장
 	     SearchCriteria scri = new SearchCriteria();
