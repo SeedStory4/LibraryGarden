@@ -175,7 +175,7 @@
 		        
 		        const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d!@#$%^&*()_+]{8,}$/;
 		        if (!pwRegex.test(pw)) {
-		          alert("비밀번호는 8자 이상, 영문/숫자/를 포함해야 합니다.");
+		          alert("비밀번호는 8자 이상, 영문/숫자를 포함해야 합니다.");
 		          form.password.focus();
 		          e.preventDefault();
 		          return;

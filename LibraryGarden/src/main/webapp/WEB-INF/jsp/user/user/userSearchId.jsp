@@ -32,8 +32,8 @@
 				<!-- 아이디 찾기 입력 -->
 				<form action="<%= request.getContextPath() %>/user/user/findIdAction.do" method="post" id="findIdForm">
 				<div class="draft-content ml-mr-50">
-					<input type="text" class="user-A-input mb-40" name="name" placeholder="이름" required>
-					<input type="tel" class="user-A-input mb-17" name="phone" placeholder="휴대전화번호 (예> 01012345678)" required>
+					<input type="text" class="user-A-input mb-40" name="name" placeholder="이름" >
+					<input type="tel" class="user-A-input mb-17" name="phone" placeholder="휴대전화번호 (예> 01012345678)" >
 
 					<div class="font-D94436-18 mb-45">
 						<p> • 가입시 등록한 이름과 휴대폰 번호를 입력해 주세요.</p>
