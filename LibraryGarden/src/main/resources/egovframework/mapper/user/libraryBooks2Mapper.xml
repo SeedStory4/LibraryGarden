@@ -4,7 +4,7 @@
 
 <mapper namespace="libraryGarden.user.mapper.LibraryBook2Mapper">
 	
-	<select id="selectTopLoanBooksThisMonth" resultType="libraryGarden.domain.LibraryBook2Dto">
+	<select id="selectTopLoanBooksThisMonth" resultType="libraryGarden.domain.LibraryBooks2Dto">
 	    SELECT 
 	        b.bidx,
 	        b.coverImg,
@@ -24,7 +24,7 @@
 	    LIMIT 6
 	</select>
 	
-	<select id="getLatestBooks" resultType="libraryGarden.domain.LibraryBook2Dto">
+	<select id="getLatestBooks" resultType="libraryGarden.domain.LibraryBooks2Dto">
 	    SELECT 
 	        b.bidx,
 	        b.coverImg,
