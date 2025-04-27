@@ -62,10 +62,10 @@
 	
 	<select id="selectLatestLibraryBooks" resultType="lbd">
 	   SELECT b.*
-	    FROM libraryBooks lb
-	    JOIN books b ON lb.bidx = b.bidx
-	    ORDER BY b.publishedYear DESC
-	    LIMIT 6
+	   FROM libraryBooks lb
+	   JOIN books b ON lb.bidx = b.bidx
+	   ORDER BY lb.regDate DESC
+	   LIMIT 6
 	</select>
 	
 </mapper>
