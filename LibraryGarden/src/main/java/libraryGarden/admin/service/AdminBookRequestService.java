@@ -33,17 +33,15 @@ public interface AdminBookRequestService {
 	
 	// 희망 도서 상세 페이지에서 상태 및 반려 사유 수정
 	public int modifyBookRequest(int rqidx, String status, String rejectionReason);
-	int bookRequestTotalCount(SearchCriteria scri, String filter);
 	
 	
 	/**
 	 * @author JiHye
 	 * @write 2024.03.23
 	 */
-	public ArrayList<RequestDto> bookRequestSelectAll(SearchCriteria scri, String filter);
 
-	public BooksVo bookRequestSelectOne(int rqidx);
+	public BooksVo getBookRequestSelectOne(int rqidx);
 
-	public int statusUpdate(int rqidx, String status);
+	public int updateStatus(int rqidx, String status);
 	
 }

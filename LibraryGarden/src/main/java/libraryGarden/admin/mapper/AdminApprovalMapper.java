@@ -9,20 +9,20 @@ import libraryGarden.domain.BooksVo;
 
 public interface AdminApprovalMapper {
 
-	public int approvalTotalCount(HashMap<String,Object> hm);
+	public int getApprovalTotalCount(HashMap<String,Object> hm);
 	
-	public ArrayList<ApprovalDto> approvalSelectAll(HashMap<String,Object> hm);
+	public ArrayList<ApprovalDto> getApprovalSelectAll(HashMap<String,Object> hm);
 	
-	public BooksVo approvalSelectOne(int aidx);
+	public BooksVo getApprovalSelectOne(int aidx);
 
-	public int approvalDelete(int aidx);
+	public int deleteApproval(int aidx);
 	
-	public int approvalInsert(HashMap<String,Object> hm);
+	public int insertApproval(HashMap<String,Object> hm);
 	
-	public ApprovalVo approvalSelectAv(int aidx);
+	public ApprovalVo getApprovalSelectAv(int aidx);
 	
-	public int approvalUpdate(HashMap<String,Object> hm);
+	public int updateApproval(HashMap<String,Object> hm);
 
-	public int processingUpdate(ApprovalVo av);
+	public int updateApprovalProcessing(ApprovalVo av);
 	
 }

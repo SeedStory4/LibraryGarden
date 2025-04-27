@@ -119,13 +119,13 @@ public class AdminBookRequestController {
 	// 희망 도서 목록 페이지 이동(팝업)
 	@ResponseBody
 	@RequestMapping(value="/bookRequestList.do", method = RequestMethod.POST)
-	public HashMap<String, Object> bookRequestList(
+	public HashMap<String, Object> getBookRequestList(
 			@RequestParam(value = "searchType", defaultValue = "title") String searchType,
 			@RequestParam(value = "keyword", defaultValue = "") String keyword,
 			@RequestParam(value = "page", defaultValue = "1") int page
 		 ) {
 					
-		 logger.debug("bookRequestList 들어옴");
+		 logger.debug("getBookRequestList 들어옴");
 		 
 		 // 사용자가 입력한 검색조건과 검색어 저장
 		 SearchCriteria scri = new SearchCriteria();
@@ -138,11 +138,11 @@ public class AdminBookRequestController {
 		 String filter = "신청대기";
 		 
 		 // 페이징을 위한 전체 데이터 갯수 DB에서 가져오기
-		 int cnt = bookRequestService.bookRequestTotalCount(scri, filter);
+		 int cnt = bookRequestService.getBookRequestTotalCount(scri, filter);
 		 pm.setTotalCount(cnt);
 		
 		 // 목록에서 보여줄 데이터 DB에서 가져오기
-		 ArrayList<RequestDto> alist = bookRequestService.bookRequestSelectAll(scri, filter);
+		 ArrayList<RequestDto> alist = bookRequestService.getBookRequestSelectAll(scri, filter);
 		 
 		 // URL에서 특수문자가 포함된 검색어를 사용할 때 오류가 발생하지 않도록 인코딩 처리
 		 UrlEncoder encoder = new UrlEncoder();

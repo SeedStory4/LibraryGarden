@@ -51,7 +51,7 @@
 								<span class="info-title label-title">● 제목</span> <span class="info-content title p-0 m-0">${requestScope.bv.title}</span>
 							</p>
 							<p>
-								<span class="info-title">● 부제</span> <span class="info-content subtitle">${requestScope.bv.subtitle}</span>
+								<span class="info-title">● 부제</span> <span class="info-content subTitle">${requestScope.bv.subTitle}</span>
 							</p>
 							<p>
 								<span class="info-title">● 서명/저자사항</span> <span class="info-content author">${requestScope.bv.author}</span>
@@ -368,7 +368,7 @@
 		 			 const bv = result.bv;
 					 let labelTitle = "● 제목";
 					 let title = bv.title;
-					 let subtitle = "-";
+					 let subTitle = "-";
 					 
 			         document.querySelector(".coverImg").src = bv.coverImg;
 			         document.querySelector(".coverImg").alt = bv.title;
@@ -380,10 +380,10 @@
 			         document.querySelector(".label-title").innerText = labelTitle;
 			         document.querySelector(".title").innerText = title;
 			         
-			         if(bv.subtitle != undefined) {
-			        	 subtitle = bv.subtitle;
+			         if(bv.subTitle != undefined) {
+			        	 subTitle = bv.subTitle;
 			         }
-			         document.querySelector(".subtitle").innerText = subtitle;
+			         document.querySelector(".subTitle").innerText = subTitle;
 			         
 			         document.querySelector(".author").innerText = bv.author;
 			         document.querySelector(".publisher").innerText = bv.publisher + "(" + bv.publishedYear.replaceAll('-', '.') + ")";
