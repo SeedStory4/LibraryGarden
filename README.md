@@ -71,23 +71,23 @@ Library Garden은 도서관 시스템에 ‘정원’이라는 따뜻한 개념�
 - 회원가입페이지 입니다.
 
 ----------------
-### 아이디찾기
-![아이디찾기](https://github.com/user-attachments/assets/7d3ecea2-7dc9-446c-a1ac-10d95086c4e5)
+### 아이디 찾기
+![아이디 찾기](https://github.com/user-attachments/assets/7d3ecea2-7dc9-446c-a1ac-10d95086c4e5)
 - 아이디 찾기 페이지입니다. 회원의 이름과 휴대전화를 DB에서 조회후 아이디를 알려줍니다.
 
 ----------------
-### 아이디찾기완료
-![image](https://github.com/user-attachments/assets/43dd524c-effa-4836-9e07-c37c61027c71)
+### 아이디 찾기 완료
+![아이디 찾기 완료](https://github.com/user-attachments/assets/43dd524c-effa-4836-9e07-c37c61027c71)
 - 아이디 찾기 완료페이지입니다.
 
 ----------------
-### 비빌번호찾기
-![비빌번호찾기](https://github.com/user-attachments/assets/96ad189a-064e-4102-adeb-52617ad2099f)
+### 비밀번호 찾기
+![비밀번호 찾기](https://github.com/user-attachments/assets/96ad189a-064e-4102-adeb-52617ad2099f)
 - 비밀번호 찾기 페이지입니다. 아이디와 휴대전화를 DB에서 조회후 가입시 입력한 이메일로 임시비빌번호를 발송합니다.
 
 ----------------
-### 비밀번호찾기 완료
-![비밀번호찾기](https://github.com/user-attachments/assets/f3fc3822-cb88-4cff-93c5-450fedad5084)
+### 비밀번호 찾기 완료
+![비밀번호 찾기 완료](https://github.com/user-attachments/assets/f3fc3822-cb88-4cff-93c5-450fedad5084)
 - 비밀번호 찾기 페이지입니다. 아이디와 휴대전화를 DB에서 조회후 가입시 입력한 이메일로 임시비빌번호를 발송합니다.
 
 ----------------
@@ -141,39 +141,44 @@ Library Garden은 도서관 시스템에 ‘정원’이라는 따뜻한 개념�
 - 취소 버튼을 누르면 신청한 내역이 삭제됩니다.
 
 ----------------
+### 내 도서 - 도서신청관리 반려사유 팝업
+![내 도서 - 도서신청관리 반려사유 팝업](https://github.com/user-attachments/assets/90c6c651-be8f-45f5-8e8c-2c9b0a36fada)
+- 반려상태인 도서의 상태를 누르면 반려사유를 보여줍니다.
+
+----------------
 ### 도서관리 목록
 ![도서관리 목록](https://github.com/user-attachments/assets/2eca3dff-9dcb-47fc-b5b8-999b1db63a76)
 - 도서관에서 관리하는 도서 목록들을 볼 수 있는 페이지 입니다.
 - 도서에 대한 정보가 표시되며 대출가능여부와 예약상태를 볼 수 있습니다.
 
 ----------------
-### 도서 관리 상세
-![도서 관리 상세](https://github.com/user-attachments/assets/d6326840-e64b-4d18-830b-595ad5c87718)
+### 도서관리 상세
+![도서관리 상세](https://github.com/user-attachments/assets/d6326840-e64b-4d18-830b-595ad5c87718)
 - 도서관에 등록된 도서의 상세를 나타내는 페이지입니다.
 - 해당 페이지에서 도서 수정 페이지로 이동하거나 또는 삭제를 할 수 있습니다.
 
 ----------------
-### 도서 등록
+### 도서등록
 ![도서 등록](https://github.com/user-attachments/assets/58cd0a67-7148-4785-af84-1913124dc772)
 - 도서관 도서를 등록하는 페이지입니다.
 - 등록하면 하단에 등록한 책 목록들이 나타나며 삭제 또는 제목을 클릭하면 상세페이지로 이동할 수 있습니다.
 
 ----------------
-### 도서 선택
-![도서 선택](https://github.com/user-attachments/assets/2eaf6e03-ac9e-4d12-9187-642927fbecc9)
+### 도서선택
+![도서선택](https://github.com/user-attachments/assets/2eaf6e03-ac9e-4d12-9187-642927fbecc9)
 - 도서등록에서 도서선택 버튼을 누르면 나타나는 팝업입니다.
 - 관리자 결재 관리에서 승인된 도서들이 표시됩니다.
 - 선택을 누르면 도서 등록으로 도서에 대한 정보가 표시 됩니다.
 
 ----------------
-### 도서 관리 수정
-![도서 관리 수정](https://github.com/user-attachments/assets/a827249c-05c1-4761-95e1-bf96bc50fa00)
+### 도서관리 수정
+![도서관리 수정](https://github.com/user-attachments/assets/a827249c-05c1-4761-95e1-bf96bc50fa00)
 - 도서관에 등록된 도서를 수정하는 페이지입니다.
 - 해당 페이지에서 도서에 대한 소장정보를 수정할 수 있습니다.
 
 ----------------
-### 도서 대출
-![도서 대출](https://github.com/user-attachments/assets/545bf496-7a9f-4dc6-844b-2ffa393074f2)
+### 도서대출
+![도서대출](https://github.com/user-attachments/assets/545bf496-7a9f-4dc6-844b-2ffa393074f2)
 - 도서관에 도서를 대출/반납 할 수 있는 페이지입니다.
 - 예약한 도서를 픽업날짜에 대출할 시 예약도서의 상태가 수령완료로 변경됩니다.
 
@@ -212,6 +217,11 @@ Library Garden은 도서관 시스템에 ‘정원’이라는 따뜻한 개념�
 - 신청한 도서의 정보와 신청자 정보를 확인할 수 있습니다.
 
 ----------------
+### 희망도서 반려사유 팝업
+![희망도서 반려사유 팝업](https://github.com/user-attachments/assets/1ed1abd1-8eb9-4b11-b9b0-681b063d8a2c)
+- 반려상태인 도서의 상태를 누르면 반려사유를 보여줍니다.
+
+----------------
 ### 결재관리 목록
 ![image](https://github.com/user-attachments/assets/4e2db673-0c3c-407f-b0db-3d4ca3dc4566)
 - 기안의 상태별로 목록을 보여줍니다.
@@ -219,46 +229,34 @@ Library Garden은 도서관 시스템에 ‘정원’이라는 따뜻한 개념�
 
 ----------------
 ### 기안 등록
-![image](https://github.com/user-attachments/assets/cb3566f9-9975-4c3a-80ba-fa72ff671cc9)
-* 희망도서선택 버튼을 누르면 신청된 희망도서 목록을 보여줍니다.
-* 기안 등록 버튼을 누르면 도서 목록을 보여줍니다.
-* 도서 선택 후 등록 버튼을 눌러서 기안을 등록합니다.
+![기안 등록](https://github.com/user-attachments/assets/cb3566f9-9975-4c3a-80ba-fa72ff671cc9)
+- 희망도서선택 버튼을 누르면 신청된 희망도서 목록을 보여줍니다.
+- 기안 등록 버튼을 누르면 도서 목록을 보여줍니다.
+- 도서 선택 후 등록 버튼을 눌러서 기안을 등록합니다.
 
-### 희망도서선택
-![image](https://github.com/user-attachments/assets/2cd9e465-277f-44c3-ba30-469f06ada641)
+----------------
+### 희망도서 선택
+![희망도서 선택](https://github.com/user-attachments/assets/2cd9e465-277f-44c3-ba30-469f06ada641)
+- 희망도서 목록에서 기안을 올릴 도서를 선택합니다.
 
-* 희망도서 목록에서 기안을 올릴 도서를 선택합니다.
+----------------
+### 도서 선택
+![도서 선택](https://github.com/user-attachments/assets/6e0cd15e-9984-45c9-a512-cca6a71b043a)
+- 도서 목록에서 기안을 올릴 도서를 선택합니다.
 
-### 도서선택
-![image](https://github.com/user-attachments/assets/6e0cd15e-9984-45c9-a512-cca6a71b043a)
-
-* 도서 목록에서 기안을 올릴 도서를 선택합니다.
-
+----------------
 ### 기안 상세
-![image](https://github.com/user-attachments/assets/738d6a77-e9e6-465e-ad5a-dc0815200a2d)
-![image](https://github.com/user-attachments/assets/fe5c17c3-4346-483c-bee9-9bc19b8e9288)
+![기안 상세](https://github.com/user-attachments/assets/738d6a77-e9e6-465e-ad5a-dc0815200a2d)
+![기안 상세](https://github.com/user-attachments/assets/fe5c17c3-4346-483c-bee9-9bc19b8e9288)
+- 기안에 올린 도서의 상세 정보를 나타냅니다.
+- 수정 버튼을 누르면 수정 페이지로, 목록 버튼을 누르면 목록 페이지로 이동합니다.
+- 삭제 버튼을 누르면 기안이 삭제됩니다.
+   도서관장이 신청된 기안에 승인/반려 버튼을 눌러서 승인/반려를 합니다.(반려시 반려사유 입력 필요)
 
-* 기안에 올린 도서의 상세 정보를 나타냅니다.
-* 수정 버튼을 누르면 수정 페이지로, 목록 버튼을 누르면 목록 페이지로 이동합니다.
-* 삭제 버튼을 누르면 기안이 삭제됩니다.
-* 도서관장이 신청된 기안에 승인/반려 버튼을 눌러서 승인/반려를 합니다.(반려시 반려사유 입력 필요)
-
+----------------
 ### 기안 수정
-![image](https://github.com/user-attachments/assets/879adf2a-38fc-4947-a66e-684a18137f5f)
-
-* 기안을 수정합니다.
-
-### 반려사유 팝업
-![image](https://github.com/user-attachments/assets/1ed1abd1-8eb9-4b11-b9b0-681b063d8a2c)
-![image](https://github.com/user-attachments/assets/90c6c651-be8f-45f5-8e8c-2c9b0a36fada)
-
-* 반려상태인 도서의 상태를 누르면 반려사유를 보여줍니다.
-
-
-
-
-
-
+![기안 수정](https://github.com/user-attachments/assets/879adf2a-38fc-4947-a66e-684a18137f5f)
+- 기안을 수정합니다.
 
 ----------------
 ### 회원목록
@@ -272,7 +270,7 @@ Library Garden은 도서관 시스템에 ‘정원’이라는 따뜻한 개념�
 
 ----------------
 ### 회원정보 수정
-![회원정보](https://github.com/user-attachments/assets/f7932656-c5f0-43c4-a3a3-b616a722976a)
+![회원정보 수정](https://github.com/user-attachments/assets/9cea528c-2494-4d56-adb2-cc0cac03afe0)
 - 회원정보 수정페이지입니다. 휴대전화번호와 이메일, 주소, 권한을 수정 할 수있습니다.
 
 
